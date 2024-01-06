@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2022-2024 Nameless-AOSP
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+
+    <!-- Vibration patterns - Notification -->
+    <string name="vibrationPattern_notification_dz_dz">dz-dz</string>
+    <string name="vibrationPattern_notification_mm_dz">mm-dz</string>
+    <string name="vibrationPattern_notification_da_mm_da">da-mm-da</string>
+    <string name="vibrationPattern_notification_da_da_da_mm">da-da-da-mm</string>
+    <string name="vibrationPattern_notification_bell">Bell</string>
+    <string name="vibrationPattern_notification_kick">Kick</string>
+    <string name="vibrationPattern_notification_strings">Strings</string>
+    <string name="vibrationPattern_notification_water_drop">Water drop</string>
+
+    <!-- Vibration patterns - Ringtone -->
+    <string name="vibrationPattern_ringtone_dzzz_dzzz">dzzz-dzzz</string>
+    <string name="vibrationPattern_ringtone_dzzz_da">dzzz-da</string>
+    <string name="vibrationPattern_ringtone_mm_mm_mm">mm-mm-mm</string>
+    <string name="vibrationPattern_ringtone_da_da_dzzz">da-da-dzzz</string>
+    <string name="vibrationPattern_ringtone_da_dzzz_da">da-dzzz-da</string>
+    <string name="vibrationPattern_ringtone_drums">Drums</string>
+    <string name="vibrationPattern_ringtone_raise">Raise</string>
+    <string name="vibrationPattern_ringtone_waltz">Waltz</string>
+    <string name="vibrationPattern_ringtone_cut">Cut</string>
+    <string name="vibrationPattern_ringtone_clock">Clock</string>
+    <string name="vibrationPattern_ringtone_short">Short</string>
+
+</resources>

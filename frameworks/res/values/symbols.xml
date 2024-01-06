@@ -13,4 +13,27 @@
     <java-symbol type="string" name="config_bodyFontFamily" />
     <java-symbol type="string" name="config_bodyFontFamilyMedium" />
 
+    <!-- Vibration patterns - Notification -->
+    <java-symbol type="string" name="vibrationPattern_notification_dz_dz" />
+    <java-symbol type="string" name="vibrationPattern_notification_mm_dz" />
+    <java-symbol type="string" name="vibrationPattern_notification_da_mm_da" />
+    <java-symbol type="string" name="vibrationPattern_notification_da_da_da_mm" />
+    <java-symbol type="string" name="vibrationPattern_notification_bell" />
+    <java-symbol type="string" name="vibrationPattern_notification_kick" />
+    <java-symbol type="string" name="vibrationPattern_notification_strings" />
+    <java-symbol type="string" name="vibrationPattern_notification_water_drop" />
+
+    <!-- Vibration patterns - Ringtone -->
+    <java-symbol type="string" name="vibrationPattern_ringtone_dzzz_dzzz" />
+    <java-symbol type="string" name="vibrationPattern_ringtone_dzzz_da" />
+    <java-symbol type="string" name="vibrationPattern_ringtone_mm_mm_mm" />
+    <java-symbol type="string" name="vibrationPattern_ringtone_da_da_dzzz" />
+    <java-symbol type="string" name="vibrationPattern_ringtone_da_dzzz_da" />
+    <java-symbol type="string" name="vibrationPattern_ringtone_drums" />
+    <java-symbol type="string" name="vibrationPattern_ringtone_raise" />
+    <java-symbol type="string" name="vibrationPattern_ringtone_waltz" />
+    <java-symbol type="string" name="vibrationPattern_ringtone_cut" />
+    <java-symbol type="string" name="vibrationPattern_ringtone_clock" />
+    <java-symbol type="string" name="vibrationPattern_ringtone_short" />
+
 </resources>

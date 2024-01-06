@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2022-2024 The Nameless-AOSP Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:title="@string/accessibility_touch_vibration_title">
+
+    <com.android.settingslib.widget.MainSwitchPreference
+        android:key="touch_feedback_main_switch"
+        android:title="@string/touch_feedback_enable"
+        app:vibrateOnClick="false"
+        app:controller="org.nameless.settings.accessibility.TouchFeedbackMainSwitchPreferenceController" />
+
+    <SwitchPreference
+        android:key="back_gesture_vibration_preference_screen"
+        android:title="@string/back_gesture_vibration_title"
+        app:controller="org.nameless.settings.accessibility.BackGestureVibrationPreferenceController" />
+
+    <SwitchPreference
+        android:key="off_screen_gesture_vibration_preference_screen"
+        android:title="@string/off_screen_gesture_vibration_title"
+        app:controller="org.nameless.settings.accessibility.OffScreenGestureVibrationPreferenceController" />
+
+    <SwitchPreference
+        android:key="qs_tile_vibration_preference_screen"
+        android:title="@string/qs_tiles_vibration_title"
+        app:controller="org.nameless.settings.accessibility.QSTileVibrationPreferenceController" />
+
+    <SwitchPreference
+        android:key="slider_vibration_preference_screen"
+        android:title="@string/slider_vibration_title"
+        app:controller="org.nameless.settings.accessibility.SliderVibrationPreferenceController" />
+
+    <SwitchPreference
+        android:key="switch_vibration_preference_screen"
+        android:title="@string/switch_vibration_title"
+        app:controller="org.nameless.settings.accessibility.SwitchVibrationPreferenceController" />
+
+    <SwitchPreference
+        android:key="misc_scenes_vibration_preference_screen"
+        android:title="@string/misc_scenes_vibration_title"
+        app:controller="org.nameless.settings.accessibility.MiscScenesVibrationPreferenceController" />
+
+    <PreferenceCategory
+        android:key="accessibility_vibration_effect_category"
+        android:title="@string/vibration_effect_category"
+        app:controller="org.nameless.settings.accessibility.VibrationEffectCategoryPreferenceController">
+
+        <SwitchPreference
+            android:key="mechanical_keyboard_effect_preference_screen"
+            android:title="@string/keyboard_press_effect_title"
+            android:summary="@string/keyboard_press_effect_summary"
+            app:controller="org.nameless.settings.accessibility.KeyboardEffectTogglePreferenceController" />
+
+        <com.android.settingslib.widget.FooterPreference
+            android:key="mechanical_keyboard_effect_preference_warning"
+            android:title="@string/keyboard_press_effect_warning"
+            android:selectable="false"
+            app:searchable="false" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

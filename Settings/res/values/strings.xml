@@ -9,4 +9,38 @@
     <string name="screen_off_fingerprint_title">Screen off fingerprint</string>
     <string name="screen_off_fingerprint_summary">Long press on fingerprint sensor to unlock phone when screen is off</string>
 
+    <!-- Custom vibration settings -->
+    <string name="touch_feedback_enable">Enable touch feedback</string>
+    <string name="face_unlock_vibration_title">Face unlock vibration</string>
+    <string name="fingerprint_unlock_vibration_title">Fingerprint unlock vibration</string>
+    <string name="back_gesture_vibration_title">Back gesture haptic</string>
+    <string name="off_screen_gesture_vibration_title">Off-screen gesture haptic</string>
+    <string name="qs_tiles_vibration_title">QS Tiles haptic</string>
+    <string name="slider_vibration_title">Slider haptic</string>
+    <string name="switch_vibration_title">Switch haptic</string>
+    <string name="misc_scenes_vibration_title">Misc scenes haptic</string>
+    <string name="vibration_strength_category">Vibration strength</string>
+    <string name="alarm_call_strength_title">Alarm &amp; Call strength</string>
+    <string name="haptic_strength_title">Haptic strength</string>
+    <string name="notification_strength_title">Notification strength</string>
+    <string name="vibration_strength_softer">Softer</string>
+    <string name="vibration_strength_stronger">Stronger</string>
+    <string name="always_enable_keyboard_haptic_title">Always enable for keyboard apps</string>
+    <string name="always_enable_keyboard_haptic_summary">Make keyboard apps haptic feedback independent of touch feedback switch</string>
+
+    <!-- Vibration pattern -->
+    <string name="vibration_pattern_category">Vibration pattern</string>
+    <string name="vibration_pattern_notification_title">Notification pattern</string>
+    <string name="vibration_pattern_ringtone_title">Ringtone pattern</string>
+
+    <!-- Custom vibration effect -->
+    <string name="vibration_effect_category">Vibration effect</string>
+    <string name="keyboard_press_effect_title">Mechanical keyboard press effect</string>
+    <string name="keyboard_press_effect_summary">Simulate effect of pressing on a mechanical keyboard when typing</string>
+    <string name="keyboard_press_effect_warning">This will invalidate vibration strength settings from keyboard apps</string>
+
+    <!-- Disable vibration in battery saver -->
+    <string name="battery_saver_vibration_title">Turn off vibration</string>
+    <string name="battery_saver_vibration_summary">Disable vibration to save power when Battery Saver is on</string>
+
 </resources>
