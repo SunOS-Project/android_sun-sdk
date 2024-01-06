@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2022-2024 The Nameless-AOSP Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+
+    <!-- Screenshot delete action  -->
+    <string name="screenshot_delete_label">Delete</string>
+    <string name="screenshot_delete_description">Delete screenshot</string>
+
+</resources>
