@@ -30,4 +30,11 @@ public class DebugConstants {
     public static final boolean DEBUG_VIBRATION_ADAPTER = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.vibrator.adapter.debug", false
     );
+
+    // Enable this to debug TopActivityRecorder
+    // Package: com.android.server.wm.TopActivityRecorder
+    // Key: TopActivityRecorder
+    public static final boolean DEBUG_WMS_TOP_APP = DEBUG_GLOBAL || SystemProperties.getBoolean(
+        "persist.sys.nameless.wm.top_app.debug", false
+    );
 }
