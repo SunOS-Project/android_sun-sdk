@@ -9,4 +9,8 @@
     <string name="screenshot_delete_label">Delete</string>
     <string name="screenshot_delete_description">Delete screenshot</string>
 
+    <!-- Google Lens -->
+    <string name="google_lens">Lens</string>
+    <string name="google_lens_unavailable">Google Lens is not installed</string>
+
 </resources>
