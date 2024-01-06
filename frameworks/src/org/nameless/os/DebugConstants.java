@@ -17,6 +17,13 @@ public class DebugConstants {
         "persist.sys.nameless.debug.global", false
     );
 
+    // Enable this to debug PackageManagerServiceExt
+    // Package: com.android.server.pm.PackageManagerServiceExt
+    // Key: PackageManagerServiceExt
+    public static final boolean DEBUG_PMS = DEBUG_GLOBAL || SystemProperties.getBoolean(
+        "persist.sys.nameless.pm.debug", false
+    );
+
     // Enable this to debug VibrationEffectAdapter
     // Package: org.nameless.server.vibrator.VibrationEffectAdapter
     // Key: VibrationEffectAdapter
