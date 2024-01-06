@@ -29,5 +29,7 @@ public class SystemSettingsExt {
         System.LOW_POWER_DISABLE_VIBRATION,
         System.VIBRATION_PATTERN_NOTIFICATION,
         System.VIBRATION_PATTERN_RINGTONE,
+        System.REFRESH_RATE_CONFIG_CUSTOM,
+        System.EXTREME_REFRESH_RATE,
     };
 }

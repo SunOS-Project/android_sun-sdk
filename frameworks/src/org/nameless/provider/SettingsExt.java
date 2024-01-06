@@ -105,6 +105,18 @@ public class SettingsExt {
          * @hide
          */
         public static final String VIBRATION_PATTERN_RINGTONE = "vibration_pattern_ringtone";
+
+        /**
+         * Per-app refresh rate config
+         * @hide
+         */
+        public static final String REFRESH_RATE_CONFIG_CUSTOM = "refresh_rate_config_custom";
+
+        /**
+         * Force highest refresh rate in all apps
+         * @hide
+         */
+        public static final String EXTREME_REFRESH_RATE = "extreme_refresh_rate";
     }
 
     public static class Secure {

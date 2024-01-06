@@ -13,4 +13,8 @@
     <string name="google_lens">Lens</string>
     <string name="google_lens_unavailable">Google Lens is not installed</string>
 
+    <!-- Refresh rate QS tile -->
+    <string name="refresh_rate_tile_label">Refresh rate</string>
+    <string name="refresh_rate_unknown">Unknown</string>
+
 </resources>

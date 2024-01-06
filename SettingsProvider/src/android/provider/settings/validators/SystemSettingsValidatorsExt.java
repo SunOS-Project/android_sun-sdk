@@ -8,6 +8,7 @@ package android.provider.settings.validators;
 import static android.provider.settings.validators.SettingsValidators.BOOLEAN_VALIDATOR;
 import static android.provider.settings.validators.SettingsValidators.NON_NEGATIVE_INTEGER_VALIDATOR;
 
+import android.text.TextUtils;
 import android.util.ArrayMap;
 
 import java.util.Map;
@@ -32,5 +33,23 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.LOW_POWER_DISABLE_VIBRATION, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.VIBRATION_PATTERN_NOTIFICATION, NON_NEGATIVE_INTEGER_VALIDATOR);
         VALIDATORS.put(System.VIBRATION_PATTERN_RINGTONE, NON_NEGATIVE_INTEGER_VALIDATOR);
+        VALIDATORS.put(System.REFRESH_RATE_CONFIG_CUSTOM, new PerAppConfigValidator());
+        VALIDATORS.put(System.EXTREME_REFRESH_RATE, BOOLEAN_VALIDATOR);
+    }
+
+    private static class PerAppConfigValidator implements Validator {
+        @Override
+        public boolean validate(String value) {
+            if (TextUtils.isEmpty(value)) return true;
+            if (!value.contains(";")) return false;
+            final String[] configs = value.split(";");
+            for (String config : configs) {
+                final String[] split = config.split(",");
+                if (split.length != 2) {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

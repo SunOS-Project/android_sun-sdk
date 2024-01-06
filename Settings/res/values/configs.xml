@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2022-2024 The Nameless-AOSP Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+
+    <!-- List of system apps that are allowed to configure per-app settings -->
+    <string-array name="config_perAppConfAllowedSystemApps" translatable="false">
+    </string-array>
+
+</resources>

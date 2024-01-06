@@ -17,6 +17,13 @@ public class DebugConstants {
         "persist.sys.nameless.debug.global", false
     );
 
+    // Enable this to debug DisplayRefreshRateController
+    // Package: org.nameless.server.display.DisplayRefreshRateController
+    // Key: DisplayModeDirector, DisplayRefreshRateController
+    public static final boolean DEBUG_DISPLAY_RR = DEBUG_GLOBAL || SystemProperties.getBoolean(
+        "persist.sys.nameless.display.rr.debug", false
+    );
+
     // Enable this to debug PackageManagerServiceExt
     // Package: com.android.server.pm.PackageManagerServiceExt
     // Key: PackageManagerServiceExt

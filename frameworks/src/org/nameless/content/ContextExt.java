@@ -19,4 +19,14 @@ public class ContextExt {
      * @see org.nameless.view.AppFocusManager
      */
     public static final String APP_FOCUS_MANAGER_SERVICE = "app_focus";
+
+    /**
+     * Use with {@link #getSystemService} to retrieve a
+     * {@link org.nameless.display.RefreshRateManager} for managing display refresh rate.
+     *
+     * @hide
+     * @see #getSystemService
+     * @see org.nameless.display.RefreshRateManager
+     */
+    public static final String REFRESH_RATE_MANAGER_SERVICE = "refresh_rate_ext";
 }

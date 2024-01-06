@@ -11,4 +11,9 @@
     <!-- Udfps vendor code -->
     <integer name="config_udfps_vendor_code">0</integer>
 
+    <!-- Tiles native to System UI. Order should match "quick_settings_tiles_default" -->
+    <string name="quick_settings_tiles_extra" translatable="false">
+        refresh_rate
+    </string>
+
 </resources>
