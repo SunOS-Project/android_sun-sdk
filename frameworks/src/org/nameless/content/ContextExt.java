@@ -22,6 +22,16 @@ public class ContextExt {
 
     /**
      * Use with {@link #getSystemService} to retrieve a
+     * {@link org.nameless.view.DisplayResolutionManager} for managing display resolution.
+     *
+     * @hide
+     * @see #getSystemService
+     * @see org.nameless.view.DisplayResolutionManager
+     */
+    public static final String DISPLAY_RESOLUTION_MANAGER_SERVICE = "resolution_ext";
+
+    /**
+     * Use with {@link #getSystemService} to retrieve a
      * {@link org.nameless.display.RefreshRateManager} for managing display refresh rate.
      *
      * @hide

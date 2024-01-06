@@ -163,5 +163,12 @@ public class SettingsExt {
          * @hide
          */
         public static final String ALERT_SLIDER_VIBRATE_ON_BLUETOOTH = "alert_slider_vibrate_on_bluetooth";
+
+        /**
+         * Display width set by custom display resolution controller
+         *
+         * @hide
+         */
+        public static final String DISPLAY_WIDTH_CUSTOM = "display_width_custom";
     }
 }

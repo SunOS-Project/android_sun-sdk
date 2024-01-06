@@ -45,6 +45,13 @@ public class DebugConstants {
         "persist.sys.nameless.vibrator.adapter.debug", false
     );
 
+    // Enable this to debug DisplayResolutionController
+    // Package: org.nameless.server.wm.DisplayResolutionController
+    // Key: DisplayResolutionController
+    public static final boolean DEBUG_WMS_RESOLUTION = DEBUG_GLOBAL || SystemProperties.getBoolean(
+        "persist.sys.nameless.wm.resolution.debug", false
+    );
+
     // Enable this to debug TopActivityRecorder
     // Package: com.android.server.wm.TopActivityRecorder
     // Key: TopActivityRecorder

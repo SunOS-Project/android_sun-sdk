@@ -32,6 +32,7 @@ import com.android.server.SystemService;
 import com.android.server.wm.TopActivityRecorder;
 
 import org.nameless.server.display.DisplayRefreshRateController;
+import org.nameless.server.wm.DisplayResolutionController;
 
 public class NamelessSystemExService extends SystemService {
 
@@ -78,6 +79,7 @@ public class NamelessSystemExService extends SystemService {
 
         TopActivityRecorder.getInstance().initSystemExService(this);
         DisplayRefreshRateController.getInstance().initSystemExService(this);
+        DisplayResolutionController.getInstance().initSystemExService(this);
     }
 
     @Override

@@ -47,4 +47,7 @@
     <!-- The location of the devices physical tri state switch -->
     <java-symbol type="integer" name="config_alertSliderLocation" />
 
+    <!-- Overlays that to be enabled in FHD+ resolution -->
+    <java-symbol type="array" name="config_fhdResolutionOverlays" />
+
 </resources>
