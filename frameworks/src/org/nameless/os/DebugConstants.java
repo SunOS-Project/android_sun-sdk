@@ -31,6 +31,13 @@ public class DebugConstants {
         "persist.sys.nameless.display.feature.debug", false
     );
 
+    // Enable this to debug IrisService
+    // CommandReceiver will also be enabled. See https://github.com/Nameless-AOSP/packages_apps_IrisService/blob/fourteen/src/org/nameless/iris/observer/CommandReceiver.kt
+    // Key: Iris
+    public static final boolean DEBUG_DISPLAY_IRIS = DEBUG_GLOBAL || SystemProperties.getBoolean(
+        "persist.sys.nameless.display.iris.debug", false
+    );
+
     // Enable this to debug DisplayRefreshRateController
     // Package: org.nameless.server.display.DisplayRefreshRateController
     // Key: DisplayModeDirector, DisplayRefreshRateController

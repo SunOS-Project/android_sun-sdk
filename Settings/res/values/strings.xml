@@ -60,6 +60,7 @@
     <string name="extreme_refresh_rate_title">Extreme refresh rate</string>
     <string name="extreme_refresh_rate_summary">Force highest refresh rate for all apps</string>
     <string name="extreme_refresh_rate_warning">This will ensure system select highest refresh rate, ignoring user selected and app preferred options. Apps that require specific refresh rate may run abnormally.</string>
+    <string name="extreme_refresh_rate_warning_iris">This will ensure system select highest refresh rate, ignoring user selected and app preferred options. Apps that require specific refresh rate may run abnormally.\n\nScreen refresh rate will still fallback to 60hz if video enhancement is running.</string>
 
     <!-- Confirm dialog -->
     <string name="confirm_before_enable_title">Continue to enable?</string>
@@ -91,5 +92,15 @@
     <string name="unlimit_edge_touch_title">Unlimit edge touch</string>
     <string name="unlimit_edge_touch_summary">Remove multi-touch restriction for edge areas of touchscreen</string>
     <string name="unlimit_edge_touch_warning">This will increase possibility of accidental touch.</string>
+
+    <!-- Video enhancement (Iris) -->
+    <string name="video_enhancement_category_title">Video enhancement</string>
+    <string name="video_color_boost_title">Video colour enhancer</string>
+    <string name="video_color_boost_summary">Use SDR-to-HDR technology to widen the colour gamut for a superb visual experience</string>
+    <string name="video_motion_enhancement_title">Video motion enhancement</string>
+    <string name="video_motion_enhancement_summary">Use MEMC-based video frame interpolation technology to make animation more fluid</string>
+    <string name="video_motion_enhancement_summary_unavailable">Feature is unavailable on current display resolution</string>
+    <string name="video_enhancement_warning_footer">• Above features will increase power consumption when watching videos, and will be disabled when Battery Saver is on.\n• To make above features work properly, display will fallback to 60hz for some video apps, even if you set them to higher refresh rate.</string>
+    <string name="video_enhancement_battery_saver_on_summary">Feature is unavailable on Battery Saver mode</string>
 
 </resources>

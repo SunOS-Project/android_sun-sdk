@@ -50,4 +50,7 @@
     <!-- Overlays that to be enabled in FHD+ resolution -->
     <java-symbol type="array" name="config_fhdResolutionOverlays" />
 
+    <!-- Memc toast -->
+    <java-symbol type="string" name="motion_graphics_smoothing_starting" />
+
 </resources>

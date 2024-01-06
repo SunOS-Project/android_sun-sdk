@@ -37,6 +37,8 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.EXTREME_REFRESH_RATE, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.VIBRATE_ON_CONNECT, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.VIBRATE_ON_DISCONNECT, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.IRIS_VIDEO_COLOR_BOOST, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.IRIS_MEMC_ENABLED, BOOLEAN_VALIDATOR);
     }
 
     private static class PerAppConfigValidator implements Validator {

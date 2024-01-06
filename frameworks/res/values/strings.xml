@@ -28,4 +28,7 @@
     <string name="vibrationPattern_ringtone_clock">Clock</string>
     <string name="vibrationPattern_ringtone_short">Short</string>
 
+    <!-- Memc toast -->
+    <string name="motion_graphics_smoothing_starting">Turning on motion graphics smoothing</string>
+
 </resources>

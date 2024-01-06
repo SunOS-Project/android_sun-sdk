@@ -33,5 +33,7 @@ public class SystemSettingsExt {
         System.EXTREME_REFRESH_RATE,
         System.VIBRATE_ON_CONNECT,
         System.VIBRATE_ON_DISCONNECT,
+        System.IRIS_VIDEO_COLOR_BOOST,
+        System.IRIS_MEMC_ENABLED,
     };
 }

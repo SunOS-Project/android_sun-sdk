@@ -149,6 +149,18 @@ public class SettingsExt {
          * @hide
          */
         public static final String UNLIMIT_EDGE_TOUCH_MODE = "unlimit_edge_touch_mode";
+
+        /**
+         * Iris - video color boost
+         * @hide
+         */
+        public static final String IRIS_VIDEO_COLOR_BOOST = "iris_video_color_boost";
+
+        /**
+         * Iris - video motion enhancement
+         * @hide
+         */
+        public static final String IRIS_MEMC_ENABLED = "iris_memc_enabled";
     }
 
     public static class Secure {
