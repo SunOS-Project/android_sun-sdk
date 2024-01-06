@@ -17,4 +17,10 @@
     <string name="refresh_rate_tile_label">Refresh rate</string>
     <string name="refresh_rate_unknown">Unknown</string>
 
+    <!-- DC Dimming -->
+    <string name="quick_settings_dc_dimming_label">DC Dimming</string>
+
+    <!-- HBM QS tile -->
+    <string name="quick_settings_hbm_label">High brightness mode</string>
+
 </resources>

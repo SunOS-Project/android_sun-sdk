@@ -13,7 +13,7 @@
 
     <!-- Tiles native to System UI. Order should match "quick_settings_tiles_default" -->
     <string name="quick_settings_tiles_extra" translatable="false">
-        refresh_rate
+        refresh_rate,dc_dimming,hbm
     </string>
 
 </resources>

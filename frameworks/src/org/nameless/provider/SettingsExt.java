@@ -129,6 +129,26 @@ public class SettingsExt {
          * @hide
          */
         public static final String VIBRATE_ON_DISCONNECT = "vibrate_on_disconnect";
+
+        /**
+         * Indicates the state of DC dimming:
+         *   0 - Off
+         *   1 - On
+         * @hide
+         */
+        public static final String DC_DIMMING_STATE = "dc_dimming_state";
+
+        /**
+         * Whether to enable high touch sample mode
+         * @hide
+         */
+        public static final String HIGH_TOUCH_SAMPLE_MODE = "high_touch_sample_mode";
+
+        /**
+         * Whether to unlimit screen edge touch
+         * @hide
+         */
+        public static final String UNLIMIT_EDGE_TOUCH_MODE = "unlimit_edge_touch_mode";
     }
 
     public static class Secure {

@@ -78,4 +78,18 @@
     <string name="incall_vibrate_on_connected">Vibrate on connected</string>
     <string name="incall_vibrate_on_disconnected">Vibrate on disconnected</string>
 
+    <!-- DC Dimming -->
+    <string name="dc_dimming_title">DC dimming</string>
+    <string name="dc_dimming_summary">Reduces eye strain in low light conditions by minimizing screen flicker</string>
+
+    <!-- High touch sample mode -->
+    <string name="high_touch_sample_title">High touch sample mode</string>
+    <string name="high_touch_sample_summary">Force to boost touchscreen sample rate</string>
+    <string name="high_touch_sample_warning">This will enable maximum touch sample rate for all applications, which increases power consumption.</string>
+
+    <!-- Unlimit edge touch mode -->
+    <string name="unlimit_edge_touch_title">Unlimit edge touch</string>
+    <string name="unlimit_edge_touch_summary">Remove multi-touch restriction for edge areas of touchscreen</string>
+    <string name="unlimit_edge_touch_warning">This will increase possibility of accidental touch.</string>
+
 </resources>

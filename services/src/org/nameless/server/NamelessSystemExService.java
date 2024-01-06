@@ -31,6 +31,8 @@ import com.android.server.ServiceThread;
 import com.android.server.SystemService;
 import com.android.server.wm.TopActivityRecorder;
 
+import org.nameless.display.DisplayFeatureManager;
+import org.nameless.server.display.DisplayFeatureController;
 import org.nameless.server.display.DisplayRefreshRateController;
 import org.nameless.server.wm.DisplayResolutionController;
 
@@ -39,6 +41,9 @@ public class NamelessSystemExService extends SystemService {
     private static final String TAG = "NamelessSystemExService";
 
     private final ContentResolver mResolver;
+
+    private final boolean mDisplayFeatureSupported =
+            DisplayFeatureManager.getInstance().isSupported();
 
     private Handler mHandler;
     private ServiceThread mWorker;
@@ -60,10 +65,16 @@ public class NamelessSystemExService extends SystemService {
         if (phase == PHASE_SYSTEM_SERVICES_READY) {
             mPackageRemovedListener = new PackageRemovedListener();
             mScreenStateListener = new ScreenStateListener();
+            if (mDisplayFeatureSupported) {
+                DisplayFeatureController.getInstance().onSystemServicesReady();
+            }
             return;
         }
 
         if (phase == PHASE_BOOT_COMPLETED) {
+            if (mDisplayFeatureSupported) {
+                DisplayFeatureController.getInstance().onBootCompleted();
+            }
             DisplayRefreshRateController.getInstance().onBootCompleted();
             mPackageRemovedListener.register();
             mScreenStateListener.register();
@@ -78,6 +89,9 @@ public class NamelessSystemExService extends SystemService {
         mHandler = new Handler(mWorker.getLooper());
 
         TopActivityRecorder.getInstance().initSystemExService(this);
+        if (mDisplayFeatureSupported) {
+            DisplayFeatureController.getInstance().initSystemExService(this);
+        }
         DisplayRefreshRateController.getInstance().initSystemExService(this);
         DisplayResolutionController.getInstance().initSystemExService(this);
     }
@@ -113,6 +127,10 @@ public class NamelessSystemExService extends SystemService {
 
     public ContentResolver getContentResolver() {
         return mResolver;
+    }
+
+    public Handler getHandler() {
+        return mHandler;
     }
 
     public String getTopFullscreenPackage() {
