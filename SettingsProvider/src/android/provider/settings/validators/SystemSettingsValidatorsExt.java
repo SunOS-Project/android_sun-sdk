@@ -35,6 +35,8 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.VIBRATION_PATTERN_RINGTONE, NON_NEGATIVE_INTEGER_VALIDATOR);
         VALIDATORS.put(System.REFRESH_RATE_CONFIG_CUSTOM, new PerAppConfigValidator());
         VALIDATORS.put(System.EXTREME_REFRESH_RATE, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.VIBRATE_ON_CONNECT, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.VIBRATE_ON_DISCONNECT, BOOLEAN_VALIDATOR);
     }
 
     private static class PerAppConfigValidator implements Validator {

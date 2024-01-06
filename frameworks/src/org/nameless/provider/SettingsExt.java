@@ -117,6 +117,18 @@ public class SettingsExt {
          * @hide
          */
         public static final String EXTREME_REFRESH_RATE = "extreme_refresh_rate";
+
+        /**
+         * Whether the phone vibrates on call connect
+         * @hide
+         */
+        public static final String VIBRATE_ON_CONNECT = "vibrate_on_connect";
+
+        /**
+         * Whether the phone vibrates on disconnect
+         * @hide
+         */
+        public static final String VIBRATE_ON_DISCONNECT = "vibrate_on_disconnect";
     }
 
     public static class Secure {

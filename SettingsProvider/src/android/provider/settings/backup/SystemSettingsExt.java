@@ -31,5 +31,7 @@ public class SystemSettingsExt {
         System.VIBRATION_PATTERN_RINGTONE,
         System.REFRESH_RATE_CONFIG_CUSTOM,
         System.EXTREME_REFRESH_RATE,
+        System.VIBRATE_ON_CONNECT,
+        System.VIBRATE_ON_DISCONNECT,
     };
 }
