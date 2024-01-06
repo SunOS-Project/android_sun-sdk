@@ -214,5 +214,11 @@ public class SettingsExt {
          * @hide
          */
         public static final String DISPLAY_WIDTH_CUSTOM = "display_width_custom";
+
+        /**
+         * Whether refresh rate should be switched to 60Hz on power save mode.
+         * @hide
+         */
+        public static final String LOW_POWER_REFRESH_RATE = "low_power_rr_switch";
     }
 }

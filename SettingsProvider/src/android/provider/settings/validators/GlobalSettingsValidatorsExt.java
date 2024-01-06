@@ -30,5 +30,6 @@ public class GlobalSettingsValidatorsExt {
                 return DisplayResolutionManager.isDisplayWidthStrValid(value);
             }
         });
+        VALIDATORS.put(Global.LOW_POWER_REFRESH_RATE, BOOLEAN_VALIDATOR);
     }
 }
