@@ -22,6 +22,7 @@ public class PackageManagerServiceExt {
     private static final String TAG = "PackageManagerServiceExt";
 
     private final HashSet<ComponentName> mDisabledComponentsList = new HashSet<>();
+    private final HashSet<ComponentName> mForceEnabledComponentsList = new HashSet<>();
 
     private PackageManagerService mPackageManagerService;
 
@@ -47,11 +48,18 @@ public class PackageManagerServiceExt {
         return mDisabledComponentsList.contains(component);
     }
 
+    public boolean isComponentForceEnabled(ComponentName component) {
+        return mForceEnabledComponentsList.contains(component);
+    }
+
     private void enableComponents(String[] components, boolean enable) {
         for (String name : components) {
             final ComponentName cn = ComponentName.unflattenFromString(name);
             if (!enable && !mDisabledComponentsList.contains(cn)) {
                 mDisabledComponentsList.add(cn);
+            }
+            if (enable && !mForceEnabledComponentsList.contains(cn)) {
+                mForceEnabledComponentsList.add(cn);
             }
             if (DEBUG_PMS) {
                 Slog.d(TAG, "Changing enabled state of " + name + " to " + enable);
