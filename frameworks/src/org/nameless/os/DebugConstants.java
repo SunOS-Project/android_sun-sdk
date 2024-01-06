@@ -17,6 +17,13 @@ public class DebugConstants {
         "persist.sys.nameless.debug.global", false
     );
 
+    // Enable this to debug AlertSliderController
+    // Package: org.nameless.server.audio.AlertSliderController
+    // Key: AlertSliderController
+    public static final boolean DEBUG_AUDIO_SLIDER = DEBUG_GLOBAL || SystemProperties.getBoolean(
+        "persist.sys.nameless.audio.slider.debug", false
+    );
+
     // Enable this to debug DisplayRefreshRateController
     // Package: org.nameless.server.display.DisplayRefreshRateController
     // Key: DisplayModeDirector, DisplayRefreshRateController

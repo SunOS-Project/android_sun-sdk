@@ -132,5 +132,36 @@ public class SettingsExt {
     }
 
     public static class Global {
+
+        /**
+         * Indicates the state of alert slider:
+         *  0 - Top
+         *  1 - Middle
+         *  2 - Bottom
+         *
+         * @hide
+         */
+        public static final String ALERT_SLIDER_STATE = "alert_slider_state";
+
+        /**
+         * Whether to mute media on switched to top position
+         *
+         * @hide
+         */
+        public static final String ALERT_SLIDER_MUTE_MEDIA = "alert_slider_mute_media";
+
+        /**
+         * Whether to apply mute media action for headset devices
+         *
+         * @hide
+         */
+        public static final String ALERT_SLIDER_APPLY_FOR_HEADSET = "alert_slider_apply_for_headset";
+
+        /**
+         * Whether to switch to vibrate mode when bluetooth devcies connected
+         *
+         * @hide
+         */
+        public static final String ALERT_SLIDER_VIBRATE_ON_BLUETOOTH = "alert_slider_vibrate_on_bluetooth";
     }
 }

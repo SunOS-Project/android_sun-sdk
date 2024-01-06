@@ -19,5 +19,9 @@ public class GlobalSettingsValidatorsExt {
     public static final Map<String, Validator> VALIDATORS = new ArrayMap<>();
 
     static {
+        VALIDATORS.put(Global.ALERT_SLIDER_STATE, new InclusiveIntegerRangeValidator(0, 2));
+        VALIDATORS.put(Global.ALERT_SLIDER_MUTE_MEDIA, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(Global.ALERT_SLIDER_APPLY_FOR_HEADSET, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(Global.ALERT_SLIDER_VIBRATE_ON_BLUETOOTH, BOOLEAN_VALIDATOR);
     }
 }

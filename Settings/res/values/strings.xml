@@ -64,4 +64,14 @@
     <!-- Confirm dialog -->
     <string name="confirm_before_enable_title">Continue to enable?</string>
 
+    <!-- Alert slider -->
+    <string name="alert_slider_category_title">Alert slider</string>
+    <string name="alert_slider_mute_media_title">Mute media volume</string>
+    <string name="alert_slider_mute_media_summary">Turn off media volume when the alert slider is set to silent</string>
+    <string name="alert_slider_apply_for_headset_title">Apply for headsets</string>
+    <string name="alert_slider_apply_for_headset_off">Mute action will only take effect when using speaker as media output device</string>
+    <string name="alert_slider_apply_for_headset_on">Mute action will take effect for all media output devices</string>
+    <string name="alert_slider_vibrate_on_bluetooth_title">Less disturb after bluetooth connected</string>
+    <string name="alert_slider_vibrate_on_bluetooth_summary">After bluetooth devices connected, device will switch to vibrate mode if in ringer mode</string>
+
 </resources>
