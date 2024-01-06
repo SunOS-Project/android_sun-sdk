@@ -13,5 +13,6 @@ public class SecureSettingsExt {
 
     @UnsupportedAppUsage
     public static final String[] SETTINGS_TO_BACKUP = {
+        Secure.SCREEN_OFF_UDFPS_ENABLED,
     };
 }

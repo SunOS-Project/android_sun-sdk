@@ -9,6 +9,9 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 
+import com.android.internal.R;
+import com.android.internal.util.ArrayUtils;
+
 public class CustomUtils {
 
     public static boolean isPackageInstalled(Context context, String pkg) {
@@ -27,5 +30,11 @@ public class CustomUtils {
             }
         }
         return true;
+    }
+
+    public static boolean isUdfpsAvailable(Context context) {
+        final int[] udfpsProps = context.getResources().getIntArray(
+                R.array.config_udfps_sensor_props);
+        return !ArrayUtils.isEmpty(udfpsProps);
     }
 }

@@ -19,5 +19,6 @@ public class SecureSettingsValidatorsExt {
     public static final Map<String, Validator> VALIDATORS = new ArrayMap<>();
 
     static {
+        VALIDATORS.put(Secure.SCREEN_OFF_UDFPS_ENABLED, BOOLEAN_VALIDATOR);
     }
 }

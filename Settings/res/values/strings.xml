@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2022-2024 The Nameless-AOSP Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+
+    <!-- Screen off fingerprint -->
+    <string name="screen_off_fingerprint_title">Screen off fingerprint</string>
+    <string name="screen_off_fingerprint_summary">Long press on fingerprint sensor to unlock phone when screen is off</string>
+
+</resources>
