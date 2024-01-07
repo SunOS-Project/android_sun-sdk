@@ -106,4 +106,39 @@
     <string name="video_enhancement_warning_footer">• Above features will increase power consumption when watching videos, and will be disabled when Battery Saver is on.\n• To make above features work properly, display will fallback to 60hz for some video apps, even if you set them to higher refresh rate.</string>
     <string name="video_enhancement_battery_saver_on_summary">Feature is unavailable on Battery Saver mode</string>
 
+    <!-- Optimized charge -->
+    <string name="optimized_charge_title">Optimized charging</string>
+    <string name="optimized_charge_summary">Limit charging to extend battery life</string>
+    <string name="optimized_charge_enable_title">Enable optimized charging</string>
+    <string name="optimized_charge_time">When to enable</string>
+    <string name="optimized_charge_always">Always</string>
+    <string name="optimized_charge_custom">Custom</string>
+    <string name="optimized_charge_start">Start time</string>
+    <string name="optimized_charge_end">End time</string>
+    <string name="optimized_charge_ceiling_title">Stop charging level</string>
+    <string name="optimized_charge_floor_title">Start charging level</string>
+
+    <!-- Wireless Charging -->
+    <string name="wireless_charging_category_title">Wireless Charging</string>
+    <string name="wireless_charging_enable_title">Enable wireless charging</string>
+    <string name="wireless_charging_enable_summary">Charge your device after placing it on a supported wireless charger</string>
+    <string name="wireless_charging_quiet_mode_title">Quiet mode</string>
+    <string name="wireless_charging_quiet_mode_summary">Run wireless charger at a low power level to minimise noise</string>
+    <string name="wireless_charging_quiet_mode_enable_title">Enable quiet mode</string>
+    <string name="wireless_charging_settings_title">Wireless charger quiet mode</string>
+    <string name="wireless_charging_quiet_mode_time">When to enable</string>
+    <string name="wireless_charging_quiet_mode_always">Always</string>
+    <string name="wireless_charging_quiet_mode_custom">Custom</string>
+    <string name="wireless_charging_quiet_mode_start">Start time</string>
+    <string name="wireless_charging_quiet_mode_end">End time</string>
+    <string name="wireless_reverse_charging_title">Wireless reverse charging</string>
+    <string name="wireless_reverse_charging_summary">Use your device as a wireless charger to charge supported devices</string>
+    <string name="wireless_reverse_charging_enable_title">Enable wireless reverse charging</string>
+    <string name="wireless_reverse_charging_stop_level_title">Stop charging level</string>
+    <string name="wireless_reverse_charging_info">Place the other Qi-enabled wireless charging device (e.g. wireless earbuds) under your phone and align it in the center</string>
+    <string name="wireless_reverse_charging_suspended">Wireless reverse charging has been suspended</string>
+    <string name="wireless_reverse_charging_suspended_charging">Device is in charging</string>
+    <string name="wireless_reverse_charging_suspended_power_save">Device is in power save mode</string>
+    <string name="wireless_reverse_charging_suspended_low_level">Device power level is lower than stop level</string>
+
 </resources>

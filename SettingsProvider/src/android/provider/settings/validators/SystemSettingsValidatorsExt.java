@@ -39,6 +39,18 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.VIBRATE_ON_DISCONNECT, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.IRIS_VIDEO_COLOR_BOOST, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.IRIS_MEMC_ENABLED, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.OPTIMIZED_CHARGE_ENABLED, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.OPTIMIZED_CHARGE_CEILING, new InclusiveIntegerRangeValidator(30, 99));
+        VALIDATORS.put(System.OPTIMIZED_CHARGE_FLOOR, new InclusiveIntegerRangeValidator(10, 99));
+        VALIDATORS.put(System.OPTIMIZED_CHARGE_STATUS, new InclusiveIntegerRangeValidator(0, 1));
+        VALIDATORS.put(System.OPTIMIZED_CHARGE_TIME, new ScheduledTimeValidator());
+        VALIDATORS.put(System.WIRELESS_CHARGING_ENABLED, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.WIRELESS_REVERSE_CHARGING_ENABLED, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.WIRELESS_REVERSE_CHARGING_SUSPENDED_STATUS, new InclusiveIntegerRangeValidator(0, 3));
+        VALIDATORS.put(System.WIRELESS_REVERSE_CHARGING_MIN_LEVEL, new InclusiveIntegerRangeValidator(0, 80));
+        VALIDATORS.put(System.WIRELESS_CHARGING_QUIET_MODE_ENABLED, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.WIRELESS_CHARGING_QUIET_MODE_STATUS, new InclusiveIntegerRangeValidator(0, 1));
+        VALIDATORS.put(System.WIRELESS_CHARGING_QUIET_MODE_TIME, new ScheduledTimeValidator());
     }
 
     private static class PerAppConfigValidator implements Validator {
@@ -52,6 +64,28 @@ public class SystemSettingsValidatorsExt {
                 if (split.length != 2) {
                     return false;
                 }
+            }
+            return true;
+        }
+    }
+
+    private static class ScheduledTimeValidator implements Validator {
+        @Override
+        public boolean validate(String value) {
+            String[] values = value.split(",", 0);
+            if (values.length != 2) return false;
+            for (String str : values) {
+                String[] time = str.split(":", 0);
+                if (time.length != 2) return false;
+                int hour, minute;
+                try {
+                    hour = Integer.valueOf(time[0]);
+                    minute = Integer.valueOf(time[1]);
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+                if (hour < 0 || hour > 23 || minute < 0 || minute > 59)
+                    return false;
             }
             return true;
         }

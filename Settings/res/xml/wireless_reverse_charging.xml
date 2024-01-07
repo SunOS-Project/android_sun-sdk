@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2022-2024 The Nameless-AOSP Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:settings="http://schemas.android.com/apk/res/com.android.settings"
+    android:title="@string/wireless_reverse_charging_title">
+
+    <com.android.settingslib.widget.TopIntroPreference
+        android:key="wireless_reverse_charging_info"
+        android:title="@string/wireless_reverse_charging_info" />
+
+    <com.android.settingslib.widget.MainSwitchPreference
+        android:defaultValue="false"
+        android:key="wireless_reverse_charging_enabled"
+        android:title="@string/wireless_reverse_charging_enable_title"
+        settings:controller="org.nameless.settings.fuelgauge.reversecharging.ReverseCharingEnablePreferenceController" />
+
+    <com.android.settings.widget.CardPreference
+        android:key="wireless_reverse_charging_suspended_info"
+        android:summary="@string/wireless_reverse_charging_suspended"
+        android:icon="@drawable/ic_warning"
+        settings:controller="org.nameless.settings.fuelgauge.reversecharging.ReverseCharingSuspendPreferenceController" />
+
+    <org.nameless.custom.preference.SystemSettingSeekBarPreference
+        android:key="wireless_reverse_charging_min_level"
+        android:title="@string/wireless_reverse_charging_stop_level_title"
+        android:max="80"
+        settings:min="0"
+        android:defaultValue="20"
+        settings:units="%"
+        settings:controller="org.nameless.settings.fuelgauge.reversecharging.ReverseCharingMinLevelPreferenceController" />
+
+</PreferenceScreen>

@@ -24,6 +24,13 @@ public class DebugConstants {
         "persist.sys.nameless.audio.slider.debug", false
     );
 
+    // Enable this to debug BatteryFeatureController
+    // Package: org.nameless.server.battery.BatteryFeatureController
+    // Key: BatteryFeatureController
+    public static final boolean DEBUG_BATTERY_FEATURE = DEBUG_GLOBAL || SystemProperties.getBoolean(
+        "persist.sys.nameless.battery.feature.debug", false
+    );
+
     // Enable this to debug DisplayFeatureController
     // Package: org.nameless.server.display.DisplayFeatureController
     // Key: DisplayFeatureController

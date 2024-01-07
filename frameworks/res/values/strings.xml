@@ -31,4 +31,15 @@
     <!-- Memc toast -->
     <string name="motion_graphics_smoothing_starting">Turning on motion graphics smoothing</string>
 
+    <!-- Optimized charge notification -->
+    <string name="optimized_charge_notification_channel_label">Optimized charge</string>
+    <string name="optimized_charge_notification_title">Charging suspended</string>
+
+    <!-- Wireless reverse charging -->
+    <string name="wireless_reverse_charging_notification_channel_label">Wireless reverse charging</string>
+    <string name="wireless_reverse_charging_notification_title">Wireless reverse charging is enabled</string>
+
+    <!-- Battery feature notifications -->
+    <string name="tap_to_view_more_options">Tap to view more options</string>
+
 </resources>

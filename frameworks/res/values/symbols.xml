@@ -53,4 +53,16 @@
     <!-- Memc toast -->
     <java-symbol type="string" name="motion_graphics_smoothing_starting" />
 
+    <!-- Optimized charge notification -->
+    <java-symbol type="string" name="optimized_charge_notification_channel_label" />
+    <java-symbol type="string" name="optimized_charge_notification_title" />
+
+    <!-- Wireless reverse charging -->
+    <java-symbol type="drawable" name="ic_wireless_reverse_charging" />
+    <java-symbol type="string" name="wireless_reverse_charging_notification_channel_label" />
+    <java-symbol type="string" name="wireless_reverse_charging_notification_title" />
+
+    <!-- Battery feature notifications -->
+    <java-symbol type="string" name="tap_to_view_more_options" />
+
 </resources>

@@ -9,6 +9,9 @@ import com.android.systemui.qs.tileimpl.QSTileImpl
 
 import org.nameless.systemui.qs.tiles.DcDimmingTile
 import org.nameless.systemui.qs.tiles.HBMTile
+import org.nameless.systemui.qs.tiles.OptimizedChargeTile
+import org.nameless.systemui.qs.tiles.PowerShareTile
+import org.nameless.systemui.qs.tiles.QuietModeTile
 import org.nameless.systemui.qs.tiles.RefreshRateTile
 
 import dagger.Binds
@@ -28,6 +31,21 @@ interface CustomTilesModule {
     @IntoMap
     @StringKey(HBMTile.TILE_SPEC)
     fun bindHBMTile(hbmTile: HBMTile): QSTileImpl<*>
+
+    @Binds
+    @IntoMap
+    @StringKey(OptimizedChargeTile.TILE_SPEC)
+    fun bindOptimizedChargeTile(optimizedChargeTile: OptimizedChargeTile): QSTileImpl<*>
+
+    @Binds
+    @IntoMap
+    @StringKey(PowerShareTile.TILE_SPEC)
+    fun bindPowerShareTile(powerShareTile: PowerShareTile): QSTileImpl<*>
+
+    @Binds
+    @IntoMap
+    @StringKey(QuietModeTile.TILE_SPEC)
+    fun bindQuietModeTile(quietModeTile: QuietModeTile): QSTileImpl<*>
 
     @Binds
     @IntoMap

@@ -161,6 +161,81 @@ public class SettingsExt {
          * @hide
          */
         public static final String IRIS_MEMC_ENABLED = "iris_memc_enabled";
+
+        /**
+         * Optimized charging enabled
+         * @hide
+         */
+        public static final String OPTIMIZED_CHARGE_ENABLED = "optimized_charge_enabled";
+
+        /**
+         * Optimized charging ceiling
+         * @hide
+         */
+        public static final String OPTIMIZED_CHARGE_CEILING = "optimized_charge_ceiling";
+
+        /**
+         * Optimized charging floor
+         * @hide
+         */
+        public static final String OPTIMIZED_CHARGE_FLOOR = "optimized_charge_floor";
+
+        /**
+         * Optimized charging status
+         * 0: Always  1: Scheduled
+         * @hide
+         */
+        public static final String OPTIMIZED_CHARGE_STATUS = "optimized_charge_status";
+
+        /**
+         * Optimized charging scheduled time
+         * @hide
+         */
+        public static final String OPTIMIZED_CHARGE_TIME = "optimized_charge_time";
+
+        /**
+         * Whether to enable wireless charging support
+         * @hide
+         */
+        public static final String WIRELESS_CHARGING_ENABLED = "wireless_charging_enabled";
+
+        /**
+         * Whether to enable wireless reverse charging support
+         * @hide
+         */
+        public static final String WIRELESS_REVERSE_CHARGING_ENABLED = "wireless_reverse_charging_enabled";
+
+        /**
+         * The status of wireless reverse charging suspended
+         * 0: Unsuspended  1: Suspended for charging  2: Suspended for low power  3: Suspended for power save mode
+         * @hide
+         */
+        public static final String WIRELESS_REVERSE_CHARGING_SUSPENDED_STATUS = "wireless_reverse_charging_suspended_status";
+
+        /**
+         * Minimum allowed level that wireless reverse charging can be enabled
+         * @hide
+         */
+        public static final String WIRELESS_REVERSE_CHARGING_MIN_LEVEL = "wireless_reverse_charging_min_level";
+
+        /**
+         * Whether to enable wireless charging quiet mode
+         * @hide
+         */
+        public static final String WIRELESS_CHARGING_QUIET_MODE_ENABLED = "wireless_charging_quiet_mode_enabled";
+
+        /**
+         * The status of wireless charging quiet mode
+         * 0: Always  1: Scheduled
+         * @hide
+         */
+        public static final String WIRELESS_CHARGING_QUIET_MODE_STATUS = "wireless_charging_quiet_mode_status";
+
+        /**
+         * Wireless charging scheduled quiet mode time
+         * @hide
+         */
+        public static final String WIRELESS_CHARGING_QUIET_MODE_TIME = "wireless_charging_quiet_mode_time";
     }
 
     public static class Secure {

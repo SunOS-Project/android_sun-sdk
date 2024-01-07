@@ -3,7 +3,7 @@
      Copyright (C) 2022-2024 The Nameless-AOSP Project
      SPDX-License-Identifier: Apache-2.0
 -->
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- Screenshot delete action  -->
     <string name="screenshot_delete_label">Delete</string>
@@ -22,5 +22,26 @@
 
     <!-- HBM QS tile -->
     <string name="quick_settings_hbm_label">High brightness mode</string>
+
+    <!-- Wireless reverse charging QS tile -->
+    <string name="quick_settings_wireless_reverse_charging_label">Wireless reverse charging</string>
+    <string name="quick_settings_wireless_reverse_charging_suspended_label">Suspended</string>
+
+    <!-- Optimized charge -->
+    <string name="quick_settings_optimized_charge_label">Optimized charging</string>
+
+    <!-- Wireless charging quiet mode -->
+    <string name="quick_settings_quiet_mode_label">Quiet mode</string>
+    <string name="quick_settings_quiet_mode_always">Always</string>
+
+    <!-- Indication on the keyguard that is shown when the device is charging with a OEM charger -->
+    <string name="keyguard_indication_dash_charging_time"><xliff:g id="percentage">%2$s</xliff:g> • Dash Charging • Full in <xliff:g id="charging_time_left" example="4 hr, 2 min">%1$s</xliff:g></string>
+    <string name="keyguard_plugged_in_dash_charging"><xliff:g id="percentage">%s</xliff:g> • Dash Charging</string>
+    <string name="keyguard_indication_warp_charging_time"><xliff:g id="percentage">%2$s</xliff:g> • Warp Charging • Full in <xliff:g id="charging_time_left" example="4 hr, 2 min">%1$s</xliff:g></string>
+    <string name="keyguard_plugged_in_warp_charging"><xliff:g id="percentage">%s</xliff:g> • Warp Charging</string>
+    <string name="keyguard_indication_vooc_charging_time"><xliff:g id="percentage">%2$s</xliff:g> • VOOC Charging • Full in <xliff:g id="charging_time_left" example="4 hr, 2 min">%1$s</xliff:g></string>
+    <string name="keyguard_plugged_in_vooc_charging"><xliff:g id="percentage">%s</xliff:g> • VOOC Charging</string>
+    <string name="keyguard_indication_turbo_charging_time"><xliff:g id="percentage">%2$s</xliff:g> • Turbo Charging • Full in <xliff:g id="charging_time_left" example="4 hr, 2 min">%1$s</xliff:g></string>
+    <string name="keyguard_plugged_in_turbo_charging"><xliff:g id="percentage">%s</xliff:g> • Turbo Charging</string>
 
 </resources>

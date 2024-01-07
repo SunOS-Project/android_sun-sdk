@@ -5,6 +5,7 @@
 
 package org.nameless.server;
 
+import static android.content.Intent.ACTION_BATTERY_CHANGED;
 import static android.content.Intent.ACTION_PACKAGE_ADDED;
 import static android.content.Intent.ACTION_PACKAGE_CHANGED;
 import static android.content.Intent.ACTION_PACKAGE_FULLY_REMOVED;
@@ -14,6 +15,7 @@ import static android.content.Intent.ACTION_SCREEN_OFF;
 import static android.content.Intent.ACTION_SCREEN_ON;
 import static android.content.Intent.ACTION_USER_PRESENT;
 import static android.content.Intent.EXTRA_REPLACING;
+import static android.os.PowerManager.ACTION_POWER_SAVE_MODE_CHANGED;
 import static android.os.Process.THREAD_PRIORITY_DEFAULT;
 
 import android.app.KeyguardManager;
@@ -24,14 +26,19 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.BatteryManager;
+import android.os.BatteryManagerInternal;
 import android.os.Handler;
 import android.os.PowerManager;
 
+import com.android.server.LocalServices;
 import com.android.server.ServiceThread;
 import com.android.server.SystemService;
 import com.android.server.wm.TopActivityRecorder;
 
 import org.nameless.display.DisplayFeatureManager;
+import org.nameless.os.BatteryFeatureManager;
+import org.nameless.server.battery.BatteryFeatureController;
 import org.nameless.server.display.DisplayFeatureController;
 import org.nameless.server.display.DisplayRefreshRateController;
 import org.nameless.server.wm.DisplayResolutionController;
@@ -42,18 +49,27 @@ public class NamelessSystemExService extends SystemService {
 
     private final ContentResolver mResolver;
 
+    private final boolean mBatteryFeatureSupported =
+            BatteryFeatureManager.getInstance().isSupported();
     private final boolean mDisplayFeatureSupported =
             DisplayFeatureManager.getInstance().isSupported();
 
     private Handler mHandler;
     private ServiceThread mWorker;
 
+    private BatteryManagerInternal mBatteryManagerInternal;
+
     private PackageRemovedListener mPackageRemovedListener;
+    private PowerStateListener mPowerStateListener;
     private ScreenStateListener mScreenStateListener;
 
     private final Object mLock = new Object();
 
     private String mTopFullscreenPackage = "";
+
+    private int mBatterLevel;
+    private boolean mPlugged;
+    private boolean mPowerSave;
 
     public NamelessSystemExService(Context context) {
         super(context);
@@ -63,8 +79,13 @@ public class NamelessSystemExService extends SystemService {
     @Override
     public void onBootPhase(int phase) {
         if (phase == PHASE_SYSTEM_SERVICES_READY) {
+            mBatteryManagerInternal = LocalServices.getService(BatteryManagerInternal.class);
             mPackageRemovedListener = new PackageRemovedListener();
+            mPowerStateListener = new PowerStateListener();
             mScreenStateListener = new ScreenStateListener();
+            if (mBatteryFeatureSupported) {
+                BatteryFeatureController.getInstance().onSystemServicesReady();
+            }
             if (mDisplayFeatureSupported) {
                 DisplayFeatureController.getInstance().onSystemServicesReady();
             }
@@ -72,11 +93,15 @@ public class NamelessSystemExService extends SystemService {
         }
 
         if (phase == PHASE_BOOT_COMPLETED) {
+            if (mBatteryFeatureSupported) {
+                BatteryFeatureController.getInstance().onBootCompleted();
+            }
             if (mDisplayFeatureSupported) {
                 DisplayFeatureController.getInstance().onBootCompleted();
             }
             DisplayRefreshRateController.getInstance().onBootCompleted();
             mPackageRemovedListener.register();
+            mPowerStateListener.register();
             mScreenStateListener.register();
             return;
         }
@@ -89,6 +114,9 @@ public class NamelessSystemExService extends SystemService {
         mHandler = new Handler(mWorker.getLooper());
 
         TopActivityRecorder.getInstance().initSystemExService(this);
+        if (mBatteryFeatureSupported) {
+            BatteryFeatureController.getInstance().initSystemExService(this);
+        }
         if (mDisplayFeatureSupported) {
             DisplayFeatureController.getInstance().initSystemExService(this);
         }
@@ -125,6 +153,18 @@ public class NamelessSystemExService extends SystemService {
         }
     }
 
+    public void onBatteryStateChanged() {
+        if (mBatteryFeatureSupported) {
+            BatteryFeatureController.getInstance().onBatteryStateChanged();
+        }
+    }
+
+    public void onPowerSaveChanged() {
+        if (mBatteryFeatureSupported) {
+            BatteryFeatureController.getInstance().onPowerSaveChanged();
+        }
+    }
+
     public ContentResolver getContentResolver() {
         return mResolver;
     }
@@ -137,6 +177,18 @@ public class NamelessSystemExService extends SystemService {
         synchronized (mLock) {
             return mTopFullscreenPackage;
         }
+    }
+
+    public int getBatteryLevel() {
+        return mBatterLevel;
+    }
+
+    public boolean isDevicePlugged() {
+        return mPlugged;
+    }
+
+    public boolean isPowerSaveMode() {
+        return mPowerSave;
     }
 
     private final class PackageRemovedListener extends BroadcastReceiver {
@@ -170,6 +222,59 @@ public class NamelessSystemExService extends SystemService {
         private static String getPackageName(Intent intent) {
             final Uri uri = intent.getData();
             return uri != null ? uri.getSchemeSpecificPart() : null;
+        }
+    }
+
+    private final class PowerStateListener extends BroadcastReceiver {
+
+        private final PowerManager mPowerManager;
+
+        public PowerStateListener() {
+            mPowerManager = getContext().getSystemService(PowerManager.class);
+            mBatterLevel = mBatteryManagerInternal.getBatteryLevel();
+            mPlugged = mBatteryManagerInternal.isPowered(BatteryManager.BATTERY_PLUGGED_ANY);
+            mPowerSave = mPowerManager.isPowerSaveMode();
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case ACTION_BATTERY_CHANGED:
+                    final int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+                    final int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+                    final int status = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0);
+                    if (level < 0 || scale < 0) {
+                        break;
+                    }
+                    final int newLevel = (int) (level * 100 / (float) scale);
+                    final boolean newPlugged = status != 0;
+
+                    boolean shouldUpdate = false;
+
+                    if (newLevel != mBatterLevel) {
+                        mBatterLevel = newLevel;
+                        shouldUpdate = true;
+                    }
+                    if (newPlugged != mPlugged) {
+                        mPlugged = newPlugged;
+                        shouldUpdate = true;
+                    }
+                    if (shouldUpdate) {
+                        onBatteryStateChanged();
+                    }
+                    break;
+                case ACTION_POWER_SAVE_MODE_CHANGED:
+                    mPowerSave = mPowerManager.isPowerSaveMode();
+                    onPowerSaveChanged();
+                    break;
+            }
+        }
+
+        public void register() {
+            final IntentFilter filter = new IntentFilter();
+            filter.addAction(ACTION_BATTERY_CHANGED);
+            filter.addAction(ACTION_POWER_SAVE_MODE_CHANGED);
+            getContext().registerReceiverForAllUsers(this, filter, null, mHandler);
         }
     }
 
