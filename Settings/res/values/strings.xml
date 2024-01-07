@@ -141,4 +141,7 @@
     <string name="wireless_reverse_charging_suspended_power_save">Device is in power save mode</string>
     <string name="wireless_reverse_charging_suspended_low_level">Device power level is lower than stop level</string>
 
+    <!-- About device screen, Build date -->
+    <string name="build_date">Build date</string>
+
 </resources>
