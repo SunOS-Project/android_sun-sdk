@@ -173,4 +173,7 @@
     <string name="package_version">Package version</string>
     <string name="package_version_text" translatable="false"><xliff:g id="version_num">%1$s</xliff:g></string>
 
+    <!-- Summary for the accessibility preference to adjust the display size, font size, bold text, and high contrast text features -->
+    <string name="accessibility_text_reading_options_summary">Customize display size, font &amp; text</string>
+
 </resources>
