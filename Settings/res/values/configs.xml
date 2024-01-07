@@ -9,4 +9,8 @@
     <string-array name="config_perAppConfAllowedSystemApps" translatable="false">
     </string-array>
 
+    <!-- Maintainer info -->
+    <string name="config_maintainer_name" translatable="false"></string>
+    <string name="config_maintainer_link" translatable="false"></string>
+
 </resources>

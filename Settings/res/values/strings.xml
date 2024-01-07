@@ -144,4 +144,7 @@
     <!-- About device screen, Build date -->
     <string name="build_date">Build date</string>
 
+    <!-- Maintainer info -->
+    <string name="maintainer_info_title">Device Maintainer</string>
+
 </resources>
