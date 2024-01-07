@@ -3,7 +3,7 @@
      Copyright (C) 2022-2024 The Nameless-AOSP Project
      SPDX-License-Identifier: Apache-2.0
 -->
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- Screen off fingerprint -->
     <string name="screen_off_fingerprint_title">Screen off fingerprint</string>
@@ -166,5 +166,11 @@
     <!-- Wi-Fi password copy -->
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="longpress_to_clipboard">Long-press to copy</string>
+
+    <!-- Package details -->
+    <string name="package_details_group_title">Package details</string>
+    <string name="package_name">Package name</string>
+    <string name="package_version">Package version</string>
+    <string name="package_version_text" translatable="false"><xliff:g id="version_num">%1$s</xliff:g></string>
 
 </resources>
