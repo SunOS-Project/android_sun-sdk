@@ -22,10 +22,11 @@ public class UdfpsControllerExt {
     private UdfpsController mUdfpsController;
 
     private boolean mUseFrameworkDimming;
+    private int[][] mBrightnessAlphaArray;
     private int mDimBrightnessMin;
     private int mDimBrightnessMax;
     private int mDimDelay;
-    private int[][] mBrightnessAlphaArray;
+    private int mUdfpsVendorCode;
 
     public void init(UdfpsController controller) {
         mUdfpsController = controller;
@@ -50,6 +51,9 @@ public class UdfpsControllerExt {
                 mBrightnessAlphaArray[i][1] = Integer.parseInt(s[1]);
             }
         }
+
+        mUdfpsVendorCode = mUdfpsController.getContext().getResources().getInteger(
+                R.integer.config_udfps_vendor_code);
     }
 
     public void updateViewDimAmount() {
@@ -79,6 +83,10 @@ public class UdfpsControllerExt {
 
     public int getDimDelay() {
         return mDimDelay;
+    }
+
+    public int getVendorCode() {
+        return mUdfpsVendorCode;
     }
 
     private int getBrightness() {
