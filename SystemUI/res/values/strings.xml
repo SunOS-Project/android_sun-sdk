@@ -44,4 +44,7 @@
     <string name="keyguard_indication_turbo_charging_time"><xliff:g id="percentage">%2$s</xliff:g> • Turbo Charging • Full in <xliff:g id="charging_time_left" example="4 hr, 2 min">%1$s</xliff:g></string>
     <string name="keyguard_plugged_in_turbo_charging"><xliff:g id="percentage">%s</xliff:g> • Turbo Charging</string>
 
+    <!-- Press or drag to add/remove QS tile -->
+    <string name="press_or_drag_to_add_tiles">Press or drag tiles to add or remove</string>
+
 </resources>
