@@ -68,4 +68,8 @@
     <!-- For dynamic default font styles -->
     <java-symbol type="string" name="config_bodyFontFamily" />
 
+    <!-- Expose aux camera to other packages -->
+    <java-symbol type="string" name="oplus_camera_aux_packages" />
+    <java-symbol type="string" name="oplus_camera_aux_packages_startwith" />
+
 </resources>

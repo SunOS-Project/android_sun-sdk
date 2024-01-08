@@ -36,4 +36,8 @@
     <string-array name="config_fhdResolutionOverlays" translatable="false">
     </string-array>
 
+    <!-- Expose aux camera to other packages -->
+    <string name="oplus_camera_aux_packages"></string>
+    <string name="oplus_camera_aux_packages_startwith"></string>
+
 </resources>
