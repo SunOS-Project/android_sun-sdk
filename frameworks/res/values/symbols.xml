@@ -72,4 +72,7 @@
     <java-symbol type="string" name="oplus_camera_aux_packages" />
     <java-symbol type="string" name="oplus_camera_aux_packages_startwith" />
 
+    <!-- Location indicator -->
+    <java-symbol type="drawable" name="stat_sys_location" />
+
 </resources>
