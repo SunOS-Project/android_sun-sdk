@@ -1,0 +1,13 @@
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+filegroup {
+    name: "framework-nameless-sources",
+    srcs: [
+        "src/**/*.aidl",
+        "src/**/*.java",
+    ],
+    path: "src",
+    visibility: ["//frameworks/base"],
+}

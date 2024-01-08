@@ -1,0 +1,12 @@
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+filegroup {
+    name: "SystemUI.nameless-sources",
+    srcs: [
+        "src/**/*.java",
+        "src/**/*.kt",
+    ],
+    visibility: ["//frameworks/base/packages/SystemUI"],
+}
