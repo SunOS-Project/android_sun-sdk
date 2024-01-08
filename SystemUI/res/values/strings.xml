@@ -47,4 +47,8 @@
     <!-- Press or drag to add/remove QS tile -->
     <string name="press_or_drag_to_add_tiles">Press or drag tiles to add or remove</string>
 
+    <!-- Screenrecord delete action -->
+    <string name="screenrecord_delete_label">Delete</string>
+    <string name="screenrecord_delete_description">Screen recording deleted</string>
+
 </resources>
