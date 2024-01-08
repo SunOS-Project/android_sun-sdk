@@ -55,6 +55,7 @@
     <string name="statusbar_items_title">Statusbar icons</string>
     <string name="status_bar_vpn">VPN</string>
     <string name="status_bar_nfc">NFC</string>
+    <string name="status_bar_call_strength">Call strength</string>
 
     <!-- Accessibility label for nfc icon (not shown on screen) [CHAR LIMIT=NONE] -->
     <string name="accessibility_status_bar_nfc">Nfc</string>

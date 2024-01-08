@@ -16,6 +16,10 @@
     android:title="@string/statusbar_items_title">
 
     <com.android.systemui.tuner.StatusBarSwitch
+        android:key="call_strength"
+        android:title="@string/status_bar_call_strength" />
+
+    <com.android.systemui.tuner.StatusBarSwitch
         android:key="headset"
         android:title="@string/headset" />
 
