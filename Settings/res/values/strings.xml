@@ -179,4 +179,9 @@
     <!-- Radio Info -->
     <string name="radio_info_title">Radio info</string>
 
+    <!-- Statusbar Tuner -->
+    <string name="statusbar_category_title">Status bar</string>
+    <string name="statusbar_items_title">Statusbar items</string>
+    <string name="statusbar_items_summary">Select what icons to show in status bar</string>
+
 </resources>
