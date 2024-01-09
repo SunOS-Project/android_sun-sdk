@@ -17,6 +17,8 @@ import org.nameless.systemui.qs.tiles.OptimizedChargeTile
 import org.nameless.systemui.qs.tiles.PowerShareTile
 import org.nameless.systemui.qs.tiles.QuietModeTile
 import org.nameless.systemui.qs.tiles.RefreshRateTile
+import org.nameless.systemui.qs.tiles.SyncTile
+import org.nameless.systemui.qs.tiles.UsbTetherTile
 
 import dagger.Binds
 import dagger.Module
@@ -75,4 +77,14 @@ interface CustomTilesModule {
     @IntoMap
     @StringKey(RefreshRateTile.TILE_SPEC)
     fun bindRefreshRateTile(refreshRateTile: RefreshRateTile): QSTileImpl<*>
+
+    @Binds
+    @IntoMap
+    @StringKey(SyncTile.TILE_SPEC)
+    fun bindSyncTile(syncTile: SyncTile): QSTileImpl<*>
+
+    @Binds
+    @IntoMap
+    @StringKey(UsbTetherTile.TILE_SPEC)
+    fun bindUsbTetherTile(usbTetherTile: UsbTetherTile): QSTileImpl<*>
 }
