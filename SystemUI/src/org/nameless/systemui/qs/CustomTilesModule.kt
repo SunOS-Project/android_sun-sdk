@@ -10,6 +10,7 @@ import com.android.systemui.qs.tileimpl.QSTileImpl
 import org.nameless.systemui.qs.tiles.AODTile
 import org.nameless.systemui.qs.tiles.AmbientDisplayTile
 import org.nameless.systemui.qs.tiles.CaffeineTile
+import org.nameless.systemui.qs.tiles.CellularTile
 import org.nameless.systemui.qs.tiles.CompassTile
 import org.nameless.systemui.qs.tiles.DataSwitchTile
 import org.nameless.systemui.qs.tiles.DcDimmingTile
@@ -25,6 +26,7 @@ import org.nameless.systemui.qs.tiles.SyncTile
 import org.nameless.systemui.qs.tiles.SystemVibrationTile
 import org.nameless.systemui.qs.tiles.UsbTetherTile
 import org.nameless.systemui.qs.tiles.VpnTile
+import org.nameless.systemui.qs.tiles.WifiTile
 
 import dagger.Binds
 import dagger.Module
@@ -48,6 +50,11 @@ interface CustomTilesModule {
     @IntoMap
     @StringKey(CaffeineTile.TILE_SPEC)
     fun bindCaffeineTile(caffeineTile: CaffeineTile): QSTileImpl<*>
+
+    @Binds
+    @IntoMap
+    @StringKey(CellularTile.TILE_SPEC)
+    fun bindCellularTile(cellularTile: CellularTile): QSTileImpl<*>
 
     @Binds
     @IntoMap
@@ -123,4 +130,9 @@ interface CustomTilesModule {
     @IntoMap
     @StringKey(VpnTile.TILE_SPEC)
     fun bindVpnTile(vpnTile: VpnTile): QSTileImpl<*>
+
+    @Binds
+    @IntoMap
+    @StringKey(WifiTile.TILE_SPEC)
+    fun bindWifiTile(wifiTile: WifiTile): QSTileImpl<*>
 }
