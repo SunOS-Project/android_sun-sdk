@@ -14,6 +14,7 @@ import org.nameless.systemui.qs.tiles.CompassTile
 import org.nameless.systemui.qs.tiles.DcDimmingTile
 import org.nameless.systemui.qs.tiles.HBMTile
 import org.nameless.systemui.qs.tiles.HeadsUpTile
+import org.nameless.systemui.qs.tiles.LocaleTile
 import org.nameless.systemui.qs.tiles.OptimizedChargeTile
 import org.nameless.systemui.qs.tiles.PowerShareTile
 import org.nameless.systemui.qs.tiles.QuietModeTile
@@ -64,6 +65,11 @@ interface CustomTilesModule {
     @IntoMap
     @StringKey(HeadsUpTile.TILE_SPEC)
     fun bindHeadsUpTile(headsUpTile: HeadsUpTile): QSTileImpl<*>
+
+    @Binds
+    @IntoMap
+    @StringKey(LocaleTile.TILE_SPEC)
+    fun bindLocaleTile(localeTile: LocaleTile): QSTileImpl<*>
 
     @Binds
     @IntoMap
