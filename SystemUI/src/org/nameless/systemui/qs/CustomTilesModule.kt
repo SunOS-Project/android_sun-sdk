@@ -7,6 +7,7 @@ package org.nameless.systemui.qs
 
 import com.android.systemui.qs.tileimpl.QSTileImpl
 
+import org.nameless.systemui.qs.tiles.AmbientDisplayTile
 import org.nameless.systemui.qs.tiles.CaffeineTile
 import org.nameless.systemui.qs.tiles.DcDimmingTile
 import org.nameless.systemui.qs.tiles.HBMTile
@@ -22,6 +23,11 @@ import dagger.multibindings.StringKey
 
 @Module
 interface CustomTilesModule {
+
+    @Binds
+    @IntoMap
+    @StringKey(AmbientDisplayTile.TILE_SPEC)
+    fun bindAmbientDisplayTile(ambientDisplayTile: AmbientDisplayTile): QSTileImpl<*>
 
     @Binds
     @IntoMap
