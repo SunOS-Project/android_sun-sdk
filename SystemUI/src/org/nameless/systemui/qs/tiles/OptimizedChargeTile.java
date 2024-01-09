@@ -5,7 +5,13 @@
 
 package org.nameless.systemui.qs.tiles;
 
+import static com.android.internal.util.nameless.BatteryFeatureSettingsHelper.OPTIMIZED_CHARGE_ALWAYS;
+import static com.android.internal.util.nameless.BatteryFeatureSettingsHelper.OPTIMIZED_CHARGE_SCHEDULED;
+import static com.android.internal.util.nameless.BatteryFeatureSettingsHelper.OPTIMIZED_CHARGE_SETTINGS_DISABLED;
+import static com.android.internal.util.nameless.BatteryFeatureSettingsHelper.OPTIMIZED_CHARGE_SETTINGS_ENABLED;
+
 import static org.nameless.provider.SettingsExt.System.OPTIMIZED_CHARGE_ENABLED;
+import static org.nameless.provider.SettingsExt.System.OPTIMIZED_CHARGE_STATUS;
 
 import static vendor.nameless.hardware.battery.V1_0.Feature.SUSPEND_CHARGING;
 
@@ -18,6 +24,8 @@ import android.service.quicksettings.Tile;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+
+import com.android.internal.util.nameless.BatteryFeatureSettingsHelper;
 
 import com.android.systemui.R;
 import com.android.systemui.dagger.qualifiers.Background;
@@ -44,8 +52,10 @@ public class OptimizedChargeTile extends QSTileImpl<BooleanState> {
     public static final String TILE_SPEC = "optimized_charge";
 
     private final BatteryFeatureManager mBatteryFeatureManager;
-    private final SettingObserver mSetting;
     private final Icon mIcon = ResourceIcon.get(R.drawable.ic_optimized_charge);
+
+    private final SettingObserver mEnabledSetting;
+    private final SettingObserver mStatusSetting;
 
     @Inject
     public OptimizedChargeTile(
@@ -63,11 +73,19 @@ public class OptimizedChargeTile extends QSTileImpl<BooleanState> {
                 metricsLogger, statusBarStateController, activityStarter, qsLogger);
 
         mBatteryFeatureManager = BatteryFeatureManager.getInstance();
-        mSetting = new SettingObserver(systemSettings, mHandler,
+
+        mEnabledSetting = new SettingObserver(systemSettings, mHandler,
                 OPTIMIZED_CHARGE_ENABLED, UserHandle.USER_SYSTEM) {
             @Override
             protected void handleValueChanged(int value, boolean observedChange) {
-                handleRefreshState(value);
+                refreshState();
+            }
+        };
+        mStatusSetting = new SettingObserver(systemSettings, mHandler,
+                OPTIMIZED_CHARGE_STATUS, UserHandle.USER_SYSTEM) {
+            @Override
+            protected void handleValueChanged(int value, boolean observedChange) {
+                refreshState();
             }
         };
     }
@@ -84,7 +102,16 @@ public class OptimizedChargeTile extends QSTileImpl<BooleanState> {
 
     @Override
     protected void handleClick(@Nullable View view) {
-        mSetting.setValue(mState.value ? 0 : 1);
+        if (!mState.value) {
+            mEnabledSetting.setValue(OPTIMIZED_CHARGE_SETTINGS_ENABLED);
+        } else {
+            if (mStatusSetting.getValue() == OPTIMIZED_CHARGE_ALWAYS) {
+                mStatusSetting.setValue(OPTIMIZED_CHARGE_SCHEDULED);
+            } else {
+                mStatusSetting.setValue(OPTIMIZED_CHARGE_ALWAYS);
+                mEnabledSetting.setValue(OPTIMIZED_CHARGE_SETTINGS_DISABLED);
+            }
+        }
         refreshState();
     }
 
@@ -101,17 +128,19 @@ public class OptimizedChargeTile extends QSTileImpl<BooleanState> {
 
     @Override
     protected void handleUpdateState(BooleanState state, Object arg) {
-        if (mSetting == null) return;
-        final int value = arg instanceof Integer ? (Integer) arg : mSetting.getValue();
-        final boolean enabled = value != 0;
+        final boolean enabled = mEnabledSetting.getValue() != 0;
         state.value = enabled;
         state.label = mContext.getString(R.string.quick_settings_optimized_charge_label);
         state.icon = mIcon;
         state.contentDescription =  mContext.getString(
                 R.string.quick_settings_optimized_charge_label);
         if (enabled) {
+            state.secondaryLabel = mStatusSetting.getValue() == OPTIMIZED_CHARGE_ALWAYS ?
+                    mContext.getString(R.string.quick_settings_optimized_charge_always) :
+                    getTimeLabel();
             state.state = Tile.STATE_ACTIVE;
         } else {
+            state.secondaryLabel = mContext.getString(R.string.switch_bar_off);
             state.state = Tile.STATE_INACTIVE;
         }
     }
@@ -119,11 +148,17 @@ public class OptimizedChargeTile extends QSTileImpl<BooleanState> {
     @Override
     public void handleSetListening(boolean listening) {
         super.handleSetListening(listening);
-        mSetting.setListening(listening);
+        mEnabledSetting.setListening(listening);
+        mStatusSetting.setListening(listening);
     }
 
     @Override
     public int getMetricsCategory() {
         return 0;
+    }
+
+    private String getTimeLabel() {
+        String[] times = BatteryFeatureSettingsHelper.getOptimizedChargingTime(mContext).split(",");
+        return times[0] + " ~ " + times[1];
     }
 }

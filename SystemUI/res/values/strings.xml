@@ -29,6 +29,7 @@
 
     <!-- Optimized charge -->
     <string name="quick_settings_optimized_charge_label">Optimized charging</string>
+    <string name="quick_settings_optimized_charge_always">Always</string>
 
     <!-- Wireless charging quiet mode -->
     <string name="quick_settings_quiet_mode_label">Quiet mode</string>
