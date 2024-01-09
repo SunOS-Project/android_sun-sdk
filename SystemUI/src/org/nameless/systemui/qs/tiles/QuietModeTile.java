@@ -57,9 +57,9 @@ public class QuietModeTile extends QSTileImpl<BooleanState> {
     private final BatteryFeatureManager mBatteryFeatureManager;  
     private final Icon mIcon = ResourceIcon.get(R.drawable.ic_qs_quiet_mode);
 
-    private SettingObserver mEnabledSetting;
-    private SettingObserver mStatusSetting;
-    private SettingObserver mWirelessChargingSetting;
+    private final SettingObserver mEnabledSetting;
+    private final SettingObserver mStatusSetting;
+    private final SettingObserver mWirelessChargingSetting;
 
     @Inject
     public QuietModeTile(
@@ -77,29 +77,26 @@ public class QuietModeTile extends QSTileImpl<BooleanState> {
                 metricsLogger, statusBarStateController, activityStarter, qsLogger);
 
         mBatteryFeatureManager = BatteryFeatureManager.getInstance();
-        if (!mBatteryFeatureManager.hasFeature(WIRELESS_CHARGING_QUIET_MODE)) {
-            return;
-        }
 
         mEnabledSetting = new SettingObserver(systemSettings, mHandler,
-                WIRELESS_CHARGING_QUIET_MODE_ENABLED, UserHandle.USER_SYSTEM, CHARGING_ENABLED) {
+                WIRELESS_CHARGING_QUIET_MODE_ENABLED, UserHandle.USER_SYSTEM) {
             @Override
             protected void handleValueChanged(int value, boolean observedChange) {
-                handleRefreshState(null);
+                refreshState();
             }
         };
         mStatusSetting = new SettingObserver(systemSettings, mHandler,
                 WIRELESS_CHARGING_QUIET_MODE_STATUS, UserHandle.USER_SYSTEM) {
             @Override
             protected void handleValueChanged(int value, boolean observedChange) {
-                handleRefreshState(null);
+                refreshState();
             }
         };
         mWirelessChargingSetting = new SettingObserver(systemSettings, mHandler,
-                WIRELESS_CHARGING_ENABLED, UserHandle.USER_SYSTEM) {
+                WIRELESS_CHARGING_ENABLED, UserHandle.USER_SYSTEM, CHARGING_ENABLED) {
             @Override
             protected void handleValueChanged(int value, boolean observedChange) {
-                handleRefreshState(null);
+                refreshState();
             }
         };
     }
@@ -152,9 +149,6 @@ public class QuietModeTile extends QSTileImpl<BooleanState> {
             return;
         }
 
-        if (mEnabledSetting == null || mStatusSetting == null || mWirelessChargingSetting == null) {
-            return;
-        }
         final boolean enabled = mEnabledSetting.getValue() != 0;
         state.value = enabled;
         state.label = mContext.getString(R.string.quick_settings_quiet_mode_label);
