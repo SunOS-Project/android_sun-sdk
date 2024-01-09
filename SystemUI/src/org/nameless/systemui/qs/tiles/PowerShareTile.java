@@ -49,14 +49,14 @@ import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.QsEventLogger;
 import com.android.systemui.qs.SettingObserver;
 import com.android.systemui.qs.logging.QSLogger;
-import com.android.systemui.qs.tileimpl.QSTileImpl;
+import com.android.systemui.statusbar.policy.KeyguardStateController;
 import com.android.systemui.util.settings.SystemSettings;
 
 import javax.inject.Inject;
 
 import org.nameless.os.BatteryFeatureManager;
 
-public class PowerShareTile extends QSTileImpl<BooleanState> {
+public class PowerShareTile extends SecureQSTile<BooleanState> {
 
     public static final String TILE_SPEC = "powershare";
 
@@ -78,9 +78,11 @@ public class PowerShareTile extends QSTileImpl<BooleanState> {
             StatusBarStateController statusBarStateController,
             ActivityStarter activityStarter,
             QSLogger qsLogger,
-            SystemSettings systemSettings) {
+            SystemSettings systemSettings,
+            KeyguardStateController keyguardStateController) {
         super(host, uiEventLogger, backgroundLooper, mainHandler, falsingManager,
-                metricsLogger, statusBarStateController, activityStarter, qsLogger);
+                metricsLogger, statusBarStateController,
+                activityStarter, qsLogger, keyguardStateController);
 
         mBatteryFeatureManager = BatteryFeatureManager.getInstance();
         if (!mBatteryFeatureManager.hasFeature(WIRELESS_CHARGING_TX)) {
@@ -114,7 +116,10 @@ public class PowerShareTile extends QSTileImpl<BooleanState> {
     }
 
     @Override
-    public void handleClick(@Nullable View view) {
+    protected void handleClick(@Nullable View view, boolean keyguardShowing) {
+        if (checkKeyguard(view, keyguardShowing)) {
+            return;
+        }
         mEnabledSetting.setValue(mState.value ? REVERSE_CHARGING_DISABLED : REVERSE_CHARGING_ENABLED);
         refreshState();
     }

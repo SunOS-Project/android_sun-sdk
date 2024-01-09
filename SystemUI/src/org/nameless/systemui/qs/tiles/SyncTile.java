@@ -38,12 +38,12 @@ import com.android.systemui.plugins.statusbar.StatusBarStateController;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.QsEventLogger;
 import com.android.systemui.qs.logging.QSLogger;
-import com.android.systemui.qs.tileimpl.QSTileImpl;
+import com.android.systemui.statusbar.policy.KeyguardStateController;
 
 import javax.inject.Inject;
 
 /** Quick settings tile: Sync **/
-public class SyncTile extends QSTileImpl<BooleanState> {
+public class SyncTile extends SecureQSTile<BooleanState> {
 
     public static final String TILE_SPEC = "sync";
 
@@ -62,10 +62,12 @@ public class SyncTile extends QSTileImpl<BooleanState> {
             MetricsLogger metricsLogger,
             StatusBarStateController statusBarStateController,
             ActivityStarter activityStarter,
-            QSLogger qsLogger
+            QSLogger qsLogger,
+            KeyguardStateController keyguardStateController
     ) {
         super(host, uiEventLogger, backgroundLooper, mainHandler, falsingManager,
-                metricsLogger, statusBarStateController, activityStarter, qsLogger);
+                metricsLogger, statusBarStateController,
+                activityStarter, qsLogger, keyguardStateController);
     }
 
     @Override
@@ -74,7 +76,10 @@ public class SyncTile extends QSTileImpl<BooleanState> {
     }
 
     @Override
-    protected void handleClick(@Nullable View view) {
+    protected void handleClick(@Nullable View view, boolean keyguardShowing) {
+        if (checkKeyguard(view, keyguardShowing)) {
+            return;
+        }
         ContentResolver.setMasterSyncAutomatically(!mState.value);
         refreshState();
     }
