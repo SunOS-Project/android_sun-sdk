@@ -20,6 +20,7 @@ import org.nameless.systemui.qs.tiles.OptimizedChargeTile
 import org.nameless.systemui.qs.tiles.PowerShareTile
 import org.nameless.systemui.qs.tiles.QuietModeTile
 import org.nameless.systemui.qs.tiles.RefreshRateTile
+import org.nameless.systemui.qs.tiles.SoundTile
 import org.nameless.systemui.qs.tiles.SyncTile
 import org.nameless.systemui.qs.tiles.UsbTetherTile
 import org.nameless.systemui.qs.tiles.VpnTile
@@ -96,6 +97,11 @@ interface CustomTilesModule {
     @IntoMap
     @StringKey(RefreshRateTile.TILE_SPEC)
     fun bindRefreshRateTile(refreshRateTile: RefreshRateTile): QSTileImpl<*>
+
+    @Binds
+    @IntoMap
+    @StringKey(SoundTile.TILE_SPEC)
+    fun bindSoundTile(soundTile: SoundTile): QSTileImpl<*>
 
     @Binds
     @IntoMap
