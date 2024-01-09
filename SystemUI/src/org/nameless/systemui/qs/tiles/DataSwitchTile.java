@@ -167,7 +167,13 @@ public class DataSwitchTile extends SecureQSTile<BooleanState> {
 
     @Override
     public Intent getLongClickIntent() {
-        return new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS);
+        Intent intent = new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS);
+        int dataSub = SubscriptionManager.getDefaultDataSubscriptionId();
+        if (dataSub != SubscriptionManager.INVALID_SUBSCRIPTION_ID) {
+            intent.putExtra(Settings.EXTRA_SUB_ID,
+                    SubscriptionManager.getDefaultDataSubscriptionId());
+        }
+        return intent;
     }
 
     @Override
