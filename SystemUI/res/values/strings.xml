@@ -137,4 +137,7 @@
     <string name="quick_settings_sound_vibrate">Vibrate</string>
     <string name="quick_settings_sound_mute">Mute</string>
 
+    <!-- System vibration tile -->
+    <string name="quick_settings_system_vibration_label">System vibration</string>
+
 </resources>

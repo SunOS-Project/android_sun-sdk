@@ -22,6 +22,7 @@ import org.nameless.systemui.qs.tiles.QuietModeTile
 import org.nameless.systemui.qs.tiles.RefreshRateTile
 import org.nameless.systemui.qs.tiles.SoundTile
 import org.nameless.systemui.qs.tiles.SyncTile
+import org.nameless.systemui.qs.tiles.SystemVibrationTile
 import org.nameless.systemui.qs.tiles.UsbTetherTile
 import org.nameless.systemui.qs.tiles.VpnTile
 
@@ -107,6 +108,11 @@ interface CustomTilesModule {
     @IntoMap
     @StringKey(SyncTile.TILE_SPEC)
     fun bindSyncTile(syncTile: SyncTile): QSTileImpl<*>
+
+    @Binds
+    @IntoMap
+    @StringKey(SystemVibrationTile.TILE_SPEC)
+    fun bindSystemVibrationTile(systemVibrationTile: SystemVibrationTile): QSTileImpl<*>
 
     @Binds
     @IntoMap
