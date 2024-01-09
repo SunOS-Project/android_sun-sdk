@@ -68,4 +68,9 @@
     <string name="screenrecord_longer_timeout_switch_label">Bigger file size limit\nLimit to 15GiB</string>
     <string name="screenrecord_hevc_switch_label">Enable HEVC</string>
 
+    <!-- Caffeine QS tile -->
+    <string name="quick_settings_caffeine_label">Caffeine</string>
+    <string name="accessibility_quick_settings_caffeine_off">Caffeine off.</string>
+    <string name="accessibility_quick_settings_caffeine_on">Caffeine on.</string>
+
 </resources>

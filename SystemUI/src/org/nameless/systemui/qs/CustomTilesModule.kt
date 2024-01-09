@@ -7,6 +7,7 @@ package org.nameless.systemui.qs
 
 import com.android.systemui.qs.tileimpl.QSTileImpl
 
+import org.nameless.systemui.qs.tiles.CaffeineTile
 import org.nameless.systemui.qs.tiles.DcDimmingTile
 import org.nameless.systemui.qs.tiles.HBMTile
 import org.nameless.systemui.qs.tiles.OptimizedChargeTile
@@ -21,6 +22,11 @@ import dagger.multibindings.StringKey
 
 @Module
 interface CustomTilesModule {
+
+    @Binds
+    @IntoMap
+    @StringKey(CaffeineTile.TILE_SPEC)
+    fun bindCaffeineTile(caffeineTile: CaffeineTile): QSTileImpl<*>
 
     @Binds
     @IntoMap
