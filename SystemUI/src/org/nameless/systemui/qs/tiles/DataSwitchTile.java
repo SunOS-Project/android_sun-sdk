@@ -263,9 +263,11 @@ public class DataSwitchTile extends SecureQSTile<BooleanState> {
             }
 
             final int newSubID = newSubInfo.getSubscriptionId();
-            mTelephonyManager.createForSubscriptionId(newSubID).setDataEnabled(true);
+            final boolean isDataEnabled =
+                    mTelephonyManager.createForSubscriptionId(currentSubID).isDataEnabled();
+            mTelephonyManager.createForSubscriptionId(newSubID).setDataEnabled(isDataEnabled);
             mSubscriptionManager.setDefaultDataSubId(newSubID);
-            Log.d(TAG, "Enabled subID: " + newSubID);
+            Log.d(TAG, "Switched to subID: " + newSubID);
 
             if (currentSubInfo.isOpportunistic()) {
                 // Never disable mobile data for opportunistic subscriptions
