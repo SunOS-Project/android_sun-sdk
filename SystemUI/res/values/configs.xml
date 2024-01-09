@@ -13,7 +13,7 @@
 
     <!-- Tiles native to System UI. Order should match "quick_settings_tiles_default" -->
     <string name="quick_settings_tiles_extra" translatable="false">
-        refresh_rate,dc_dimming,hbm,powershare,optimized_charge,quietmode,caffeine,ambient_display,aod,heads_up,sync,usb_tether,vpn,compass,locale,dataswitch,sound,system_vibration,cell,wifi
+        refresh_rate,dc_dimming,hbm,powershare,optimized_charge,quietmode,caffeine,ambient_display,aod,heads_up,sync,usb_tether,vpn,compass,locale,dataswitch,sound,system_vibration,cell,wifi,cpuinfo
     </string>
 
     <!-- Whether to enable framework dimming for udfps -->
@@ -54,5 +54,14 @@
 
     <!-- If not zero, limits the internal screen recorder's framerate to the set value. -->
     <integer name="config_screenRecorderMaxFramerate">0</integer>
+
+    <!-- The CPU temperature sensor path, defaults to empty -->
+    <string name="config_cpuTempSensor" translatable="false">/sys/class/thermal/thermal_zone0/temp</string>
+
+    <!-- The CPU temperature divider, if needed -->
+    <integer name="config_cpuTempDivider" translatable="false">1</integer>
+
+    <!-- The CPUs to display in CPUInfoService view -->
+    <string name="config_displayCpus" translatable="false"></string>
 
 </resources>

@@ -9,6 +9,7 @@ import com.android.systemui.qs.tileimpl.QSTileImpl
 
 import org.nameless.systemui.qs.tiles.AODTile
 import org.nameless.systemui.qs.tiles.AmbientDisplayTile
+import org.nameless.systemui.qs.tiles.CPUInfoTile
 import org.nameless.systemui.qs.tiles.CaffeineTile
 import org.nameless.systemui.qs.tiles.CellularTile
 import org.nameless.systemui.qs.tiles.CompassTile
@@ -45,6 +46,11 @@ interface CustomTilesModule {
     @IntoMap
     @StringKey(AmbientDisplayTile.TILE_SPEC)
     fun bindAmbientDisplayTile(ambientDisplayTile: AmbientDisplayTile): QSTileImpl<*>
+
+    @Binds
+    @IntoMap
+    @StringKey(CPUInfoTile.TILE_SPEC)
+    fun bindCPUInfoTile(cpuInfoTile: CPUInfoTile): QSTileImpl<*>
 
     @Binds
     @IntoMap

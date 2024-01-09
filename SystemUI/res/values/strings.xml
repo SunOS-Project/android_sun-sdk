@@ -140,4 +140,7 @@
     <!-- System vibration tile -->
     <string name="quick_settings_system_vibration_label">System vibration</string>
 
+    <!-- CPUInfo tile -->
+    <string name="quick_settings_cpuinfo_label">CPU Info</string>
+
 </resources>
