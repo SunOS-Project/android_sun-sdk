@@ -10,6 +10,7 @@ import com.android.systemui.qs.tileimpl.QSTileImpl
 import org.nameless.systemui.qs.tiles.AODTile
 import org.nameless.systemui.qs.tiles.AmbientDisplayTile
 import org.nameless.systemui.qs.tiles.CaffeineTile
+import org.nameless.systemui.qs.tiles.CompassTile
 import org.nameless.systemui.qs.tiles.DcDimmingTile
 import org.nameless.systemui.qs.tiles.HBMTile
 import org.nameless.systemui.qs.tiles.HeadsUpTile
@@ -43,6 +44,11 @@ interface CustomTilesModule {
     @IntoMap
     @StringKey(CaffeineTile.TILE_SPEC)
     fun bindCaffeineTile(caffeineTile: CaffeineTile): QSTileImpl<*>
+
+    @Binds
+    @IntoMap
+    @StringKey(CompassTile.TILE_SPEC)
+    fun bindCompassTile(compassTile: CompassTile): QSTileImpl<*>
 
     @Binds
     @IntoMap
