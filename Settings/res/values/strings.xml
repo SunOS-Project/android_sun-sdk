@@ -184,4 +184,9 @@
     <string name="statusbar_items_title">Statusbar items</string>
     <string name="statusbar_items_summary">Select what icons to show in status bar</string>
 
+    <!-- Secure QS tiles -->
+    <string name="quick_settings_category_title">QS Panel</string>
+    <string name="qstile_requires_unlocking_title">Secure QS tiles</string>
+    <string name="qstile_requires_unlocking_summary">Require unlocking to access some sensitive QS tiles</string>
+
 </resources>

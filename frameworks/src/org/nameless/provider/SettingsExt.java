@@ -248,6 +248,13 @@ public class SettingsExt {
          * @hide
          */
         public static final String SCREEN_OFF_UDFPS_ENABLED = "screen_off_udfps_enabled";
+
+        /**
+         * Whether to require unlocking while accessing sensitive tiles
+         * 
+         * @hide
+         */
+        public static final String QSTILE_REQUIRES_UNLOCKING = "qstile_requires_unlocking";
     }
 
     public static class Global {
