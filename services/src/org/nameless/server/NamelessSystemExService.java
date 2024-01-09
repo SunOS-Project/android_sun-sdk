@@ -41,6 +41,7 @@ import org.nameless.os.BatteryFeatureManager;
 import org.nameless.server.battery.BatteryFeatureController;
 import org.nameless.server.display.DisplayFeatureController;
 import org.nameless.server.display.DisplayRefreshRateController;
+import org.nameless.server.vibrator.LinearmotorVibratorController;
 import org.nameless.server.wm.DisplayResolutionController;
 
 public class NamelessSystemExService extends SystemService {
@@ -89,6 +90,7 @@ public class NamelessSystemExService extends SystemService {
             if (mDisplayFeatureSupported) {
                 DisplayFeatureController.getInstance().onSystemServicesReady();
             }
+            LinearmotorVibratorController.getInstance().onSystemServicesReady();
             return;
         }
 
@@ -122,6 +124,7 @@ public class NamelessSystemExService extends SystemService {
         }
         DisplayRefreshRateController.getInstance().initSystemExService(this);
         DisplayResolutionController.getInstance().initSystemExService(this);
+        LinearmotorVibratorController.getInstance().initSystemExService(this);
     }
 
     @Override

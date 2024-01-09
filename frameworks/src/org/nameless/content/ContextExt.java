@@ -32,6 +32,16 @@ public class ContextExt {
 
     /**
      * Use with {@link #getSystemService} to retrieve a
+     * {@link com.oplus.os.LinearmotorVibrator} for accessing linear motor vibrator state.
+     *
+     * @hide
+     * @see #getSystemService
+     * @see com.oplus.os.LinearmotorVibrator
+     */
+    public static final String LINEARMOTOR_VIBRATOR_SERVICE = "linearmotor";
+
+    /**
+     * Use with {@link #getSystemService} to retrieve a
      * {@link org.nameless.display.RefreshRateManager} for managing display refresh rate.
      *
      * @hide
