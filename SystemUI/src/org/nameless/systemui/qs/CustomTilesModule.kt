@@ -19,6 +19,7 @@ import org.nameless.systemui.qs.tiles.QuietModeTile
 import org.nameless.systemui.qs.tiles.RefreshRateTile
 import org.nameless.systemui.qs.tiles.SyncTile
 import org.nameless.systemui.qs.tiles.UsbTetherTile
+import org.nameless.systemui.qs.tiles.VpnTile
 
 import dagger.Binds
 import dagger.Module
@@ -87,4 +88,9 @@ interface CustomTilesModule {
     @IntoMap
     @StringKey(UsbTetherTile.TILE_SPEC)
     fun bindUsbTetherTile(usbTetherTile: UsbTetherTile): QSTileImpl<*>
+
+    @Binds
+    @IntoMap
+    @StringKey(VpnTile.TILE_SPEC)
+    fun bindVpnTile(vpnTile: VpnTile): QSTileImpl<*>
 }
