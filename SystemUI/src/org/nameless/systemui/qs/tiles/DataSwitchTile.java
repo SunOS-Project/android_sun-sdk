@@ -167,6 +167,9 @@ public class DataSwitchTile extends SecureQSTile<BooleanState> {
 
     @Override
     public Intent getLongClickIntent() {
+        if (mSimCount == 0) {
+            return null;
+        }
         Intent intent = new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS);
         int dataSub = SubscriptionManager.getDefaultDataSubscriptionId();
         if (dataSub != SubscriptionManager.INVALID_SUBSCRIPTION_ID) {
