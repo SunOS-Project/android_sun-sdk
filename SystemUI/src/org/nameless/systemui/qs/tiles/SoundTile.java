@@ -23,6 +23,9 @@ import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.VibrationAttributes;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.provider.Settings.Global;
 import android.service.quicksettings.Tile;
 import android.view.View;
@@ -45,11 +48,20 @@ import com.android.systemui.qs.tileimpl.QSTileImpl;
 
 import javax.inject.Inject;
 
+import org.nameless.audio.AlertSliderManager;
+
 public class SoundTile extends QSTileImpl<BooleanState> {
 
     public static final String TILE_SPEC = "sound";
 
+    private static final VibrationAttributes VIBRATION_ATTRIBUTE =
+            new VibrationAttributes.Builder(
+                    VibrationAttributes.createForUsage(VibrationAttributes.USAGE_TOUCH))
+            .setFlags(VibrationAttributes.FLAG_BYPASS_USER_VIBRATION_INTENSITY_OFF)
+            .build();
+
     private final AudioManager mAudioManager;
+    private final Vibrator mVibrator;
 
     private boolean mListening = false;
 
@@ -70,7 +82,8 @@ public class SoundTile extends QSTileImpl<BooleanState> {
     ) {
         super(host, uiEventLogger, backgroundLooper, mainHandler, falsingManager,
                 metricsLogger, statusBarStateController, activityStarter, qsLogger);
-        mAudioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+        mAudioManager = mContext.getSystemService(AudioManager.class);
+        mVibrator = mContext.getSystemService(Vibrator.class);
         mReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -115,6 +128,11 @@ public class SoundTile extends QSTileImpl<BooleanState> {
         return null;
     }
 
+    @Override
+    protected boolean vibrateOnClick() {
+        return false;
+    }
+
     private void updateState() {
         int oldState = mAudioManager.getRingerModeInternal();
         int newState = oldState;
@@ -133,6 +151,10 @@ public class SoundTile extends QSTileImpl<BooleanState> {
                 break;
             default:
                 break;
+        }
+        final VibrationEffect effect = AlertSliderManager.getRingerModeFeedback(mContext, newState);
+        if (effect != null) {
+            mVibrator.vibrate(effect, VIBRATION_ATTRIBUTE);
         }
     }
 
