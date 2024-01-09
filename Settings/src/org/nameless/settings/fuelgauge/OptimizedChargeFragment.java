@@ -36,6 +36,8 @@ public class OptimizedChargeFragment extends DashboardFragment {
     private static final String KEY_TIME_START = "optimized_charge_start_time";
     private static final String KEY_TIME_END = "optimized_charge_end_time";
 
+    private static final int DIALOG_ID = 1999;
+
     private static final int DIALOG_START_TIME = 0;
     private static final int DIALOG_END_TIME = 1;
 
@@ -134,7 +136,7 @@ public class OptimizedChargeFragment extends DashboardFragment {
 
     @Override
     public int getDialogMetricsCategory(int dialogId) {
-        return SettingsEnums.PAGE_UNKNOWN;
+        return DIALOG_ID;
     }
 
     @Override

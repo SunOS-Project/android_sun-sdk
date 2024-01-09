@@ -34,6 +34,8 @@ public class WirelessChargingQuietModeFragment extends DashboardFragment {
     private static final String KEY_QUIET_MODE_TIME_START = "wireless_charging_quiet_mode_start_time";
     private static final String KEY_QUIET_MODE_TIME_END = "wireless_charging_quiet_mode_end_time";
 
+    private static final int DIALOG_ID = 1998;
+
     private static final int DIALOG_START_TIME = 0;
     private static final int DIALOG_END_TIME = 1;
 
@@ -125,7 +127,7 @@ public class WirelessChargingQuietModeFragment extends DashboardFragment {
 
     @Override
     public int getDialogMetricsCategory(int dialogId) {
-        return SettingsEnums.PAGE_UNKNOWN;
+        return DIALOG_ID;
     }
 
     @Override
