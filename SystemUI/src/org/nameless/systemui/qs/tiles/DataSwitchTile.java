@@ -188,7 +188,8 @@ public class DataSwitchTile extends SecureQSTile<BooleanState> {
     protected void handleUpdateState(BooleanState state, Object arg) {
         boolean activeSIMZero;
         if (arg == null) {
-            final int defaultPhoneId = mSubscriptionManager.getDefaultDataPhoneId();
+            final int defaultPhoneId = mSubscriptionManager.getPhoneId(
+                    mSubscriptionManager.getDefaultDataSubscriptionId());
             Log.d(TAG, "default data phone id=" + defaultPhoneId);
             activeSIMZero = defaultPhoneId == 0;
         } else {
