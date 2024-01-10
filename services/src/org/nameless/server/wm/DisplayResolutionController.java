@@ -162,6 +162,8 @@ public class DisplayResolutionController {
     private Display mDisplay;
     private IOverlayManager mOverlayManager;
 
+    private boolean mSystemReady = false;
+
     private int mWidth = -1;
     private int mHeight = -1;
 
@@ -191,6 +193,8 @@ public class DisplayResolutionController {
             }
         }
 
+        mSystemReady = true;
+
         synchronized (mLock) {
             mWidth = getStoredDisplayWidth();
             mHandler.post(() -> setResolutionInternal(mWidth, true));
@@ -198,7 +202,6 @@ public class DisplayResolutionController {
     }
 
     public Point getResolution() {
-        updateHeightIfNeeded();
         return new Point(mWidth, mHeight);
     }
 
@@ -310,7 +313,7 @@ public class DisplayResolutionController {
     }
 
     private void updateHeightIfNeeded() {
-        if (mWidth > 0 && mHeight < 0) {
+        if (mWidth > 0 && mHeight < 0 && mSystemReady) {
             if (DisplayResolutionManager.getDeviceType() == TYPE_FORCED) {
                 final Display.Mode mode = getPreferMode(mDisplay, QHD_WIDTH);
                 final float height = (float) mode.getPhysicalHeight();
