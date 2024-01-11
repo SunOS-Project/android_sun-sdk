@@ -5,6 +5,7 @@
 
 package org.nameless.os;
 
+import android.os.Build;
 import android.os.SystemProperties;
 
 /** @hide */
@@ -13,7 +14,7 @@ public class DebugConstants {
     private DebugConstants() {}
 
     // Enable this to debug all nameless features
-    private static final boolean DEBUG_GLOBAL = SystemProperties.getBoolean(
+    private static final boolean DEBUG_GLOBAL = Build.IS_ENG || SystemProperties.getBoolean(
         "persist.sys.nameless.debug.global", false
     );
 
