@@ -22,7 +22,7 @@ public class ContextImplExt {
 
     public static boolean interceptGetSystemService(String serviceName, String packageName) {
         if (ContextExt.LINEARMOTOR_VIBRATOR_SERVICE.equals(serviceName)) {
-            return LINEAR_MOTOR_VIBRATOR_WHITELIST.contains(packageName);
+            return !LINEAR_MOTOR_VIBRATOR_WHITELIST.contains(packageName);
         }
         return false;
     }
