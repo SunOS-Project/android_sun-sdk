@@ -31,6 +31,8 @@ import android.os.BatteryManagerInternal;
 import android.os.Handler;
 import android.os.PowerManager;
 
+import com.android.internal.util.nameless.DeviceConfigUtils;
+
 import com.android.server.LocalServices;
 import com.android.server.ServiceThread;
 import com.android.server.SystemService;
@@ -95,6 +97,7 @@ public class NamelessSystemExService extends SystemService {
         }
 
         if (phase == PHASE_BOOT_COMPLETED) {
+            mHandler.post(() -> DeviceConfigUtils.setDefaultProperties(null, null));
             if (mBatteryFeatureSupported) {
                 BatteryFeatureController.getInstance().onBootCompleted();
             }
