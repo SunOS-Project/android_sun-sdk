@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package org.nameless.systemui.qs
+package org.nameless.systemui.qs.dagger
 
 import com.android.systemui.qs.tileimpl.QSTileImpl
 
