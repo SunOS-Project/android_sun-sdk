@@ -259,7 +259,7 @@ public class AlertSliderController {
                         updateMuteMedia();
                         break;
                     case SettingsExt.Global.ALERT_SLIDER_VIBRATE_ON_BLUETOOTH:
-                        uppdateVibrateOnBluetooth();
+                        updateVibrateOnBluetooth();
                         break;
                 }
             }
@@ -274,7 +274,7 @@ public class AlertSliderController {
         maybeUpdateMediaVolume();
     }
 
-    private void uppdateVibrateOnBluetooth() {
+    private void updateVibrateOnBluetooth() {
         mVibrateOnBluetooth = Settings.Global.getInt(mResolver,
                 SettingsExt.Global.ALERT_SLIDER_VIBRATE_ON_BLUETOOTH, 0) != 0;
         maybeSwitchRingerMode();
