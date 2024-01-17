@@ -244,6 +244,7 @@ public class DisplayResolutionController {
         setDisplaySwDp(currentSwDp, width);
         storeDisplayWidth(width);
         applyOverlay(width == FHD_WIDTH);
+        CustomUtils.forceStopDefaultLauncher(mContext);
         notifyDisplayResolutionChanged();
     }
 
