@@ -5,9 +5,15 @@
 
 package com.android.server.policy;
 
+import android.content.ContentResolver;
+import android.database.ContentObserver;
+import android.os.UserHandle;
+import android.provider.Settings;
+
 import com.android.internal.app.AssistUtils;
 
 import org.nameless.audio.AlertSliderManager;
+import org.nameless.provider.SettingsExt;
 
 public class PhoneWindowManagerExt {
 
@@ -15,6 +21,7 @@ public class PhoneWindowManagerExt {
     private PhoneWindowManager mPhoneWindowManager;
 
     private boolean mHasAlertSlider;
+    private boolean mClickPartialScreenshot;
 
     private static class InstanceHolder {
         private static final PhoneWindowManagerExt INSTANCE = new PhoneWindowManagerExt();
@@ -30,6 +37,18 @@ public class PhoneWindowManagerExt {
         mHasAlertSlider = AlertSliderManager.hasAlertSlider(pw.mContext);
     }
 
+    public void observe(ContentResolver resolver, ContentObserver observer) {
+        resolver.registerContentObserver(Settings.System.getUriFor(
+                SettingsExt.System.CLICK_PARTIAL_SCREENSHOT), false, observer,
+                UserHandle.USER_ALL);
+    }
+
+    public void updateSettings(ContentResolver resolver) {
+        mClickPartialScreenshot = Settings.System.getIntForUser(resolver,
+                SettingsExt.System.CLICK_PARTIAL_SCREENSHOT, 0,
+                UserHandle.USER_CURRENT) == 1;
+    }
+
     public boolean hasAssistant(int currentUserId) {
         return mAssistUtils.getAssistComponentForUser(currentUserId) != null;
     }
@@ -40,5 +59,9 @@ public class PhoneWindowManagerExt {
             return true;
         }
         return false;
+    }
+
+    public boolean isClickPartialScreenshot() {
+        return mClickPartialScreenshot;
     }
 }

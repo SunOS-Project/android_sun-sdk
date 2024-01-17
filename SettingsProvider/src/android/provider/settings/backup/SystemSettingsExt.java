@@ -35,5 +35,6 @@ public class SystemSettingsExt {
         System.VIBRATE_ON_DISCONNECT,
         System.IRIS_VIDEO_COLOR_BOOST,
         System.IRIS_MEMC_ENABLED,
+        System.CLICK_PARTIAL_SCREENSHOT,
     };
 }

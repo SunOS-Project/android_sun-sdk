@@ -51,6 +51,7 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.WIRELESS_CHARGING_QUIET_MODE_ENABLED, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.WIRELESS_CHARGING_QUIET_MODE_STATUS, new InclusiveIntegerRangeValidator(0, 1));
         VALIDATORS.put(System.WIRELESS_CHARGING_QUIET_MODE_TIME, new ScheduledTimeValidator());
+        VALIDATORS.put(System.CLICK_PARTIAL_SCREENSHOT, BOOLEAN_VALIDATOR);
     }
 
     private static class PerAppConfigValidator implements Validator {

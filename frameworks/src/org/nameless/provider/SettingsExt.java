@@ -236,6 +236,12 @@ public class SettingsExt {
          * @hide
          */
         public static final String WIRELESS_CHARGING_QUIET_MODE_TIME = "wireless_charging_quiet_mode_time";
+
+        /**
+         * Whether to take partial screenshot with volume down + power click.
+         * @hide
+         */
+        public static final String CLICK_PARTIAL_SCREENSHOT = "click_partial_screenshot";
     }
 
     public static class Secure {
