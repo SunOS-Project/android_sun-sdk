@@ -46,4 +46,15 @@
     <string-array name="device_configs_override" translatable="false">
     </string-array>
 
+    <!-- List of system apps that disallowed from being cloned -->
+    <string-array name="config_nonCloneableSystemAppList" translatable="false">
+    </string-array>
+    <!-- List of system apps that hidden from app-clone page list
+         but still can be auto cloned by system -->
+    <string-array name="config_hiddenCloneableSystemAppList" translatable="false">
+    </string-array>
+    <!-- List of user apps that disallow from being cloned -->
+    <string-array name="config_nonCloneableUserAppList" translatable="false">
+    </string-array>
+
 </resources>
