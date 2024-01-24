@@ -52,6 +52,10 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.WIRELESS_CHARGING_QUIET_MODE_STATUS, new InclusiveIntegerRangeValidator(0, 1));
         VALIDATORS.put(System.WIRELESS_CHARGING_QUIET_MODE_TIME, new ScheduledTimeValidator());
         VALIDATORS.put(System.CLICK_PARTIAL_SCREENSHOT, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.NETWORK_TRAFFIC_STATE, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.NETWORK_TRAFFIC_MODE, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD, NON_NEGATIVE_INTEGER_VALIDATOR);
+        VALIDATORS.put(System.NETWORK_TRAFFIC_REFRESH_INTERVAL, NON_NEGATIVE_INTEGER_VALIDATOR);
     }
 
     private static class PerAppConfigValidator implements Validator {

@@ -36,5 +36,9 @@ public class SystemSettingsExt {
         System.IRIS_VIDEO_COLOR_BOOST,
         System.IRIS_MEMC_ENABLED,
         System.CLICK_PARTIAL_SCREENSHOT,
+        System.NETWORK_TRAFFIC_STATE,
+        System.NETWORK_TRAFFIC_MODE,
+        System.NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD,
+        System.NETWORK_TRAFFIC_REFRESH_INTERVAL,
     };
 }

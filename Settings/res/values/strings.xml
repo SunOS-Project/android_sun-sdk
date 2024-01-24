@@ -204,4 +204,19 @@
     <!-- App-Clone -->
     <string name="cloned_apps_summary_custom">Create another instance for apps</string>
 
+    <!-- Network traffic -->
+    <string name="network_traffic_state_title">Network speed</string>
+    <string name="network_traffic_state_summary">Show network speed in the status bar</string>
+    <string name="network_traffic_state_enable">Show network speed</string>
+    <string name="network_traffic_mode_title">Display mode</string>
+    <string name="network_traffic_dynamic">Dynamic</string>
+    <string name="network_traffic_download">Download</string>
+    <string name="network_traffic_upload">Upload</string>
+    <string name="network_traffic_autohide_threshold_title">Auto-hide threshold</string>
+    <string name="network_traffic_refresh_interval_title">Refresh interval</string>
+
+    <!-- Units -->
+    <string name="unit_second">sec</string>
+    <string name="unit_ms">ms</string>
+
 </resources>

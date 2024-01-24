@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2022-2024 The Nameless-AOSP Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:settings="http://schemas.android.com/apk/res/com.android.settings"
+    android:title="@string/network_traffic_state_title" >
+
+    <org.nameless.settings.preference.SystemSettingMainSwitchPreference
+        android:defaultValue="false"
+        android:key="network_traffic_state"
+        android:title="@string/network_traffic_state_enable" />
+
+    <org.nameless.custom.preference.SystemSettingListPreference
+        android:key="network_traffic_mode"
+        android:title="@string/network_traffic_mode_title"
+        android:entries="@array/network_traffic_mode_entries"
+        android:entryValues="@array/network_traffic_mode_values"
+        android:defaultValue="0" />
+
+    <org.nameless.custom.preference.SystemSettingSeekBarPreference
+        android:key="network_traffic_autohide_threshold"
+        android:title="@string/network_traffic_autohide_threshold_title"
+        android:max="10"
+        settings:min="0"
+        android:defaultValue="0"
+        settings:units="KB/s" />
+
+    <org.nameless.custom.preference.SystemSettingSeekBarPreference
+        android:key="network_traffic_refresh_interval"
+        android:title="@string/network_traffic_refresh_interval_title"
+        android:max="10"
+        settings:min="1"
+        android:defaultValue="1"
+        settings:units="@string/unit_second" />
+
+</PreferenceScreen>
