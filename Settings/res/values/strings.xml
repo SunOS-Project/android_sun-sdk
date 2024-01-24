@@ -201,4 +201,7 @@
     <string name="dolby_title">Dolby Atmos</string>
     <string name="dolby_summary">Configure the audio output based on media content</string>
 
+    <!-- App-Clone -->
+    <string name="cloned_apps_summary_custom">Create another instance for apps</string>
+
 </resources>
