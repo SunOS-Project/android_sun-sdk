@@ -10,7 +10,10 @@ import android.app.role.RoleManager;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.RemoteException;
 import android.os.UserHandle;
+import android.view.IWindowManager;
+import android.view.WindowManagerGlobal;
 
 import com.android.internal.R;
 import com.android.internal.util.ArrayUtils;
@@ -54,5 +57,14 @@ public class CustomUtils {
         try {
             activityManager.forceStopPackageAsUser(getDefaultLauncher(context), UserHandle.USER_CURRENT);
         } catch (Exception ignored) {}
+    }
+
+    public static void takeScreenshot(boolean fullscreen) {
+        final IWindowManager windowManager = WindowManagerGlobal.getWindowManagerService();
+        try {
+            windowManager.takeScreenshotExt(fullscreen);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 }
