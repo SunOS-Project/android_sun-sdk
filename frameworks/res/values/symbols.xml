@@ -87,4 +87,7 @@
     <!-- List of user apps that disallow from being cloned -->
     <java-symbol type="array" name="config_nonCloneableUserAppList" />
 
+    <!-- System gesture listener -->
+    <java-symbol type="dimen" name="bottom_gesture_touch_slop" />
+
 </resources>

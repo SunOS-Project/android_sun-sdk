@@ -57,4 +57,7 @@
     <string-array name="config_nonCloneableUserAppList" translatable="false">
     </string-array>
 
+    <!-- System gesture listener -->
+    <dimen name="bottom_gesture_touch_slop">2dp</dimen>
+
 </resources>

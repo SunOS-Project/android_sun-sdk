@@ -59,6 +59,13 @@ public class DebugConstants {
         "persist.sys.nameless.radio.nrmode.debug", false
     );
 
+    // Enable this to debug PhoneWindowManagerExt
+    // Package: com.android.server.policy.PhoneWindowManagerExt
+    // Key: PhoneWindowManagerExt, GestureListenerBase, SystemGesture
+    public static final boolean DEBUG_PHONE_WINDOW_MANAGER = DEBUG_GLOBAL || SystemProperties.getBoolean(
+        "persist.sys.nameless.policy.debug", false
+    );
+
     // Enable this to debug PackageManagerServiceExt
     // Package: com.android.server.pm.PackageManagerServiceExt
     // Key: PackageManagerServiceExt
