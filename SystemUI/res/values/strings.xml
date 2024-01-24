@@ -158,4 +158,7 @@
     <string name="quick_settings_full_screenshot_label">Fullscreen</string>
     <string name="quick_settings_region_screenshot_label">Partial</string>
 
+    <!-- 5G tile -->
+    <string name="quick_settings_5g_tile_label">5G / NR</string>
+
 </resources>
