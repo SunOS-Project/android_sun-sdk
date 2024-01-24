@@ -193,4 +193,8 @@
     <string name="click_partial_screenshot_title">Click to partial screenshot</string>
     <string name="click_partial_screenshot_summary">Short click Volume Down and Power to take partial screenshot</string>
 
+    <!-- Preferred 5g mode -->
+    <string name="preferred_5g_mode_title">Preferred 5G mode</string>
+    <string name="preferred_5g_mode_summary">Select preferred 5G mode for each sim card</string>
+
 </resources>

@@ -53,6 +53,12 @@ public class DebugConstants {
         "persist.sys.nameless.display.rr.debug", false
     );
 
+    // Enable this to debug NrModeSwitcher
+    // Key: NrModeSwitcher,OplusRadioWrapper,SimCardListenerService
+    public static final boolean DEBUG_NR_MODE = DEBUG_GLOBAL || SystemProperties.getBoolean(
+        "persist.sys.nameless.radio.nrmode.debug", false
+    );
+
     // Enable this to debug PackageManagerServiceExt
     // Package: com.android.server.pm.PackageManagerServiceExt
     // Key: PackageManagerServiceExt
