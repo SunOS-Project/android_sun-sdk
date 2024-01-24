@@ -10,6 +10,7 @@ import static android.os.VibrationAttributes.USAGE_NOTIFICATION;
 import static android.os.VibrationAttributes.USAGE_RINGTONE;
 import static android.os.VibrationEffect.EFFECT_CLICK;
 
+import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_BACK_GESTURE_DRAG;
 import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_ERROR_UNIFIED;
 import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_FACE_UNLOCK;
 import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_FINGERPRINT_UNLOCK;
@@ -32,6 +33,7 @@ import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.DURATION_STRENGTH
 import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.HEAVY_CLICK;
 import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.KEYBOARD_PRESS;
 import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.POP;
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.TICK;
 import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.WEAKER_TICK;
 
 import android.os.CombinedVibration;
@@ -96,6 +98,7 @@ public class VibrationEffectAdapter {
         sVibratorExtSupported = VibratorExtManager.getInstance().isSupported();
 
         attributeToEffect = new HashMap<>();
+        attributeToEffect.put(VIBRATION_ATTRIBUTES_BACK_GESTURE_DRAG, TICK);
         attributeToEffect.put(VIBRATION_ATTRIBUTES_ERROR_UNIFIED, COMPAT_TICK);
         attributeToEffect.put(VIBRATION_ATTRIBUTES_FACE_UNLOCK, HEAVY_CLICK);
         attributeToEffect.put(VIBRATION_ATTRIBUTES_FINGERPRINT_UNLOCK, HEAVY_CLICK);
