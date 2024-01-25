@@ -230,4 +230,7 @@
     <string name="advanced_restart_title">Advanced restart</string>
     <string name="advanced_restart_summary">Show options for recovery, bootloader &amp; SystemUI in power menu</string>
 
+    <!-- Power ends call -->
+    <string name="accessibility_power_button_ends_call_prerefence_summary">Short click Power Button to end on-going call</string>
+
 </resources>
