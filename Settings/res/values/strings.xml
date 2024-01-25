@@ -226,4 +226,8 @@
     <string name="battery_stats_reset">Reset stats?</string>
     <string name="battery_stats_message">Battery history stats are going to be reset!</string>
 
+    <!-- Global Actions -->
+    <string name="advanced_restart_title">Advanced restart</string>
+    <string name="advanced_restart_summary">Show options for recovery, bootloader &amp; SystemUI in power menu</string>
+
 </resources>

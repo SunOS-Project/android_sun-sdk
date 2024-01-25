@@ -21,5 +21,6 @@ public class SecureSettingsValidatorsExt {
     static {
         VALIDATORS.put(Secure.SCREEN_OFF_UDFPS_ENABLED, BOOLEAN_VALIDATOR);
         VALIDATORS.put(Secure.QSTILE_REQUIRES_UNLOCKING, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(Secure.ADVANCED_REBOOT, BOOLEAN_VALIDATOR);
     }
 }

@@ -285,6 +285,13 @@ public class SettingsExt {
          * @hide
          */
         public static final String QSTILE_REQUIRES_UNLOCKING = "qstile_requires_unlocking";
+
+        /**
+         * Whether to enable advanced reboot for power menu
+         * 
+         * @hide
+         */
+        public static final String ADVANCED_REBOOT = "advanced_reboot";
     }
 
     public static class Global {
