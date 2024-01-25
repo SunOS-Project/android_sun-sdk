@@ -219,4 +219,7 @@
     <string name="unit_second">sec</string>
     <string name="unit_ms">ms</string>
 
+    <!-- Battery temperature -->
+    <string name="battery_temperature">Battery temperature</string>
+
 </resources>
