@@ -40,9 +40,11 @@ import com.android.server.wm.TopActivityRecorder;
 
 import org.nameless.display.DisplayFeatureManager;
 import org.nameless.os.BatteryFeatureManager;
+import org.nameless.os.PocketManager;
 import org.nameless.server.battery.BatteryFeatureController;
 import org.nameless.server.display.DisplayFeatureController;
 import org.nameless.server.display.DisplayRefreshRateController;
+import org.nameless.server.policy.PocketModeController;
 import org.nameless.server.vibrator.LinearmotorVibratorController;
 import org.nameless.server.wm.DisplayResolutionController;
 
@@ -56,6 +58,7 @@ public class NamelessSystemExService extends SystemService {
             BatteryFeatureManager.getInstance().isSupported();
     private final boolean mDisplayFeatureSupported =
             DisplayFeatureManager.getInstance().isSupported();
+    private final boolean mPocketModeSupported;
 
     private Handler mHandler;
     private ServiceThread mWorker;
@@ -77,6 +80,7 @@ public class NamelessSystemExService extends SystemService {
     public NamelessSystemExService(Context context) {
         super(context);
         mResolver = context.getContentResolver();
+        mPocketModeSupported = PocketManager.isSupported(context);
     }
 
     @Override
@@ -92,6 +96,9 @@ public class NamelessSystemExService extends SystemService {
             if (mDisplayFeatureSupported) {
                 DisplayFeatureController.getInstance().onSystemServicesReady();
             }
+            if (mPocketModeSupported) {
+                PocketModeController.getInstance().onSystemServicesReady();
+            }
             LinearmotorVibratorController.getInstance().onSystemServicesReady();
             return;
         }
@@ -103,6 +110,9 @@ public class NamelessSystemExService extends SystemService {
             }
             if (mDisplayFeatureSupported) {
                 DisplayFeatureController.getInstance().onBootCompleted();
+            }
+            if (mPocketModeSupported) {
+                PocketModeController.getInstance().onBootCompleted();
             }
             DisplayRefreshRateController.getInstance().onBootCompleted();
             mPackageRemovedListener.register();
@@ -125,6 +135,9 @@ public class NamelessSystemExService extends SystemService {
         if (mDisplayFeatureSupported) {
             DisplayFeatureController.getInstance().initSystemExService(this);
         }
+        if (mPocketModeSupported) {
+            PocketModeController.getInstance().initSystemExService(this);
+        }
         DisplayRefreshRateController.getInstance().initSystemExService(this);
         DisplayResolutionController.getInstance().initSystemExService(this);
         LinearmotorVibratorController.getInstance().initSystemExService(this);
@@ -134,6 +147,7 @@ public class NamelessSystemExService extends SystemService {
     public void onUserSwitching(TargetUser from, TargetUser to) {
         final int newUserId = to.getUserIdentifier();
         DisplayRefreshRateController.getInstance().onUserSwitching(newUserId);
+        PocketModeController.getInstance().onUserSwitching(newUserId);
     }
 
     private void onPackageRemoved(String packageName) {

@@ -266,6 +266,12 @@ public class SettingsExt {
          * @hide
          */
         public static final String NETWORK_TRAFFIC_REFRESH_INTERVAL = "network_traffic_refresh_interval";
+
+        /**
+         * Whether allowing pocket service to register sensors and dispatch informations.
+         * @hide
+         */
+        public static final String POCKET_JUDGE = "pocket_judge";
     }
 
     public static class Secure {

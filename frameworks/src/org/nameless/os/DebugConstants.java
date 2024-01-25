@@ -73,6 +73,13 @@ public class DebugConstants {
         "persist.sys.nameless.pm.debug", false
     );
 
+    // Enable this to debug PocketModeController
+    // Package: org.nameless.server.policy.PocketModeController
+    // Key: PocketModeController
+    public static final boolean DEBUG_POCKET = DEBUG_GLOBAL || SystemProperties.getBoolean(
+        "persist.sys.nameless.pocket.debug", false
+    );
+
     // Enable this to debug VibrationEffectAdapter
     // Package: org.nameless.server.vibrator.VibrationEffectAdapter
     // Key: VibrationEffectAdapter

@@ -40,5 +40,6 @@ public class SystemSettingsExt {
         System.NETWORK_TRAFFIC_MODE,
         System.NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD,
         System.NETWORK_TRAFFIC_REFRESH_INTERVAL,
+        System.POCKET_JUDGE,
     };
 }

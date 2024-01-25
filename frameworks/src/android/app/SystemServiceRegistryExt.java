@@ -17,6 +17,8 @@ import com.oplus.os.LinearmotorVibrator;
 import org.nameless.content.ContextExt;
 import org.nameless.display.IRefreshRateManagerService;
 import org.nameless.display.RefreshRateManager;
+import org.nameless.os.IPocketService;
+import org.nameless.os.PocketManager;
 import org.nameless.view.AppFocusManager;
 import org.nameless.view.DisplayResolutionManager;
 import org.nameless.view.IAppFocusManagerService;
@@ -53,6 +55,15 @@ public class SystemServiceRegistryExt {
                 IBinder binder = ServiceManager.getService(ContextExt.LINEARMOTOR_VIBRATOR_SERVICE);
                 ILinearmotorVibratorService service = ILinearmotorVibratorService.Stub.asInterface(binder);
                 return new LinearmotorVibrator(ctx.getOuterContext(), service);
+            }});
+
+        registerService(ContextExt.POCKET_SERVICE, PocketManager.class,
+                new CachedServiceFetcher<PocketManager>() {
+            @Override
+            public PocketManager createService(ContextImpl ctx) {
+                IBinder binder = ServiceManager.getService(ContextExt.POCKET_SERVICE);
+                IPocketService service = IPocketService.Stub.asInterface(binder);
+                return new PocketManager(ctx.getOuterContext(), service);
             }});
 
         registerService(ContextExt.REFRESH_RATE_MANAGER_SERVICE, RefreshRateManager.class,
