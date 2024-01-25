@@ -21,6 +21,7 @@ public class GlobalActionsDialogLiteExt {
 
     private static final String GLOBAL_ACTION_KEY_REBOOT_RECOVERY = "reboot_recovery";
     private static final String GLOBAL_ACTION_KEY_REBOOT_BOOTLOADER = "reboot_bootloader";
+    private static final String GLOBAL_ACTION_KEY_REBOOT_SYSUI = "reboot_sysui";
 
     private static class InstanceHolder {
         private static GlobalActionsDialogLiteExt INSTANCE = new GlobalActionsDialogLiteExt();
@@ -117,5 +118,9 @@ public class GlobalActionsDialogLiteExt {
 
     public boolean shouldAddRecoveryAction(String actionKey) {
         return isAdvancedRebootEnabled() && GLOBAL_ACTION_KEY_REBOOT_RECOVERY.equals(actionKey);
+    }
+
+    public boolean shouldAddSystemUIAction(String actionKey) {
+        return isAdvancedRebootEnabled() && GLOBAL_ACTION_KEY_REBOOT_SYSUI.equals(actionKey);
     }
 }
