@@ -42,4 +42,7 @@
     <!-- Battery feature notifications -->
     <string name="tap_to_view_more_options">Tap to view more options</string>
 
+    <!-- Deep sleep -->
+    <string name="status_deep_sleep">(Deep sleep: %1$d%2$s)</string>
+
 </resources>

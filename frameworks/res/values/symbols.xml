@@ -90,4 +90,7 @@
     <!-- System gesture listener -->
     <java-symbol type="dimen" name="bottom_gesture_touch_slop" />
 
+    <!-- Deep sleep -->
+    <java-symbol type="string" name="status_deep_sleep" />
+
 </resources>
