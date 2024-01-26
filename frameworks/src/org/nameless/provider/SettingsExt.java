@@ -278,6 +278,18 @@ public class SettingsExt {
          * @hide
          */
         public static final String SCREENSHOT_SOUND = "screenshot_sound";
+
+        /**
+         * Whether to enable three-finger hold to partial screenshot
+         * @hide
+         */
+        public static final String THREE_FINGER_HOLD_SCREENSHOT = "three_finger_hold_screenshot";
+
+        /**
+         * Whether to enable three-finger swipe to full screenshot
+         * @hide
+         */
+        public static final String THREE_FINGER_SWIPE_SCREENSHOT = "three_finger_swipe_screenshot";
     }
 
     public static class Secure {

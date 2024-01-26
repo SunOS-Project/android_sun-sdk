@@ -42,5 +42,7 @@ public class SystemSettingsExt {
         System.NETWORK_TRAFFIC_REFRESH_INTERVAL,
         System.POCKET_JUDGE,
         System.SCREENSHOT_SOUND,
+        System.THREE_FINGER_HOLD_SCREENSHOT,
+        System.THREE_FINGER_SWIPE_SCREENSHOT,
     };
 }

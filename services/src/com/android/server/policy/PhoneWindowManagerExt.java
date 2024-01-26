@@ -56,6 +56,8 @@ public class PhoneWindowManagerExt {
 
     private boolean mHasAlertSlider;
     private boolean mClickPartialScreenshot;
+    private boolean mThreeFingerHoldScreenshot;
+    private boolean mThreeFingerSwipeScreenshot;
     private boolean mPocketLockShowing;
     private boolean mIsDeviceInPocket;
 
@@ -143,11 +145,23 @@ public class PhoneWindowManagerExt {
         resolver.registerContentObserver(Settings.System.getUriFor(
                 SettingsExt.System.CLICK_PARTIAL_SCREENSHOT), false, observer,
                 UserHandle.USER_ALL);
+        resolver.registerContentObserver(Settings.System.getUriFor(
+                SettingsExt.System.THREE_FINGER_HOLD_SCREENSHOT), false, observer,
+                UserHandle.USER_ALL);
+        resolver.registerContentObserver(Settings.System.getUriFor(
+                SettingsExt.System.THREE_FINGER_SWIPE_SCREENSHOT), false, observer,
+                UserHandle.USER_ALL);
     }
 
     public void updateSettings(ContentResolver resolver) {
         mClickPartialScreenshot = Settings.System.getIntForUser(resolver,
                 SettingsExt.System.CLICK_PARTIAL_SCREENSHOT, 0,
+                UserHandle.USER_CURRENT) == 1;
+        mThreeFingerHoldScreenshot = Settings.System.getIntForUser(resolver,
+                SettingsExt.System.THREE_FINGER_HOLD_SCREENSHOT, 0,
+                UserHandle.USER_CURRENT) == 1;
+        mThreeFingerSwipeScreenshot = Settings.System.getIntForUser(resolver,
+                SettingsExt.System.THREE_FINGER_SWIPE_SCREENSHOT, 0,
                 UserHandle.USER_CURRENT) == 1;
     }
 
@@ -202,8 +216,30 @@ public class PhoneWindowManagerExt {
         return result;
     }
 
+    public void takeScreenshotIfSetupCompleted(boolean fullscreen) {
+        if (!mPhoneWindowManager.isUserSetupComplete()) {
+            return;
+        }
+        if (!fullscreen && mPhoneWindowManager.isKeyguardShowing()) {
+            return;
+        }
+        mPhoneWindowManager.takeScreenshotExt(fullscreen);
+    }
+
     public boolean isClickPartialScreenshot() {
         return mClickPartialScreenshot;
+    }
+
+    public boolean isThreeFingerGestureOn() {
+        return mThreeFingerHoldScreenshot || mThreeFingerSwipeScreenshot;
+    }
+
+    public boolean isThreeFingerHoldOn() {
+        return mThreeFingerHoldScreenshot;
+    }
+
+    public boolean isThreeFingerSwipeOn() {
+        return mThreeFingerSwipeScreenshot;
     }
 
     public boolean isDeviceInPocket() {

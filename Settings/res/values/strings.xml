@@ -189,10 +189,6 @@
     <string name="qstile_requires_unlocking_title">Secure QS tiles</string>
     <string name="qstile_requires_unlocking_summary">Require unlocking to access some sensitive QS tiles</string>
 
-    <!-- Click to partical screenshot -->
-    <string name="click_partial_screenshot_title">Click to partial screenshot</string>
-    <string name="click_partial_screenshot_summary">Short click Volume Down and Power to take partial screenshot</string>
-
     <!-- Preferred 5g mode -->
     <string name="preferred_5g_mode_title">Preferred 5G mode</string>
     <string name="preferred_5g_mode_summary">Select preferred 5G mode for each sim card</string>
@@ -242,5 +238,15 @@
 
     <!-- Charging sound -->
     <string name="charging_sound_custom_title">Charging sound</string>
+
+    <!-- Screenshot gestures -->
+    <string name="screenshot_gestures_title">Screenshot gestures</string>
+    <string name="screenshot_gestures_summary">Configure various gestures to take screenshot</string>
+    <string name="click_partial_screenshot_title">Click to partial screenshot</string>
+    <string name="click_partial_screenshot_summary">Short click Volume Down and Power to take partial screenshot</string>
+    <string name="three_finger_hold_screenshot_title">Hold to partial screenshot</string>
+    <string name="three_finger_hold_screenshot_summary">Hold with three fingers on screen for 1s to take partial screenshot</string>
+    <string name="three_finger_swipe_screenshot_title">Swipe to full screenshot</string>
+    <string name="three_finger_swipe_screenshot_summary">Swipe down with three fingers on screen to take full screenshot</string>
 
 </resources>

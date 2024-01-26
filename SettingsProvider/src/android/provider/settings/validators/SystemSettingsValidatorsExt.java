@@ -58,6 +58,8 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.NETWORK_TRAFFIC_REFRESH_INTERVAL, NON_NEGATIVE_INTEGER_VALIDATOR);
         VALIDATORS.put(System.POCKET_JUDGE, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.SCREENSHOT_SOUND, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.THREE_FINGER_HOLD_SCREENSHOT, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.THREE_FINGER_SWIPE_SCREENSHOT, BOOLEAN_VALIDATOR);
     }
 
     private static class PerAppConfigValidator implements Validator {

@@ -50,6 +50,12 @@ public abstract class GestureListenerBase implements IGestureListener {
 
     protected abstract boolean isSupportGestureType(int gesture);
 
+    protected abstract boolean shouldInterceptGesture();
+
+    protected boolean dispatchCancelIfNeeded() {
+        return false;
+    }
+
     public GestureListenerBase(SystemGesture systemGesture, Context context) {
         mSystemGesture = systemGesture;
         mContext = context;

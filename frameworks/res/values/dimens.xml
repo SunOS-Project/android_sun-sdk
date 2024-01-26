@@ -17,4 +17,8 @@
     <dimen name="pocket_view_top_tag_size">14sp</dimen>
     <dimen name="pocket_view_top_tag_margin_top">8dp</dimen>
 
+    <!-- System gesture -->
+    <dimen name="bottom_gesture_touch_slop">2dp</dimen>
+    <dimen name="screenshot_gesture_valid_distance">33.33dp</dimen>
+
 </resources>

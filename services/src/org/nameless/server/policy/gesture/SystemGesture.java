@@ -5,6 +5,7 @@
 
 package org.nameless.server.policy.gesture;
 
+import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_CANCEL;
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_DOWN;
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_MOVE;
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_MOVE_TRIGGERED;
@@ -57,6 +58,8 @@ public class SystemGesture {
         mPhoneWindowManagerExt = ext;
         mContext = context;
         mDisplay = context.getSystemService(WindowManager.class).getDefaultDisplay();
+
+        mGestureListeners.add(new ThreeFingerGestureListener(this, mContext));
     }
 
     public Display getDisplay() {
@@ -83,10 +86,12 @@ public class SystemGesture {
             case MotionEvent.ACTION_DOWN:
                 for (GestureListenerBase listener : mGestureListeners) {
                     if (listener.interceptMotionBeforeQueueing(event)) {
-                        intercept = true;
+                        intercept = listener.shouldInterceptGesture();
                         mTargetGestureListener = listener;
                         mLastDownPos = new PointF(event.getRawX(), event.getRawY());
-                        mHandler.sendEmptyMessageDelayed(MSG_DISPATCH_MOVE, 300L);
+                        if (intercept) {
+                            mHandler.sendEmptyMessageDelayed(MSG_DISPATCH_MOVE, 300L);
+                        }
                         break;
                     }
                 }
@@ -96,25 +101,49 @@ public class SystemGesture {
                     return SYSTEM_GESTURE_NONE;
                 }
                 if (mTargetGestureListener.interceptMotionBeforeQueueing(event)) {
+                    if (mTargetGestureListener.dispatchCancelIfNeeded()) {
+                        return SYSTEM_GESTURE_CANCEL;
+                    }
+                    if (!mTargetGestureListener.shouldInterceptGesture()) {
+                        return SYSTEM_GESTURE_NONE;
+                    }
                     return mTargetGestureListener.mGestureState == GestureState.TRIGGERED
                             ? SYSTEM_GESTURE_MOVE_TRIGGERED : SYSTEM_GESTURE_MOVE;
                 }
                 return SYSTEM_GESTURE_NONE;
-            case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
                 if (mTargetGestureListener == null) {
                     return SYSTEM_GESTURE_NONE;
                 }
                 final int ret;
                 if (mTargetGestureListener.interceptMotionBeforeQueueing(event)) {
-                    ret = mTargetGestureListener.mGestureState == GestureState.TRIGGERED
-                            ? SYSTEM_GESTURE_UP_TRIGGERED : SYSTEM_GESTURE_UP;
+                    if (!mTargetGestureListener.shouldInterceptGesture()) {
+                        ret = SYSTEM_GESTURE_NONE;
+                    } else {
+                        ret = mTargetGestureListener.mGestureState == GestureState.TRIGGERED
+                                ? SYSTEM_GESTURE_UP_TRIGGERED : SYSTEM_GESTURE_UP;
+                    }
                     mTargetGestureListener.mGestureState = GestureState.IDLE;
                 } else {
                     ret = SYSTEM_GESTURE_NONE;
                 }
                 mTargetGestureListener = null;
                 return ret;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                if (mTargetGestureListener == null) {
+                    return SYSTEM_GESTURE_NONE;
+                }
+                if (mTargetGestureListener.interceptMotionBeforeQueueing(event)) {
+                    if (mTargetGestureListener.dispatchCancelIfNeeded()) {
+                        return SYSTEM_GESTURE_CANCEL;
+                    }
+                }
+                return SYSTEM_GESTURE_NONE;
+            case MotionEvent.ACTION_POINTER_UP:
+                if (mTargetGestureListener != null) {
+                    mTargetGestureListener.interceptMotionBeforeQueueing(event);
+                }
+                return SYSTEM_GESTURE_NONE;
             default:
                 return SYSTEM_GESTURE_NONE;
         }
@@ -189,10 +218,14 @@ public class SystemGesture {
             switch (message.what) {
                 case MSG_DISPATCH_MOVE:
                     if (mLastDownPos != null) {
-                        final Instrumentation inst = new Instrumentation();  
-                        inst.sendPointerSync(MotionEvent.obtain(SystemClock.uptimeMillis(),  
-                                SystemClock.uptimeMillis(), MotionEvent.ACTION_MOVE,
-                                mLastDownPos.x, mLastDownPos.y, 0));
+                        final Instrumentation inst = new Instrumentation();
+                        try {
+                            inst.sendPointerSync(MotionEvent.obtain(SystemClock.uptimeMillis(),
+                                    SystemClock.uptimeMillis(), MotionEvent.ACTION_MOVE,
+                                    mLastDownPos.x, mLastDownPos.y, 0));
+                        } catch (Exception e) {
+                            Slog.w(TAG, "Failed to dispatch move motion event");
+                        }
                         mLastDownPos = null;
                     }
                     break;

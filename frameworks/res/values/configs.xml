@@ -57,9 +57,6 @@
     <string-array name="config_nonCloneableUserAppList" translatable="false">
     </string-array>
 
-    <!-- System gesture listener -->
-    <dimen name="bottom_gesture_touch_slop">2dp</dimen>
-
     <!-- Pocket Lock -->
     <bool name="config_pocketModeSupported">true</bool>
     <bool name="config_pocketUseLightSensor">true</bool>
