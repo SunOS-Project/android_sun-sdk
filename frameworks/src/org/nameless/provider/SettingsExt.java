@@ -272,6 +272,12 @@ public class SettingsExt {
          * @hide
          */
         public static final String POCKET_JUDGE = "pocket_judge";
+
+        /**
+         * Whether to play sound on screenshot
+         * @hide
+         */
+        public static final String SCREENSHOT_SOUND = "screenshot_sound";
     }
 
     public static class Secure {

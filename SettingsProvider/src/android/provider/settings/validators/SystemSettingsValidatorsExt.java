@@ -57,6 +57,7 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD, NON_NEGATIVE_INTEGER_VALIDATOR);
         VALIDATORS.put(System.NETWORK_TRAFFIC_REFRESH_INTERVAL, NON_NEGATIVE_INTEGER_VALIDATOR);
         VALIDATORS.put(System.POCKET_JUDGE, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.SCREENSHOT_SOUND, BOOLEAN_VALIDATOR);
     }
 
     private static class PerAppConfigValidator implements Validator {
