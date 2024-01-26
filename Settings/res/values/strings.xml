@@ -240,4 +240,7 @@
     <!-- Screnshot sound -->
     <string name="screenshot_sound_title">Screenshot sound</string>
 
+    <!-- Charging sound -->
+    <string name="charging_sound_custom_title">Charging sound</string>
+
 </resources>
