@@ -41,6 +41,7 @@ import com.android.systemui.qs.QsEventLogger;
 import com.android.systemui.qs.logging.QSLogger;
 import com.android.systemui.qs.pipeline.domain.interactor.PanelInteractor;
 import com.android.systemui.qs.tileimpl.QSTileImpl;
+import com.android.systemui.statusbar.policy.KeyguardStateController;
 
 import javax.inject.Inject;
 
@@ -49,6 +50,7 @@ public class ScreenshotTile extends QSTileImpl<BooleanState> {
 
     public static final String TILE_SPEC = "screenshot";
 
+    private final KeyguardStateController mKeyguard;
     private final PanelInteractor mPanelInteractor;
 
     private boolean mRegion = false;
@@ -64,10 +66,12 @@ public class ScreenshotTile extends QSTileImpl<BooleanState> {
             StatusBarStateController statusBarStateController,
             ActivityStarter activityStarter,
             QSLogger qsLogger,
+            KeyguardStateController keyguardStateController,
             PanelInteractor panelInteractor
     ) {
         super(host, uiEventLogger, backgroundLooper, mainHandler, falsingManager,
                 metricsLogger, statusBarStateController, activityStarter, qsLogger);
+        mKeyguard = keyguardStateController;
         mPanelInteractor = panelInteractor;
     }
 
@@ -87,19 +91,22 @@ public class ScreenshotTile extends QSTileImpl<BooleanState> {
 
     @Override
     protected void handleClick(@Nullable View view) {
+        if (mKeyguard.isShowing()) {
+            return;
+        }
         mRegion = !mRegion;
         refreshState();
     }
 
     @Override
     public void handleLongClick(@Nullable View view) {
+        if (mKeyguard.isShowing()) {
+            return;
+        }
         mPanelInteractor.collapsePanels();
-
-        //finish collapsing the panel
-        try {
-            Thread.sleep(1000); //1s
-        } catch (InterruptedException ie) {}
-        CustomUtils.takeScreenshot(!mRegion);
+        mHandler.postDelayed(() -> {
+            CustomUtils.takeScreenshot(!mRegion);
+        }, 1000L);
     }
 
     @Override
@@ -116,7 +123,11 @@ public class ScreenshotTile extends QSTileImpl<BooleanState> {
     protected void handleUpdateState(BooleanState state, Object arg) {
         state.label = mContext.getString(R.string.quick_settings_screenshot_label);
         state.icon = ResourceIcon.get(R.drawable.ic_qs_screenshot);
-        state.state = Tile.STATE_INACTIVE;
+        if (mKeyguard.isShowing()) {
+            state.state = Tile.STATE_UNAVAILABLE;
+        } else {
+            state.state = Tile.STATE_INACTIVE;
+        }
         if (mRegion) {
             state.secondaryLabel = mContext.getString(R.string.quick_settings_region_screenshot_label);
             state.contentDescription = mContext.getString(
