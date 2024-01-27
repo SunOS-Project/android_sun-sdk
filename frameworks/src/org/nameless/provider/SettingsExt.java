@@ -290,6 +290,24 @@ public class SettingsExt {
          * @hide
          */
         public static final String THREE_FINGER_SWIPE_SCREENSHOT = "three_finger_swipe_screenshot";
+
+        /**
+         * Whether to enable double tap to sleep for lockscreen
+         * @hide
+         */
+        public static final String DOUBLE_TAP_SLEEP_LOCKSCREEN = "double_tap_sleep_lockscreen";
+
+        /**
+         * Whether to enable double tap to sleep for status bar
+         * @hide
+         */
+        public static final String DOUBLE_TAP_SLEEP_STATUSBAR = "double_tap_sleep_statusbar";
+
+        /**
+         * Whether to enable status bar gestures only in portrait mode
+         * @hide
+         */
+        public static final String STATUSBAR_GESTURE_PORTRAIT_ONLY = "statusbar_gesture_portrait_only";
     }
 
     public static class Secure {

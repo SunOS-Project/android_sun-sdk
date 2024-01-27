@@ -253,4 +253,16 @@
     <string name="wake_when_plugged_or_unplugged_title">Wake on plug</string>
     <string name="wake_when_plugged_or_unplugged_summary">Turn the screen on when charger gets plugged / unplugged</string>
 
+    <!-- Double tap sleep lockcreen -->
+    <string name="double_tap_to_sleep_lockscreen_title">Tap to sleep</string>
+    <string name="double_tap_to_sleep_lockscreen_summary">Double-tap on the lockscreen to sleep device</string>
+
+    <!-- Double tap sleep statusbar -->
+    <string name="double_tap_to_sleep_statusbar_title">Tap to sleep</string>
+    <string name="double_tap_to_sleep_statusbar_summary">Double-tap on the status bar to sleep device</string>
+
+    <!-- Disable tap gestures on statusbar in landscape -->
+    <string name="statusbar_gestures_disable_landscape_title">Disable in landscape</string>
+    <string name="statusbar_gestures_disable_landscape_summary">Disable tap gestures on status bar when device is in landscape mode</string>
+
 </resources>

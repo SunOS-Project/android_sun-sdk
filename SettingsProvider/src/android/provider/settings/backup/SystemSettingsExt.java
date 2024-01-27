@@ -44,5 +44,8 @@ public class SystemSettingsExt {
         System.SCREENSHOT_SOUND,
         System.THREE_FINGER_HOLD_SCREENSHOT,
         System.THREE_FINGER_SWIPE_SCREENSHOT,
+        System.DOUBLE_TAP_SLEEP_LOCKSCREEN,
+        System.DOUBLE_TAP_SLEEP_STATUSBAR,
+        System.STATUSBAR_GESTURE_PORTRAIT_ONLY,
     };
 }
