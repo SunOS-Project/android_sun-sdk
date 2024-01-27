@@ -31,5 +31,6 @@ public class GlobalSettingsValidatorsExt {
             }
         });
         VALIDATORS.put(Global.LOW_POWER_REFRESH_RATE, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(Global.WAKE_WHEN_PLUGGED_OR_UNPLUGGED, BOOLEAN_VALIDATOR);
     }
 }

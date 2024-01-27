@@ -249,4 +249,8 @@
     <string name="three_finger_swipe_screenshot_title">Swipe to full screenshot</string>
     <string name="three_finger_swipe_screenshot_summary">Swipe down with three fingers on screen to take full screenshot</string>
 
+    <!-- Wake on plug -->
+    <string name="wake_when_plugged_or_unplugged_title">Wake on plug</string>
+    <string name="wake_when_plugged_or_unplugged_summary">Turn the screen on when charger gets plugged / unplugged</string>
+
 </resources>

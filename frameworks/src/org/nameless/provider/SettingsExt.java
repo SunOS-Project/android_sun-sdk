@@ -363,5 +363,12 @@ public class SettingsExt {
          * @hide
          */
         public static final String LOW_POWER_REFRESH_RATE = "low_power_rr_switch";
+
+        /**
+         * Whether to wake the display when plugging or unplugging the charger
+         *
+         * @hide
+         */
+        public static final String WAKE_WHEN_PLUGGED_OR_UNPLUGGED = "wake_when_plugged_or_unplugged";
     }
 }

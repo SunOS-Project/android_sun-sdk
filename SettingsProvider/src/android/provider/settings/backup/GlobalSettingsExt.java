@@ -13,5 +13,6 @@ public class GlobalSettingsExt {
 
     @UnsupportedAppUsage
     public static final String[] SETTINGS_TO_BACKUP = {
+        Global.WAKE_WHEN_PLUGGED_OR_UNPLUGGED,
     };
 }
