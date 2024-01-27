@@ -40,6 +40,7 @@ import javax.inject.Inject
 
 import org.nameless.provider.SettingsExt.System.DOUBLE_TAP_SLEEP_LOCKSCREEN
 import org.nameless.provider.SettingsExt.System.DOUBLE_TAP_SLEEP_STATUSBAR
+import org.nameless.provider.SettingsExt.System.STATUSBAR_BRIGHTNESS_CONTROL
 import org.nameless.provider.SettingsExt.System.STATUSBAR_GESTURE_PORTRAIT_ONLY
 
 @SysUISingleton
@@ -55,6 +56,7 @@ class CustomGestureListener @Inject constructor(
 
     private var doubleTapSleepLockscreen = false
     private var doubleTapSleepStatusbar = false
+    private var statusbarBrightnessControl = false
     private var gesturePortraitOnly = false
 
     private var isLandscape: Boolean
@@ -65,6 +67,7 @@ class CustomGestureListener @Inject constructor(
                 when (uri?.lastPathSegment) {
                     DOUBLE_TAP_SLEEP_LOCKSCREEN -> updateDoubleTapSleepLockscreen()
                     DOUBLE_TAP_SLEEP_STATUSBAR -> updateDoubleTapSleepStatusbar()
+                    STATUSBAR_BRIGHTNESS_CONTROL -> updateStatusbarBrightnessControl()
                     STATUSBAR_GESTURE_PORTRAIT_ONLY -> updateGesturePortraitOnly()
                 }
             }
@@ -74,6 +77,9 @@ class CustomGestureListener @Inject constructor(
                 true, settingsObserver)
         systemSettings.registerContentObserver(
                 Settings.System.getUriFor(DOUBLE_TAP_SLEEP_STATUSBAR),
+                true, settingsObserver)
+        systemSettings.registerContentObserver(
+                Settings.System.getUriFor(STATUSBAR_BRIGHTNESS_CONTROL),
                 true, settingsObserver)
         systemSettings.registerContentObserver(
                 Settings.System.getUriFor(STATUSBAR_GESTURE_PORTRAIT_ONLY),
@@ -97,6 +103,7 @@ class CustomGestureListener @Inject constructor(
     private fun updateSettings() {
         updateDoubleTapSleepLockscreen()
         updateDoubleTapSleepStatusbar()
+        updateStatusbarBrightnessControl()
         updateGesturePortraitOnly()
     }
 
@@ -114,6 +121,13 @@ class CustomGestureListener @Inject constructor(
                 1, userTracker.userId) != 0
     }
 
+    private fun updateStatusbarBrightnessControl() {
+        statusbarBrightnessControl = Settings.System.getIntForUser(
+                context.contentResolver,
+                STATUSBAR_BRIGHTNESS_CONTROL,
+                0, userTracker.userId) != 0
+    }
+
     private fun updateGesturePortraitOnly() {
         gesturePortraitOnly = Settings.System.getIntForUser(
                 context.contentResolver,
@@ -127,6 +141,10 @@ class CustomGestureListener @Inject constructor(
 
     fun shouldSleepFromStatusbar(): Boolean {
         return doubleTapSleepStatusbar && (!gesturePortraitOnly || !isLandscape)
+    }
+
+    fun isStatusbarBrightnessControlEnabled(): Boolean {
+        return statusbarBrightnessControl && (!gesturePortraitOnly || !isLandscape)
     }
 
     override fun onDoubleTapEvent(e: MotionEvent): Boolean {

@@ -304,6 +304,12 @@ public class SettingsExt {
         public static final String DOUBLE_TAP_SLEEP_STATUSBAR = "double_tap_sleep_statusbar";
 
         /**
+         * Whether to enable status bar brightness control
+         * @hide
+         */
+        public static final String STATUSBAR_BRIGHTNESS_CONTROL = "statusbar_brightness_control";
+
+        /**
          * Whether to enable status bar gestures only in portrait mode
          * @hide
          */

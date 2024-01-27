@@ -46,6 +46,7 @@ public class SystemSettingsExt {
         System.THREE_FINGER_SWIPE_SCREENSHOT,
         System.DOUBLE_TAP_SLEEP_LOCKSCREEN,
         System.DOUBLE_TAP_SLEEP_STATUSBAR,
+        System.STATUSBAR_BRIGHTNESS_CONTROL,
         System.STATUSBAR_GESTURE_PORTRAIT_ONLY,
     };
 }

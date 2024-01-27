@@ -261,6 +261,10 @@
     <string name="double_tap_to_sleep_statusbar_title">Tap to sleep</string>
     <string name="double_tap_to_sleep_statusbar_summary">Double-tap on the status bar to sleep device</string>
 
+    <!-- Statusbar brightness control -->
+    <string name="statusbar_brightness_control_title">Brightness control</string>
+    <string name="statusbar_brightness_control_summary">Adjust brightness by hold and sliding across the status bar</string>
+
     <!-- Disable tap gestures on statusbar in landscape -->
     <string name="statusbar_gestures_disable_landscape_title">Disable in landscape</string>
     <string name="statusbar_gestures_disable_landscape_summary">Disable tap gestures on status bar when device is in landscape mode</string>

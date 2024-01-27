@@ -67,13 +67,19 @@ public class LandscapeTapGesturesPreferenceController extends BasePreferenceCont
                 mContext.getContentResolver(),
                 SettingsExt.System.DOUBLE_TAP_SLEEP_STATUSBAR, 1,
                 UserHandle.USER_CURRENT) == 1;
-        mPreference.setEnabled(doubleTapSleepStatusbar);
+        final boolean brightnessControl = Settings.System.getIntForUser(
+                mContext.getContentResolver(),
+                SettingsExt.System.STATUSBAR_BRIGHTNESS_CONTROL, 0,
+                UserHandle.USER_CURRENT) == 1;
+        mPreference.setEnabled(doubleTapSleepStatusbar || brightnessControl);
     }
 
     private class SettingObserver extends ContentObserver {
 
         private final Uri mDoubleTapGestureUri = Settings.System.getUriFor(
                 SettingsExt.System.DOUBLE_TAP_SLEEP_STATUSBAR);
+        private final Uri mBrightnessControlUri = Settings.System.getUriFor(
+                SettingsExt.System.STATUSBAR_BRIGHTNESS_CONTROL);
 
         SettingObserver() {
             super(new Handler());
@@ -81,6 +87,7 @@ public class LandscapeTapGesturesPreferenceController extends BasePreferenceCont
 
         public void register(ContentResolver cr) {
             cr.registerContentObserver(mDoubleTapGestureUri, false, this);
+            cr.registerContentObserver(mBrightnessControlUri, false, this);
         }
 
         public void unregister(ContentResolver cr) {
