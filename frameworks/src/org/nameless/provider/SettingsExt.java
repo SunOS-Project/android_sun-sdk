@@ -314,6 +314,12 @@ public class SettingsExt {
          * @hide
          */
         public static final String STATUSBAR_GESTURE_PORTRAIT_ONLY = "statusbar_gesture_portrait_only";
+
+        /**
+         * Whether to enable long press power button gesture to toggle torch when screen off.
+         * @hide
+         */
+        public static final String TORCH_POWER_BUTTON_GESTURE = "torch_power_button_gesture";
     }
 
     public static class Secure {

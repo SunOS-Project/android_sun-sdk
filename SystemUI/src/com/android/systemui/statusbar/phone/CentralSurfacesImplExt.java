@@ -52,6 +52,7 @@ public class CentralSurfacesImplExt {
     private CentralSurfacesImpl mCentralSurfacesImpl;
     private Context mContext;
     private CustomGestureListener mCustomGestureListener;
+    private int mDisplayId;
     private MessageRouter mMessageRouter;
     private StatusBarWindowController mStatusBarWindowController;
     private VibratorHelper mVibratorHelper;
@@ -74,12 +75,14 @@ public class CentralSurfacesImplExt {
     public void init(CentralSurfacesImpl centralSurfacesImpl,
             Context context,
             CustomGestureListener customGestureListener,
+            int displayId,
             MessageRouter messageRouter,
             StatusBarWindowController statusBarWindowController,
             VibratorHelper vibratorHelper) {
         mCentralSurfacesImpl = centralSurfacesImpl;
         mContext = context;
         mCustomGestureListener = customGestureListener;
+        mDisplayId = displayId;
         mMessageRouter = messageRouter;
         mStatusBarWindowController = statusBarWindowController;
         mVibratorHelper = vibratorHelper;
@@ -182,7 +185,7 @@ public class CentralSurfacesImplExt {
     public void checkBrightnessChanged(boolean upOrCancel) {
         if (mBrightnessChanged && upOrCancel) {
             mBrightnessChanged = false;
-            mDisplayManager.setBrightness(mCentralSurfacesImpl.getDisplayId(), mCurrentBrightness);
+            mDisplayManager.setBrightness(mDisplayId, mCurrentBrightness);
         }
     }
 

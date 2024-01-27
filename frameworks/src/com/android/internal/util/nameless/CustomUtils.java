@@ -11,11 +11,13 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.RemoteException;
+import android.os.ServiceManager;
 import android.os.UserHandle;
 import android.view.IWindowManager;
 import android.view.WindowManagerGlobal;
 
 import com.android.internal.R;
+import com.android.internal.statusbar.IStatusBarService;
 import com.android.internal.util.ArrayUtils;
 import com.android.internal.util.CollectionUtils;
 
@@ -63,6 +65,16 @@ public class CustomUtils {
         final IWindowManager windowManager = WindowManagerGlobal.getWindowManagerService();
         try {
             windowManager.takeScreenshotExt(fullscreen);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void toggleCameraFlash() {
+        final IStatusBarService service = IStatusBarService.Stub.asInterface(
+                ServiceManager.getService(Context.STATUS_BAR_SERVICE));
+        try {
+            service.toggleCameraFlash();
         } catch (RemoteException e) {
             e.printStackTrace();
         }

@@ -48,5 +48,6 @@ public class SystemSettingsExt {
         System.DOUBLE_TAP_SLEEP_STATUSBAR,
         System.STATUSBAR_BRIGHTNESS_CONTROL,
         System.STATUSBAR_GESTURE_PORTRAIT_ONLY,
+        System.TORCH_POWER_BUTTON_GESTURE,
     };
 }

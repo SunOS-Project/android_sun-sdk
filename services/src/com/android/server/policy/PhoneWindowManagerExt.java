@@ -18,15 +18,18 @@ import static org.nameless.server.policy.gesture.GestureListenerBase.motionEvent
 import android.content.ContentResolver;
 import android.database.ContentObserver;
 import android.os.Handler;
+import android.os.Process;
 import android.os.RemoteException;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.util.Slog;
 import android.view.Display;
+import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 import com.android.internal.app.AssistUtils;
+import com.android.internal.util.nameless.CustomUtils;
 
 import com.android.server.policy.WindowManagerPolicy.WindowState;
 
@@ -56,6 +59,7 @@ public class PhoneWindowManagerExt {
 
     private boolean mHasAlertSlider;
     private boolean mClickPartialScreenshot;
+    private boolean mPowerTorchGesture;
     private boolean mThreeFingerHoldScreenshot;
     private boolean mThreeFingerSwipeScreenshot;
     private boolean mPocketLockShowing;
@@ -146,6 +150,9 @@ public class PhoneWindowManagerExt {
                 SettingsExt.System.CLICK_PARTIAL_SCREENSHOT), false, observer,
                 UserHandle.USER_ALL);
         resolver.registerContentObserver(Settings.System.getUriFor(
+                SettingsExt.System.TORCH_POWER_BUTTON_GESTURE), false, observer,
+                UserHandle.USER_ALL);
+        resolver.registerContentObserver(Settings.System.getUriFor(
                 SettingsExt.System.THREE_FINGER_HOLD_SCREENSHOT), false, observer,
                 UserHandle.USER_ALL);
         resolver.registerContentObserver(Settings.System.getUriFor(
@@ -156,6 +163,9 @@ public class PhoneWindowManagerExt {
     public void updateSettings(ContentResolver resolver) {
         mClickPartialScreenshot = Settings.System.getIntForUser(resolver,
                 SettingsExt.System.CLICK_PARTIAL_SCREENSHOT, 0,
+                UserHandle.USER_CURRENT) == 1;
+        mPowerTorchGesture = Settings.System.getIntForUser(resolver,
+                SettingsExt.System.TORCH_POWER_BUTTON_GESTURE, 0,
                 UserHandle.USER_CURRENT) == 1;
         mThreeFingerHoldScreenshot = Settings.System.getIntForUser(resolver,
                 SettingsExt.System.THREE_FINGER_HOLD_SCREENSHOT, 0,
@@ -179,6 +189,30 @@ public class PhoneWindowManagerExt {
 
     public boolean hasAssistant(int currentUserId) {
         return mAssistUtils.getAssistComponentForUser(currentUserId) != null;
+    }
+
+    public boolean handleTorchPress(boolean fromNonInteractive) {
+        if (!isPowerTorchGestureOn()) {
+            return false;
+        }
+        if (mPocketLockShowing) {
+            return false;
+        }
+        if (!fromNonInteractive && !isTorchTurnedOn()) {
+            return false;
+        }
+        mPhoneWindowManager.performHapticFeedback(
+                Process.myUid(),
+                mPhoneWindowManager.mContext.getOpPackageName(),
+                HapticFeedbackConstants.LONG_PRESS, true,
+                "Power - Long Press - Torch");
+        CustomUtils.toggleCameraFlash();
+        return true;
+    }
+
+    private boolean isTorchTurnedOn() {
+        return Settings.Secure.getInt(mPhoneWindowManager.mContext.getContentResolver(),
+                Settings.Secure.FLASHLIGHT_ENABLED, 0) != 0;
     }
 
     public boolean interceptKeyBeforeQueueing(int keyCode, boolean down, boolean interactive) {
@@ -228,6 +262,10 @@ public class PhoneWindowManagerExt {
 
     public boolean isClickPartialScreenshot() {
         return mClickPartialScreenshot;
+    }
+
+    public boolean isPowerTorchGestureOn() {
+        return mPowerTorchGesture;
     }
 
     public boolean isThreeFingerGestureOn() {
