@@ -46,6 +46,13 @@ public class DebugConstants {
         "persist.sys.nameless.display.iris.debug", false
     );
 
+    // Enable this to debug DisplayRotationExt
+    // Package: org.nameless.server.wm.DisplayRotationExt
+    // Key: DisplayRotationExt
+    public static final boolean DEBUG_DISPLAY_ROTATE = DEBUG_GLOBAL || SystemProperties.getBoolean(
+        "persist.sys.nameless.display.rotate.debug", false
+    );
+
     // Enable this to debug DisplayRefreshRateController
     // Package: org.nameless.server.display.DisplayRefreshRateController
     // Key: DisplayModeDirector, DisplayRefreshRateController

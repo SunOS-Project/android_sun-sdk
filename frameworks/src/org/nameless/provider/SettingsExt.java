@@ -320,6 +320,12 @@ public class SettingsExt {
          * @hide
          */
         public static final String TORCH_POWER_BUTTON_GESTURE = "torch_power_button_gesture";
+
+        /**
+         * Per-app auto-rotate config
+         * @hide
+         */
+        public static final String AUTO_ROTATE_CONFIG_CUSTOM = "auto_rotate_config_custom";
     }
 
     public static class Secure {

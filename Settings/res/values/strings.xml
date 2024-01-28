@@ -273,4 +273,11 @@
     <string name="power_button_torch_title">Power button toggles torch</string>
     <string name="power_button_torch_summary">Long press power button to toggle torch when screen off</string>
 
+    <!-- Per-app auto rotate -->
+    <string name="per_app_auto_rotate_title">Per-app auto-rotate config</string>
+    <string name="per_app_auto_rotate_summary">Configure auto-rotate individually for each apps</string>
+    <string name="per_app_auto_rotate_default">Follow system</string>
+    <string name="per_app_auto_rotate_off">Disable auto-rotate</string>
+    <string name="per_app_auto_rotate_on">Enable auto-rotate</string>
+
 </resources>

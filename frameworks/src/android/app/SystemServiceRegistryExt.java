@@ -18,7 +18,9 @@ import org.nameless.content.ContextExt;
 import org.nameless.display.IRefreshRateManagerService;
 import org.nameless.display.RefreshRateManager;
 import org.nameless.os.IPocketService;
+import org.nameless.os.IRotateManagerService;
 import org.nameless.os.PocketManager;
+import org.nameless.os.RotateManager;
 import org.nameless.view.AppFocusManager;
 import org.nameless.view.DisplayResolutionManager;
 import org.nameless.view.IAppFocusManagerService;
@@ -73,6 +75,15 @@ public class SystemServiceRegistryExt {
                 IBinder binder = ServiceManager.getService(ContextExt.REFRESH_RATE_MANAGER_SERVICE);
                 IRefreshRateManagerService service = IRefreshRateManagerService.Stub.asInterface(binder);
                 return new RefreshRateManager(ctx.getOuterContext(), service);
+            }});
+
+        registerService(ContextExt.ROTATE_MANAGER_SERVICE, RotateManager.class,
+                new CachedServiceFetcher<RotateManager>() {
+            @Override
+            public RotateManager createService(ContextImpl ctx) {
+                IBinder binder = ServiceManager.getService(ContextExt.ROTATE_MANAGER_SERVICE);
+                IRotateManagerService service = IRotateManagerService.Stub.asInterface(binder);
+                return new RotateManager(ctx.getOuterContext(), service);
             }});
     }
 }

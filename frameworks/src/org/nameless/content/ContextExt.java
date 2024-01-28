@@ -59,4 +59,14 @@ public class ContextExt {
      * @see org.nameless.display.RefreshRateManager
      */
     public static final String REFRESH_RATE_MANAGER_SERVICE = "refresh_rate_ext";
+
+    /**
+     * Use with {@link #getSystemService} to retrieve a
+     * {@link org.nameless.os.RotateManager} for managing display auto rotate.
+     *
+     * @hide
+     * @see #getSystemService
+     * @see org.nameless.os.RotateManager
+     */
+    public static final String ROTATE_MANAGER_SERVICE = "rotate_ext";
 }

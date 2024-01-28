@@ -49,5 +49,6 @@ public class SystemSettingsExt {
         System.STATUSBAR_BRIGHTNESS_CONTROL,
         System.STATUSBAR_GESTURE_PORTRAIT_ONLY,
         System.TORCH_POWER_BUTTON_GESTURE,
+        System.AUTO_ROTATE_CONFIG_CUSTOM,
     };
 }

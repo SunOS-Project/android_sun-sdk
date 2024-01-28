@@ -65,6 +65,7 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.STATUSBAR_BRIGHTNESS_CONTROL, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.STATUSBAR_GESTURE_PORTRAIT_ONLY, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.TORCH_POWER_BUTTON_GESTURE, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.AUTO_ROTATE_CONFIG_CUSTOM, new PerAppConfigValidator());
     }
 
     private static class PerAppConfigValidator implements Validator {

@@ -13,6 +13,7 @@ import static android.content.Intent.ACTION_PACKAGE_REMOVED;
 import static android.content.Intent.ACTION_PACKAGE_REPLACED;
 import static android.content.Intent.ACTION_SCREEN_OFF;
 import static android.content.Intent.ACTION_SCREEN_ON;
+import static android.content.Intent.ACTION_SHUTDOWN;
 import static android.content.Intent.ACTION_USER_PRESENT;
 import static android.content.Intent.EXTRA_REPLACING;
 import static android.os.PowerManager.ACTION_POWER_SAVE_MODE_CHANGED;
@@ -47,6 +48,7 @@ import org.nameless.server.display.DisplayRefreshRateController;
 import org.nameless.server.policy.PocketModeController;
 import org.nameless.server.vibrator.LinearmotorVibratorController;
 import org.nameless.server.wm.DisplayResolutionController;
+import org.nameless.server.wm.DisplayRotationExt;
 
 public class NamelessSystemExService extends SystemService {
 
@@ -68,6 +70,7 @@ public class NamelessSystemExService extends SystemService {
     private PackageRemovedListener mPackageRemovedListener;
     private PowerStateListener mPowerStateListener;
     private ScreenStateListener mScreenStateListener;
+    private ShutdownListener mShutdownListener;
 
     private final Object mLock = new Object();
 
@@ -90,6 +93,7 @@ public class NamelessSystemExService extends SystemService {
             mPackageRemovedListener = new PackageRemovedListener();
             mPowerStateListener = new PowerStateListener();
             mScreenStateListener = new ScreenStateListener();
+            mShutdownListener = new ShutdownListener();
             if (mBatteryFeatureSupported) {
                 BatteryFeatureController.getInstance().onSystemServicesReady();
             }
@@ -115,9 +119,11 @@ public class NamelessSystemExService extends SystemService {
                 PocketModeController.getInstance().onBootCompleted();
             }
             DisplayRefreshRateController.getInstance().onBootCompleted();
+            DisplayRotationExt.getInstance().onBootCompleted();
             mPackageRemovedListener.register();
             mPowerStateListener.register();
             mScreenStateListener.register();
+            mShutdownListener.register();
             return;
         }
     }
@@ -140,6 +146,7 @@ public class NamelessSystemExService extends SystemService {
         }
         DisplayRefreshRateController.getInstance().initSystemExService(this);
         DisplayResolutionController.getInstance().initSystemExService(this);
+        DisplayRotationExt.getInstance().initSystemExService(this);
         LinearmotorVibratorController.getInstance().initSystemExService(this);
     }
 
@@ -147,15 +154,18 @@ public class NamelessSystemExService extends SystemService {
     public void onUserSwitching(TargetUser from, TargetUser to) {
         final int newUserId = to.getUserIdentifier();
         DisplayRefreshRateController.getInstance().onUserSwitching(newUserId);
+        DisplayRotationExt.getInstance().onUserSwitching(newUserId);
         PocketModeController.getInstance().onUserSwitching(newUserId);
     }
 
     private void onPackageRemoved(String packageName) {
         DisplayRefreshRateController.getInstance().onPackageRemoved(packageName);
+        DisplayRotationExt.getInstance().onPackageRemoved(packageName);
     }
 
     private void onScreenOff() {
         DisplayRefreshRateController.getInstance().onScreenOff();
+        DisplayRotationExt.getInstance().onScreenOff();
     }
 
     private void onScreenOn() {
@@ -170,19 +180,24 @@ public class NamelessSystemExService extends SystemService {
         synchronized (mLock) {
             mTopFullscreenPackage = packageName;
             DisplayRefreshRateController.getInstance().updateRefreshRate(packageName);
+            DisplayRotationExt.getInstance().updateAutoRotate(packageName);
         }
     }
 
-    public void onBatteryStateChanged() {
+    private void onBatteryStateChanged() {
         if (mBatteryFeatureSupported) {
             BatteryFeatureController.getInstance().onBatteryStateChanged();
         }
     }
 
-    public void onPowerSaveChanged() {
+    private void onPowerSaveChanged() {
         if (mBatteryFeatureSupported) {
             BatteryFeatureController.getInstance().onPowerSaveChanged();
         }
+    }
+
+    private void onShutdown() {
+        DisplayRotationExt.getInstance().onShutdown();
     }
 
     public ContentResolver getContentResolver() {
@@ -336,6 +351,23 @@ public class NamelessSystemExService extends SystemService {
             filter.addAction(ACTION_SCREEN_OFF);
             filter.addAction(ACTION_SCREEN_ON);
             filter.addAction(ACTION_USER_PRESENT);
+            getContext().registerReceiverForAllUsers(this, filter, null, mHandler);
+        }
+    }
+
+    private final class ShutdownListener extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case ACTION_SHUTDOWN:
+                    onShutdown();
+                    break;
+            }
+        }
+
+        public void register() {
+            final IntentFilter filter = new IntentFilter(ACTION_SHUTDOWN);
             getContext().registerReceiverForAllUsers(this, filter, null, mHandler);
         }
     }
