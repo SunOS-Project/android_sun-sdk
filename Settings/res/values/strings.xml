@@ -309,4 +309,17 @@
     <string name="keygaurd_media_art_title">Media art</string>
     <string name="keygaurd_media_art_summary">Display media art as lockscreen background</string>
 
+    <!-- Battery Icon -->
+    <string name="battery_icon_title">Battery Icon</string>
+    <string name="battery_icon_summary">Customize statusbar battery icon style</string>
+    <string name="battery_style_title">Battery style</string>
+    <string name="battery_style_icon_portrait">Icon portrait (default)</string>
+    <string name="battery_style_circle">Circle</string>
+    <string name="battery_style_text">Text</string>
+    <string name="battery_style_hidden">Hidden</string>
+    <string name="battery_percent_title">Battery percent</string>
+    <string name="battery_percent_hide">Hidden</string>
+    <string name="battery_percent_show_inside">Display inside icon</string>
+    <string name="battery_percent_show_outside">Display next to icon</string>
+
 </resources>
