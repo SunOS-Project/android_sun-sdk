@@ -36,6 +36,8 @@ import com.android.systemui.doze.DozeLog
 import com.android.systemui.keyguard.ScreenLifecycle
 import com.android.systemui.settings.UserTracker
 import com.android.systemui.statusbar.NotificationListener
+import com.android.systemui.statusbar.StatusBarState
+import com.android.systemui.statusbar.SysuiStatusBarStateController
 import com.android.systemui.statusbar.phone.DozeParameters
 import com.android.systemui.statusbar.policy.ConfigurationController
 import com.android.systemui.util.settings.SystemSettings
@@ -56,6 +58,7 @@ import org.nameless.systemui.statusbar.EdgeLightView
 class EdgeLightViewController @Inject constructor(
     private val context: Context,
     private val systemSettings: SystemSettings,
+    private val sysuiStatusBarStateController: SysuiStatusBarStateController,
     screenLifecycle: ScreenLifecycle,
     dozeParameters: DozeParameters,
     configurationController: ConfigurationController,
@@ -306,13 +309,12 @@ class EdgeLightViewController @Inject constructor(
     }
 
     fun setPulsing(pulsing: Boolean, reason: Int) {
-        logD {
-            "setPulsing, pulsing = $pulsing, reason = $reason"
-        }
         coroutineScope.launch {
             settingsMutex.withLock {
                 if (pulsing && (alwaysTriggerOnPulse ||
-                        reason == DozeLog.PULSE_REASON_NOTIFICATION)) {
+                        reason == DozeLog.PULSE_REASON_NOTIFICATION) &&
+                        sysuiStatusBarStateController.isDozing() &&
+                        sysuiStatusBarStateController.getState() == StatusBarState.KEYGUARD) {
                     this@EdgeLightViewController.pulsing = true
                     // Use accent color if color mode is set to notification color
                     // and pulse is not because of notification.
