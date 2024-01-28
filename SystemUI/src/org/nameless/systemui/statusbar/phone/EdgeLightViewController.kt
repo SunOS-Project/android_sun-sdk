@@ -61,10 +61,10 @@ class EdgeLightViewController @Inject constructor(
     private val keyguardStateController: KeyguardStateController,
     private val systemSettings: SystemSettings,
     private val sysuiStatusBarStateController: SysuiStatusBarStateController,
+    private val userTracker: UserTracker,
     screenLifecycle: ScreenLifecycle,
     dozeParameters: DozeParameters,
     configurationController: ConfigurationController,
-    userTracker: UserTracker,
 ) : ScreenLifecycle.Observer,
     NotificationListener.NotificationHandler,
     ConfigurationController.ConfigurationListener,
@@ -173,7 +173,7 @@ class EdgeLightViewController @Inject constructor(
 
     private suspend fun isEdgeLightEnabled(): Boolean {
         return withContext(Dispatchers.IO) {
-            systemSettings.getIntForUser(SettingsExt.System.EDGE_LIGHT_ENABLED, 0, UserHandle.USER_CURRENT) == 1
+            systemSettings.getIntForUser(SettingsExt.System.EDGE_LIGHT_ENABLED, 0, userTracker.userId) == 1
         }
     }
 
@@ -182,7 +182,7 @@ class EdgeLightViewController @Inject constructor(
             systemSettings.getIntForUser(
                 SettingsExt.System.EDGE_LIGHT_ALWAYS_TRIGGER_ON_PULSE,
                 0,
-                UserHandle.USER_CURRENT
+                userTracker.userId
             ) == 1
         }
     }
@@ -192,7 +192,7 @@ class EdgeLightViewController @Inject constructor(
             systemSettings.getIntForUser(
                 SettingsExt.System.EDGE_LIGHT_REPEAT_ANIMATION,
                 0,
-                UserHandle.USER_CURRENT
+                userTracker.userId
             ) == 1
         }
         return if (repeat) Animation.INFINITE else 0
@@ -203,7 +203,7 @@ class EdgeLightViewController @Inject constructor(
             systemSettings.getIntForUser(
                 SettingsExt.System.EDGE_LIGHT_COLOR_MODE,
                 0,
-                UserHandle.USER_CURRENT
+                userTracker.userId
             )
         }
         return ColorMode.values().find { it.ordinal == colorModeInt } ?: ColorMode.ACCENT
@@ -213,7 +213,7 @@ class EdgeLightViewController @Inject constructor(
         val colorString = withContext(Dispatchers.IO) {
             systemSettings.getStringForUser(
                 SettingsExt.System.EDGE_LIGHT_CUSTOM_COLOR,
-                UserHandle.USER_CURRENT
+                userTracker.userId
             )
         } ?: return Color.WHITE
         return try {
