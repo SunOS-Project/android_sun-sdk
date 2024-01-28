@@ -14,6 +14,7 @@ import android.util.ArrayMap;
 import com.android.internal.util.nameless.DozeHelper;
 
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.nameless.provider.SettingsExt.System;
 
@@ -69,6 +70,11 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.TORCH_POWER_BUTTON_GESTURE, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.AUTO_ROTATE_CONFIG_CUSTOM, new PerAppConfigValidator());
         VALIDATORS.put(System.DOZE_PICK_UP_ACTION, new DozeActionValidator());
+        VALIDATORS.put(System.EDGE_LIGHT_ENABLED, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.EDGE_LIGHT_ALWAYS_TRIGGER_ON_PULSE, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.EDGE_LIGHT_REPEAT_ANIMATION, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.EDGE_LIGHT_COLOR_MODE, new InclusiveIntegerRangeValidator(0, 3));
+        VALIDATORS.put(System.EDGE_LIGHT_CUSTOM_COLOR, new NonEmptyHexColorValidator());
     }
 
     private static class DozeActionValidator implements Validator {
@@ -79,6 +85,13 @@ public class SystemSettingsValidatorsExt {
             } catch (NumberFormatException e) {
                 return false;
             }
+        }
+    }
+
+    private static class NonEmptyHexColorValidator implements Validator {
+        @Override
+        public boolean validate(String value) {
+            return value == null || Pattern.matches("^[#][0-9A-Fa-f]{6}|[0-9A-Fa-f]{8}", value);
         }
     }
 

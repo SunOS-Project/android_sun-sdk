@@ -51,5 +51,10 @@ public class SystemSettingsExt {
         System.TORCH_POWER_BUTTON_GESTURE,
         System.AUTO_ROTATE_CONFIG_CUSTOM,
         System.DOZE_PICK_UP_ACTION,
+        System.EDGE_LIGHT_ENABLED,
+        System.EDGE_LIGHT_ALWAYS_TRIGGER_ON_PULSE,
+        System.EDGE_LIGHT_REPEAT_ANIMATION,
+        System.EDGE_LIGHT_COLOR_MODE,
+        System.EDGE_LIGHT_CUSTOM_COLOR,
     };
 }
