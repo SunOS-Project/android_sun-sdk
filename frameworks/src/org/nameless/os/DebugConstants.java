@@ -8,10 +8,36 @@ package org.nameless.os;
 import android.os.Build;
 import android.os.SystemProperties;
 
+import java.util.LinkedHashMap;
+
 /** @hide */
 public class DebugConstants {
 
     private DebugConstants() {}
+
+    public static LinkedHashMap<String, String> CONSTANTS_MAP = new LinkedHashMap<>();
+
+    static {
+        CONSTANTS_MAP.put("DEBUG_GLOBAL", "persist.sys.nameless.debug.global");
+        CONSTANTS_MAP.put("DEBUG_AUDIO_SLIDER", "persist.sys.nameless.audio.slider.debug");
+        CONSTANTS_MAP.put("DEBUG_BATTERY_FEATURE", "persist.sys.nameless.battery.feature.debug");
+        CONSTANTS_MAP.put("DEBUG_DISPLAY_FEATURE", "persist.sys.nameless.display.feature.debug");
+        CONSTANTS_MAP.put("DEBUG_DISPLAY_IRIS", "persist.sys.nameless.display.iris.debug");
+        CONSTANTS_MAP.put("DEBUG_DISPLAY_ROTATE", "persist.sys.nameless.display.rotate.debug");
+        CONSTANTS_MAP.put("DEBUG_DISPLAY_RR", "persist.sys.nameless.display.rr.debug");
+        CONSTANTS_MAP.put("DEBUG_DOZE", "persist.sys.nameless.doze.debug");
+        CONSTANTS_MAP.put("DEBUG_NR_MODE", "persist.sys.nameless.radio.nrmode.debug");
+        CONSTANTS_MAP.put("DEBUG_PHONE_WINDOW_MANAGER", "persist.sys.nameless.policy.debug");
+        CONSTANTS_MAP.put("DEBUG_PMS", "persist.sys.nameless.pm.debug");
+        CONSTANTS_MAP.put("DEBUG_POCKET", "persist.sys.nameless.pocket.debug");
+        CONSTANTS_MAP.put("DEBUG_VIBRATION_ADAPTER", "persist.sys.nameless.vibrator.adapter.debug");
+        CONSTANTS_MAP.put("DEBUG_WMS_RESOLUTION", "persist.sys.nameless.wm.resolution.debug");
+        CONSTANTS_MAP.put("DEBUG_WMS_TOP_APP", "persist.sys.nameless.wm.top_app.debug");
+    }
+
+    public static boolean shouldShowDebugManager() {
+        return Build.IS_ENG || SystemProperties.getBoolean("persist.sys.nameless.debug.manager", false);
+    }
 
     // Enable this to debug all nameless features
     private static final boolean DEBUG_GLOBAL = Build.IS_ENG || SystemProperties.getBoolean(

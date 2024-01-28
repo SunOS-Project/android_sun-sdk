@@ -286,4 +286,7 @@
     <string name="doze_pick_up_action_show_ambient">Show ambient display</string>
     <string name="doze_pick_up_action_show_lockscreen">Wake device to lockscreen</string>
 
+    <!-- Debug dashboard -->
+    <string name="debug_flags_dashboard_title">Debug flags</string>
+
 </resources>
