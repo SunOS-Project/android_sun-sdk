@@ -65,4 +65,8 @@
     <string name="config_pocketJudgeVendorSensorName"></string>
     <string name="config_pocketJudgeVendorProximitySensorName"></string>
 
+    <!-- Custom doze -->
+    <string name="config_doze_pickUpSensorType"></string>
+    <item name="config_doze_pickUpSensorValue" format="float" type="dimen">0.0</item>
+
 </resources>

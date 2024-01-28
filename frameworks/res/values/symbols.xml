@@ -114,4 +114,8 @@
     <java-symbol type="string" name="config_pocketJudgeVendorSensorName" />
     <java-symbol type="string" name="config_pocketJudgeVendorProximitySensorName" />
 
+    <!-- Custom doze -->
+    <java-symbol type="string" name="config_doze_pickUpSensorType" />
+    <java-symbol type="dimen" name="config_doze_pickUpSensorValue" />
+
 </resources>

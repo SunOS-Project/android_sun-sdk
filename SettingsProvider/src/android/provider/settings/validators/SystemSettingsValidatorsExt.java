@@ -11,6 +11,8 @@ import static android.provider.settings.validators.SettingsValidators.NON_NEGATI
 import android.text.TextUtils;
 import android.util.ArrayMap;
 
+import com.android.internal.util.nameless.DozeHelper;
+
 import java.util.Map;
 
 import org.nameless.provider.SettingsExt.System;
@@ -66,6 +68,18 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.STATUSBAR_GESTURE_PORTRAIT_ONLY, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.TORCH_POWER_BUTTON_GESTURE, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.AUTO_ROTATE_CONFIG_CUSTOM, new PerAppConfigValidator());
+        VALIDATORS.put(System.DOZE_PICK_UP_ACTION, new DozeActionValidator());
+    }
+
+    private static class DozeActionValidator implements Validator {
+        @Override
+        public boolean validate(String value) {
+            try {
+                return DozeHelper.isDozeActionValid(Integer.parseInt(value));
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
     }
 
     private static class PerAppConfigValidator implements Validator {

@@ -280,4 +280,10 @@
     <string name="per_app_auto_rotate_off">Disable auto-rotate</string>
     <string name="per_app_auto_rotate_on">Enable auto-rotate</string>
 
+    <!-- Custom doze -->
+    <string name="doze_pick_up_title">Pick up device</string>
+    <string name="doze_pick_up_action_none">Do nothing</string>
+    <string name="doze_pick_up_action_show_ambient">Show ambient display</string>
+    <string name="doze_pick_up_action_show_lockscreen">Wake device to lockscreen</string>
+
 </resources>

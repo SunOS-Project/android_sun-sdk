@@ -45,6 +45,7 @@ import org.nameless.os.PocketManager;
 import org.nameless.server.battery.BatteryFeatureController;
 import org.nameless.server.display.DisplayFeatureController;
 import org.nameless.server.display.DisplayRefreshRateController;
+import org.nameless.server.policy.DozeController;
 import org.nameless.server.policy.PocketModeController;
 import org.nameless.server.vibrator.LinearmotorVibratorController;
 import org.nameless.server.wm.DisplayResolutionController;
@@ -103,6 +104,7 @@ public class NamelessSystemExService extends SystemService {
             if (mPocketModeSupported) {
                 PocketModeController.getInstance().onSystemServicesReady();
             }
+            DozeController.getInstance().onSystemServicesReady();
             LinearmotorVibratorController.getInstance().onSystemServicesReady();
             return;
         }
@@ -147,6 +149,7 @@ public class NamelessSystemExService extends SystemService {
         DisplayRefreshRateController.getInstance().initSystemExService(this);
         DisplayResolutionController.getInstance().initSystemExService(this);
         DisplayRotationExt.getInstance().initSystemExService(this);
+        DozeController.getInstance().initSystemExService(this);
         LinearmotorVibratorController.getInstance().initSystemExService(this);
     }
 
@@ -155,6 +158,7 @@ public class NamelessSystemExService extends SystemService {
         final int newUserId = to.getUserIdentifier();
         DisplayRefreshRateController.getInstance().onUserSwitching(newUserId);
         DisplayRotationExt.getInstance().onUserSwitching(newUserId);
+        DozeController.getInstance().onUserSwitching(newUserId);
         PocketModeController.getInstance().onUserSwitching(newUserId);
     }
 
@@ -166,10 +170,12 @@ public class NamelessSystemExService extends SystemService {
     private void onScreenOff() {
         DisplayRefreshRateController.getInstance().onScreenOff();
         DisplayRotationExt.getInstance().onScreenOff();
+        DozeController.getInstance().onScreenOff();
     }
 
     private void onScreenOn() {
         DisplayRefreshRateController.getInstance().onScreenOn();
+        DozeController.getInstance().onScreenOn();
     }
 
     private void onScreenUnlocked() {

@@ -39,4 +39,16 @@
         <item>2</item>
     </string-array>
 
+    <!-- Custom doze -->
+    <string-array name="doze_pick_up_action_entries" translatable="false">
+        <item>@string/doze_pick_up_action_none</item>
+        <item>@string/doze_pick_up_action_show_ambient</item>
+        <item>@string/doze_pick_up_action_show_lockscreen</item>
+    </string-array>
+    <string-array name="doze_pick_up_action_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
 </resources>

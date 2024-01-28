@@ -50,5 +50,6 @@ public class SystemSettingsExt {
         System.STATUSBAR_GESTURE_PORTRAIT_ONLY,
         System.TORCH_POWER_BUTTON_GESTURE,
         System.AUTO_ROTATE_CONFIG_CUSTOM,
+        System.DOZE_PICK_UP_ACTION,
     };
 }

@@ -60,8 +60,15 @@ public class DebugConstants {
         "persist.sys.nameless.display.rr.debug", false
     );
 
+    // Enable this to debug DozeController
+    // Package: org.nameless.server.policy.DozeController
+    // Key: DozeController
+    public static final boolean DEBUG_DOZE = DEBUG_GLOBAL || SystemProperties.getBoolean(
+        "persist.sys.nameless.doze.debug", false
+    );
+
     // Enable this to debug NrModeSwitcher
-    // Key: NrModeSwitcher,OplusRadioWrapper,SimCardListenerService
+    // Key: NrModeSwitcher, OplusRadioWrapper, SimCardListenerService
     public static final boolean DEBUG_NR_MODE = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.radio.nrmode.debug", false
     );

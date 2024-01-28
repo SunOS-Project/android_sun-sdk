@@ -326,6 +326,13 @@ public class SettingsExt {
          * @hide
          */
         public static final String AUTO_ROTATE_CONFIG_CUSTOM = "auto_rotate_config_custom";
+
+        /**
+         * What to do when device is picked up
+         * 0: Do nothing  1: Show ambient display  2: Show lockscreen
+         * @hide
+         */
+        public static final String DOZE_PICK_UP_ACTION = "doze_pick_up_action";
     }
 
     public static class Secure {
