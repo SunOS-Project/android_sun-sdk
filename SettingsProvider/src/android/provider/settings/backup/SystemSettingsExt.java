@@ -56,5 +56,6 @@ public class SystemSettingsExt {
         System.EDGE_LIGHT_REPEAT_ANIMATION,
         System.EDGE_LIGHT_COLOR_MODE,
         System.EDGE_LIGHT_CUSTOM_COLOR,
+        System.KEYGAURD_MEDIA_ART,
     };
 }

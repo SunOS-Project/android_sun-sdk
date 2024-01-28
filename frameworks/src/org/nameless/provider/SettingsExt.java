@@ -372,6 +372,12 @@ public class SettingsExt {
          * @hide
          */
         public static final String EDGE_LIGHT_CUSTOM_COLOR = "edge_light_custom_color";
+
+        /**
+         * Whether to show media album art on keyguard
+         * @hide
+         */
+        public static final String KEYGAURD_MEDIA_ART = "keygaurd_media_art";
     }
 
     public static class Secure {
