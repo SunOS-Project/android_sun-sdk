@@ -78,6 +78,16 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.KEYGAURD_MEDIA_ART, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.STATUS_BAR_BATTERY_STYLE, new InclusiveIntegerRangeValidator(0, 3));
         VALIDATORS.put(System.STATUS_BAR_SHOW_BATTERY_PERCENT, new InclusiveIntegerRangeValidator(0, 2));
+        VALIDATORS.put(System.STATUSBAR_CLOCK, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.STATUSBAR_CLOCK_STYLE, new InclusiveIntegerRangeValidator(0, 2));
+        VALIDATORS.put(System.STATUSBAR_CLOCK_SECONDS, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.STATUSBAR_CLOCK_AM_PM_STYLE, new InclusiveIntegerRangeValidator(0, 2));
+        VALIDATORS.put(System.STATUSBAR_CLOCK_DATE_DISPLAY, new InclusiveIntegerRangeValidator(0, 2));
+        VALIDATORS.put(System.STATUSBAR_CLOCK_DATE_STYLE, new InclusiveIntegerRangeValidator(0, 2));
+        VALIDATORS.put(System.STATUSBAR_CLOCK_DATE_POSITION, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.STATUSBAR_CLOCK_AUTO_HIDE, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.STATUSBAR_CLOCK_AUTO_HIDE_HDURATION, NON_NEGATIVE_INTEGER_VALIDATOR);
+        VALIDATORS.put(System.STATUSBAR_CLOCK_AUTO_HIDE_SDURATION, NON_NEGATIVE_INTEGER_VALIDATOR);
     }
 
     private static class DozeActionValidator implements Validator {

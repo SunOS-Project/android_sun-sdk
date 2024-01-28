@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:settings="http://schemas.android.com/apk/res/com.android.settings"
+    android:title="@string/status_bar_clock_date_title">
+
+    <PreferenceCategory
+        android:title="@string/status_bar_clock_title">
+
+        <org.nameless.custom.preference.SystemSettingSwitchPreference
+            android:key="statusbar_clock"
+            android:title="@string/status_bar_clock_show"
+            android:defaultValue="true" />
+
+        <org.nameless.custom.preference.SystemSettingSwitchPreference
+            android:key="statusbar_clock_auto_hide"
+            android:title="@string/status_bar_clock_auto_hide_title"
+            android:summary="@string/status_bar_clock_auto_hide_summary"
+            android:defaultValue="false" />
+
+        <org.nameless.custom.preference.SystemSettingSeekBarPreference
+            android:key="statusbar_clock_auto_hide_hduration"
+            android:title="@string/status_bar_clock_auto_hide_hdur_title"
+            android:max="300"
+            settings:min="5"
+            settings:interval="5"
+            settings:units="@string/unit_second"
+            android:dependency="statusbar_clock_auto_hide"
+            android:defaultValue="60" />
+
+        <org.nameless.custom.preference.SystemSettingSeekBarPreference
+            android:key="statusbar_clock_auto_hide_sduration"
+            android:title="@string/status_bar_clock_auto_hide_sdur_title"
+            android:max="300"
+            settings:min="5"
+            settings:interval="5"
+            settings:units="@string/unit_second"
+            android:dependency="statusbar_clock_auto_hide"
+            android:defaultValue="5" />
+
+        <org.nameless.custom.preference.SystemSettingListPreference
+            android:key="statusbar_clock_style"
+            android:title="@string/status_bar_clock_style_title"
+            android:entries="@array/status_bar_clock_style_entries"
+            android:entryValues="@array/status_bar_clock_style_values"
+            android:dependency="statusbar_clock"
+            android:defaultValue="0" />
+
+        <org.nameless.custom.preference.SystemSettingListPreference
+            android:key="statusbar_clock_am_pm_style"
+            android:title="@string/status_bar_am_pm_title"
+            android:entries="@array/status_bar_am_pm_entries"
+            android:entryValues="@array/status_bar_am_pm_values"
+            android:dependency="statusbar_clock"
+            android:defaultValue="2" />
+
+        <org.nameless.custom.preference.SystemSettingSwitchPreference
+            android:key="statusbar_clock_seconds"
+            android:title="@string/clock_seconds_display"
+            android:dependency="statusbar_clock"
+            android:defaultValue="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/status_bar_date_title">
+
+        <org.nameless.custom.preference.SystemSettingListPreference
+            android:key="statusbar_clock_date_display"
+            android:title="@string/clock_date_display"
+            android:entries="@array/clock_date_display_entries"
+            android:entryValues="@array/clock_date_display_values"
+            android:dependency="statusbar_clock"
+            android:defaultValue="0" />
+
+        <org.nameless.custom.preference.SystemSettingListPreference
+            android:key="statusbar_clock_date_style"
+            android:title="@string/clock_date_style"
+            android:entries="@array/clock_date_style_entries"
+            android:entryValues="@array/clock_date_style_values"
+            android:dependency="statusbar_clock_date_display"
+            android:defaultValue="0" />
+
+        <ListPreference
+            android:key="statusbar_clock_date_format"
+            android:title="@string/clock_date_format"
+            android:entries="@array/clock_date_format_entries_values"
+            android:entryValues="@array/clock_date_format_entries_values"
+            android:dependency="statusbar_clock_date_display" />
+
+        <org.nameless.custom.preference.SystemSettingListPreference
+            android:key="statusbar_clock_date_position"
+            android:title="@string/clock_date_position"
+            android:entries="@array/clock_date_position_entries"
+            android:entryValues="@array/clock_date_position_values"
+            android:dependency="statusbar_clock_date_display"
+            android:defaultValue="0" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
