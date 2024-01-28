@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package org.nameless.settings.gesture;
+package org.nameless.settings.gestures;
 
 import android.content.Context;
 
