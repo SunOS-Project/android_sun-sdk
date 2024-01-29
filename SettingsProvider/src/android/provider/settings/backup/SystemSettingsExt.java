@@ -76,5 +76,7 @@ public class SystemSettingsExt {
         System.HEADS_UP_TIMEOUT,
         System.LESS_BORING_HEADS_UP,
         System.DISABLE_LANDSCAPE_HEADS_UP,
+        System.ADAPTIVE_PLAYBACK_ENABLED,
+        System.ADAPTIVE_PLAYBACK_TIMEOUT,
     };
 }

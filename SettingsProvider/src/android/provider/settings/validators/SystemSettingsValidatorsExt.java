@@ -92,6 +92,8 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.HEADS_UP_TIMEOUT, NON_NEGATIVE_INTEGER_VALIDATOR);
         VALIDATORS.put(System.LESS_BORING_HEADS_UP, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.DISABLE_LANDSCAPE_HEADS_UP, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.ADAPTIVE_PLAYBACK_ENABLED, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.ADAPTIVE_PLAYBACK_TIMEOUT, NON_NEGATIVE_INTEGER_VALIDATOR);
     }
 
     private static class DozeActionValidator implements Validator {
