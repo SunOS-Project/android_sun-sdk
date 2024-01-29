@@ -17,6 +17,7 @@
 
 package org.nameless.systemui.qs.tiles;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
@@ -27,6 +28,7 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import com.android.internal.logging.MetricsLogger;
+
 import com.android.systemui.R;
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
@@ -94,7 +96,7 @@ public class AODTile extends QSTileImpl<BooleanState> implements
         };
 
         mBatteryController = batteryController;
-        batteryController.observe(getLifecycle(), this);
+        mBatteryController.observe(getLifecycle(), this);
     }
 
     @Override
@@ -117,9 +119,7 @@ public class AODTile extends QSTileImpl<BooleanState> implements
 
     @Override
     public BooleanState newTileState() {
-        BooleanState state = new BooleanState();
-        state.handlesLongClick = false;
-        return state;
+        return new BooleanState();
     }
 
     @Override
@@ -156,33 +156,32 @@ public class AODTile extends QSTileImpl<BooleanState> implements
 
     @Override
     public Intent getLongClickIntent() {
-        return null;
+        return new Intent().setComponent(new ComponentName(
+            "com.android.settings", "com.android.settings.Settings$LockScreenSettingsActivity"));
     }
 
     @Override
     public CharSequence getTileLabel() {
-        if (mBatteryController.isAodPowerSave()) {
-            return mContext.getString(R.string.quick_settings_aod_off_powersave_label);
-        }
         return mContext.getString(R.string.quick_settings_aod_label);
     }
 
     @Override
     protected void handleUpdateState(BooleanState state, Object arg) {
-        if (state.slash == null) {
-            state.slash = new SlashState();
-        }
-        final boolean enable = mAodSetting.getValue() != 0;
+        final boolean enabled = mAodSetting.getValue() != 0;
         state.icon = mIcon;
-        state.value = enable;
-        state.slash.isSlashed = state.value;
-        state.label = enable && mAodOnChargeSetting.getValue() != 0 ?
-                mContext.getString(R.string.quick_settings_aod_on_charge_label) :
-                mContext.getString(R.string.quick_settings_aod_label);
+        state.value = enabled;
+        state.label = mContext.getString(R.string.quick_settings_aod_label);
         if (mBatteryController.isAodPowerSave()) {
             state.state = Tile.STATE_UNAVAILABLE;
+            state.secondaryLabel = mContext.getString(R.string.quick_settings_aod_power_save);
+        } else if (enabled) {
+            state.state = Tile.STATE_ACTIVE;
+            state.secondaryLabel = mAodOnChargeSetting.getValue() != 0 ?
+                    mContext.getString(R.string.quick_settings_aod_on_charge) :
+                    mContext.getString(R.string.switch_bar_on);
         } else {
-            state.state = enable ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE;
+            state.state = Tile.STATE_INACTIVE;
+            state.secondaryLabel = mContext.getString(R.string.switch_bar_off);
         }
     }
 
