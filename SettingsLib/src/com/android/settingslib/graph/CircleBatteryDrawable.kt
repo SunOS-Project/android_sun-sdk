@@ -31,7 +31,6 @@ import kotlin.math.min
 class CircleBatteryDrawable(private val context: Context, frameColor: Int) : Drawable() {
     private val framePaint: Paint
     private val batteryPaint: Paint
-    private val warningTextPaint: Paint
     private val textPaint: Paint
     private val boltPaint: Paint
     private val plusPaint: Paint
@@ -96,7 +95,6 @@ class CircleBatteryDrawable(private val context: Context, frameColor: Int) : Dra
         val res = context.resources
         height = bounds.bottom - padding.bottom - (bounds.top + padding.top)
         width = bounds.right - padding.right - (bounds.left + padding.left)
-        warningTextPaint.textSize = height * 0.75f
         intrinsicHeight = res.getDimensionPixelSize(R.dimen.battery_height)
         intrinsicWidth = res.getDimensionPixelSize(R.dimen.battery_height)
     }
@@ -224,7 +222,6 @@ class CircleBatteryDrawable(private val context: Context, frameColor: Int) : Dra
     override fun setColorFilter(colorFilter: ColorFilter?) {
         framePaint.colorFilter = colorFilter
         batteryPaint.colorFilter = colorFilter
-        warningTextPaint.colorFilter = colorFilter
         boltPaint.colorFilter = colorFilter
         plusPaint.colorFilter = colorFilter
     }
@@ -284,12 +281,6 @@ class CircleBatteryDrawable(private val context: Context, frameColor: Int) : Dra
         textPaint = Paint(Paint.ANTI_ALIAS_FLAG)
         textPaint.typeface = Typeface.create("sans-serif-condensed", Typeface.BOLD)
         textPaint.textAlign = Paint.Align.CENTER
-        warningTextPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        warningTextPaint.typeface = Typeface.create("sans-serif", Typeface.BOLD)
-        warningTextPaint.textAlign = Paint.Align.CENTER
-        if (colors.size > 1) {
-            warningTextPaint.color = colors[1]
-        }
         chargeColor = Utils.getColorStateListDefaultColor(context, R.color.meter_consumed_color)
         boltPaint = Paint(Paint.ANTI_ALIAS_FLAG)
         boltPaint.color = Utils.getColorStateListDefaultColor(
