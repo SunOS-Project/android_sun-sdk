@@ -16,9 +16,9 @@ import java.util.List;
 
 import org.nameless.display.RefreshRateManager;
 
-import org.nameless.settings.fragment.PerAppConfigFragment;
+import org.nameless.settings.fragment.PerAppListConfigFragment;
 
-public class PerAppRefreshRateFragment extends PerAppConfigFragment {
+public class PerAppRefreshRateFragment extends PerAppListConfigFragment {
 
     private DisplayRefreshRateHelper mHelper;
     private RefreshRateManager mRefreshRateManager;

@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.nameless.os.RotateManager;
-import org.nameless.settings.fragment.PerAppConfigFragment;
+import org.nameless.settings.fragment.PerAppListConfigFragment;
 
-public class PerAppAutoRotateFragment extends PerAppConfigFragment {
+public class PerAppAutoRotateFragment extends PerAppListConfigFragment {
 
     private RotateManager mRotateManager;
 
