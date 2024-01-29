@@ -358,4 +358,8 @@
     <string name="status_bar_clock_auto_hide_hdur_title">Hide duration</string>
     <string name="status_bar_clock_auto_hide_sdur_title">Show duration</string>
 
+    <!-- Doze on charge -->
+    <string name="doze_on_charge_title">Only turn on when charging</string>
+    <string name="doze_on_charge_summary">Always on will be turned off when device is unplugged</string>
+
 </resources>

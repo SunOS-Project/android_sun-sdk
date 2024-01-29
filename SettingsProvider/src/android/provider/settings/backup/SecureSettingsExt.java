@@ -17,5 +17,6 @@ public class SecureSettingsExt {
         Secure.QSTILE_REQUIRES_UNLOCKING,
         Secure.ADVANCED_REBOOT,
         Secure.DOZE_FOR_NOTIFICATIONS,
+        Secure.DOZE_ON_CHARGE,
     };
 }

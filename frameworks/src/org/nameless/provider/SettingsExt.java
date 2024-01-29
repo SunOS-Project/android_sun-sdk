@@ -514,6 +514,12 @@ public class SettingsExt {
          * @hide
          */
         public static final String DOZE_FOR_NOTIFICATIONS = "doze_for_notifications";
+
+        /**
+         * Whether to enable doze only when charging
+         * @hide
+         */
+        public static final String DOZE_ON_CHARGE = "doze_on_charge";
     }
 
     public static class Global {

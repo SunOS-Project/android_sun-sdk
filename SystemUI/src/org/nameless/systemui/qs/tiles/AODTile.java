@@ -45,6 +45,8 @@ import com.android.systemui.util.settings.SecureSettings;
 
 import javax.inject.Inject;
 
+import org.nameless.provider.SettingsExt;
+
 public class AODTile extends QSTileImpl<BooleanState> implements
         BatteryController.BatteryStateChangeCallback {
 
@@ -53,7 +55,8 @@ public class AODTile extends QSTileImpl<BooleanState> implements
     private final Icon mIcon = ResourceIcon.get(R.drawable.ic_qs_aod);
     private final BatteryController mBatteryController;
 
-    private final SettingObserver mSetting;
+    private final SettingObserver mAodSetting;
+    private final SettingObserver mAodOnChargeSetting;
 
     @Inject
     public AODTile(
@@ -73,7 +76,16 @@ public class AODTile extends QSTileImpl<BooleanState> implements
         super(host, uiEventLogger, backgroundLooper, mainHandler, falsingManager,
                 metricsLogger, statusBarStateController, activityStarter, qsLogger);
 
-        mSetting = new SettingObserver(secureSettings, mHandler, Settings.Secure.DOZE_ALWAYS_ON,
+        mAodSetting = new SettingObserver(secureSettings, mHandler,
+                Settings.Secure.DOZE_ALWAYS_ON,
+                userTracker.getUserId()) {
+            @Override
+            protected void handleValueChanged(int value, boolean observedChange) {
+                handleRefreshState(value);
+            }
+        };
+        mAodOnChargeSetting = new SettingObserver(secureSettings, mHandler,
+                SettingsExt.Secure.DOZE_ON_CHARGE,
                 userTracker.getUserId()) {
             @Override
             protected void handleValueChanged(int value, boolean observedChange) {
@@ -93,7 +105,8 @@ public class AODTile extends QSTileImpl<BooleanState> implements
     @Override
     protected void handleDestroy() {
         super.handleDestroy();
-        mSetting.setListening(false);
+        mAodSetting.setListening(false);
+        mAodOnChargeSetting.setListening(false);
     }
 
     @Override
@@ -112,18 +125,33 @@ public class AODTile extends QSTileImpl<BooleanState> implements
     @Override
     public void handleSetListening(boolean listening) {
         super.handleSetListening(listening);
-        mSetting.setListening(listening);
+        mAodSetting.setListening(listening);
+        mAodOnChargeSetting.setListening(listening);
     }
 
     @Override
     protected void handleUserSwitch(int newUserId) {
-        mSetting.setUserId(newUserId);
-        handleRefreshState(mSetting.getValue());
+        mAodSetting.setUserId(newUserId);
+        mAodOnChargeSetting.setUserId(newUserId);
+        refreshState();
     }
 
     @Override
     protected void handleClick(@Nullable View view) {
-        mSetting.setValue(mState.value ? 0 : 1);
+        if (mState.state == Tile.STATE_UNAVAILABLE) {
+            return;
+        }
+        if (!mState.value) {
+            mAodSetting.setValue(1);
+        } else {
+            if (mAodOnChargeSetting.getValue() == 0) {
+                mAodOnChargeSetting.setValue(1);
+            } else {
+                mAodOnChargeSetting.setValue(0);
+                mAodSetting.setValue(0);
+            }
+        }
+        refreshState();
     }
 
     @Override
@@ -141,15 +169,16 @@ public class AODTile extends QSTileImpl<BooleanState> implements
 
     @Override
     protected void handleUpdateState(BooleanState state, Object arg) {
-        final int value = arg instanceof Integer ? (Integer) arg : mSetting.getValue();
-        final boolean enable = value != 0;
         if (state.slash == null) {
             state.slash = new SlashState();
         }
+        final boolean enable = mAodSetting.getValue() != 0;
         state.icon = mIcon;
         state.value = enable;
         state.slash.isSlashed = state.value;
-        state.label = mContext.getString(R.string.quick_settings_aod_label);
+        state.label = enable && mAodOnChargeSetting.getValue() != 0 ?
+                mContext.getString(R.string.quick_settings_aod_on_charge_label) :
+                mContext.getString(R.string.quick_settings_aod_label);
         if (mBatteryController.isAodPowerSave()) {
             state.state = Tile.STATE_UNAVAILABLE;
         } else {
