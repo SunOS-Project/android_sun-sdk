@@ -70,5 +70,11 @@ public class SystemSettingsExt {
         System.STATUSBAR_CLOCK_AUTO_HIDE,
         System.STATUSBAR_CLOCK_AUTO_HIDE_HDURATION,
         System.STATUSBAR_CLOCK_AUTO_HIDE_SDURATION,
+        System.HEADS_UP_BLACKLIST,
+        System.HEADS_UP_STOPLIST,
+        System.HEADS_UP_NOTIFICATION_SNOOZE,
+        System.HEADS_UP_TIMEOUT,
+        System.LESS_BORING_HEADS_UP,
+        System.DISABLE_LANDSCAPE_HEADS_UP,
     };
 }

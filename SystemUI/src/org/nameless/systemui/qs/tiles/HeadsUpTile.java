@@ -17,6 +17,7 @@
 
 package org.nameless.systemui.qs.tiles;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
@@ -52,8 +53,8 @@ public class HeadsUpTile extends QSTileImpl<BooleanState> {
 
     private final Icon mIcon = ResourceIcon.get(R.drawable.ic_qs_heads_up);
 
-    private static final Intent NOTIFICATION_SETTINGS =
-            new Intent("android.settings.NOTIFICATION_SETTINGS");
+    private static final Intent HEADS_UP_SETTINGS = new Intent().setComponent(
+            new ComponentName("com.android.settings", "com.android.settings.Settings$HeadsUpSettingsActivity"));
 
     private final SettingObserver mSetting;
 
@@ -96,7 +97,7 @@ public class HeadsUpTile extends QSTileImpl<BooleanState> {
 
     @Override
     public Intent getLongClickIntent() {
-        return NOTIFICATION_SETTINGS;
+        return HEADS_UP_SETTINGS;
     }
 
     private void setEnabled(boolean enabled) {

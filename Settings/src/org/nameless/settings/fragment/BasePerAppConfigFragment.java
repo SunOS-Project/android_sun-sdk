@@ -31,7 +31,7 @@ import java.util.List;
 
 public abstract class BasePerAppConfigFragment extends EmptyTextSettings {
 
-    private Context mContext;
+    protected Context mContext;
     private PackageManager mPackageManager;
 
     /**

@@ -362,4 +362,34 @@
     <string name="doze_on_charge_title">Only turn on when charging</string>
     <string name="doze_on_charge_summary">Always on will be turned off when device is unplugged</string>
 
+    <!-- Heads up -->
+    <string name="heads_up_notifications_title">Heads up</string>
+    <string name="heads_up_notifications_summary">Configure heads up notifications settings</string>
+    <string name="heads_up_notifications_enable">Enable heads up</string>
+    <string name="less_boring_heads_up_title">Less annoying heads up</string>
+    <string name="less_boring_heads_up_summary">Show heads up only for dialer &amp; messaging apps</string>
+    <string name="heads_up_disable_in_landscape_title">Disable in landscape</string>
+    <string name="heads_up_disable_in_landscape_summary">Show heads up only for dialer &amp; messaging apps in landscape mode</string>
+    <string name="heads_up_blacklist_title">Blacklist apps</string>
+    <string name="heads_up_blacklist_summary">Disable selected apps from showing heads up</string>
+    <string name="heads_up_stoplist_title">Stoplist apps</string>
+    <string name="heads_up_stoplist_summary">Show heads up only for dialer &amp; messaging apps when using selected apps</string>
+    <string name="heads_up_time_out_title">Time out</string>
+    <string name="heads_up_time_out_summary">Peeking notifications will show for <xliff:g id="number">%d</xliff:g> seconds</string>
+    <string name="heads_up_time_out_2sec">2 seconds</string>
+    <string name="heads_up_time_out_4sec">4 seconds</string>
+    <string name="heads_up_time_out_5sec">5 seconds</string>
+    <string name="heads_up_time_out_6sec">6 seconds</string>
+    <string name="heads_up_time_out_8sec">8 seconds</string>
+    <string name="heads_up_time_out_10sec">10 seconds</string>
+    <string name="heads_up_snooze_title">Snooze timer</string>
+    <string name="heads_up_snooze_summary_one_minute">Swiping up on peeking notifications will snooze heads up from that application for 1 minute</string>
+    <string name="heads_up_snooze_summary">Swiping up on peeking notifications will snooze heads up from that application for <xliff:g id="number">%d</xliff:g> minutes</string>
+    <string name="heads_up_snooze_disabled_summary">Snooze timer is disabled</string>
+    <string name="heads_up_snooze_1min">1 minute</string>
+    <string name="heads_up_snooze_5min">5 minutes</string>
+    <string name="heads_up_snooze_10min">10 minutes</string>
+    <string name="heads_up_snooze_15min">15 minutes</string>
+    <string name="heads_up_snooze_20min">20 minutes</string>
+
 </resources>

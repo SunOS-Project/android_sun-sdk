@@ -1,0 +1,150 @@
+/*
+ * Copyright (C) 2023 The LineageOS Project
+ * Copyright (C) 2024 The Nameless-AOSP Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.nameless.systemui.statusbar.phone
+
+import android.app.role.RoleManager
+import android.content.Context
+import android.content.res.Configuration
+import android.database.ContentObserver
+import android.net.Uri
+import android.provider.Settings
+
+import com.android.systemui.dagger.SysUISingleton
+import com.android.systemui.dagger.qualifiers.Background
+import com.android.systemui.settings.UserTracker
+import com.android.systemui.statusbar.policy.ConfigurationController
+import com.android.systemui.util.settings.SystemSettings
+
+import java.util.concurrent.Executor
+
+import javax.inject.Inject
+
+import org.nameless.provider.SettingsExt.System.DISABLE_LANDSCAPE_HEADS_UP
+import org.nameless.provider.SettingsExt.System.HEADS_UP_BLACKLIST
+import org.nameless.provider.SettingsExt.System.HEADS_UP_STOPLIST
+import org.nameless.provider.SettingsExt.System.LESS_BORING_HEADS_UP
+import org.nameless.systemui.statusbar.policy.ForegroundActivityListener
+
+@SysUISingleton
+class CustomHeadsUpController @Inject constructor(
+    private val context: Context,
+    @Background private val bgExecutor: Executor,
+    private val configurationController: ConfigurationController,
+    private val foregroundActivityListener: ForegroundActivityListener,
+    private val roleManager: RoleManager,
+    private val systemSettings: SystemSettings,
+    private val userTracker: UserTracker
+) {
+
+    private val blacklistApps = mutableSetOf<String>()
+    private val stoplistApps = mutableSetOf<String>()
+
+    private var disableInLandscape = false
+    private var lessBoring = false
+
+    private var isLandscape: Boolean
+
+    init {
+        val settingsObserver = object : ContentObserver(null) {
+            override fun onChange(selfChange: Boolean, uri: Uri?) {
+                when (uri?.lastPathSegment) {
+                    DISABLE_LANDSCAPE_HEADS_UP -> updateLandscapeHeadsUp()
+                    HEADS_UP_BLACKLIST -> updateBlacklistApps()
+                    HEADS_UP_STOPLIST -> updateStoplistApps()
+                    LESS_BORING_HEADS_UP -> updateLessBoringHeadsUp()
+                }
+            }
+        }
+        systemSettings.registerContentObserver(
+                Settings.System.getUriFor(DISABLE_LANDSCAPE_HEADS_UP),
+                true, settingsObserver)
+        systemSettings.registerContentObserver(
+                Settings.System.getUriFor(HEADS_UP_BLACKLIST),
+                true, settingsObserver)
+        systemSettings.registerContentObserver(
+                Settings.System.getUriFor(HEADS_UP_STOPLIST),
+                true, settingsObserver)
+        systemSettings.registerContentObserver(
+                Settings.System.getUriFor(LESS_BORING_HEADS_UP),
+                true, settingsObserver)
+        updateSettings()
+
+        userTracker.addCallback(object : UserTracker.Callback {
+            override fun onUserChanged(newUser: Int, userContext: Context) {
+                updateSettings()
+            }
+        }, bgExecutor)
+
+        isLandscape = context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        configurationController.addCallback(object : ConfigurationController.ConfigurationListener {
+            override fun onConfigChanged(newConfig: Configuration?) {
+                isLandscape = newConfig?.orientation == Configuration.ORIENTATION_LANDSCAPE
+            }
+        })
+    }
+
+    private fun updateSettings() {
+        updateLandscapeHeadsUp()
+        updateBlacklistApps()
+        updateStoplistApps()
+        updateLessBoringHeadsUp()
+    }
+
+    private fun updateLandscapeHeadsUp() {
+        disableInLandscape = Settings.System.getIntForUser(context.contentResolver,
+                DISABLE_LANDSCAPE_HEADS_UP, 0, userTracker.userId) == 1
+    }
+
+    private fun updateBlacklistApps() {
+        blacklistApps.clear()
+        Settings.System.getStringForUser(context.contentResolver,
+                HEADS_UP_BLACKLIST, userTracker.userId)
+                ?.split(";")?.forEach { blacklistApps.add(it) }
+    }
+
+    private fun updateStoplistApps() {
+        stoplistApps.clear()
+        Settings.System.getStringForUser(context.contentResolver,
+                HEADS_UP_STOPLIST, userTracker.userId)
+                ?.split(";")?.forEach { stoplistApps.add(it) }
+    }
+
+    private fun updateLessBoringHeadsUp() {
+        lessBoring = Settings.System.getIntForUser(context.contentResolver,
+                LESS_BORING_HEADS_UP, 0, userTracker.userId) == 1
+    }
+
+    fun interceptHeadsUp(fromPackage: String): Boolean {
+        // Always allow heads up from dialer app
+        if (fromPackage == roleManager.getRoleHolders(RoleManager.ROLE_DIALER).firstOrNull()) {
+            return false
+        }
+        // Always allow heads up from sms app
+        if (fromPackage == roleManager.getRoleHolders(RoleManager.ROLE_SMS).firstOrNull()) {
+            return false
+        }
+        if (lessBoring) {
+            return true
+        }
+        if (disableInLandscape && isLandscape) {
+            return true
+        }
+        return blacklistApps.contains(fromPackage) ||
+                stoplistApps.contains(foregroundActivityListener.foregroundFullscreenPackageName)
+    }
+}
