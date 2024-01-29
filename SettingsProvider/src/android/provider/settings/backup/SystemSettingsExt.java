@@ -78,5 +78,6 @@ public class SystemSettingsExt {
         System.DISABLE_LANDSCAPE_HEADS_UP,
         System.ADAPTIVE_PLAYBACK_ENABLED,
         System.ADAPTIVE_PLAYBACK_TIMEOUT,
+        System.VOLBTN_MUSIC_CONTROLS,
     };
 }

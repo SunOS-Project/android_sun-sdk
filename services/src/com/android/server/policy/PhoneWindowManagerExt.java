@@ -17,16 +17,20 @@ import static org.nameless.server.policy.gesture.GestureListenerBase.motionEvent
 
 import android.content.ContentResolver;
 import android.database.ContentObserver;
+import android.media.AudioManager;
 import android.os.Handler;
+import android.os.Message;
 import android.os.Process;
 import android.os.RemoteException;
 import android.os.UserHandle;
 import android.provider.Settings;
+import android.service.dreams.IDreamManager;
 import android.util.Slog;
 import android.view.Display;
 import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.ViewConfiguration;
 
 import com.android.internal.app.AssistUtils;
 import com.android.internal.util.nameless.CustomUtils;
@@ -47,9 +51,15 @@ public class PhoneWindowManagerExt {
 
     private static String TAG = "PhoneWindowManagerExt";
 
-    private final Handler mHandler = new Handler();
+    private static final int MSG_DISPATCH_VOLKEY_WITH_WAKE_LOCK = 101;
+
+    public static final int EXT_UNHANDLED = 0;
+    public static final int EXT_PASS_TO_USER = 1;
+    public static final int EXT_CONSUMED = 2;
 
     private AssistUtils mAssistUtils;
+    private AudioManager mAudioManager;
+    private Handler mHandler;
     private PhoneWindowManager mPhoneWindowManager;
     private PocketLock mPocketLock;
     private PocketManager mPocketManager;
@@ -64,6 +74,8 @@ public class PhoneWindowManagerExt {
     private boolean mThreeFingerSwipeScreenshot;
     private boolean mPocketLockShowing;
     private boolean mIsDeviceInPocket;
+    private boolean mVolBtnMusicControls;
+    private boolean mVolBtnLongPress;
 
     private static class InstanceHolder {
         private static final PhoneWindowManagerExt INSTANCE = new PhoneWindowManagerExt();
@@ -96,11 +108,13 @@ public class PhoneWindowManagerExt {
         }
     };
 
-    public void init(PhoneWindowManager pw) {
+    public void init(PhoneWindowManager pw, Handler handler) {
         mPhoneWindowManager = pw;
+        mHandler = handler;
         mAssistUtils = new AssistUtils(pw.mContext);
         mSystemGesture = new SystemGesture(pw.mContext, this);
         mHasAlertSlider = AlertSliderManager.hasAlertSlider(pw.mContext);
+        mAudioManager = pw.mContext.getSystemService(AudioManager.class);
         mPocketManager = pw.mContext.getSystemService(PocketManager.class);
         mPocketManager.addCallback(mPocketCallback);
         mPocketLock = new PocketLock(pw.mContext);
@@ -122,6 +136,18 @@ public class PhoneWindowManagerExt {
 
     public void onDefaultDisplayFocusChangedLw(WindowState win) {
         mWindowState = win;
+    }
+
+    public void onHandleMessage(Message msg) {
+        switch (msg.what) {
+            case MSG_DISPATCH_VOLKEY_WITH_WAKE_LOCK:
+                KeyEvent event = (KeyEvent) msg.obj;
+                mVolBtnLongPress = true;
+                mPhoneWindowManager.dispatchMediaKeyWithWakeLockToAudioService(event);
+                mPhoneWindowManager.dispatchMediaKeyWithWakeLockToAudioService(
+                        KeyEvent.changeAction(event, KeyEvent.ACTION_UP));
+                break;
+        }
     }
 
     public void onLongPressPowerHidePocket() {
@@ -158,6 +184,9 @@ public class PhoneWindowManagerExt {
         resolver.registerContentObserver(Settings.System.getUriFor(
                 SettingsExt.System.THREE_FINGER_SWIPE_SCREENSHOT), false, observer,
                 UserHandle.USER_ALL);
+        resolver.registerContentObserver(Settings.System.getUriFor(
+                SettingsExt.System.VOLBTN_MUSIC_CONTROLS), false, observer,
+                UserHandle.USER_ALL);
     }
 
     public void updateSettings(ContentResolver resolver) {
@@ -172,6 +201,9 @@ public class PhoneWindowManagerExt {
                 UserHandle.USER_CURRENT) == 1;
         mThreeFingerSwipeScreenshot = Settings.System.getIntForUser(resolver,
                 SettingsExt.System.THREE_FINGER_SWIPE_SCREENSHOT, 0,
+                UserHandle.USER_CURRENT) == 1;
+        mVolBtnMusicControls = Settings.System.getIntForUser(resolver,
+                SettingsExt.System.VOLBTN_MUSIC_CONTROLS, 0,
                 UserHandle.USER_CURRENT) == 1;
     }
 
@@ -208,6 +240,47 @@ public class PhoneWindowManagerExt {
                 "Power - Long Press - Torch");
         CustomUtils.toggleCameraFlash();
         return true;
+    }
+
+    public int handleVolumeKeyPress(KeyEvent event, boolean down) {
+        if (!mAudioManager.isMusicActive()) {
+            if (DEBUG_PHONE_WINDOW_MANAGER) {
+                Slog.d(TAG, "handleVolumeKeyPress, music is not playing");
+            }
+            return EXT_PASS_TO_USER;
+        }
+
+        if (!mVolBtnMusicControls || event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_MUTE) {
+            if (DEBUG_PHONE_WINDOW_MANAGER) {
+                Slog.d(TAG, "handleVolumeKeyPress, mVolBtnMusicControls=" + mVolBtnMusicControls
+                        + ", isMuteKey=" + (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_MUTE)
+                        + ", isDown=" + down);
+            }
+            return down ? EXT_UNHANDLED : EXT_CONSUMED;
+        }
+
+        if (down) {
+            mVolBtnLongPress = false;
+            final int newKeyCode = event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP ?
+                    KeyEvent.KEYCODE_MEDIA_NEXT : KeyEvent.KEYCODE_MEDIA_PREVIOUS;
+            scheduleLongPressKeyEvent(event, newKeyCode);
+            if (DEBUG_PHONE_WINDOW_MANAGER) {
+                Slog.d(TAG, "handleVolumeKeyPress, isDown=true");
+            }
+            return EXT_CONSUMED;
+        }
+
+        mHandler.removeMessages(MSG_DISPATCH_VOLKEY_WITH_WAKE_LOCK);
+        if (mVolBtnLongPress) {
+            if (DEBUG_PHONE_WINDOW_MANAGER) {
+                Slog.d(TAG, "handleVolumeKeyPress, isDown=false, isLongPres=true");
+            }
+            return EXT_CONSUMED;
+        }
+        if (DEBUG_PHONE_WINDOW_MANAGER) {
+            Slog.d(TAG, "handleVolumeKeyPress, isDown=false, isLongPres=false");
+        }
+        return EXT_UNHANDLED;
     }
 
     private boolean isTorchTurnedOn() {
@@ -250,6 +323,14 @@ public class PhoneWindowManagerExt {
         return result;
     }
 
+    public boolean interceptDispatchInputWhenNonInteractive(int keyCode) {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN ||
+                keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            return mVolBtnMusicControls && isDozeMode();
+        }
+        return false;
+    }
+
     public void takeScreenshotIfSetupCompleted(boolean fullscreen) {
         if (!mPhoneWindowManager.isUserSetupComplete()) {
             return;
@@ -286,6 +367,10 @@ public class PhoneWindowManagerExt {
 
     public boolean isPocketLockShowing() {
         return mPocketLockShowing;
+    }
+
+    public boolean isVolumeButtonMusicControl() {
+        return mVolBtnMusicControls;
     }
 
     private void handleDevicePocketStateChanged() {
@@ -338,6 +423,23 @@ public class PhoneWindowManagerExt {
         mPocketLockShowing = false;
 
         mPocketManager.setPocketLockVisible(false);
+    }
+
+    private void scheduleLongPressKeyEvent(KeyEvent origEvent, int keyCode) {
+        KeyEvent event = new KeyEvent(origEvent.getDownTime(), origEvent.getEventTime(),
+                origEvent.getAction(), keyCode, 0);
+        Message msg = mHandler.obtainMessage(MSG_DISPATCH_VOLKEY_WITH_WAKE_LOCK, event);
+        msg.setAsynchronous(true);
+        mHandler.sendMessageDelayed(msg, ViewConfiguration.getLongPressTimeout());
+    }
+
+    private static boolean isDozeMode() {
+        final IDreamManager dreamManager = PhoneWindowManager.getDreamManager();
+        try {
+            return dreamManager != null && dreamManager.isDreaming();
+        } catch (RemoteException e) {
+            return false;
+        }
     }
 
     private static String resultToString(int result) {
