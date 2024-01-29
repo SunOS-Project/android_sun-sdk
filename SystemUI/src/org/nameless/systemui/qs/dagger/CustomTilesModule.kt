@@ -8,7 +8,6 @@ package org.nameless.systemui.qs.dagger
 import com.android.systemui.qs.tileimpl.QSTileImpl
 
 import org.nameless.systemui.qs.tiles.AODTile
-import org.nameless.systemui.qs.tiles.AmbientDisplayTile
 import org.nameless.systemui.qs.tiles.CPUInfoTile
 import org.nameless.systemui.qs.tiles.CaffeineTile
 import org.nameless.systemui.qs.tiles.CellularTile
@@ -43,11 +42,6 @@ interface CustomTilesModule {
     @IntoMap
     @StringKey(AODTile.TILE_SPEC)
     fun bindAODTile(aodTile: AODTile): QSTileImpl<*>
-
-    @Binds
-    @IntoMap
-    @StringKey(AmbientDisplayTile.TILE_SPEC)
-    fun bindAmbientDisplayTile(ambientDisplayTile: AmbientDisplayTile): QSTileImpl<*>
 
     @Binds
     @IntoMap

@@ -13,7 +13,7 @@
 
     <!-- Tiles native to System UI. Order should match "quick_settings_tiles_default" -->
     <string name="quick_settings_tiles_extra" translatable="false">
-        wifi,cell,screenshot,caffeine,compass,refresh_rate,ambient_display,aod,dc_dimming,hbm,powershare,optimized_charge,quietmode,locale,usb_tether,dataswitch,nr_5g,heads_up,sync,sound,system_vibration,vpn,cpuinfo
+        wifi,cell,screenshot,caffeine,compass,refresh_rate,aod,dc_dimming,hbm,powershare,optimized_charge,quietmode,locale,usb_tether,dataswitch,nr_5g,heads_up,sync,sound,system_vibration,vpn,cpuinfo
     </string>
 
     <!-- Whether to enable framework dimming for udfps -->
