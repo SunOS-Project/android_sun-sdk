@@ -508,6 +508,12 @@ public class SettingsExt {
          * @hide
          */
         public static final String ADVANCED_REBOOT = "advanced_reboot";
+
+        /**
+         * Whether to trigger doze for new notifications
+         * @hide
+         */
+        public static final String DOZE_FOR_NOTIFICATIONS = "doze_for_notifications";
     }
 
     public static class Global {

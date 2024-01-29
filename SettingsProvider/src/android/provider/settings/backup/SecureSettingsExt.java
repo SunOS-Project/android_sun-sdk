@@ -16,5 +16,6 @@ public class SecureSettingsExt {
         Secure.SCREEN_OFF_UDFPS_ENABLED,
         Secure.QSTILE_REQUIRES_UNLOCKING,
         Secure.ADVANCED_REBOOT,
+        Secure.DOZE_FOR_NOTIFICATIONS,
     };
 }
