@@ -317,6 +317,16 @@ class EdgeLightViewController @Inject constructor(
         notificationListener.addNotificationHandler(this)
     }
 
+    fun updateColor() {
+        coroutineScope.launch {
+            settingsMutex.withLock {
+                if (colorMode == ColorMode.THEME) {
+                    edgeLightView?.setColor(getColorForMode(colorMode))
+                }
+            }
+        }
+    }
+
     fun setEdgeLightView(edgeLightView: EdgeLightView) {
         this.edgeLightView = edgeLightView.apply {
             setExpandAnimationDuration(animationDuration)
