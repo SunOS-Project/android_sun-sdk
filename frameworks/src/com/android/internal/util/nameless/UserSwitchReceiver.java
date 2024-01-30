@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+/** @hide */
 public abstract class UserSwitchReceiver extends BroadcastReceiver {
 
     private final Context mContext;

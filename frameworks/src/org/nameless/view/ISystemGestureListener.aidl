@@ -7,6 +7,7 @@ package org.nameless.view;
 
 import android.view.MotionEvent;
 
+/** @hide */
 interface ISystemGestureListener {
 
     oneway void onGestureCanceled(int gesture);

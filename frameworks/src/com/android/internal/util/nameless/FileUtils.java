@@ -26,6 +26,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/** @hide */
 public final class FileUtils {
     private static final String TAG = "FileUtils";
 

@@ -31,6 +31,7 @@ import android.text.TextUtils;
 
 import org.nameless.os.BatteryFeatureManager;
 
+/** @hide */
 public class BatteryFeatureSettingsHelper {
 
     public static final int OPTIMIZED_CHARGE_SETTINGS_DISABLED = 0;

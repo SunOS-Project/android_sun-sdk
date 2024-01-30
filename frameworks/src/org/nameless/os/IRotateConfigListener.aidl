@@ -5,6 +5,7 @@
 
 package org.nameless.os;
 
+/** @hide */
 oneway interface IRotateConfigListener {
 
     void onRotateConfigChanged(int config);

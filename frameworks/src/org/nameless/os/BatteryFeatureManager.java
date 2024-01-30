@@ -14,6 +14,7 @@ import java.util.NoSuchElementException;
 
 import vendor.nameless.hardware.battery.V1_0.IBattery;
 
+/** @hide */
 public class BatteryFeatureManager {
 
     private static final String TAG = "BatteryFeatureManager";

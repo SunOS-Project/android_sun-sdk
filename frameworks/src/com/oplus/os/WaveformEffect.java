@@ -9,6 +9,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Slog;
 
+/** @hide */
 public class WaveformEffect implements Parcelable {
 
     public static final Parcelable.Creator<WaveformEffect> CREATOR =

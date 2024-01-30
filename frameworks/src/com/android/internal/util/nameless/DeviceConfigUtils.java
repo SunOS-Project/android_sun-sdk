@@ -26,6 +26,7 @@ import java.util.Set;
 
 import com.android.internal.util.ArrayUtils;
 
+/** @hide */
 public class DeviceConfigUtils {
 
     private static final String TAG = "DeviceConfigUtils";

@@ -14,6 +14,7 @@ import android.text.TextUtils;
 
 import com.android.internal.R;
 
+/** @hide */
 public class DozeHelper {
 
     public static final int DOZE_ACTION_NONE = 0;

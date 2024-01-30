@@ -21,6 +21,7 @@ import com.android.internal.statusbar.IStatusBarService;
 import com.android.internal.util.ArrayUtils;
 import com.android.internal.util.CollectionUtils;
 
+/** @hide */
 public class CustomUtils {
 
     public static boolean isPackageInstalled(Context context, String pkg) {

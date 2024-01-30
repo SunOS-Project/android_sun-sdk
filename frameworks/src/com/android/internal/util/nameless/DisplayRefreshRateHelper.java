@@ -18,6 +18,7 @@ import com.android.internal.R;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+/** @hide */
 public class DisplayRefreshRateHelper {
 
     private static final float DEFAULT_REFRESH_RATE = 60f;
