@@ -10,7 +10,7 @@ import static org.nameless.provider.SettingsExt.Secure.ADVANCED_REBOOT;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.os.Handler;
-import android.provider.Settings;
+import android.os.UserHandle;
 
 import com.android.systemui.settings.UserTracker;
 import com.android.systemui.util.settings.SecureSettings;
@@ -60,8 +60,9 @@ public class GlobalActionsDialogLiteExt {
                         mUserTracker.getUserId()) == 1;
             }
         };
-        mSecureSettings.registerContentObserver(Settings.Secure.getUriFor(
-                ADVANCED_REBOOT), true, mSettingsObserver);
+        mSecureSettings.registerContentObserverForUser(
+                ADVANCED_REBOOT,
+                mSettingsObserver, UserHandle.USER_ALL);
         mSettingsObserver.onChange(false);
 
         mUserTrackerCallback = new UserTracker.Callback() {

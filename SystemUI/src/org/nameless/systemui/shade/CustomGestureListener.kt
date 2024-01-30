@@ -22,7 +22,7 @@ import android.content.res.Configuration
 import android.database.ContentObserver
 import android.net.Uri
 import android.os.PowerManager
-import android.provider.Settings
+import android.os.UserHandle
 import android.view.GestureDetector
 import android.view.MotionEvent
 
@@ -45,7 +45,7 @@ import org.nameless.provider.SettingsExt.System.STATUSBAR_GESTURE_PORTRAIT_ONLY
 
 @SysUISingleton
 class CustomGestureListener @Inject constructor(
-    private val context: Context,
+    context: Context,
     @Background private val bgExecutor: Executor,
     private val configurationController: ConfigurationController,
     private val powerManager: PowerManager,
@@ -72,18 +72,18 @@ class CustomGestureListener @Inject constructor(
                 }
             }
         }
-        systemSettings.registerContentObserver(
-                Settings.System.getUriFor(DOUBLE_TAP_SLEEP_LOCKSCREEN),
-                true, settingsObserver)
-        systemSettings.registerContentObserver(
-                Settings.System.getUriFor(DOUBLE_TAP_SLEEP_STATUSBAR),
-                true, settingsObserver)
-        systemSettings.registerContentObserver(
-                Settings.System.getUriFor(STATUSBAR_BRIGHTNESS_CONTROL),
-                true, settingsObserver)
-        systemSettings.registerContentObserver(
-                Settings.System.getUriFor(STATUSBAR_GESTURE_PORTRAIT_ONLY),
-                true, settingsObserver)
+        systemSettings.registerContentObserverForUser(
+                DOUBLE_TAP_SLEEP_LOCKSCREEN,
+                settingsObserver, UserHandle.USER_ALL)
+        systemSettings.registerContentObserverForUser(
+                DOUBLE_TAP_SLEEP_STATUSBAR,
+                settingsObserver, UserHandle.USER_ALL)
+        systemSettings.registerContentObserverForUser(
+                STATUSBAR_BRIGHTNESS_CONTROL,
+                settingsObserver, UserHandle.USER_ALL)
+        systemSettings.registerContentObserverForUser(
+                STATUSBAR_GESTURE_PORTRAIT_ONLY,
+                settingsObserver, UserHandle.USER_ALL)
         updateSettings()
 
         userTracker.addCallback(object : UserTracker.Callback {
@@ -108,29 +108,25 @@ class CustomGestureListener @Inject constructor(
     }
 
     private fun updateDoubleTapSleepLockscreen() {
-        doubleTapSleepLockscreen = Settings.System.getIntForUser(
-                context.contentResolver,
+        doubleTapSleepLockscreen = systemSettings.getIntForUser(
                 DOUBLE_TAP_SLEEP_LOCKSCREEN,
                 1, userTracker.userId) != 0
     }
 
     private fun updateDoubleTapSleepStatusbar() {
-        doubleTapSleepStatusbar = Settings.System.getIntForUser(
-                context.contentResolver,
+        doubleTapSleepStatusbar = systemSettings.getIntForUser(
                 DOUBLE_TAP_SLEEP_STATUSBAR,
                 1, userTracker.userId) != 0
     }
 
     private fun updateStatusbarBrightnessControl() {
-        statusbarBrightnessControl = Settings.System.getIntForUser(
-                context.contentResolver,
+        statusbarBrightnessControl = systemSettings.getIntForUser(
                 STATUSBAR_BRIGHTNESS_CONTROL,
                 0, userTracker.userId) != 0
     }
 
     private fun updateGesturePortraitOnly() {
-        gesturePortraitOnly = Settings.System.getIntForUser(
-                context.contentResolver,
+        gesturePortraitOnly = systemSettings.getIntForUser(
                 STATUSBAR_GESTURE_PORTRAIT_ONLY,
                 0, userTracker.userId) != 0
     }

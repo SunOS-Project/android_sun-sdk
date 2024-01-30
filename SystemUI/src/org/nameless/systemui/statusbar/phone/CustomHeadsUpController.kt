@@ -22,7 +22,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.database.ContentObserver
 import android.net.Uri
-import android.provider.Settings
+import android.os.UserHandle
 
 import com.android.systemui.dagger.SysUISingleton
 import com.android.systemui.dagger.qualifiers.Background
@@ -42,7 +42,7 @@ import org.nameless.systemui.statusbar.policy.ForegroundActivityListener
 
 @SysUISingleton
 class CustomHeadsUpController @Inject constructor(
-    private val context: Context,
+    context: Context,
     @Background private val bgExecutor: Executor,
     private val configurationController: ConfigurationController,
     private val foregroundActivityListener: ForegroundActivityListener,
@@ -70,18 +70,18 @@ class CustomHeadsUpController @Inject constructor(
                 }
             }
         }
-        systemSettings.registerContentObserver(
-                Settings.System.getUriFor(DISABLE_LANDSCAPE_HEADS_UP),
-                true, settingsObserver)
-        systemSettings.registerContentObserver(
-                Settings.System.getUriFor(HEADS_UP_BLACKLIST),
-                true, settingsObserver)
-        systemSettings.registerContentObserver(
-                Settings.System.getUriFor(HEADS_UP_STOPLIST),
-                true, settingsObserver)
-        systemSettings.registerContentObserver(
-                Settings.System.getUriFor(LESS_BORING_HEADS_UP),
-                true, settingsObserver)
+        systemSettings.registerContentObserverForUser(
+                DISABLE_LANDSCAPE_HEADS_UP,
+                settingsObserver, UserHandle.USER_ALL)
+        systemSettings.registerContentObserverForUser(
+                HEADS_UP_BLACKLIST,
+                settingsObserver, UserHandle.USER_ALL)
+        systemSettings.registerContentObserverForUser(
+                HEADS_UP_STOPLIST,
+                settingsObserver, UserHandle.USER_ALL)
+        systemSettings.registerContentObserverForUser(
+                LESS_BORING_HEADS_UP,
+                settingsObserver, UserHandle.USER_ALL)
         updateSettings()
 
         userTracker.addCallback(object : UserTracker.Callback {
@@ -106,26 +106,26 @@ class CustomHeadsUpController @Inject constructor(
     }
 
     private fun updateLandscapeHeadsUp() {
-        disableInLandscape = Settings.System.getIntForUser(context.contentResolver,
+        disableInLandscape = systemSettings.getIntForUser(
                 DISABLE_LANDSCAPE_HEADS_UP, 0, userTracker.userId) == 1
     }
 
     private fun updateBlacklistApps() {
         blacklistApps.clear()
-        Settings.System.getStringForUser(context.contentResolver,
+        systemSettings.getStringForUser(
                 HEADS_UP_BLACKLIST, userTracker.userId)
                 ?.split(";")?.forEach { blacklistApps.add(it) }
     }
 
     private fun updateStoplistApps() {
         stoplistApps.clear()
-        Settings.System.getStringForUser(context.contentResolver,
+        systemSettings.getStringForUser(
                 HEADS_UP_STOPLIST, userTracker.userId)
                 ?.split(";")?.forEach { stoplistApps.add(it) }
     }
 
     private fun updateLessBoringHeadsUp() {
-        lessBoring = Settings.System.getIntForUser(context.contentResolver,
+        lessBoring = systemSettings.getIntForUser(
                 LESS_BORING_HEADS_UP, 0, userTracker.userId) == 1
     }
 

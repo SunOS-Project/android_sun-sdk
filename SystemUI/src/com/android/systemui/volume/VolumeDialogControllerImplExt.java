@@ -15,6 +15,7 @@ import android.media.AudioManager;
 import android.media.AudioSystem;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.UserHandle;
 import android.provider.Settings;
 import android.view.KeyEvent;
 
@@ -62,10 +63,10 @@ public class VolumeDialogControllerImplExt {
     public void onRegisterSettings(ContentObserver observer) {
         mResolver.registerContentObserver(
                 Settings.System.getUriFor(ADAPTIVE_PLAYBACK_ENABLED),
-                false, observer);
+                false, observer, UserHandle.USER_ALL);
         mResolver.registerContentObserver(
                 Settings.System.getUriFor(ADAPTIVE_PLAYBACK_TIMEOUT),
-                false, observer);
+                false, observer, UserHandle.USER_ALL);
     }
 
     public boolean onSettingsChanged(Uri uri) {
