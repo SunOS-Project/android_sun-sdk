@@ -3,21 +3,19 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package org.nameless.server.display.color;
+package com.android.server.display.color;
 
 import static org.nameless.display.DisplayFeatureManager.CUSTOM_DISPLAY_COLOR_MODE_START;
 
-import com.android.server.display.color.ColorDisplayService;
-
 import org.nameless.display.DisplayFeatureManager;
 
-public class ColorDisplayServiceExt {
+class ColorDisplayServiceExt {
 
     private static class InstanceHolder {
         private static ColorDisplayServiceExt INSTANCE = new ColorDisplayServiceExt();
     }
 
-    public static ColorDisplayServiceExt getInstance() {
+    static ColorDisplayServiceExt getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
@@ -26,11 +24,11 @@ public class ColorDisplayServiceExt {
 
     private ColorDisplayService mColorDisplayService;
 
-    public void init(ColorDisplayService cds) {
+    void init(ColorDisplayService cds) {
         mColorDisplayService = cds;
     }
 
-    public boolean interceptDisplayColorModeChange(int mode) {
+    boolean interceptDisplayColorModeChange(int mode) {
         if (mode >= CUSTOM_DISPLAY_COLOR_MODE_START) {
             setColorModeFeature(mode);
             return true;
@@ -38,11 +36,11 @@ public class ColorDisplayServiceExt {
         return false;
     }
 
-    public void setColorModeFeature(int mode) {
+    void setColorModeFeature(int mode) {
         mDisplayFeatureManager.setColorMode(mode);
     }
 
-    public int getFirstCustomColorMode() {
+    int getFirstCustomColorMode() {
         final int[] availableColorModes =
                 mColorDisplayService.getContext().getResources().getIntArray(
                 com.android.internal.R.array.config_availableColorModes);
