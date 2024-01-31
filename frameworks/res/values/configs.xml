@@ -69,4 +69,15 @@
     <string name="config_doze_pickUpSensorType"></string>
     <item name="config_doze_pickUpSensorValue" format="float" type="dimen">0.0</item>
 
+    <!-- Pop-Up View -->
+    <bool name="config_popUpView_defaultKeepMuteInMini">true</bool>
+    <integer name="config_popUpView_defaultSingleTapAction">1</integer>
+    <integer name="config_popUpView_defaultDoubleTapAction">2</integer>
+    <bool name="config_popUpView_defaultNotificationPortJump">false</bool>
+    <bool name="config_popUpView_defaultNotificationLandJump">true</bool>
+    <bool name="config_popUpView_defaultSettingsJump">true</bool>
+    <bool name="config_popUpView_defaultShareJump">true</bool>
+    <string-array name="config_popUpView_forceUpdateDpiPackages" translatable="false">
+    </string-array>
+
 </resources>

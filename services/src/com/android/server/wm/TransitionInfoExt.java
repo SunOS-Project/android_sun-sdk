@@ -1,0 +1,82 @@
+/*
+ * Copyright (C) 024 The Nameless-AOSP Project
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+package com.android.server.wm;
+
+import android.app.WindowConfiguration;
+import android.graphics.Point;
+import android.graphics.Rect;
+import android.view.DisplayInfo;
+import android.view.InsetsState;
+import android.view.WindowInsets;
+
+import com.android.server.wm.Transition.ChangeInfo.PopUpViewInfo;
+
+public class TransitionInfoExt {
+
+    private static final String TAG = "TransitionInfoExt";
+
+    private final PopUpViewInfo mPopUpViewInfo = new PopUpViewInfo();
+
+    private float getPositionAndScaleFormInfo(TaskWindowSurfaceInfo info, Point out) {
+        final Task task = info.mTask;
+        final int windowingMode = info.mFreezedWindowingMode != 0 ? info.mFreezedWindowingMode
+                : task.getConfiguration().windowConfiguration.getWindowingMode();
+        if (WindowConfiguration.isPinnedExtWindowMode(windowingMode)) {
+            final Rect bounds = new Rect();
+            task.getBounds(bounds);
+            final Rect innerBound = new Rect();
+            if (task.mDisplayContent != null) {
+                final InsetsState state = task.mDisplayContent.getInsetsStateController().getRawInsetsState();
+                innerBound.set(state.getDisplayFrame());
+                innerBound.inset(state.calculateInsets(innerBound,
+                        WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout(), true));
+            }
+            final Point pos = new Point();
+            WindowResizingAlgorithm.getCenterByBoundaryGap(bounds, innerBound,
+                    info.getWindowBoundaryGap(), info.getPinnedWindowVerticalPosRatio(innerBound),
+                    info.getWindowCenterPosition(), info.getWindowSurfaceScale(), pos);
+            info.setWindowCenterPosition(pos);
+        }
+
+        if (WindowConfiguration.isPopUpWindowMode(windowingMode)) {
+            final Rect displayBound = new Rect();
+            if (task.mDisplayContent != null) {
+                task.mDisplayContent.getBounds(displayBound);
+            }
+            final Rect bound = task.getBounds();
+            info.setWindowSurfaceScaleFactor(WindowResizingAlgorithm.getPositionAndScaleFactorForTask(
+                    bound, displayBound, info.getWindowCenterPosition(), info.getWindowSurfaceScale(),
+                    WindowConfiguration.isPinnedExtWindowMode(windowingMode), out));
+            return info.getWindowSurfaceRealScale();
+        }
+        return 1.0f;
+    }
+
+    private float getCornerRadiusFromInfo(TaskWindowSurfaceInfo info) {
+        final int windowingMode = info.mFreezedWindowingMode != 0 ? info.mFreezedWindowingMode
+                : info.mTask.getConfiguration().windowConfiguration.getWindowingMode();
+        if (WindowConfiguration.isPopUpWindowMode(windowingMode)) {
+            return info.getCornerRadius();
+        }
+        return 0.0f;
+    }
+
+    PopUpViewInfo getPopUpViewInfo() {
+        return mPopUpViewInfo;
+    }
+
+    void setupPopUpViewInfo(TaskWindowSurfaceInfo freezeInfo, TaskWindowSurfaceInfo info, DisplayInfo displayInfo) {
+        mPopUpViewInfo.mStartScale = getPositionAndScaleFormInfo(freezeInfo, mPopUpViewInfo.mStartPos);
+        mPopUpViewInfo.mEndScale = getPositionAndScaleFormInfo(info, mPopUpViewInfo.mEndPos);
+        mPopUpViewInfo.mStartCornerRadius = getCornerRadiusFromInfo(freezeInfo);
+        mPopUpViewInfo.mEndCornerRadius = getCornerRadiusFromInfo(info);
+        mPopUpViewInfo.mAppBounds.set(0, 0, displayInfo.appWidth, displayInfo.appHeight);
+        if (info.mTask != null) {
+            info.mTask.getBounds(mPopUpViewInfo.mWindowCrop);
+            mPopUpViewInfo.mStartDragBounds.set(info.mTask.mSurfaceFreezer.mFreezeBounds);
+        }
+    }
+}

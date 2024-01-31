@@ -118,4 +118,39 @@
     <java-symbol type="string" name="config_doze_pickUpSensorType" />
     <java-symbol type="dimen" name="config_doze_pickUpSensorValue" />
 
+    <!-- Pop-Up View -->
+    <java-symbol type="bool" name="config_popUpView_defaultKeepMuteInMini" />
+    <java-symbol type="integer" name="config_popUpView_defaultSingleTapAction" />
+    <java-symbol type="integer" name="config_popUpView_defaultDoubleTapAction" />
+    <java-symbol type="bool" name="config_popUpView_defaultNotificationPortJump" />
+    <java-symbol type="bool" name="config_popUpView_defaultNotificationLandJump" />
+    <java-symbol type="bool" name="config_popUpView_defaultSettingsJump" />
+    <java-symbol type="bool" name="config_popUpView_defaultShareJump" />
+    <java-symbol type="array" name="config_popUpView_forceUpdateDpiPackages" />
+    <java-symbol type="dimen" name="mini_window_bar_width" />
+    <java-symbol type="dimen" name="mini_window_bar_height" />
+    <java-symbol type="dimen" name="mini_window_bar_radius" />
+    <java-symbol type="dimen" name="mini_window_bar_margin" />
+    <java-symbol type="dimen" name="mini_window_corner_radius" />
+    <java-symbol type="dimen" name="pinned_window_corner_radius" />
+    <java-symbol type="dimen" name="pinned_window_dismiss_button_padding_height" />
+    <java-symbol type="dimen" name="pinned_window_dismiss_button_padding_width" />
+    <java-symbol type="dimen" name="pinned_window_dismiss_gradient_bg_height" />
+    <java-symbol type="dimen" name="pinned_window_menu_corner_radius_large" />
+    <java-symbol type="dimen" name="pinned_window_menu_corner_radius_small" />
+    <java-symbol type="drawable" name="ic_pop_up_view" />
+    <java-symbol type="drawable" name="pinned_window_scale_large" />
+    <java-symbol type="drawable" name="pinned_window_scale_small" />
+    <java-symbol type="drawable" name="pinned_window_mute" />
+    <java-symbol type="drawable" name="pinned_window_unmute" />
+    <java-symbol type="id" name="pinned_window_dismiss_button" />
+    <java-symbol type="id" name="pinned_window_dismiss_button_image_view" />
+    <java-symbol type="id" name="pinned_window_dismiss_button_text_view" />
+    <java-symbol type="id" name="pinned_window_menu_container" />
+    <java-symbol type="id" name="pinned_window_menu_scale_button" />
+    <java-symbol type="id" name="pinned_window_menu_mute_button" />
+    <java-symbol type="layout" name="pinned_window_dismiss" />
+    <java-symbol type="layout" name="pinned_window_overlay" />
+    <java-symbol type="string" name="recent_task_option_pop_up" />
+
 </resources>

@@ -1,0 +1,104 @@
+/*
+ * Copyright (C) 2023-2024 The Nameless-AOSP Project
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+package com.android.server.wm;
+
+import static android.app.WindowConfiguration.WINDOWING_MODE_PINNED_WINDOW_EXT;
+import static android.app.WindowConfiguration.WINDOWING_MODE_MINI_WINDOW_EXT;
+
+import static org.nameless.view.PopUpViewManager.ACTION_START_MINI_WINDOW;
+import static org.nameless.view.PopUpViewManager.ACTION_START_PINNED_WINDOW;
+import static org.nameless.view.PopUpViewManager.EXTRA_PACKAGE_NAME;
+import static org.nameless.view.PopUpViewManager.EXTRA_ACTIVITY_NAME;
+import static org.nameless.view.PopUpViewManager.MI_FREEFORM_API_INTENT;
+import static org.nameless.view.PopUpViewManager.MI_FREEFORM_PACKAGE_NAME;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
+
+import com.android.internal.util.nameless.CustomUtils;
+
+public class PopUpBroadcastReceiver extends BroadcastReceiver {
+
+    private static final String TAG = "PopUpBroadcastReceiver";
+
+    private static final boolean ALLOW_START_TOP = false;
+
+    private static class InstanceHolder {
+        private static final PopUpBroadcastReceiver INSTANCE = new PopUpBroadcastReceiver();
+    }
+
+    public static PopUpBroadcastReceiver getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
+
+    private boolean mBootCompleted = false;
+
+    void init(Context context, Handler handler) {
+        final IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION_START_MINI_WINDOW);
+        filter.addAction(ACTION_START_PINNED_WINDOW);
+        context.registerReceiverForAllUsers(this, filter, null, handler);
+
+        mBootCompleted = true;
+    }
+
+    public Intent hookMiFreeformIntent(Intent intent) {
+        if (!MI_FREEFORM_API_INTENT.equals(intent.getAction())) {
+            return intent;
+        }
+        if (!MI_FREEFORM_PACKAGE_NAME.equals(intent.getPackage())) {
+            return intent;
+        }
+        if (!PopUpSettingsConfig.getInstance().shouldHookMiFreeform()) {
+            return intent;
+        }
+        if (!mBootCompleted) {
+            return intent;
+        }
+
+        final String packageName = intent.getStringExtra(EXTRA_PACKAGE_NAME);
+        final String activityName = intent.getStringExtra(EXTRA_ACTIVITY_NAME);
+
+        intent = new Intent(ACTION_START_MINI_WINDOW);
+        intent.putExtra(EXTRA_PACKAGE_NAME, packageName);
+        intent.putExtra(EXTRA_ACTIVITY_NAME, activityName);
+        return intent;
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        final String packageName = intent.getStringExtra(EXTRA_PACKAGE_NAME);
+        if (TextUtils.isEmpty(packageName)) {
+            return;
+        }
+        if (!CustomUtils.isPackageInstalled(context, packageName, false)) {
+            return;
+        }
+        if (TopActivityRecorder.getInstance().isPackageAtTop(packageName) && !ALLOW_START_TOP) {
+            return;
+        }
+
+        final String activityName = intent.getStringExtra(EXTRA_ACTIVITY_NAME);
+
+        Bundle bundle = null;
+        switch (intent.getAction()) {
+            case ACTION_START_MINI_WINDOW:
+                bundle = PopUpAppStarter.getMiniWindowBundle();
+                break;
+            case ACTION_START_PINNED_WINDOW:
+                bundle = PopUpAppStarter.getPinnedWindowBundle();
+                break;
+        }
+        if (bundle != null) {
+            PopUpAppStarter.getInstance().startActivity(packageName, activityName, bundle);
+        }
+    }
+}

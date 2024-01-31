@@ -39,6 +39,19 @@ public class AppFocusManager {
     }
 
     /** @hide */
+    public boolean hasMiniWindowFocus() {
+        if (mService == null) {
+            Slog.e(TAG, "Failed to check if has mini-window focus. Service is null");
+            return false;
+        }
+        try {
+            return mService.hasMiniWindowFocus();
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /** @hide */
     public boolean registerAppFocusObserver(IAppFocusObserver.Stub listener) {
         return registerAppFocusObserver(listener, false);
     }

@@ -7,6 +7,10 @@ package com.android.server.am;
 
 import static org.nameless.server.policy.DozeController.DOZE_INTENT;
 
+import android.content.Intent;
+
+import com.android.server.wm.PopUpBroadcastReceiver;
+
 class ActivityManagerServiceExt {
 
     private static class InstanceHolder {
@@ -22,5 +26,10 @@ class ActivityManagerServiceExt {
             return true;
         }
         return false;
+    }
+
+    Intent hookIntentBeforeBroadcast(Intent intent) {
+        intent = PopUpBroadcastReceiver.getInstance().hookMiFreeformIntent(intent);
+        return intent;
     }
 }

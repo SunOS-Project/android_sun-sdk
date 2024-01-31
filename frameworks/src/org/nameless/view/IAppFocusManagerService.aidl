@@ -15,6 +15,9 @@ interface IAppFocusManagerService {
     /* Get current top fullscreen component */
     ComponentName getTopFullscreenComponent();
 
+    /* Check if current has mini-window focus */
+    boolean hasMiniWindowFocus();
+
     /* Register observer to observe app focus change */
     boolean registerAppFocusObserver(in IAppFocusObserver listener, in boolean observeActivity);
 

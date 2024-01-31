@@ -541,6 +541,62 @@ public class SettingsExt {
          * @hide
          */
         public static final String VOLBTN_MUSIC_CONTROLS = "volbtn_music_controls";
+
+        /**
+         * Whether to keep mute in mini-window
+         * @hide
+         */
+        public static final String POP_UP_KEEP_MUTE_IN_MINI = "pop_up_keep_mute_in_mini";
+
+        /**
+         * Pop-Up Window dimmer view single tap action
+         * 0: Enter pinned-window mode   1: Exit Pop-Up View   2: No action
+         * @hide
+         */
+        public static final String POP_UP_SINGLE_TAP_ACTION = "pop_up_single_tap_action";
+
+        /**
+         * Pop-Up Window dimmer view double tap action
+         * 0: Enter pinned-window mode   1: Exit Pop-Up View   2: No action
+         * @hide
+         */
+        public static final String POP_UP_DOUBLE_TAP_ACTION = "pop_up_double_tap_action";
+
+        /**
+         * Whether to hook Mi-Freeform broadcast
+         * @hide
+         */
+        public static final String POP_UP_HOOK_MI_FREEFORM = "pop_up_hook_mi_freeform";
+
+        /**
+         * Whether to use Pop-Up Window for notification app jump in portrait mode
+         * @hide
+         */
+        public static final String POP_UP_NOTIFICATION_JUMP_PORTRAIT = "pop_up_notification_jump_portrait";
+
+        /**
+         * Whether to use Pop-Up Window for notification app jump in landscape mode
+         * @hide
+         */
+        public static final String POP_UP_NOTIFICATION_JUMP_LANDSCAPE = "pop_up_notification_jump_landscape";
+
+        /**
+         * Blacklist apps that disallow from opening notification in Pop-Up View
+         * @hide
+         */
+        public static final String POP_UP_NOTIFICATION_BLACKLIST = "pop_up_notification_blacklist";
+
+        /**
+         * Whether to use Pop-Up Window for Settings jump
+         * @hide
+         */
+        public static final String POP_UP_SETTINGS_JUMP = "pop_up_settings_jump";
+
+        /**
+         * Whether to use Pop-Up Window for share activity jump
+         * @hide
+         */
+        public static final String POP_UP_SHARE_JUMP = "pop_up_share_jump";
     }
 
     public static class Secure {

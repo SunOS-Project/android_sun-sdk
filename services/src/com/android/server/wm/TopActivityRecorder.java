@@ -65,6 +65,11 @@ public class TopActivityRecorder {
         }
 
         @Override
+        public boolean hasMiniWindowFocus() {
+            return hasMiniWindow();
+        }
+
+        @Override
         public boolean registerAppFocusObserver(IAppFocusObserver observer, boolean observeActivity) {
             final IBinder observerBinder = observer.asBinder();
             IBinder.DeathRecipient dr = new IBinder.DeathRecipient() {
@@ -120,6 +125,8 @@ public class TopActivityRecorder {
     }
 
     private ActivityInfo mTopFullscreenActivity = null;
+    private ActivityInfo mTopPinnedWindowActivity = null;
+    private ArrayList<ActivityInfo> mTopMiniWindowActivity = new ArrayList<>();
 
     private NamelessSystemExService mSystemExService;
     private WindowManagerService mWms;
@@ -145,7 +152,22 @@ public class TopActivityRecorder {
                 return;
             }
             final int windowingMode = newTask.getWindowConfiguration().getWindowingMode();
-            if (windowingMode == WindowConfiguration.WINDOWING_MODE_UNDEFINED
+            if (WindowConfiguration.isMiniExtWindowMode(windowingMode)) {
+                boolean hasTask = false;
+                for (ActivityInfo ai : mTopMiniWindowActivity) {
+                    if (ai.task == newTask) {
+                        hasTask = true;
+                        ai.componentName = newFocus.mActivityComponent;
+                        ai.packageName = newFocus.packageName;
+                        break;
+                    }
+                }
+                if (!hasTask) {
+                    mTopMiniWindowActivity.add(new ActivityInfo(newFocus, newTask));
+                }
+                logD("Top mini-window activity changed to " + newFocus + ", addedTaskBefore=" + hasTask);
+                DimmerWindow.getInstance().setTask(newTask);
+            } else if (windowingMode == WindowConfiguration.WINDOWING_MODE_UNDEFINED
                     || windowingMode == WindowConfiguration.WINDOWING_MODE_FULLSCREEN) {
                 final ComponentName oldComponent = getTopFullscreenComponentLocked();
                 final ComponentName newComponent = newFocus.mActivityComponent;
@@ -166,11 +188,263 @@ public class TopActivityRecorder {
         }
     }
 
+    void updateTopPinnedWindowActivity(ActivityRecord newActivity) {
+        synchronized (mFocusLock) {
+            if (mTopPinnedWindowActivity != null &&
+                    newActivity != null &&
+                    mTopPinnedWindowActivity.task == newActivity.getTask()) {
+                mTopPinnedWindowActivity.componentName = newActivity.mActivityComponent;
+                mTopPinnedWindowActivity.packageName = newActivity.packageName;
+            } else {
+                mTopPinnedWindowActivity = new ActivityInfo(newActivity, newActivity.getTask());
+            }
+            if (mTopPinnedWindowActivity.task != null) {
+                PinnedWindowOverlayController.getInstance().setTask(mTopPinnedWindowActivity.task);
+                logD("Top pinned-window activity changed to " + newActivity);
+            } else {
+                PinnedWindowOverlayController.getInstance().setTask(null);
+                logD("Top pinned-window activity changed to null");
+            }
+        }
+    }
+
     private ComponentName getTopFullscreenComponentLocked() {
         if (mTopFullscreenActivity == null) {
             return null;
         }
         return mTopFullscreenActivity.componentName;
+    }
+
+    String getTopFullscreenPackage() {
+        synchronized (mFocusLock) {
+            if (mTopFullscreenActivity == null) {
+                return "";
+            }
+            return mTopFullscreenActivity.packageName;
+        }
+    }
+
+    Task getTopFullscreenTask() {
+        synchronized (mFocusLock) {
+            if (mTopFullscreenActivity == null) {
+                return null;
+            }
+            return mTopFullscreenActivity.task;
+        }
+    }
+
+    String getTopPinnedWindowPackage() {
+        synchronized (mFocusLock) {
+            if (mTopPinnedWindowActivity == null) {
+                return "";
+            }
+            return mTopPinnedWindowActivity.packageName;
+        }
+    }
+
+    Task getTopPinnedWindowTaskLocked() {
+        if (mTopPinnedWindowActivity == null) {
+            return null;
+        }
+        return mTopPinnedWindowActivity.task;
+    }
+
+    int getTopPinnedWindowTaskId() {
+        synchronized (mFocusLock) {
+            final Task task = getTopPinnedWindowTaskLocked();
+            if (task == null) {
+                return INVALID_TASK_ID;
+            }
+            return task.mTaskId;
+        }
+    }
+
+    String getTopMiniWindowPackage() {
+        synchronized (mFocusLock) {
+            final int n = mTopMiniWindowActivity.size();
+            if (n == 0) {
+                return "";
+            }
+            return mTopMiniWindowActivity.get(n - 1).packageName;
+        }
+    }
+
+    Task getTopMiniWindowExceptTask(Task task) {
+        synchronized (mFocusLock) {
+            final int n = mTopMiniWindowActivity.size();
+            if (n == 0) {
+                return null;
+            }
+            for (int i = n - 1; i >= 0; --i) {
+                if (mTopMiniWindowActivity.get(i).task == task) {
+                    continue;
+                }
+                return mTopMiniWindowActivity.get(i).task;
+            }
+            logE("getTopMiniWindowExceptTask, unable to find task: " + task);
+            return null;
+        }
+    }
+
+    private Task getTopMiniWindowTaskLocked() {
+        final int n = mTopMiniWindowActivity.size();
+        if (n == 0) {
+            return null;
+        }
+        return mTopMiniWindowActivity.get(n - 1).task;
+    }
+
+    boolean isTopFullscreenActivityHome() {
+        synchronized (mFocusLock) {
+            if (mTopFullscreenActivity == null) {
+                return false;
+            }
+            return mTopFullscreenActivity.isHome;
+        }
+    }
+
+    boolean isTaskTopMini(Task task) {
+        synchronized (mFocusLock) {
+            final int n = mTopMiniWindowActivity.size();
+            if (n == 0) {
+                return false;
+            }
+            return mTopMiniWindowActivity.get(n - 1).task == task;
+        }
+    }
+
+    boolean isPackageAtTop(String packageName) {
+        return getTopFullscreenPackage().equals(packageName) ||
+                getTopMiniWindowPackage().equals(packageName) ||
+                getTopPinnedWindowPackage().equals(packageName);
+    }
+
+    boolean hasPinnedWindow() {
+        synchronized (mFocusLock) {
+            return mTopPinnedWindowActivity != null;
+        }
+    }
+
+    boolean hasMiniWindow() {
+        synchronized (mFocusLock) {
+            return mTopMiniWindowActivity.size() > 0;
+        }
+    }
+
+    private String getPackageNameFromTask(Task task) {
+        final ActivityRecord taskActivity = task.getActivity((r) -> true);
+        if (taskActivity != null) {
+            return taskActivity.packageName;
+        }
+        return "";
+    }
+
+    void removeMiniWindowTask(Task task) {
+        synchronized (mFocusLock) {
+            final int n = mTopMiniWindowActivity.size();
+            for (int i = n - 1; i >= 0; --i) {
+                if (mTopMiniWindowActivity.get(i).task == task) {
+                    final ActivityInfo ai = mTopMiniWindowActivity.remove(i);
+                    logD("removeMiniWindowTask: " + ai);
+                    if (n == 1) {
+                        DimmerWindow.getInstance().setTask(null);
+                    } else {
+                        DimmerWindow.getInstance().setTask(mTopMiniWindowActivity.get(n - 2).task);
+                    }
+                    return;
+                }
+            }
+            logD("removeMiniWindowTask, unable to find task: " + task);
+        }
+    }
+
+    void removeTopMiniWindowActivity() {
+        synchronized (mFocusLock) {
+            final int n = mTopMiniWindowActivity.size();
+            if (n == 0) {
+                return;
+            }
+            final ActivityInfo ai = mTopMiniWindowActivity.remove(n - 1);
+            logD("removeTopMiniWindowActivity: " + ai);
+            if (n == 1) {
+                DimmerWindow.getInstance().setTask(null);
+            } else {
+                DimmerWindow.getInstance().setTask(mTopMiniWindowActivity.get(n - 2).task);
+            }
+        }
+    }
+
+    void moveTopMiniToPinned(Task task) {
+        synchronized (mFocusLock) {
+            final int n = mTopMiniWindowActivity.size();
+            if (n == 0) {
+                return;
+            }
+            final Task prevPinnedTask = PinnedWindowOverlayController.getInstance().getTask();
+            if (prevPinnedTask != null) {
+                prevPinnedTask.setAlwaysOnTop(false);
+            }
+            mTopPinnedWindowActivity = mTopMiniWindowActivity.get(n - 1);
+            logD("moveTopMiniToPinned: " + mTopPinnedWindowActivity);
+            mTopMiniWindowActivity.clear();
+            DimmerWindow.getInstance().setTask(null);
+            mHandler.postDelayed(() -> {
+                PinnedWindowOverlayController.getInstance().setTask(task);
+                if (prevPinnedTask != null) {
+                    PopUpWindowController.getInstance().moveActivityTaskToBack(prevPinnedTask,
+                            PopUpWindowController.MOVE_TO_BACK_NEW_PIN);
+                }
+            }, WindowChangeAnimationSpecExt.ANIMATION_DURATION_MODE_CHANGING);
+        }
+    }
+
+    void moveTopPinnedToMini() {
+        synchronized (mFocusLock) {
+            if (mTopPinnedWindowActivity == null) {
+                return;
+            }
+            final Task prevMiniTask = getTopMiniWindowTaskLocked();
+            if (prevMiniTask != null) {
+                prevMiniTask.setAlwaysOnTop(false);
+            }
+            mTopMiniWindowActivity.add(mTopPinnedWindowActivity);
+            logD("moveTopPinnedToMini: " + mTopPinnedWindowActivity);
+            DimmerWindow.getInstance().setTask(mTopPinnedWindowActivity.task);
+            mTopPinnedWindowActivity = null;
+            PinnedWindowOverlayController.getInstance().setTask(null);
+            mHandler.postDelayed(() -> {
+                if (prevMiniTask != null) {
+                    PopUpWindowController.getInstance().moveActivityTaskToBack(prevMiniTask,
+                            PopUpWindowController.MOVE_TO_BACK_NEW_MINI);
+                }
+            }, WindowChangeAnimationSpecExt.ANIMATION_DURATION_MODE_CHANGING);
+        }
+    }
+
+    void clearMiniWindow() {
+        synchronized (mFocusLock) {
+            logD("clearMiniWindow");
+            mTopMiniWindowActivity.clear();
+            DimmerWindow.getInstance().setTask(null);
+        }
+    }
+
+    void clearPinnedWindow() {
+        synchronized (mFocusLock) {
+            logD("clearPinnedWindow");
+            mTopPinnedWindowActivity = null;
+            PinnedWindowOverlayController.getInstance().setTask(null);
+        }
+    }
+
+    void onForceStopPackage(String packageName) {
+        synchronized (mFocusLock) {
+            for (int i = mTopMiniWindowActivity.size() - 1; i >= 0; --i) {
+                if (packageName.equals(mTopMiniWindowActivity.get(i).packageName)) {
+                    mTopMiniWindowActivity.remove(i);
+                }
+            }
+        }
     }
 
     private void notifyFullscreenComponentChanged(ComponentName oldComponent, ComponentName newComponent) {

@@ -1,0 +1,42 @@
+/*
+ * Copyright (C) 2024 The Nameless-AOSP Project
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+package android.app;
+
+import static android.app.WindowConfiguration.WINDOWING_MODE_FREEFORM;
+
+/** @hide */
+class ActivityOptionsExt {
+
+    private static final String PKG_LAUNCHER3 = "com.android.launcher3";
+    private static final String PKG_PIXEL_LAUNCHER = "com.google.android.apps.nexuslauncher";
+
+    private ActivityOptionsExt() {}
+
+    static boolean hookLauncherSetLaunchBounds() {
+        return isFromLauncher();
+    }
+
+    static boolean hookLauncherSetFreeform(int windowingMode) {
+        return isFromLauncher() && windowingMode == WINDOWING_MODE_FREEFORM;
+    }
+
+    private static boolean isFromLauncher() {
+        final String packageName = ActivityThread.currentOpPackageName();
+        if (packageName == null) {
+            return false;
+        }
+        if (PKG_LAUNCHER3.equals(packageName)) {
+            return true;
+        }
+        if (PKG_PIXEL_LAUNCHER.equals(packageName)) {
+            return true;
+        }
+        if (packageName.toLowerCase().contains("lawnchair")) {
+            return true;
+        }
+        return false;
+    }
+}
