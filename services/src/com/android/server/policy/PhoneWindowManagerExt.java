@@ -53,9 +53,9 @@ public class PhoneWindowManagerExt {
 
     private static final int MSG_DISPATCH_VOLKEY_WITH_WAKE_LOCK = 101;
 
-    public static final int EXT_UNHANDLED = 0;
-    public static final int EXT_PASS_TO_USER = 1;
-    public static final int EXT_CONSUMED = 2;
+    static final int EXT_UNHANDLED = 0;
+    static final int EXT_PASS_TO_USER = 1;
+    static final int EXT_CONSUMED = 2;
 
     private AssistUtils mAssistUtils;
     private AudioManager mAudioManager;
@@ -81,7 +81,7 @@ public class PhoneWindowManagerExt {
         private static final PhoneWindowManagerExt INSTANCE = new PhoneWindowManagerExt();
     }
 
-    public static PhoneWindowManagerExt getInstance() {
+    static PhoneWindowManagerExt getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
@@ -108,7 +108,7 @@ public class PhoneWindowManagerExt {
         }
     };
 
-    public void init(PhoneWindowManager pw, Handler handler) {
+    void init(PhoneWindowManager pw, Handler handler) {
         mPhoneWindowManager = pw;
         mHandler = handler;
         mAssistUtils = new AssistUtils(pw.mContext);
@@ -120,25 +120,25 @@ public class PhoneWindowManagerExt {
         mPocketLock = new PocketLock(pw.mContext);
     }
 
-    public void systemReady() {
+    void systemReady() {
         mSystemGesture.configure();
     }
 
-    public void systemBooted() {
+    void systemBooted() {
         final DisplayResolutionManager drm =
                 mPhoneWindowManager.mContext.getSystemService(DisplayResolutionManager.class);
         drm.registerDisplayResolutionListener(mDisplayResolutionListener);
     }
 
-    public void onConfigureChanged() {
+    void onConfigureChanged() {
         mSystemGesture.configure();
     }
 
-    public void onDefaultDisplayFocusChangedLw(WindowState win) {
+    void onDefaultDisplayFocusChangedLw(WindowState win) {
         mWindowState = win;
     }
 
-    public void onHandleMessage(Message msg) {
+    void onHandleMessage(Message msg) {
         switch (msg.what) {
             case MSG_DISPATCH_VOLKEY_WITH_WAKE_LOCK:
                 KeyEvent event = (KeyEvent) msg.obj;
@@ -150,28 +150,28 @@ public class PhoneWindowManagerExt {
         }
     }
 
-    public void onLongPressPowerHidePocket() {
+    void onLongPressPowerHidePocket() {
         hidePocketLock(true);
         mPocketManager.setListeningExternal(false);
     }
 
-    public void onStartedGoingToSleep() {
+    void onStartedGoingToSleep() {
         if (mPocketManager != null) {
             mPocketManager.onInteractiveChanged(false);
         }
     }
 
-    public void onStartedWakingUp() {
+    void onStartedWakingUp() {
         if (mPocketManager != null) {
             mPocketManager.onInteractiveChanged(true);
         }
     }
 
-    public WindowState getWindowState() {
+    WindowState getWindowState() {
         return mWindowState;
     }
 
-    public void observe(ContentResolver resolver, ContentObserver observer) {
+    void observe(ContentResolver resolver, ContentObserver observer) {
         resolver.registerContentObserver(Settings.System.getUriFor(
                 SettingsExt.System.CLICK_PARTIAL_SCREENSHOT), false, observer,
                 UserHandle.USER_ALL);
@@ -189,7 +189,7 @@ public class PhoneWindowManagerExt {
                 UserHandle.USER_ALL);
     }
 
-    public void updateSettings(ContentResolver resolver) {
+    void updateSettings(ContentResolver resolver) {
         mClickPartialScreenshot = Settings.System.getIntForUser(resolver,
                 SettingsExt.System.CLICK_PARTIAL_SCREENSHOT, 0,
                 UserHandle.USER_CURRENT) == 1;
@@ -207,7 +207,7 @@ public class PhoneWindowManagerExt {
                 UserHandle.USER_CURRENT) == 1;
     }
 
-    public void registerSystemGestureListener(String pkg, int gesture, ISystemGestureListener listener) {
+    void registerSystemGestureListener(String pkg, int gesture, ISystemGestureListener listener) {
         try {
             mSystemGesture.registerSystemGestureListener(pkg, gesture, listener);
         } catch (RemoteException e) {
@@ -215,15 +215,15 @@ public class PhoneWindowManagerExt {
         }
     }
 
-    public void unregisterSystemGestureListener(String pkg, int gesture, ISystemGestureListener listener) {
+    void unregisterSystemGestureListener(String pkg, int gesture, ISystemGestureListener listener) {
         mSystemGesture.unregisterSystemGestureListener(pkg, gesture, listener);
     }
 
-    public boolean hasAssistant(int currentUserId) {
+    boolean hasAssistant(int currentUserId) {
         return mAssistUtils.getAssistComponentForUser(currentUserId) != null;
     }
 
-    public boolean handleTorchPress(boolean fromNonInteractive) {
+    boolean handleTorchPress(boolean fromNonInteractive) {
         if (!isPowerTorchGestureOn()) {
             return false;
         }
@@ -242,7 +242,7 @@ public class PhoneWindowManagerExt {
         return true;
     }
 
-    public int handleVolumeKeyPress(KeyEvent event, boolean down) {
+    int handleVolumeKeyPress(KeyEvent event, boolean down) {
         if (!mAudioManager.isMusicActive()) {
             if (DEBUG_PHONE_WINDOW_MANAGER) {
                 Slog.d(TAG, "handleVolumeKeyPress, music is not playing");
@@ -288,7 +288,7 @@ public class PhoneWindowManagerExt {
                 Settings.Secure.FLASHLIGHT_ENABLED, 0) != 0;
     }
 
-    public boolean interceptKeyBeforeQueueing(int keyCode, boolean down, boolean interactive) {
+    boolean interceptKeyBeforeQueueing(int keyCode, boolean down, boolean interactive) {
         if (mHasAlertSlider && AlertSliderManager.maybeNotifyUpdate(
                 mPhoneWindowManager.mContext, keyCode, down)) {
             return true;
@@ -311,7 +311,7 @@ public class PhoneWindowManagerExt {
         return false;
     }
 
-    public int interceptMotionBeforeQueueing(MotionEvent event) {
+    int interceptMotionBeforeQueueing(MotionEvent event) {
         if (event.getDisplayId() != Display.DEFAULT_DISPLAY) {
             return SYSTEM_GESTURE_NONE;
         }
@@ -323,7 +323,7 @@ public class PhoneWindowManagerExt {
         return result;
     }
 
-    public boolean interceptDispatchInputWhenNonInteractive(int keyCode) {
+    boolean interceptDispatchInputWhenNonInteractive(int keyCode) {
         if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN ||
                 keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
             return mVolBtnMusicControls && isDozeMode();
@@ -341,11 +341,11 @@ public class PhoneWindowManagerExt {
         mPhoneWindowManager.takeScreenshotExt(fullscreen);
     }
 
-    public boolean isClickPartialScreenshot() {
+    boolean isClickPartialScreenshot() {
         return mClickPartialScreenshot;
     }
 
-    public boolean isPowerTorchGestureOn() {
+    boolean isPowerTorchGestureOn() {
         return mPowerTorchGesture;
     }
 
@@ -361,15 +361,15 @@ public class PhoneWindowManagerExt {
         return mThreeFingerSwipeScreenshot;
     }
 
-    public boolean isDeviceInPocket() {
+    boolean isDeviceInPocket() {
         return mIsDeviceInPocket;
     }
 
-    public boolean isPocketLockShowing() {
+    boolean isPocketLockShowing() {
         return mPocketLockShowing;
     }
 
-    public boolean isVolumeButtonMusicControl() {
+    boolean isVolumeButtonMusicControl() {
         return mVolBtnMusicControls;
     }
 

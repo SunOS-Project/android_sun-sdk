@@ -17,7 +17,7 @@ import com.android.server.pm.parsing.pkg.AndroidPackageUtils;
 
 import java.util.HashSet;
 
-public class PackageManagerServiceExt {
+class PackageManagerServiceExt {
 
     private static final String TAG = "PackageManagerServiceExt";
 
@@ -30,11 +30,11 @@ public class PackageManagerServiceExt {
         private static final PackageManagerServiceExt INSTANCE = new PackageManagerServiceExt();
     }
 
-    public static PackageManagerServiceExt getInstance() {
+    static PackageManagerServiceExt getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
-    public void init(PackageManagerService pms) {
+    void init(PackageManagerService pms) {
         mPackageManagerService = pms;
         enableComponents(pms.mContext.getResources().getStringArray(
                 R.array.config_deviceDisabledComponents), false);
@@ -44,11 +44,11 @@ public class PackageManagerServiceExt {
                 R.array.config_forceEnabledComponents), true);
     }
 
-    public boolean isComponentDisabled(ComponentName component) {
+    boolean isComponentDisabled(ComponentName component) {
         return mDisabledComponentsList.contains(component);
     }
 
-    public boolean isComponentForceEnabled(ComponentName component) {
+    boolean isComponentForceEnabled(ComponentName component) {
         return mForceEnabledComponentsList.contains(component);
     }
 

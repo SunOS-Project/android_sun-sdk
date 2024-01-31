@@ -29,7 +29,7 @@ import java.util.Calendar;
 import org.nameless.os.BatteryFeatureManager;
 import org.nameless.server.NamelessSystemExService;
 
-public class OptimizedChargeController {
+class OptimizedChargeController {
 
     private static final String TAG = "OptimizedChargeController";
 
@@ -87,7 +87,7 @@ public class OptimizedChargeController {
         }
     }
 
-    public OptimizedChargeController(NamelessSystemExService service,
+    OptimizedChargeController(NamelessSystemExService service,
             BatteryFeatureManager batteryFeatureManager, NotificationPoster poster) {
         mService = service;
         mBatteryFeatureManager = batteryFeatureManager;
@@ -98,17 +98,17 @@ public class OptimizedChargeController {
         mAlarmManager = mContext.getSystemService(AlarmManager.class);
     }
 
-    public void onBatteryStateChanged() {
+    void onBatteryStateChanged() {
         logD(TAG, "onBatteryStateChanged");
         updateState();
     }
 
-    public void onBootCompleted() {
+    void onBootCompleted() {
         logD(TAG, "onBootCompleted");
         updateSettings();
     }
 
-    public void updateSettings() {
+    void updateSettings() {
         mEnabled = BatteryFeatureSettingsHelper.getOptimizedChargingEnabled(mContext);
         mStatus = BatteryFeatureSettingsHelper.getOptimizedChargingStatus(mContext);
         mCeiling = BatteryFeatureSettingsHelper.getOptimizedChargingCeiling(mContext);

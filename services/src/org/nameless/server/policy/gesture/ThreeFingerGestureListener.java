@@ -20,7 +20,7 @@ import com.android.internal.policy.SystemBarUtils;
 
 import java.util.HashMap;
 
-public class ThreeFingerGestureListener extends GestureListenerBase {
+class ThreeFingerGestureListener extends GestureListenerBase {
 
     private static final String TAG = "SystemGesture::ThreeFingerGestureListener";
 
@@ -60,7 +60,7 @@ public class ThreeFingerGestureListener extends GestureListenerBase {
 
     private boolean mHandledPartial = false;
 
-    public ThreeFingerGestureListener(SystemGesture systemGesture, Context context) {
+    ThreeFingerGestureListener(SystemGesture systemGesture, Context context) {
         super(systemGesture, context);
     }
 

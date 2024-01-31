@@ -9,15 +9,15 @@ import android.os.IBinder;
 
 import org.nameless.view.ISystemGestureListener;
 
-public class SystemGestureClient {
+class SystemGestureClient {
 
-    public IBinder key;
-    public String pkg;
-    public int uid;
-    public int gesture;
-    public ISystemGestureListener listener;
+    IBinder key;
+    String pkg;
+    int uid;
+    int gesture;
+    ISystemGestureListener listener;
 
-    public SystemGestureClient(IBinder key, String pkg, int uid, int gesture, ISystemGestureListener listener) {
+    SystemGestureClient(IBinder key, String pkg, int uid, int gesture, ISystemGestureListener listener) {
         this.key = key;
         this.pkg = pkg;
         this.uid = uid;
@@ -25,6 +25,7 @@ public class SystemGestureClient {
         this.listener = listener;
     }
 
+    @Override
     public boolean equals(Object o) {
         return (o instanceof SystemGestureClient) && equals((SystemGestureClient) o);
     }
@@ -33,6 +34,7 @@ public class SystemGestureClient {
         return o != null && o.pkg.equals(pkg) && uid == o.uid && gesture == o.gesture && key == o.key;
     }
 
+    @Override
     public String toString() {
         return "SystemGestureClient{key=" + key + ", pkg='" + pkg + "', gesture=" + gesture +
                 ", uid=" + uid + ", listener=" + listener + '}';

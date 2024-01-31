@@ -7,7 +7,7 @@ package org.nameless.server.policy.gesture;
 
 import android.view.MotionEvent;
 
-public interface IGestureListener {
+interface IGestureListener {
 
     boolean interceptMotionBeforeQueueing(MotionEvent motionEvent);
 }

@@ -28,7 +28,7 @@ import java.util.Calendar;
 import org.nameless.os.BatteryFeatureManager;
 import org.nameless.server.NamelessSystemExService;
 
-public class QuietModeController {
+class QuietModeController {
 
     private static final String TAG = "QuietModeController";
 
@@ -69,23 +69,23 @@ public class QuietModeController {
             });
         }
 
-        public void set(Calendar time) {
+        void set(Calendar time) {
             set(time.getTimeInMillis());
         }
 
-        public void set(long time) {
+        void set(long time) {
             cancel();
             mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, time, TAG, this, mHandler);
             logD(TAG, "New alarm set, time: " + time
                     + ", mNextEnable: " + mNextEnable);
         }
 
-        public void cancel() {
+        void cancel() {
             mAlarmManager.cancel(this);
         }
     }
 
-    public QuietModeController(NamelessSystemExService service,
+    QuietModeController(NamelessSystemExService service,
             BatteryFeatureManager batteryFeatureManager, NotificationPoster poster) {
         mBatteryFeatureManager = batteryFeatureManager;
         mPoster = poster;
@@ -94,12 +94,12 @@ public class QuietModeController {
         mAlarmManager = mContext.getSystemService(AlarmManager.class);
     }
 
-    public void onBootCompleted() {
+    void onBootCompleted() {
         logD(TAG, "onBootCompleted");
         updateSettings();
     }
 
-    public void updateSettings() {
+    void updateSettings() {
         mEnabled = BatteryFeatureSettingsHelper.getQuietModeEnabled(mContext);
         mStatus = BatteryFeatureSettingsHelper.getQuietModeStatus(mContext);
         mScheduledTime = BatteryFeatureSettingsHelper.getQuietModeTime(mContext);

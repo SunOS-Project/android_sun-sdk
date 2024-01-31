@@ -16,7 +16,7 @@ import android.provider.Settings;
 
 import org.nameless.display.DisplayFeatureManager;
 
-public class DcDimmingController {
+class DcDimmingController {
 
     private static final String TAG = "DcDimmingController";
 
@@ -25,18 +25,18 @@ public class DcDimmingController {
 
     private boolean mEnabled;
 
-    public DcDimmingController(ContentResolver resolver,
+    DcDimmingController(ContentResolver resolver,
             DisplayFeatureManager displayFeatureManager) {
         mResolver = resolver;
         mDisplayFeatureManager = displayFeatureManager;
     }
 
-    public void onBootCompleted() {
+    void onBootCompleted() {
         logD(TAG, "onBootCompleted");
         updateSettings();
     }
 
-    public void updateSettings() {
+    void updateSettings() {
         mEnabled = Settings.System.getIntForUser(mResolver, DC_DIMMING_STATE,
                 0, UserHandle.USER_SYSTEM) == 1;
         logD(TAG, "updateSettings, mEnabled: " + mEnabled);

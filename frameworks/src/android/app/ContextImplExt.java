@@ -10,7 +10,7 @@ import java.util.Set;
 import org.nameless.content.ContextExt;
 
 /** @hide */
-public class ContextImplExt {
+class ContextImplExt {
 
     private ContextImplExt() {}
 
@@ -20,7 +20,7 @@ public class ContextImplExt {
         "com.oplus.camera"
     );
 
-    public static boolean interceptGetSystemService(String serviceName, String packageName) {
+    static boolean interceptGetSystemService(String serviceName, String packageName) {
         if (ContextExt.LINEARMOTOR_VIBRATOR_SERVICE.equals(serviceName)) {
             return !LINEAR_MOTOR_VIBRATOR_WHITELIST.contains(packageName);
         }

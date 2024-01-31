@@ -29,7 +29,7 @@ import com.android.internal.util.nameless.BatteryFeatureSettingsHelper;
 import org.nameless.os.BatteryFeatureManager;
 import org.nameless.server.NamelessSystemExService;
 
-public class WirelessChargeController {
+class WirelessChargeController {
 
     private static final String TAG = "WirelessChargeController";
 
@@ -45,7 +45,7 @@ public class WirelessChargeController {
     private int mReverseChargingSuspendedStatus = REVERSE_CHARGING_UNSUSPENDED;
     private int mReverseChargingMinLevel = REVERSE_CHARGING_MIN_LEVEL_DEFAULT;
 
-    public WirelessChargeController(NamelessSystemExService service,
+    WirelessChargeController(NamelessSystemExService service,
             BatteryFeatureManager batteryFeatureManager, NotificationPoster poster) {
         mService = service;
         mBatteryFeatureManager = batteryFeatureManager;
@@ -54,17 +54,17 @@ public class WirelessChargeController {
         mContext = service.getContext();
     }
 
-    public void onBatteryStateChanged() {
+    void onBatteryStateChanged() {
         logD(TAG, "onBatteryStateChanged");
         updateReverseChargingState();
     }
 
-    public void onPowerSaveChanged() {
+    void onPowerSaveChanged() {
         logD(TAG, "onPowerSaveChanged");
         updateReverseChargingState();
     }
 
-    public void onBootCompleted() {
+    void onBootCompleted() {
         logD(TAG, "onBootCompleted");
         updateWirelessChargingSettings();
         if (!updateReverseChargingState()) {
@@ -72,7 +72,7 @@ public class WirelessChargeController {
         }
     }
 
-    public void updateWirelessChargingSettings() {
+    void updateWirelessChargingSettings() {
         final boolean enabled = BatteryFeatureSettingsHelper.getWirelessChargingEnabled(mContext);
         if (enabled == mWirelessChargingEnabled) {
             return;
@@ -82,7 +82,7 @@ public class WirelessChargeController {
         setWirelessCharging(mWirelessChargingEnabled);
     }
 
-    public void updateReverseChargingSettings() {
+    void updateReverseChargingSettings() {
         mReverseChargingEnabled = BatteryFeatureSettingsHelper.getReverseChargingEnabled(mContext);
         mReverseChargingMinLevel = BatteryFeatureSettingsHelper.getReverseChargingMinLevel(mContext);
         logD(TAG, "updateReverseChargingSettings, mReverseChargingEnabled: " +

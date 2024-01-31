@@ -16,7 +16,7 @@ import android.provider.Settings;
 
 import org.nameless.display.DisplayFeatureManager;
 
-public class EdgeTouchController {
+class EdgeTouchController {
 
     private static final String TAG = "EdgeTouchController";
 
@@ -25,18 +25,18 @@ public class EdgeTouchController {
 
     private boolean mEnabled;
 
-    public EdgeTouchController(ContentResolver resolver,
+    EdgeTouchController(ContentResolver resolver,
             DisplayFeatureManager displayFeatureManager) {
         mResolver = resolver;
         mDisplayFeatureManager = displayFeatureManager;
     }
 
-    public void onBootCompleted() {
+    void onBootCompleted() {
         logD(TAG, "onBootCompleted");
         updateSettings();
     }
 
-    public void updateSettings() {
+    void updateSettings() {
         mEnabled = Settings.System.getIntForUser(mResolver, UNLIMIT_EDGE_TOUCH_MODE,
                 0, UserHandle.USER_SYSTEM) == 1;
         logD(TAG, "updateSettings, mEnabled: " + mEnabled);

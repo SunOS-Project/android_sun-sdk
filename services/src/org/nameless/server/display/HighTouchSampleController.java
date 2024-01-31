@@ -16,7 +16,7 @@ import android.provider.Settings;
 
 import org.nameless.display.DisplayFeatureManager;
 
-public class HighTouchSampleController {
+class HighTouchSampleController {
 
     private static final String TAG = "HighTouchSampleController";
 
@@ -25,18 +25,18 @@ public class HighTouchSampleController {
 
     private boolean mEnabled;
 
-    public HighTouchSampleController(ContentResolver resolver,
+    HighTouchSampleController(ContentResolver resolver,
             DisplayFeatureManager displayFeatureManager) {
         mResolver = resolver;
         mDisplayFeatureManager = displayFeatureManager;
     }
 
-    public void onBootCompleted() {
+    void onBootCompleted() {
         logD(TAG, "onBootCompleted");
         updateSettings();
     }
 
-    public void updateSettings() {
+    void updateSettings() {
         mEnabled = Settings.System.getIntForUser(mResolver, HIGH_TOUCH_SAMPLE_MODE,
                 0, UserHandle.USER_SYSTEM) == 1;
         logD(TAG, "updateSettings, mEnabled: " + mEnabled);

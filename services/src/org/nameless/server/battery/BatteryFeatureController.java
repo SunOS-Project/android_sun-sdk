@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022-2023 The Nameless-AOSP Project
+ * Copyright (C) 2022-2024 The Nameless-AOSP Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -214,7 +214,7 @@ public class BatteryFeatureController {
         }
     }
 
-    public static void logD(String tag, String msg) {
+    static void logD(String tag, String msg) {
         if (DEBUG_BATTERY_FEATURE) {
             Slog.d(TAG + "::" + tag, msg);
         }

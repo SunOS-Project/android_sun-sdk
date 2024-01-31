@@ -19,7 +19,7 @@ import android.os.UserHandle;
 import com.android.internal.R;
 import com.android.internal.messages.nano.SystemMessageProto.SystemMessage;
 
-public class NotificationPoster {
+class NotificationPoster {
 
     private static final String TAG = "NotificationPoster";
     private static final String CHANNEL_ID = "BatteryFeatureController";
@@ -33,7 +33,7 @@ public class NotificationPoster {
     private boolean mNotifOptimizedChargePosted = false;
     private boolean mNotifWirelessTxPosted = false;
 
-    public NotificationPoster(Context context) {
+    NotificationPoster(Context context) {
         mContext = context;
 
         mNotificationManager = context.getSystemService(NotificationManager.class);
@@ -84,7 +84,7 @@ public class NotificationPoster {
         mNotificationWirelessTX.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
     }
 
-    public void postOptimizedChargeNotif() {
+    void postOptimizedChargeNotif() {
         if (mNotifOptimizedChargePosted) {
             return;
         }
@@ -93,7 +93,7 @@ public class NotificationPoster {
         mNotifOptimizedChargePosted = true;
     }
 
-    public void cancelOptimizedChargeNotif() {
+    void cancelOptimizedChargeNotif() {
         if (!mNotifOptimizedChargePosted) {
             return;
         }
@@ -102,7 +102,7 @@ public class NotificationPoster {
         mNotifOptimizedChargePosted = false;
     }
 
-    public void postWirelessTxNotif() {
+    void postWirelessTxNotif() {
         if (mNotifWirelessTxPosted) {
             return;
         }
@@ -111,7 +111,7 @@ public class NotificationPoster {
         mNotifWirelessTxPosted = true;
     }
 
-    public void cancelWirelessTxNotif() {
+    void cancelWirelessTxNotif() {
         if (!mNotifWirelessTxPosted) {
             return;
         }

@@ -27,11 +27,11 @@ import org.nameless.view.IAppFocusManagerService;
 import org.nameless.view.IDisplayResolutionManagerService;
 
 /** @hide */
-public class SystemServiceRegistryExt {
+class SystemServiceRegistryExt {
 
     private SystemServiceRegistryExt() {}
 
-    public static void registerExtServices() {
+    static void registerExtServices() {
         registerService(ContextExt.APP_FOCUS_MANAGER_SERVICE, AppFocusManager.class,
                 new CachedServiceFetcher<AppFocusManager>() {
             @Override

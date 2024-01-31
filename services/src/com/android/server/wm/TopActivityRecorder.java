@@ -129,11 +129,11 @@ public class TopActivityRecorder {
         mSystemExService.publishBinderService(APP_FOCUS_MANAGER_SERVICE, new AppFocusManagerService());
     }
 
-    public void initWms(WindowManagerService wms) {
+    void initWms(WindowManagerService wms) {
         mWms = wms;
     }
 
-    public void onAppFocusChanged(ActivityRecord focus, Task task) {
+    void onAppFocusChanged(ActivityRecord focus, Task task) {
         synchronized (mFocusLock) {
             final DisplayContent dc = mWms.getDefaultDisplayContentLocked();
             final ActivityRecord newFocus = focus != null ? focus : dc.topRunningActivity();

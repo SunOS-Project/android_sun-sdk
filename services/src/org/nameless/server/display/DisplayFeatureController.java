@@ -156,7 +156,7 @@ public class DisplayFeatureController {
         }
     }
 
-    public static void logE(String tag, String msg) {
+    static void logE(String tag, String msg) {
         Slog.e(TAG + "::" + tag, msg);
     }
 }

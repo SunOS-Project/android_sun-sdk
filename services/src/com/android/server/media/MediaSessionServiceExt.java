@@ -15,13 +15,13 @@ import android.os.Handler;
 import android.os.UserHandle;
 import android.provider.Settings;
 
-public class MediaSessionServiceExt {
+class MediaSessionServiceExt {
 
     private static class InstanceHolder {
         private static final MediaSessionServiceExt INSTANCE = new MediaSessionServiceExt();
     }
 
-    public static MediaSessionServiceExt getInstance() {
+    static MediaSessionServiceExt getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
@@ -30,12 +30,12 @@ public class MediaSessionServiceExt {
 
     private boolean mAdaptivePlaybackEnabled;
 
-    public void init(Context context, Handler handler) {
+    void init(Context context, Handler handler) {
         mResolver = context.getContentResolver();
         mHandler = handler;
     }
 
-    public void onBootCompleted() {
+    void onBootCompleted() {
         final ContentObserver settingsObserver = new ContentObserver(mHandler) {
             @Override
             public void onChange(boolean selfChange, Uri uri) {
@@ -53,7 +53,7 @@ public class MediaSessionServiceExt {
         updateSettings();
     }
 
-    public boolean isAdaptivePlaybackEnabled() {
+    boolean isAdaptivePlaybackEnabled() {
         return mAdaptivePlaybackEnabled;
     }
 

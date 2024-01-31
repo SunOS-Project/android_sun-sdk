@@ -56,7 +56,7 @@ public abstract class GestureListenerBase implements IGestureListener {
         return false;
     }
 
-    public GestureListenerBase(SystemGesture systemGesture, Context context) {
+    GestureListenerBase(SystemGesture systemGesture, Context context) {
         mSystemGesture = systemGesture;
         mContext = context;
         mDisplay = systemGesture.getDisplay();
@@ -135,14 +135,14 @@ public abstract class GestureListenerBase implements IGestureListener {
         }
     }
 
-    public void setSystemGestureClient(SystemGestureClient client) {
+    void setSystemGestureClient(SystemGestureClient client) {
         if (client != null && !isSupportGestureType(client.gesture)) {
             throw new IllegalArgumentException("Gesture type not support");
         }
         mSystemGestureClient = client;
     }
 
-    public int getGestureTouchSlop() {
+    int getGestureTouchSlop() {
         return mGestureTouchSlop;
     }
 

@@ -62,11 +62,11 @@ public class SystemGesture {
         mGestureListeners.add(new ThreeFingerGestureListener(this, mContext));
     }
 
-    public Display getDisplay() {
+    Display getDisplay() {
         return mDisplay;
     }
 
-    public PhoneWindowManagerExt getPhoneWindowManagerExt() {
+    PhoneWindowManagerExt getPhoneWindowManagerExt() {
         return mPhoneWindowManagerExt;
     }
 
