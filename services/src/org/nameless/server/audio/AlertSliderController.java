@@ -7,13 +7,6 @@ package org.nameless.server.audio;
 
 import static android.media.AudioManager.ADJUST_MUTE;
 import static android.media.AudioManager.ADJUST_UNMUTE;
-import static android.media.AudioManager.DEVICE_OUT_BLE_HEADSET;
-import static android.media.AudioManager.DEVICE_OUT_BLUETOOTH_A2DP;
-import static android.media.AudioManager.DEVICE_OUT_BLUETOOTH_A2DP_HEADPHONES;
-import static android.media.AudioManager.DEVICE_OUT_BLUETOOTH_A2DP_SPEAKER;
-import static android.media.AudioManager.DEVICE_OUT_USB_HEADSET;
-import static android.media.AudioManager.DEVICE_OUT_WIRED_HEADPHONE;
-import static android.media.AudioManager.DEVICE_OUT_WIRED_HEADSET;
 import static android.media.AudioManager.RINGER_MODE_NORMAL;
 import static android.media.AudioManager.RINGER_MODE_SILENT;
 import static android.media.AudioManager.RINGER_MODE_VIBRATE;
@@ -138,34 +131,13 @@ public class AlertSliderController {
         mVibrator = vibrator;
     }
 
-    public void onOutputDeviceChanged(int activeStreamType) {
-        if (activeStreamType != STREAM_MUSIC) {
-            if (DEBUG_AUDIO_SLIDER) {
-                Slog.d(TAG, "onOutputDeviceChanged, skip due to active stream type is not music");
-            }
-            return;
-        }
-
-        final int musicStreamDeviceMask = mService.getDeviceMaskForStream(STREAM_MUSIC);
-        final boolean wasBtAudio = mBtAudio;
-        mBtAudio = (musicStreamDeviceMask &
-                (DEVICE_OUT_BLUETOOTH_A2DP |
-                DEVICE_OUT_BLUETOOTH_A2DP_HEADPHONES |
-                DEVICE_OUT_BLUETOOTH_A2DP_SPEAKER |
-                DEVICE_OUT_BLE_HEADSET)) != 0;
-        final boolean wasWiredAudio = mWiredAudio;
-        mWiredAudio = (musicStreamDeviceMask &
-                (DEVICE_OUT_USB_HEADSET |
-                DEVICE_OUT_WIRED_HEADPHONE |
-                DEVICE_OUT_WIRED_HEADSET)) != 0;
-
-        if (wasBtAudio == mBtAudio && wasWiredAudio == mWiredAudio) {
-            return;
-        }
+    public void onOutputDeviceChanged(boolean isBtAudio, boolean isWiredAudio) {
         if (DEBUG_AUDIO_SLIDER) {
-            Slog.d(TAG, "onOutputDeviceChanged, bluetooth: " + wasBtAudio + " -> " + mBtAudio
-                    + ", wired: " + wasWiredAudio + " -> " + mWiredAudio);
+            Slog.d(TAG, "onOutputDeviceChanged, isBtAudio: " + isBtAudio
+                    + ", isWiredAudio: " + isWiredAudio);
         }
+        mBtAudio = isBtAudio;
+        mWiredAudio = isWiredAudio;
         if (mSystemReady) {
             maybeUpdateMediaVolume(mService.getRingerModeExternal());
             maybeSwitchRingerMode();
