@@ -53,6 +53,8 @@ public class PhoneWindowManagerExt {
 
     private static final int MSG_DISPATCH_VOLKEY_WITH_WAKE_LOCK = 101;
 
+    private static final int LONG_PRESS_POWER_HIDE_POCKET_LOCK = 11;
+
     static final int EXT_UNHANDLED = 0;
     static final int EXT_PASS_TO_USER = 1;
     static final int EXT_CONSUMED = 2;
@@ -150,11 +152,6 @@ public class PhoneWindowManagerExt {
         }
     }
 
-    void onLongPressPowerHidePocket() {
-        hidePocketLock(true);
-        mPocketManager.setListeningExternal(false);
-    }
-
     void onStartedGoingToSleep() {
         if (mPocketManager != null) {
             mPocketManager.onInteractiveChanged(false);
@@ -219,8 +216,29 @@ public class PhoneWindowManagerExt {
         mSystemGesture.unregisterSystemGestureListener(pkg, gesture, listener);
     }
 
+    int getResolvedLongPressOnPowerBehavior() {
+        if (mPocketLockShowing) {
+            return LONG_PRESS_POWER_HIDE_POCKET_LOCK;
+        }
+        return -1;
+    }
+
     boolean hasAssistant(int currentUserId) {
         return mAssistUtils.getAssistComponentForUser(currentUserId) != null;
+    }
+
+    void handlePowerLongPress(int behavior) {
+        switch (behavior) {
+            case LONG_PRESS_POWER_HIDE_POCKET_LOCK:
+                mPhoneWindowManager.mPowerKeyHandled = true;
+                mPhoneWindowManager.performHapticFeedback(
+                        Process.myUid(),
+                        mPhoneWindowManager.mContext.getOpPackageName(),
+                        HapticFeedbackConstants.LONG_PRESS, true,
+                        "Power - Long-Press - Hide Pocket Lock");
+                hidePocketLock(true);
+                mPocketManager.setListeningExternal(false);
+        }
     }
 
     boolean handleTorchPress(boolean fromNonInteractive) {
@@ -331,6 +349,11 @@ public class PhoneWindowManagerExt {
         return false;
     }
 
+    void interceptPowerKeyDown() {
+        // Abort possibly stuck animations.
+        mHandler.post(mPhoneWindowManager.mWindowManagerFuncs::triggerAnimationFailsafe);
+    }
+
     public void takeScreenshotIfSetupCompleted(boolean fullscreen) {
         if (!mPhoneWindowManager.isUserSetupComplete()) {
             return;
@@ -363,10 +386,6 @@ public class PhoneWindowManagerExt {
 
     boolean isDeviceInPocket() {
         return mIsDeviceInPocket;
-    }
-
-    boolean isPocketLockShowing() {
-        return mPocketLockShowing;
     }
 
     boolean isVolumeButtonMusicControl() {
