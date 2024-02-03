@@ -603,6 +603,38 @@ public class SettingsExt {
          * @hide
          */
         public static final String SILENT_NOTIFICATION_SCREEN_ON = "silent_notification_screen_on";
+
+        /**
+         * Gesture navbar length mode.
+         * 0: hidden  1: normal  2: medium  3: long
+         * Default 1.
+         * @hide
+         */
+        public static final String GESTURE_NAVBAR_LENGTH_MODE = "gesture_navbar_length_mode";
+
+        /**
+         * Size of gesture bar radius.
+         * @hide
+         */
+        public static final String GESTURE_NAVBAR_RADIUS_MODE = "gesture_navbar_radius_mode";
+
+        /**
+         * Whether to show IME bottom space.
+         * @hide
+         */
+        public static final String GESTURE_NAVBAR_IME_SPACE = "gesture_navbar_ime_space";
+
+        /**
+         * Whether to enable immersive mode for navbar.
+         * @hide
+         */
+        public static final String GESTURE_NAVBAR_IMMERSIVE = "gesture_navbar_immersive";
+
+        /**
+         * Whether to inverse navbar layout on button navigation mode
+         * @hide
+         */
+        public static final String NAVBAR_INVERSE_LAYOUT = "navbar_inverse_layout";
     }
 
     public static class Secure {

@@ -58,4 +58,18 @@
     <!-- Maximum vertical offset of statusbar for burn-in protection -->
     <dimen name="status_bar_offset_max_y">4dp</dimen>
 
+    <!-- Additional gesture navbar lengths -->
+    <dimen name="navigation_home_handle_width_medium">139dp</dimen>
+    <dimen name="navigation_home_handle_width_long">170dp</dimen>
+
+    <!-- dimensions for the navigation bar handle -->
+    <dimen name="navigation_handle_radius_medium">2.4dp</dimen>
+    <dimen name="navigation_handle_radius_thickest">2.8dp</dimen>
+
+    <!-- Height of the bottom navigation bar frame when hide ime space -->
+    <dimen name="navigation_bar_frame_height_hide_ime">16dp</dimen>
+
+    <!-- Height of the bottom navigation / system bar on immersive mode -->
+    <dimen name="navigation_bar_height_immersive">0.1px</dimen>
+
 </resources>

@@ -89,5 +89,10 @@ public class SystemSettingsExt {
         System.POP_UP_SETTINGS_JUMP,
         System.POP_UP_SHARE_JUMP,
         System.SILENT_NOTIFICATION_SCREEN_ON,
+        System.GESTURE_NAVBAR_LENGTH_MODE,
+        System.GESTURE_NAVBAR_RADIUS_MODE,
+        System.GESTURE_NAVBAR_IME_SPACE,
+        System.GESTURE_NAVBAR_IMMERSIVE,
+        System.NAVBAR_INVERSE_LAYOUT,
     };
 }

@@ -104,6 +104,11 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.POP_UP_SETTINGS_JUMP, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.POP_UP_SHARE_JUMP, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.SILENT_NOTIFICATION_SCREEN_ON, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.GESTURE_NAVBAR_LENGTH_MODE, new InclusiveIntegerRangeValidator(0, 3));
+        VALIDATORS.put(System.GESTURE_NAVBAR_RADIUS_MODE, new InclusiveIntegerRangeValidator(0, 2));
+        VALIDATORS.put(System.GESTURE_NAVBAR_IME_SPACE, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.GESTURE_NAVBAR_IMMERSIVE, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.NAVBAR_INVERSE_LAYOUT, BOOLEAN_VALIDATOR);
     }
 
     private static class DozeActionValidator implements Validator {
