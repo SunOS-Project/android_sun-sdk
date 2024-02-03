@@ -8,6 +8,7 @@ package com.android.systemui.biometrics;
 import android.provider.Settings;
 
 import com.android.systemui.R;
+import com.android.systemui.util.concurrency.DelayableExecutor;
 
 class UdfpsControllerExt {
 
@@ -54,6 +55,25 @@ class UdfpsControllerExt {
 
         mUdfpsVendorCode = mUdfpsController.getContext().getResources().getInteger(
                 R.integer.config_udfps_vendor_code);
+    }
+
+    void onFingerUp(DelayableExecutor executor, long requestId) {
+        // Add a delay to ensure that the dim amount is updated after the display has had chance
+        // to switch out of HBM mode. The delay, in ms is stored in config_udfpsDimmingDisableDelay.
+        // If the delay is 0, the dim amount will be updated immediately.
+        final int delay = getDimDelay();
+        if (delay > 0) {
+            executor.executeDelayed(() -> {
+                // A race condition exists where the overlay is destroyed before the dim amount
+                // is updated. This check ensures that the overlay is still valid.
+                if (mUdfpsController.mOverlay != null &&
+                        mUdfpsController.mOverlay.matchesRequestId(requestId)) {
+                    updateViewDimAmount();
+                }
+            }, delay);
+        } else {
+            updateViewDimAmount();
+        }
     }
 
     void updateViewDimAmount() {
