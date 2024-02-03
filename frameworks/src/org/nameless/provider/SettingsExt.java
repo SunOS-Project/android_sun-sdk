@@ -597,6 +597,12 @@ public class SettingsExt {
          * @hide
          */
         public static final String POP_UP_SHARE_JUMP = "pop_up_share_jump";
+
+        /**
+         * Whether to disable notification sound & vibration while the screen is on
+         * @hide
+         */
+        public static final String SILENT_NOTIFICATION_SCREEN_ON = "silent_notification_screen_on";
     }
 
     public static class Secure {

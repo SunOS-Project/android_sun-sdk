@@ -414,4 +414,8 @@
     <string name="volume_button_music_control_title">Playback control</string>
     <string name="volume_button_music_control_summary">When the screen is off, long-pressing volume keys will skip music tracks</string>
 
+    <!-- Silent notifications if screen is on -->
+    <string name="silent_notification_screen_on_title">Silent notification if active</string>
+    <string name="silent_notification_screen_on_summary">Don\'t play sound and vibration for notifications when screen is on</string>
+
 </resources>

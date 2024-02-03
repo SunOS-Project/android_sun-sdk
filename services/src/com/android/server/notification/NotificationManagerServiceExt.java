@@ -5,6 +5,7 @@
 
 package com.android.server.notification;
 
+import static org.nameless.provider.SettingsExt.System.SILENT_NOTIFICATION_SCREEN_ON;
 import static org.nameless.provider.SettingsExt.System.VIBRATION_PATTERN_NOTIFICATION;
 
 import android.content.ContentResolver;
@@ -28,28 +29,42 @@ class NotificationManagerServiceExt {
         return InstanceHolder.INSTANCE;
     }
 
+    private static final Uri URI_SILENT_NOTIFICATION_SCREEN_ON =
+            Settings.System.getUriFor(SILENT_NOTIFICATION_SCREEN_ON);
     private static final Uri URI_VIBRATION_PATTERN_NOTIFICATION =
             Settings.System.getUriFor(VIBRATION_PATTERN_NOTIFICATION);
 
     private ContentResolver mResolver;
+    private NotificationManagerService mService;
 
+    private boolean mSilentNotificationScreenOn;
     private VibrationEffect mCustomVibrationEffect;
 
     private boolean mNeedUpdateVibration = false;
 
-    void init(Context context) {
-        mResolver = context.getContentResolver();
+    void init(NotificationManagerService service) {
+        mService = service;
+        mResolver = service.getContext().getContentResolver();
     }
 
     void observe(ContentObserver observer) {
+        mResolver.registerContentObserver(URI_SILENT_NOTIFICATION_SCREEN_ON,
+                false, observer, UserHandle.USER_ALL);
         mResolver.registerContentObserver(URI_VIBRATION_PATTERN_NOTIFICATION,
                 false, observer, UserHandle.USER_ALL);
     }
 
     void updateSettings(Uri uri) {
+        if (uri == null || URI_SILENT_NOTIFICATION_SCREEN_ON.equals(uri)) {
+            updateSilentNotificationScreenOn();
+        } 
         if (uri == null || URI_VIBRATION_PATTERN_NOTIFICATION.equals(uri)) {
             updateCustomVibrationEffect();
         }
+    }
+
+    boolean shouldSkipSoundVib() {
+        return mService.mScreenOn && mSilentNotificationScreenOn;
     }
 
     void setNeedUpdateVibration() {
@@ -64,6 +79,12 @@ class NotificationManagerServiceExt {
 
     VibrationEffect getVibrationEffect() {
         return mCustomVibrationEffect;
+    }
+
+    private void updateSilentNotificationScreenOn() {
+        mSilentNotificationScreenOn = Settings.System.getIntForUser(
+                mResolver, SILENT_NOTIFICATION_SCREEN_ON,
+                0, UserHandle.USER_CURRENT) == 1;
     }
 
     private void updateCustomVibrationEffect() {

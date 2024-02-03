@@ -88,5 +88,6 @@ public class SystemSettingsExt {
         System.POP_UP_NOTIFICATION_BLACKLIST,
         System.POP_UP_SETTINGS_JUMP,
         System.POP_UP_SHARE_JUMP,
+        System.SILENT_NOTIFICATION_SCREEN_ON,
     };
 }

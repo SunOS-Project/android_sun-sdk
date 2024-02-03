@@ -103,6 +103,7 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.POP_UP_NOTIFICATION_JUMP_LANDSCAPE, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.POP_UP_SETTINGS_JUMP, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.POP_UP_SHARE_JUMP, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.SILENT_NOTIFICATION_SCREEN_ON, BOOLEAN_VALIDATOR);
     }
 
     private static class DozeActionValidator implements Validator {
