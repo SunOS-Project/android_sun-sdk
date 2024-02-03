@@ -34,9 +34,9 @@ import org.nameless.os.IRotateConfigListener;
 import org.nameless.os.IRotateManagerService;
 import org.nameless.server.NamelessSystemExService;
 
-public class DisplayRotationExt {
+public class DisplayRotationController {
 
-    private static final String TAG = "DisplayRotationExt";
+    private static final String TAG = "DisplayRotationController";
 
     private final Handler mHandler = new Handler();
     private final Object mLock = new Object();
@@ -47,10 +47,10 @@ public class DisplayRotationExt {
     private NamelessSystemExService mSystemExService;
 
     private static class InstanceHolder {
-        private static DisplayRotationExt INSTANCE = new DisplayRotationExt();
+        private static DisplayRotationController INSTANCE = new DisplayRotationController();
     }
 
-    public static DisplayRotationExt getInstance() {
+    public static DisplayRotationController getInstance() {
         return InstanceHolder.INSTANCE;
     }
 

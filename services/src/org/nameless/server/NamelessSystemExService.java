@@ -49,7 +49,7 @@ import org.nameless.server.policy.DozeController;
 import org.nameless.server.policy.PocketModeController;
 import org.nameless.server.vibrator.LinearmotorVibratorController;
 import org.nameless.server.wm.DisplayResolutionController;
-import org.nameless.server.wm.DisplayRotationExt;
+import org.nameless.server.wm.DisplayRotationController;
 
 public class NamelessSystemExService extends SystemService {
 
@@ -121,7 +121,7 @@ public class NamelessSystemExService extends SystemService {
                 PocketModeController.getInstance().onBootCompleted();
             }
             DisplayRefreshRateController.getInstance().onBootCompleted();
-            DisplayRotationExt.getInstance().onBootCompleted();
+            DisplayRotationController.getInstance().onBootCompleted();
             mPackageRemovedListener.register();
             mPowerStateListener.register();
             mScreenStateListener.register();
@@ -148,7 +148,7 @@ public class NamelessSystemExService extends SystemService {
         }
         DisplayRefreshRateController.getInstance().initSystemExService(this);
         DisplayResolutionController.getInstance().initSystemExService(this);
-        DisplayRotationExt.getInstance().initSystemExService(this);
+        DisplayRotationController.getInstance().initSystemExService(this);
         DozeController.getInstance().initSystemExService(this);
         LinearmotorVibratorController.getInstance().initSystemExService(this);
     }
@@ -157,19 +157,19 @@ public class NamelessSystemExService extends SystemService {
     public void onUserSwitching(TargetUser from, TargetUser to) {
         final int newUserId = to.getUserIdentifier();
         DisplayRefreshRateController.getInstance().onUserSwitching(newUserId);
-        DisplayRotationExt.getInstance().onUserSwitching(newUserId);
+        DisplayRotationController.getInstance().onUserSwitching(newUserId);
         DozeController.getInstance().onUserSwitching(newUserId);
         PocketModeController.getInstance().onUserSwitching(newUserId);
     }
 
     private void onPackageRemoved(String packageName) {
         DisplayRefreshRateController.getInstance().onPackageRemoved(packageName);
-        DisplayRotationExt.getInstance().onPackageRemoved(packageName);
+        DisplayRotationController.getInstance().onPackageRemoved(packageName);
     }
 
     private void onScreenOff() {
         DisplayRefreshRateController.getInstance().onScreenOff();
-        DisplayRotationExt.getInstance().onScreenOff();
+        DisplayRotationController.getInstance().onScreenOff();
         DozeController.getInstance().onScreenOff();
     }
 
@@ -186,7 +186,7 @@ public class NamelessSystemExService extends SystemService {
         synchronized (mLock) {
             mTopFullscreenPackage = packageName;
             DisplayRefreshRateController.getInstance().updateRefreshRate(packageName);
-            DisplayRotationExt.getInstance().updateAutoRotate(packageName);
+            DisplayRotationController.getInstance().updateAutoRotate(packageName);
         }
     }
 
@@ -203,7 +203,7 @@ public class NamelessSystemExService extends SystemService {
     }
 
     private void onShutdown() {
-        DisplayRotationExt.getInstance().onShutdown();
+        DisplayRotationController.getInstance().onShutdown();
     }
 
     public ContentResolver getContentResolver() {
