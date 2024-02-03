@@ -21,13 +21,13 @@ import android.view.KeyEvent;
 
 import com.android.systemui.settings.UserTracker;
 
-public class VolumeDialogControllerImplExt {
+class VolumeDialogControllerImplExt {
 
     private static class InstanceHolder {
         private static VolumeDialogControllerImplExt INSTANCE = new VolumeDialogControllerImplExt();
     }
 
-    public static VolumeDialogControllerImplExt getInstance() {
+    static VolumeDialogControllerImplExt getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
@@ -43,7 +43,7 @@ public class VolumeDialogControllerImplExt {
     private int mAdaptivePlaybackTimeout;
     private boolean mAdaptivePlaybackResumable;
 
-    public void init(VolumeDialogControllerImpl impl, Context context,
+    void init(VolumeDialogControllerImpl impl, Context context,
             Handler handler, AudioManager audioManager, UserTracker userTracker) {
         mImpl = impl;
         mAudioManager = audioManager;
@@ -56,11 +56,11 @@ public class VolumeDialogControllerImplExt {
         });
     }
 
-    public void onUserChanged() {
+    void onUserChanged() {
         updateSettings();
     }
 
-    public void onRegisterSettings(ContentObserver observer) {
+    void onRegisterSettings(ContentObserver observer) {
         mResolver.registerContentObserver(
                 Settings.System.getUriFor(ADAPTIVE_PLAYBACK_ENABLED),
                 false, observer, UserHandle.USER_ALL);
@@ -69,7 +69,7 @@ public class VolumeDialogControllerImplExt {
                 false, observer, UserHandle.USER_ALL);
     }
 
-    public boolean onSettingsChanged(Uri uri) {
+    boolean onSettingsChanged(Uri uri) {
         switch (uri.getLastPathSegment()) {
             case ADAPTIVE_PLAYBACK_ENABLED:
             case ADAPTIVE_PLAYBACK_TIMEOUT:
@@ -80,7 +80,7 @@ public class VolumeDialogControllerImplExt {
         }
     }
 
-    public void onUpdateStreamLevel(int stream, int level) {
+    void onUpdateStreamLevel(int stream, int level) {
         if (mAdaptivePlaybackEnabled && stream == AudioSystem.STREAM_MUSIC
                 && level == 0 && mAudioManager.isMusicActive()) {
             mAudioManager.dispatchMediaKeyEvent(

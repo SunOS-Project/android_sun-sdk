@@ -18,7 +18,7 @@ import android.os.Bundle;
 import androidx.preference.PreferenceFragment;
 import com.android.systemui.R;
 
-public class StatusbarItems extends PreferenceFragment {
+class StatusbarItems extends PreferenceFragment {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

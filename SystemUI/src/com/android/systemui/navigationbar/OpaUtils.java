@@ -14,7 +14,7 @@ import android.view.animation.PathInterpolator;
 import com.android.internal.app.AssistUtils;
 import com.android.systemui.R;
 
-public final class OpaUtils {
+final class OpaUtils {
 
     static final Interpolator INTERPOLATOR_40_40 = new PathInterpolator(0.4f, 0.0f, 0.6f, 1.0f);
     static final Interpolator INTERPOLATOR_40_OUT = new PathInterpolator(0.4f, 0.0f, 1.0f, 1.0f);

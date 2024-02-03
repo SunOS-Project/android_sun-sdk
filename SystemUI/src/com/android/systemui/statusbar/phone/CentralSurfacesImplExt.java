@@ -25,7 +25,7 @@ import com.android.systemui.util.concurrency.MessageRouter;
 
 import org.nameless.systemui.shade.CustomGestureListener;
 
-public class CentralSurfacesImplExt {
+class CentralSurfacesImplExt {
 
     private static final int MSG_LONG_PRESS_BRIGHTNESS_CHANGE = 2001;
 
@@ -45,7 +45,7 @@ public class CentralSurfacesImplExt {
         private static CentralSurfacesImplExt INSTANCE = new CentralSurfacesImplExt();
     }
 
-    public static CentralSurfacesImplExt getInstance() {
+    static CentralSurfacesImplExt getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
@@ -72,7 +72,7 @@ public class CentralSurfacesImplExt {
     private boolean mJustPeeked;
     private boolean mInBrightnessControl;
 
-    public void init(CentralSurfacesImpl centralSurfacesImpl,
+    void init(CentralSurfacesImpl centralSurfacesImpl,
             Context context,
             CustomGestureListener customGestureListener,
             int displayId,
@@ -99,7 +99,7 @@ public class CentralSurfacesImplExt {
                 id -> onLongPressBrightnessChange());
     }
 
-    public void updateResources() {
+    void updateResources() {
         mBrightnessControlHeight = mStatusBarWindowController.getStatusBarHeight()
                 + BRIGHTNESS_CONTROL_EXTRA_HEIGHT;
     }
@@ -137,7 +137,7 @@ public class CentralSurfacesImplExt {
         }
     }
 
-    public void interceptForBrightnessControl(MotionEvent event) {
+    void interceptForBrightnessControl(MotionEvent event) {
         final int action = event.getAction();
         final int x = (int) event.getRawX();
         final int y = (int) event.getRawY();
@@ -182,18 +182,18 @@ public class CentralSurfacesImplExt {
         }
     }
 
-    public void checkBrightnessChanged(boolean upOrCancel) {
+    void checkBrightnessChanged(boolean upOrCancel) {
         if (mBrightnessChanged && upOrCancel) {
             mBrightnessChanged = false;
             mDisplayManager.setBrightness(mDisplayId, mCurrentBrightness);
         }
     }
 
-    public boolean isBrightnessControlEnabled() {
+    boolean isBrightnessControlEnabled() {
         return mCustomGestureListener.isStatusbarBrightnessControlEnabled();
     }
 
-    public boolean isInBrightnessControl() {
+    boolean isInBrightnessControl() {
         return mInBrightnessControl;
     }
 }

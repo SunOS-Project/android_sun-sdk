@@ -17,7 +17,7 @@ import com.android.systemui.util.settings.SecureSettings;
 
 import java.util.concurrent.Executor;
 
-public class GlobalActionsDialogLiteExt {
+class GlobalActionsDialogLiteExt {
 
     private static final String GLOBAL_ACTION_KEY_REBOOT_RECOVERY = "reboot_recovery";
     private static final String GLOBAL_ACTION_KEY_REBOOT_BOOTLOADER = "reboot_bootloader";
@@ -27,7 +27,7 @@ public class GlobalActionsDialogLiteExt {
         private static GlobalActionsDialogLiteExt INSTANCE = new GlobalActionsDialogLiteExt();
     }
 
-    public static GlobalActionsDialogLiteExt getInstance() {
+    static GlobalActionsDialogLiteExt getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
@@ -44,7 +44,7 @@ public class GlobalActionsDialogLiteExt {
     private boolean mRebootMenu = false;
     private boolean mUsePowerOptions = false;
 
-    public void init(Context context, Handler handler, Executor executor,
+    void init(Context context, Handler handler, Executor executor,
             SecureSettings secureSettings, UserTracker userTracker) {
         mDefaultMenuActions = context.getResources().getStringArray(
                 com.android.internal.R.array.config_globalActionsList);
@@ -74,54 +74,54 @@ public class GlobalActionsDialogLiteExt {
         mUserTracker.addCallback(mUserTrackerCallback, executor);
     }
 
-    public void onDestroy() {
+    void onDestroy() {
         mUserTracker.removeCallback(mUserTrackerCallback);
         mSecureSettings.unregisterContentObserver(mSettingsObserver);
     }
 
-    public void onShowOrHideDialog() {
+    void onShowOrHideDialog() {
         mCurrentMenuActions = mDefaultMenuActions;
         mRebootMenu = false;
     }
 
-    public void onRestartPress() {
+    void onRestartPress() {
         mCurrentMenuActions = mRebootMenuActions;
         mRebootMenu = true;
     }
 
-    public String[] getCurrentMenuActions() {
+    String[] getCurrentMenuActions() {
         return mCurrentMenuActions;
     }
 
-    public String[] getRebootMenuActions() {
+    String[] getRebootMenuActions() {
         return mRebootMenuActions;
     }
 
-    public void setUsePowerOptions(boolean use) {
+    void setUsePowerOptions(boolean use) {
         mUsePowerOptions = use;
     }
 
-    public boolean isAdvancedRebootEnabled() {
+    boolean isAdvancedRebootEnabled() {
         return mAdvancedReboot;
     }
 
-    public boolean isRebootMenu() {
+    boolean isRebootMenu() {
         return mRebootMenu;
     }
 
-    public boolean isUsePowerOptions() {
+    boolean isUsePowerOptions() {
         return mUsePowerOptions;
     }
 
-    public boolean shouldAddBootloaderAction(String actionKey) {
+    boolean shouldAddBootloaderAction(String actionKey) {
         return isAdvancedRebootEnabled() && GLOBAL_ACTION_KEY_REBOOT_BOOTLOADER.equals(actionKey);
     }
 
-    public boolean shouldAddRecoveryAction(String actionKey) {
+    boolean shouldAddRecoveryAction(String actionKey) {
         return isAdvancedRebootEnabled() && GLOBAL_ACTION_KEY_REBOOT_RECOVERY.equals(actionKey);
     }
 
-    public boolean shouldAddSystemUIAction(String actionKey) {
+    boolean shouldAddSystemUIAction(String actionKey) {
         return isAdvancedRebootEnabled() && GLOBAL_ACTION_KEY_REBOOT_SYSUI.equals(actionKey);
     }
 }

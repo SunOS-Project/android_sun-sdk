@@ -9,13 +9,13 @@ import android.provider.Settings;
 
 import com.android.systemui.R;
 
-public class UdfpsControllerExt {
+class UdfpsControllerExt {
 
     private static class InstanceHolder {
         private static UdfpsControllerExt INSTANCE = new UdfpsControllerExt();
     }
 
-    public static UdfpsControllerExt getInstance() {
+    static UdfpsControllerExt getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
@@ -28,7 +28,7 @@ public class UdfpsControllerExt {
     private int mDimDelay;
     private int mUdfpsVendorCode;
 
-    public void init(UdfpsController controller) {
+    void init(UdfpsController controller) {
         mUdfpsController = controller;
 
         mUseFrameworkDimming = mUdfpsController.getContext().getResources().getBoolean(
@@ -56,7 +56,7 @@ public class UdfpsControllerExt {
                 R.integer.config_udfps_vendor_code);
     }
 
-    public void updateViewDimAmount() {
+    void updateViewDimAmount() {
         if (mUdfpsController.mOverlay == null || !mUseFrameworkDimming) {
             return;
         }
@@ -81,11 +81,11 @@ public class UdfpsControllerExt {
         mUdfpsController.mOverlay.setDimAmount(dimAmount / 255.0f);
     }
 
-    public int getDimDelay() {
+    int getDimDelay() {
         return mDimDelay;
     }
 
-    public int getVendorCode() {
+    int getVendorCode() {
         return mUdfpsVendorCode;
     }
 
