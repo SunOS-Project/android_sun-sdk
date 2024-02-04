@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2022-2024 The Nameless-AOSP Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+
+    <color name="option_border_default">#5f6368</color>
+
+</resources>

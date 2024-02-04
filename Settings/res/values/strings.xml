@@ -437,4 +437,11 @@
     <string name="pure_black_theme_title">Pure black</string>
     <string name="pure_black_theme_summary">Use pure black background for dark theme</string>
 
+    <!-- Theme options -->
+    <string name="theme_category_title">Theme</string>
+    <string name="theme_customization_font_title">Font style</string>
+    <string name="theme_customization_font_summary">Set system font style</string>
+    <string name="theme_customization_icon_shape_title">Icon shape</string>
+    <string name="theme_customization_icon_shape_summary">Set system icon shape style</string>
+
 </resources>
