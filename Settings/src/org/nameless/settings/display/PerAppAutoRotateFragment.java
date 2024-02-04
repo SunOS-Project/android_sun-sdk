@@ -49,6 +49,11 @@ public class PerAppAutoRotateFragment extends PerAppListConfigFragment {
     }
 
     @Override
+    protected int getTopInfoResId() {
+        return R.string.per_app_auto_rotate_summary;
+    }
+
+    @Override
     protected List<String> getEntries() {
         return mEntries;
     }

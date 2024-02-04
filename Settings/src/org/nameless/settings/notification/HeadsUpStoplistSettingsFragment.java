@@ -43,6 +43,11 @@ public class HeadsUpStoplistSettingsFragment extends PerAppSwitchConfigFragment 
     }
 
     @Override
+    protected int getTopInfoResId() {
+        return R.string.heads_up_stoplist_summary;
+    }
+
+    @Override
     protected boolean isChecked(String packageName) {
         return mCheckedList.contains(packageName);
     }

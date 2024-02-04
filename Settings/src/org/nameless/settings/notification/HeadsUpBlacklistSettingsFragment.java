@@ -43,6 +43,11 @@ public class HeadsUpBlacklistSettingsFragment extends PerAppSwitchConfigFragment
     }
 
     @Override
+    protected int getTopInfoResId() {
+        return R.string.heads_up_blacklist_summary;
+    }
+
+    @Override
     protected boolean isChecked(String packageName) {
         return mCheckedList.contains(packageName);
     }
