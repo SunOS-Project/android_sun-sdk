@@ -80,4 +80,10 @@
     <string-array name="config_popUpView_forceUpdateDpiPackages" translatable="false">
     </string-array>
 
+    <!-- Whether to enable lockscreen charging info settings -->
+    <bool name="config_enable_lockscreen_charging_info">true</bool>
+
+    <!-- Whether allow to show charging remaining time -->
+    <bool name="config_show_charging_remaining_time">true</bool>
+
 </resources>

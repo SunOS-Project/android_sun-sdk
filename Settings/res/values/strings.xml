@@ -458,4 +458,8 @@
     <string name="data_usage_app_restrict_wifi">Wi\u2011Fi data</string>
     <string name="data_usage_app_restrict_wifi_summary">Enable usage of Wi\u2011Fi data</string>
 
+    <!-- Lockscreen charging info -->
+    <string name="lockscreen_charging_info_title">Lockscreen charging info</string>
+    <string name="lockscreen_charging_info_summary">Display detailed info while charging</string>
+
 </resources>

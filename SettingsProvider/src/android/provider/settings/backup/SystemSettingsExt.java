@@ -94,5 +94,6 @@ public class SystemSettingsExt {
         System.GESTURE_NAVBAR_IME_SPACE,
         System.GESTURE_NAVBAR_IMMERSIVE,
         System.NAVBAR_INVERSE_LAYOUT,
+        System.LOCKSCREEN_BATTERY_INFO,
     };
 }

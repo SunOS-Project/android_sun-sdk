@@ -641,6 +641,12 @@ public class SettingsExt {
          * @hide
          */
         public static final String PURE_BLACK_THEME = "pure_black_theme";
+
+        /**
+         * Whether to show the battery info on the lockscreen while charging
+         * @hide
+         */
+        public static final String LOCKSCREEN_BATTERY_INFO = "lockscreen_battery_info";
     }
 
     public static class Secure {

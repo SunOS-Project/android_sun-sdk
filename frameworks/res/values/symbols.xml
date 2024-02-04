@@ -153,4 +153,10 @@
     <java-symbol type="layout" name="pinned_window_overlay" />
     <java-symbol type="string" name="recent_task_option_pop_up" />
 
+    <!-- Whether to enable lockscreen charging info settings -->
+    <java-symbol type="bool" name="config_enable_lockscreen_charging_info" />
+
+    <!-- Whether allow to show charging remaining time -->
+    <java-symbol type="bool" name="config_show_charging_remaining_time" />
+
 </resources>
