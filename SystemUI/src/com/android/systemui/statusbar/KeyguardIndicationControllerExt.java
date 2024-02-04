@@ -7,11 +7,17 @@ package com.android.systemui.statusbar;
 
 import static org.nameless.provider.SettingsExt.System.LOCKSCREEN_BATTERY_INFO;
 
+import static vendor.nameless.hardware.battery.V1_0.ChargingStatus.DASH_CHARGING;
+import static vendor.nameless.hardware.battery.V1_0.ChargingStatus.TURBO_CHARGING;
+import static vendor.nameless.hardware.battery.V1_0.ChargingStatus.VOOC_CHARGING;
+import static vendor.nameless.hardware.battery.V1_0.ChargingStatus.WARP_CHARGING;
+
 import android.content.Context;
 import android.database.ContentObserver;
 import android.os.Handler;
 import android.os.UserHandle;
 
+import com.android.systemui.R;
 import com.android.systemui.settings.UserTracker;
 import com.android.systemui.util.settings.SystemSettings;
 
@@ -112,6 +118,29 @@ class KeyguardIndicationControllerExt {
             batteryInfo = "\n" + batteryInfo;
         }
         return batteryInfo;
+    }
+
+    int getBatteryFeatureChargingId(int speed, boolean hasChargingTime) {
+        switch (speed) {
+            case DASH_CHARGING:
+                return hasChargingTime
+                        ? R.string.keyguard_indication_dash_charging_time
+                        : R.string.keyguard_plugged_in_dash_charging;
+            case WARP_CHARGING:
+                return hasChargingTime
+                        ? R.string.keyguard_indication_warp_charging_time
+                        : R.string.keyguard_plugged_in_warp_charging;
+            case VOOC_CHARGING:
+                return hasChargingTime
+                        ? R.string.keyguard_indication_vooc_charging_time
+                        : R.string.keyguard_plugged_in_vooc_charging;
+            case TURBO_CHARGING:
+                return hasChargingTime
+                        ? R.string.keyguard_indication_turbo_charging_time
+                        : R.string.keyguard_plugged_in_turbo_charging;
+            default:
+                return -1;
+        }
     }
 
     boolean isChargingRemainingTimeDisabled() {
