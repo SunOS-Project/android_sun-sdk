@@ -679,6 +679,12 @@ public class SettingsExt {
          * @hide
          */
         public static final String DOZE_ON_CHARGE = "doze_on_charge";
+
+        /**
+         * Whether tethering is allowed to use VPN upstreams
+         * @hide
+         */
+        public static final String TETHERING_ALLOW_VPN_UPSTREAMS = "tethering_allow_vpn_upstreams";
     }
 
     public static class Global {

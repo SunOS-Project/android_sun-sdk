@@ -18,5 +18,6 @@ public class SecureSettingsExt {
         Secure.ADVANCED_REBOOT,
         Secure.DOZE_FOR_NOTIFICATIONS,
         Secure.DOZE_ON_CHARGE,
+        Secure.TETHERING_ALLOW_VPN_UPSTREAMS,
     };
 }
