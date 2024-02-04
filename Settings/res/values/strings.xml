@@ -433,4 +433,8 @@
     <string name="navbar_invert_layout_title">Invert navigation bar layout</string>
     <string name="navbar_invert_info">Swap the \"Back\" and \"Recents\" buttons on the navigation bar</string>
 
+    <!-- Black theme for dark mode -->
+    <string name="pure_black_theme_title">Pure black</string>
+    <string name="pure_black_theme_summary">Use pure black background for dark theme</string>
+
 </resources>

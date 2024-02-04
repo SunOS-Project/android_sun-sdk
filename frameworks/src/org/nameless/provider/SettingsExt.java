@@ -635,6 +635,12 @@ public class SettingsExt {
          * @hide
          */
         public static final String NAVBAR_INVERSE_LAYOUT = "navbar_inverse_layout";
+
+        /**
+         * Whether to enable our pure black theme
+         * @hide
+         */
+        public static final String PURE_BLACK_THEME = "pure_black_theme";
     }
 
     public static class Secure {
