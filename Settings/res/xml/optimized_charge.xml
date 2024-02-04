@@ -8,6 +8,10 @@
     xmlns:settings="http://schemas.android.com/apk/res/com.android.settings"
     android:title="@string/optimized_charge_title" >
 
+    <com.android.settingslib.widget.TopIntroPreference
+        android:key="optimized_charge_top_info"
+        android:title="@string/optimized_charge_summary" />
+
     <com.android.settingslib.widget.MainSwitchPreference
         android:defaultValue="false"
         android:key="optimized_charge_enabled"
