@@ -9,11 +9,13 @@ import static org.nameless.provider.SettingsExt.System.ADAPTIVE_PLAYBACK_ENABLED
 import static org.nameless.provider.SettingsExt.System.ADAPTIVE_PLAYBACK_TIMEOUT;
 import static org.nameless.provider.SettingsExt.System.VOLUME_PANEL_POSITION_LAND;
 import static org.nameless.provider.SettingsExt.System.VOLUME_PANEL_POSITION_PORT;
+import static org.nameless.provider.SettingsExt.System.VOLUME_PANEL_SHOW_APP_VOLUME;
 
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.database.ContentObserver;
+import android.media.AppVolume;
 import android.media.AudioManager;
 import android.media.AudioSystem;
 import android.net.Uri;
@@ -23,6 +25,8 @@ import android.provider.Settings;
 import android.view.KeyEvent;
 
 import com.android.systemui.settings.UserTracker;
+
+import org.nameless.systemui.volume.AppVolumePersistHelper;
 
 class VolumeDialogControllerImplExt {
 
@@ -53,6 +57,9 @@ class VolumeDialogControllerImplExt {
     private boolean mVolumePanelPortLeft;
     private boolean mVolumePanelLandLeft;
 
+    private AppVolumePersistHelper mAppVolumePersistHelper;
+    private boolean mVolumePanelShowAppVolume;
+
     void init(VolumeDialogControllerImpl impl, Context context,
             Handler handler, AudioManager audioManager, UserTracker userTracker) {
         mImpl = impl;
@@ -61,6 +68,8 @@ class VolumeDialogControllerImplExt {
         mHandler = handler;
         mUserTracker = userTracker;
         mResolver = context.getContentResolver();
+
+        mAppVolumePersistHelper = new AppVolumePersistHelper(context);
 
         mHandler.post(() -> {
             updateSettings();
@@ -84,6 +93,9 @@ class VolumeDialogControllerImplExt {
         mResolver.registerContentObserver(
                 Settings.System.getUriFor(VOLUME_PANEL_POSITION_LAND),
                 false, observer, UserHandle.USER_ALL);
+        mResolver.registerContentObserver(
+                Settings.System.getUriFor(VOLUME_PANEL_SHOW_APP_VOLUME),
+                false, observer, UserHandle.USER_ALL);
     }
 
     boolean onSettingsChanged(Uri uri) {
@@ -95,6 +107,9 @@ class VolumeDialogControllerImplExt {
             case VOLUME_PANEL_POSITION_PORT:
             case VOLUME_PANEL_POSITION_LAND:
                 updateVolumePanelPosition();
+                return false;
+            case VOLUME_PANEL_SHOW_APP_VOLUME:
+                updateVolumePanelShowAppVolume();
                 return false;
             default:
                 return false;
@@ -130,6 +145,14 @@ class VolumeDialogControllerImplExt {
         return isLandscape() ? mVolumePanelLandLeft : mVolumePanelPortLeft;
     }
 
+    boolean isAppVolumeVisible() {
+        return mVolumePanelShowAppVolume;
+    }
+
+    void persistAppVolume(AppVolume appVolume, float volume) {
+        mAppVolumePersistHelper.persistAppVolume(appVolume, volume);
+    }
+
     private boolean isLandscape() {
         return mContext.getResources().getConfiguration().orientation ==
                 Configuration.ORIENTATION_LANDSCAPE;
@@ -138,6 +161,7 @@ class VolumeDialogControllerImplExt {
     private void updateSettings() {
         updateAdaptivePlayback();
         updateVolumePanelPosition();
+        updateVolumePanelShowAppVolume();
     }
 
     private void updateAdaptivePlayback() {
@@ -156,6 +180,14 @@ class VolumeDialogControllerImplExt {
         mVolumePanelLandLeft = Settings.System.getIntForUser(
                 mResolver, VOLUME_PANEL_POSITION_LAND,
                 POSITION_RIGHT, mUserTracker.getUserId()) == POSITION_LEFT;
+        mImpl.mCallbacks.onConfigurationChanged();
+    }
+
+    private void updateVolumePanelShowAppVolume() {
+        mVolumePanelShowAppVolume = Settings.System.getIntForUser(
+                mResolver, VOLUME_PANEL_SHOW_APP_VOLUME,
+                1, mUserTracker.getUserId()) == 1;
+        mAppVolumePersistHelper.updateAllVolume(mAudioManager, mVolumePanelShowAppVolume);
         mImpl.mCallbacks.onConfigurationChanged();
     }
 }

@@ -493,5 +493,7 @@
     <string name="volume_panel_position_landscape_title">Panel position (Landscape)</string>
     <string name="volume_panel_position_left">Left</string>
     <string name="volume_panel_position_right">Right</string>
+    <string name="per_app_volume_title">Per-app volume control</string>
+    <string name="per_app_volume_summary">Add per-app volume rows into volume panel</string>
 
 </resources>

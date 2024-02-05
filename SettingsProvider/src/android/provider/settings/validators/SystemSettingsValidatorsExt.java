@@ -112,6 +112,33 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.LOCKSCREEN_BATTERY_INFO, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.VOLUME_PANEL_POSITION_PORT, new InclusiveIntegerRangeValidator(0, 1));
         VALIDATORS.put(System.VOLUME_PANEL_POSITION_LAND, new InclusiveIntegerRangeValidator(0, 1));
+        VALIDATORS.put(System.VOLUME_PANEL_SHOW_APP_VOLUME, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.PERSISTED_APP_VOLUME_DATA, new AppVolumeDataValidator());
+    }
+
+    private static class AppVolumeDataValidator implements Validator {
+        @Override
+        public boolean validate(String value) {
+            if (TextUtils.isEmpty(value)) return true;
+            if (!value.contains(";")) return false;
+            final String[] datas = value.split(";");
+            for (String data : datas) {
+                final String[] info = data.split(",");
+                if (info.length != 3) {
+                    return false;
+                }
+                try {
+                    final int uid = Integer.parseInt(info[1]);
+                    final int volume = Integer.parseInt(info[2]);
+                    if (uid < 0 || volume < 0 || volume > 100) {
+                        return false;
+                    }
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 
     private static class DozeActionValidator implements Validator {

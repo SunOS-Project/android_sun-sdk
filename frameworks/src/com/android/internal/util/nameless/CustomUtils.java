@@ -9,7 +9,9 @@ import android.app.ActivityManager;
 import android.app.role.RoleManager;
 import android.content.Context;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.drawable.Drawable;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.UserHandle;
@@ -79,5 +81,31 @@ public class CustomUtils {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    public static Drawable getAppIcon(Context context, String pkgName) {
+        return getAppIcon(context, pkgName, false);
+    }
+
+    public static Drawable getAppIcon(Context context, String pkgName, boolean useDefault) {
+        return getAppIcon(context, pkgName, false, -1);
+    }
+
+    public static Drawable getAppIcon(Context context, String pkgName, boolean useDefault, int uid) {
+        final PackageManager pm = context.getPackageManager();
+        Drawable loadIcon = null;
+        if (pkgName != null) {
+            try {
+                loadIcon = pm.getApplicationIcon(pkgName);
+            } catch (NameNotFoundException e) {
+            }
+        }
+        if (loadIcon != null && uid != -1) {
+            loadIcon = pm.getUserBadgedIcon(loadIcon, UserHandle.getUserHandleForUid(uid));
+        }
+        if (loadIcon != null) {
+            return loadIcon;
+        }
+        return useDefault ? pm.getDefaultActivityIcon() : null;
     }
 }

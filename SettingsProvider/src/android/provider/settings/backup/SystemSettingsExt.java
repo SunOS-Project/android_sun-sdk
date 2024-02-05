@@ -97,5 +97,6 @@ public class SystemSettingsExt {
         System.LOCKSCREEN_BATTERY_INFO,
         System.VOLUME_PANEL_POSITION_PORT,
         System.VOLUME_PANEL_POSITION_LAND,
+        System.VOLUME_PANEL_SHOW_APP_VOLUME,
     };
 }

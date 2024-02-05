@@ -661,6 +661,18 @@ public class SettingsExt {
          * @hide
          */
         public static final String VOLUME_PANEL_POSITION_LAND = "volume_panel_position_land";
+
+        /**
+         * Whether to show app volume rows in volume panel
+         * @hide
+         */
+        public static final String VOLUME_PANEL_SHOW_APP_VOLUME = "volume_panel_show_app_volume";
+
+        /**
+         * Persisted app volume data
+         * @hide
+         */
+        public static final String PERSISTED_APP_VOLUME_DATA = "persisted_app_volume_data";
     }
 
     public static class Secure {
