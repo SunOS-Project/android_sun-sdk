@@ -95,5 +95,7 @@ public class SystemSettingsExt {
         System.GESTURE_NAVBAR_IMMERSIVE,
         System.NAVBAR_INVERSE_LAYOUT,
         System.LOCKSCREEN_BATTERY_INFO,
+        System.VOLUME_PANEL_POSITION_PORT,
+        System.VOLUME_PANEL_POSITION_LAND,
     };
 }

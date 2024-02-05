@@ -487,4 +487,11 @@
     <string name="unlock_scramble_pin_layout_title">Scramble layout</string>
     <string name="unlock_scramble_pin_layout_summary">Scramble PIN layout when unlocking device</string>
 
+    <!-- Volume panel -->
+    <string name="volume_panel_category_title">Volume panel</string>
+    <string name="volume_panel_position_portrait_title">Panel position (Portrait)</string>
+    <string name="volume_panel_position_landscape_title">Panel position (Landscape)</string>
+    <string name="volume_panel_position_left">Left</string>
+    <string name="volume_panel_position_right">Right</string>
+
 </resources>

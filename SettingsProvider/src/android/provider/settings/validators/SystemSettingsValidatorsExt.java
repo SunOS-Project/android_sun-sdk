@@ -110,6 +110,8 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.GESTURE_NAVBAR_IMMERSIVE, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.NAVBAR_INVERSE_LAYOUT, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.LOCKSCREEN_BATTERY_INFO, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.VOLUME_PANEL_POSITION_PORT, new InclusiveIntegerRangeValidator(0, 1));
+        VALIDATORS.put(System.VOLUME_PANEL_POSITION_LAND, new InclusiveIntegerRangeValidator(0, 1));
     }
 
     private static class DozeActionValidator implements Validator {

@@ -647,6 +647,20 @@ public class SettingsExt {
          * @hide
          */
         public static final String LOCKSCREEN_BATTERY_INFO = "lockscreen_battery_info";
+
+        /**
+         * Volume panel position in portrait mode
+         * 0: Left  1: Right  Default: 0
+         * @hide
+         */
+        public static final String VOLUME_PANEL_POSITION_PORT = "volume_panel_position_port";
+
+        /**
+         * Volume dialog position in landscape mode
+         * 0: Left  1: Right  Default: 1
+         * @hide
+         */
+        public static final String VOLUME_PANEL_POSITION_LAND = "volume_panel_position_land";
     }
 
     public static class Secure {
