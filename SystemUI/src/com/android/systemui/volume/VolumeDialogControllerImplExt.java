@@ -106,10 +106,10 @@ class VolumeDialogControllerImplExt {
                 return false;
             case VOLUME_PANEL_POSITION_PORT:
             case VOLUME_PANEL_POSITION_LAND:
-                updateVolumePanelPosition();
+                updateVolumePanelPosition(true);
                 return false;
             case VOLUME_PANEL_SHOW_APP_VOLUME:
-                updateVolumePanelShowAppVolume();
+                updateVolumePanelShowAppVolume(true);
                 return false;
             default:
                 return false;
@@ -160,8 +160,9 @@ class VolumeDialogControllerImplExt {
 
     private void updateSettings() {
         updateAdaptivePlayback();
-        updateVolumePanelPosition();
-        updateVolumePanelShowAppVolume();
+        updateVolumePanelPosition(false);
+        updateVolumePanelShowAppVolume(false);
+        notifyChange();
     }
 
     private void updateAdaptivePlayback() {
@@ -173,21 +174,29 @@ class VolumeDialogControllerImplExt {
                 30000, mUserTracker.getUserId());
     }
 
-    private void updateVolumePanelPosition() {
+    private void updateVolumePanelPosition(boolean notify) {
         mVolumePanelPortLeft = Settings.System.getIntForUser(
                 mResolver, VOLUME_PANEL_POSITION_PORT,
                 POSITION_LEFT, mUserTracker.getUserId()) == POSITION_LEFT;
         mVolumePanelLandLeft = Settings.System.getIntForUser(
                 mResolver, VOLUME_PANEL_POSITION_LAND,
                 POSITION_RIGHT, mUserTracker.getUserId()) == POSITION_LEFT;
-        mImpl.mCallbacks.onConfigurationChanged();
+        if (notify) {
+            notifyChange();
+        }
     }
 
-    private void updateVolumePanelShowAppVolume() {
+    private void updateVolumePanelShowAppVolume(boolean notify) {
         mVolumePanelShowAppVolume = Settings.System.getIntForUser(
                 mResolver, VOLUME_PANEL_SHOW_APP_VOLUME,
                 1, mUserTracker.getUserId()) == 1;
         mAppVolumePersistHelper.updateAllVolume(mAudioManager, mVolumePanelShowAppVolume);
+        if (notify) {
+            notifyChange();
+        }
+    }
+
+    private void notifyChange() {
         mImpl.mCallbacks.onConfigurationChanged();
     }
 }
