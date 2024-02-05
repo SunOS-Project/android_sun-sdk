@@ -19,5 +19,8 @@ public class SecureSettingsExt {
         Secure.DOZE_FOR_NOTIFICATIONS,
         Secure.DOZE_ON_CHARGE,
         Secure.TETHERING_ALLOW_VPN_UPSTREAMS,
+        Secure.DISPLAY_COLOR_BALANCE_RED,
+        Secure.DISPLAY_COLOR_BALANCE_GREEN,
+        Secure.DISPLAY_COLOR_BALANCE_BLUE,
     };
 }

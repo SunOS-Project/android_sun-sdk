@@ -462,4 +462,10 @@
     <string name="lockscreen_charging_info_title">Lockscreen charging info</string>
     <string name="lockscreen_charging_info_summary">Display detailed info while charging</string>
 
+    <!-- Color mode balance -->
+    <string name="color_mode_balance_category">Color balance</string>
+    <string name="color_mode_balance_red">Red strength</string>
+    <string name="color_mode_balance_green">Green strength</string>
+    <string name="color_mode_balance_blue">Blue strength</string>
+
 </resources>

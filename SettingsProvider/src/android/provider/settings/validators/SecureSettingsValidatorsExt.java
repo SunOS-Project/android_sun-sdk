@@ -25,5 +25,8 @@ public class SecureSettingsValidatorsExt {
         VALIDATORS.put(Secure.DOZE_FOR_NOTIFICATIONS, BOOLEAN_VALIDATOR);
         VALIDATORS.put(Secure.DOZE_ON_CHARGE, BOOLEAN_VALIDATOR);
         VALIDATORS.put(Secure.TETHERING_ALLOW_VPN_UPSTREAMS, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(Secure.DISPLAY_COLOR_BALANCE_RED, new InclusiveIntegerRangeValidator(0, 255));
+        VALIDATORS.put(Secure.DISPLAY_COLOR_BALANCE_GREEN, new InclusiveIntegerRangeValidator(0, 255));
+        VALIDATORS.put(Secure.DISPLAY_COLOR_BALANCE_BLUE, new InclusiveIntegerRangeValidator(0, 255));
     }
 }
