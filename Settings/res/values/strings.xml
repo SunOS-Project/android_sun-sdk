@@ -504,4 +504,23 @@
     <string name="back_gesture_arrow_title">Back gesture animation</string>
     <string name="back_gesture_arrow_summary">Show an animated arrow for back gesture</string>
 
+    <!-- Back gesture long swipe -->
+    <string name="back_gesture_category_title">Back Gesture</string>
+    <string name="left_back_long_swipe_title">Long swipe action (Left)</string>
+    <string name="right_back_long_swipe_title">Long swipe action (Right)</string>
+    <string name="long_swipe_action_empty">No action</string>
+    <string name="long_swipe_action_kill_app">Kill foreground app</string>
+    <string name="long_swipe_action_switch_to_last_app">Switch to last recent app</string>
+    <string name="long_swipe_action_open_notification_panel">Open notification panel</string>
+    <string name="long_swipe_action_open_qs_panel">Open quick settings panel</string>
+    <string name="long_swipe_action_open_volume_panel">Open volume panel</string>
+    <string name="long_swipe_action_screen_off">Turn off screen</string>
+    <string name="long_swipe_action_screenshot_full">Take full screenshot</string>
+    <string name="long_swipe_action_screenshot_partial">Take partial screenshot</string>
+    <string name="long_swipe_action_toggle_flashlight">Toggle flashlight</string>
+    <string name="long_swipe_action_enter_pinned_window">Enter Pinned-Window mode</string>
+    <string name="long_back_swipe_threshold_port_title">Long swipe threshold (Portrait)</string>
+    <string name="long_back_swipe_threshold_land_title">Long swipe threshold (Landscape)</string>
+    <string name="long_swipe_action_tip">To trigger long swipe action, drag back gesture for longer width to reach threshold. Release your finger when you feel haptic feedback or see a double arrow.</string>
+
 </resources>

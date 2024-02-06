@@ -679,6 +679,30 @@ public class SettingsExt {
          * @hide
          */
         public static final String BACK_GESTURE_ARROW = "back_gesture_arrow";
+
+        /**
+         * Gestures nav: left long back swipe action
+         * @hide
+         */
+        public static final String LEFT_LONG_BACK_SWIPE_ACTION = "left_long_back_swipe_action";
+
+        /**
+         * Gestures nav: right long back swipe action
+         * @hide
+         */
+        public static final String RIGHT_LONG_BACK_SWIPE_ACTION = "right_long_back_swipe_action";
+
+        /**
+         * Gestures nav: long back swipe screen threshold (portrait)
+         * @hide
+         */
+        public static final String LONG_BACK_SWIPE_THRESHOLD_PORT = "long_back_swipe_threshold_port";
+
+        /**
+         * Gestures nav: long back swipe screen threshold (landscape)
+         * @hide
+         */
+        public static final String LONG_BACK_SWIPE_THRESHOLD_LAND = "long_back_swipe_threshold_land";
     }
 
     public static class Secure {

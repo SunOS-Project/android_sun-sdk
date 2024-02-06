@@ -99,5 +99,9 @@ public class SystemSettingsExt {
         System.VOLUME_PANEL_POSITION_LAND,
         System.VOLUME_PANEL_SHOW_APP_VOLUME,
         System.BACK_GESTURE_ARROW,
+        System.LEFT_LONG_BACK_SWIPE_ACTION,
+        System.RIGHT_LONG_BACK_SWIPE_ACTION,
+        System.LONG_BACK_SWIPE_THRESHOLD_PORT,
+        System.LONG_BACK_SWIPE_THRESHOLD_LAND,
     };
 }

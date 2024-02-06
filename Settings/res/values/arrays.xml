@@ -220,4 +220,32 @@
         <item>1</item>
     </string-array>
 
+    <!-- Back gesture long swipe -->
+    <string-array name="back_gesture_long_swipe_action_entries">
+        <item>@string/long_swipe_action_empty</item>
+        <item>@string/long_swipe_action_kill_app</item>
+        <item>@string/long_swipe_action_switch_to_last_app</item>
+        <item>@string/long_swipe_action_open_notification_panel</item>
+        <item>@string/long_swipe_action_open_qs_panel</item>
+        <item>@string/long_swipe_action_open_volume_panel</item>
+        <item>@string/long_swipe_action_screen_off</item>
+        <item>@string/long_swipe_action_screenshot_full</item>
+        <item>@string/long_swipe_action_screenshot_partial</item>
+        <item>@string/long_swipe_action_toggle_flashlight</item>
+        <item>@string/long_swipe_action_enter_pinned_window</item>
+    </string-array>
+    <string-array name="back_gesture_long_swipe_action_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+
 </resources>

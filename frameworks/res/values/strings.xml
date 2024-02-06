@@ -65,4 +65,8 @@
     <!-- Launcher shortcut: Pop-Up View -->
     <string name="recent_task_option_pop_up">Pop-Up View</string>
 
+    <!-- Kill app -->
+    <string name="app_killed">%1$s force stopped</string>
+    <string name="empty_app_killed">App force stopped</string>
+
 </resources>

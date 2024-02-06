@@ -159,4 +159,12 @@
     <!-- Whether allow to show charging remaining time -->
     <java-symbol type="bool" name="config_show_charging_remaining_time" />
 
+    <!-- Kill app -->
+    <java-symbol type="string" name="app_killed" />
+    <java-symbol type="string" name="empty_app_killed" />
+
+    <!-- Custom app animation -->
+    <java-symbol type="anim" name="custom_app_in" />
+    <java-symbol type="anim" name="custom_app_out" />
+
 </resources>
