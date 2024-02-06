@@ -114,6 +114,7 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.VOLUME_PANEL_POSITION_LAND, new InclusiveIntegerRangeValidator(0, 1));
         VALIDATORS.put(System.VOLUME_PANEL_SHOW_APP_VOLUME, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.PERSISTED_APP_VOLUME_DATA, new AppVolumeDataValidator());
+        VALIDATORS.put(System.BACK_GESTURE_ARROW, BOOLEAN_VALIDATOR);
     }
 
     private static class AppVolumeDataValidator implements Validator {

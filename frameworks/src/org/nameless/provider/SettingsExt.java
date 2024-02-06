@@ -673,6 +673,12 @@ public class SettingsExt {
          * @hide
          */
         public static final String PERSISTED_APP_VOLUME_DATA = "persisted_app_volume_data";
+
+        /**
+         * Whether to show or hide the arrow for back gesture
+         * @hide
+         */
+        public static final String BACK_GESTURE_ARROW = "back_gesture_arrow";
     }
 
     public static class Secure {

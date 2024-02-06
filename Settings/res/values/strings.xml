@@ -500,4 +500,8 @@
     <string name="window_ignore_secure_title">Ignore window secure flags</string>
     <string name="window_ignore_secure_summary">Remove screenshot / screenrecord limits for all applications</string>
 
+    <!-- Back gesture arrow -->
+    <string name="back_gesture_arrow_title">Back gesture animation</string>
+    <string name="back_gesture_arrow_summary">Show an animated arrow for back gesture</string>
+
 </resources>
