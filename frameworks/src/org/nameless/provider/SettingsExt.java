@@ -718,6 +718,30 @@ public class SettingsExt {
          * @hide
          */
         public static final String QS_SHOW_AUTO_BRIGHTNESS = "qs_show_auto_brightness";
+
+        /**
+         * Whether to hide QS tiles label
+         * @hide
+         */
+        public static final String QS_TILE_LABEL_HIDE = "qs_tile_label_hide";
+
+        /**
+         * Whether to use vertical layout for QS tiles
+         * @hide
+         */
+        public static final String QS_TILE_VERTICAL_LAYOUT = "qs_tile_vertical_layout";
+
+        /**
+         * Custom layout for QS tiles. Value = row * 10 + col
+         * @hide
+         */
+        public static final String QS_LAYOUT_CUSTOM = "qs_layout_custom";
+
+        /**
+         * Custom layout for QQS tiles. Value = row * 10 + col
+         * @hide
+         */
+        public static final String QQS_LAYOUT_CUSTOM = "qqs_layout_custom";
     }
 
     public static class Secure {

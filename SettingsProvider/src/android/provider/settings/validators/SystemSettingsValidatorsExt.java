@@ -119,6 +119,10 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.QS_SHOW_BRIGHTNESS_SLIDER, new InclusiveIntegerRangeValidator(0, 2));
         VALIDATORS.put(System.QS_BRIGHTNESS_SLIDER_POSITION, new InclusiveIntegerRangeValidator(0, 1));
         VALIDATORS.put(System.QS_SHOW_AUTO_BRIGHTNESS, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.QS_TILE_LABEL_HIDE, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.QS_TILE_VERTICAL_LAYOUT, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.QS_LAYOUT_CUSTOM, NON_NEGATIVE_INTEGER_VALIDATOR);
+        VALIDATORS.put(System.QQS_LAYOUT_CUSTOM, NON_NEGATIVE_INTEGER_VALIDATOR);
     }
 
     private static class AppVolumeDataValidator implements Validator {

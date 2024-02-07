@@ -105,5 +105,9 @@ public class SystemSettingsExt {
         System.QS_SHOW_BRIGHTNESS_SLIDER,
         System.QS_BRIGHTNESS_SLIDER_POSITION,
         System.QS_SHOW_AUTO_BRIGHTNESS,
+        System.QS_TILE_LABEL_HIDE,
+        System.QS_TILE_VERTICAL_LAYOUT,
+        System.QS_LAYOUT_CUSTOM,
+        System.QQS_LAYOUT_CUSTOM,
     };
 }
