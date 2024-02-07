@@ -56,7 +56,6 @@ public class SystemSettingsExt {
         System.EDGE_LIGHT_REPEAT_ANIMATION,
         System.EDGE_LIGHT_COLOR_MODE,
         System.EDGE_LIGHT_CUSTOM_COLOR,
-        System.KEYGAURD_MEDIA_ART,
         System.STATUS_BAR_BATTERY_STYLE,
         System.STATUS_BAR_SHOW_BATTERY_PERCENT,
         System.STATUSBAR_CLOCK,

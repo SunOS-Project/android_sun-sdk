@@ -75,7 +75,6 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.EDGE_LIGHT_REPEAT_ANIMATION, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.EDGE_LIGHT_COLOR_MODE, new InclusiveIntegerRangeValidator(0, 3));
         VALIDATORS.put(System.EDGE_LIGHT_CUSTOM_COLOR, new NonEmptyHexColorValidator());
-        VALIDATORS.put(System.KEYGAURD_MEDIA_ART, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.STATUS_BAR_BATTERY_STYLE, new InclusiveIntegerRangeValidator(0, 3));
         VALIDATORS.put(System.STATUS_BAR_SHOW_BATTERY_PERCENT, new InclusiveIntegerRangeValidator(0, 2));
         VALIDATORS.put(System.STATUSBAR_CLOCK, BOOLEAN_VALIDATOR);

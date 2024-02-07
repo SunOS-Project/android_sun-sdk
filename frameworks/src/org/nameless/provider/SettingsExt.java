@@ -374,12 +374,6 @@ public class SettingsExt {
         public static final String EDGE_LIGHT_CUSTOM_COLOR = "edge_light_custom_color";
 
         /**
-         * Whether to show media album art on keyguard
-         * @hide
-         */
-        public static final String KEYGAURD_MEDIA_ART = "keygaurd_media_art";
-
-        /**
          * Display style of the status bar battery information
          * 0: Display the battery an icon in portrait mode
          * 1: Display the battery as a circle

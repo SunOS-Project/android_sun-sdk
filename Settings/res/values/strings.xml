@@ -304,10 +304,6 @@
     <string name="custom_color">Custom color</string>
     <string name="edge_light_custom_color_title">Custom color</string>
 
-    <!-- Lockscreen media art -->
-    <string name="keygaurd_media_art_title">Media art</string>
-    <string name="keygaurd_media_art_summary">Display media art as lockscreen background</string>
-
     <!-- Battery Icon -->
     <string name="battery_icon_title">Battery Icon</string>
     <string name="battery_icon_summary">Customize statusbar battery icon style</string>
