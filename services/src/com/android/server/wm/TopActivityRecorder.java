@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import org.nameless.server.NamelessSystemExService;
 import org.nameless.view.IAppFocusManagerService;
 import org.nameless.view.IAppFocusObserver;
+import org.nameless.view.TopAppInfo;
 
 public class TopActivityRecorder {
 
@@ -58,9 +59,39 @@ public class TopActivityRecorder {
 
     private final class AppFocusManagerService extends IAppFocusManagerService.Stub {
         @Override
-        public ComponentName getTopFullscreenComponent() {
+        public TopAppInfo getTopAppInfo() {
             synchronized (mFocusLock) {
-                return getTopFullscreenComponentLocked();
+                final TopAppInfo.Builder builder = new TopAppInfo.Builder();
+                final int n = mTopMiniWindowActivity.size();
+                final ActivityInfo info = n > 0 ? mTopMiniWindowActivity.get(n - 1)
+                        : mTopFullscreenActivity;
+                builder.setComponentName(info.componentName);
+                final Task task = info.task;
+                if (task != null) {
+                    builder.setTaskId(task.mTaskId);
+                    builder.setWindowingMode(task.getWindowConfiguration().getWindowingMode());
+                } else {
+                    builder.setTaskId(INVALID_TASK_ID);
+                    builder.setWindowingMode(WindowConfiguration.WINDOWING_MODE_UNDEFINED);
+                }
+                return builder.build();
+            }
+        }
+
+        @Override
+        public TopAppInfo getTopFullscreenAppInfo() {
+            synchronized (mFocusLock) {
+                final TopAppInfo.Builder builder = new TopAppInfo.Builder();
+                builder.setComponentName(mTopFullscreenActivity.componentName);
+                final Task task = mTopFullscreenActivity.task;
+                if (task != null) {
+                    builder.setTaskId(task.mTaskId);
+                    builder.setWindowingMode(task.getWindowConfiguration().getWindowingMode());
+                } else {
+                    builder.setTaskId(INVALID_TASK_ID);
+                    builder.setWindowingMode(WindowConfiguration.WINDOWING_MODE_UNDEFINED);
+                }
+                return builder.build();
             }
         }
 

@@ -8,12 +8,16 @@ package org.nameless.view;
 import android.content.ComponentName;
 
 import org.nameless.view.IAppFocusObserver;
+import org.nameless.view.TopAppInfo;
 
 /** @hide */
 interface IAppFocusManagerService {
 
-    /* Get current top fullscreen component */
-    ComponentName getTopFullscreenComponent();
+    /* Get current top app info (Fullscreen & Mini-window task considered) */
+    TopAppInfo getTopAppInfo();
+
+    /* Get current top app info (Fullscreen task only) */
+    TopAppInfo getTopFullscreenAppInfo();
 
     /* Check if current has mini-window focus */
     boolean hasMiniWindowFocus();

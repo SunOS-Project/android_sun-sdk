@@ -5,6 +5,7 @@
 
 package com.android.internal.util.nameless;
 
+import static android.app.ActivityTaskManager.INVALID_TASK_ID;
 import static android.app.WindowConfiguration.WINDOWING_MODE_PINNED_WINDOW_EXT;
 import static android.app.WindowConfiguration.WINDOWING_MODE_MINI_WINDOW_EXT;
 
@@ -38,10 +39,15 @@ import com.android.internal.util.CollectionUtils;
 
 import java.util.List;
 
+import org.nameless.view.AppFocusManager;
+import org.nameless.view.TopAppInfo;
+
 /** @hide */
 public class CustomUtils {
 
     private static final String PACKAGE_SYSTEMUI = "com.android.systemui";
+
+    private CustomUtils() {}
 
     public static boolean isPackageInstalled(Context context, String pkg) {
         return isPackageInstalled(context, pkg, true);
@@ -140,26 +146,31 @@ public class CustomUtils {
     }
 
     public static void killForegroundApp(Context context) {
-        final ActivityManager activityManager = context.getSystemService(ActivityManager.class);
+        final AppFocusManager appFocusManager = context.getSystemService(AppFocusManager.class);
+        final TopAppInfo info = appFocusManager.getTopAppInfo();
+        if (info == null) {
+            return;
+        }
+        final String packageName = info.getPackageName();
+        if (TextUtils.isEmpty(packageName)) {
+            return;
+        }
+        final int taskId = info.getTaskId();
+        if (taskId == INVALID_TASK_ID) {
+            return;
+        }
+
         final RoleManager roleManager = context.getSystemService(RoleManager.class);
         final List<String> launchers = roleManager.getRoleHolders(RoleManager.ROLE_HOME);
-        final List<ActivityManager.RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
-        if (tasks.size() <= 0) {
-            return;
-        }
-        final ActivityManager.RunningTaskInfo task = tasks.get(0);
-        if (task.topActivity == null) {
-            return;
-        }
-        final String packageName = task.topActivity.getPackageName();
         if (PACKAGE_SYSTEMUI.equals(packageName) || launchers.contains(packageName)) {
             return;
         }
+
         final IActivityManager iam = ActivityManagerNative.getDefault();
         boolean killed = false;
         try {
             iam.forceStopPackage(packageName, UserHandle.USER_CURRENT);
-            iam.removeTask(task.taskId);
+            iam.removeTask(taskId);
             killed = true;
         } catch (RemoteException e) {
             // do nothing.
@@ -177,29 +188,34 @@ public class CustomUtils {
     }
 
     public static void pinCurrentAppIntoWindow(Context context) {
-        final ActivityManager activityManager = context.getSystemService(ActivityManager.class);
+        final AppFocusManager appFocusManager = context.getSystemService(AppFocusManager.class);
+        final TopAppInfo info = appFocusManager.getTopAppInfo();
+        if (info == null) {
+            return;
+        }
+        final String packageName = info.getPackageName();
+        if (TextUtils.isEmpty(packageName)) {
+            return;
+        }
+        final int taskId = info.getTaskId();
+        if (taskId == INVALID_TASK_ID) {
+            return;
+        }
+        if (info.getWindowingMode() == WINDOWING_MODE_MINI_WINDOW_EXT) {
+            return;
+        }
+
         final RoleManager roleManager = context.getSystemService(RoleManager.class);
         final List<String> launchers = roleManager.getRoleHolders(RoleManager.ROLE_HOME);
-        final List<ActivityManager.RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
-        if (tasks.size() <= 0) {
-            return;
-        }
-        final ActivityManager.RunningTaskInfo task = tasks.get(0);
-        if (task.getWindowingMode() == WINDOWING_MODE_MINI_WINDOW_EXT) {
-            return;
-        }
-        if (task.topActivity == null) {
-            return;
-        }
-        final String packageName = task.topActivity.getPackageName();
         if (PACKAGE_SYSTEMUI.equals(packageName) || launchers.contains(packageName)) {
             return;
         }
+
         final IActivityTaskManager iatm = ActivityTaskManager.getService();
         final ActivityOptions options = ActivityOptions.makeBasic();
         options.setLaunchWindowingMode(WINDOWING_MODE_PINNED_WINDOW_EXT);
         try {
-            iatm.startActivityFromRecents(task.taskId, options.toBundle());
+            iatm.startActivityFromRecents(taskId, options.toBundle());
         } catch (RemoteException e) {
             // do nothing.
         }

@@ -26,13 +26,26 @@ public class AppFocusManager {
     }
 
     /** @hide */
-    public ComponentName getTopFullscreenComponent() {
+    public TopAppInfo getTopAppInfo() {
         if (mService == null) {
-            Slog.e(TAG, "Failed to get top fullscreen component. Service is null");
+            Slog.e(TAG, "Failed to get top app info. Service is null");
             return null;
         }
         try {
-            return mService.getTopFullscreenComponent();
+            return mService.getTopAppInfo();
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /** @hide */
+    public TopAppInfo getTopFullscreenAppInfo() {
+        if (mService == null) {
+            Slog.e(TAG, "Failed to get top app info. Service is null");
+            return null;
+        }
+        try {
+            return mService.getTopFullscreenAppInfo();
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
