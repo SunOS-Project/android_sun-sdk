@@ -496,4 +496,8 @@
     <string name="per_app_volume_title">Per-app volume control</string>
     <string name="per_app_volume_summary">Add per-app volume rows into volume panel</string>
 
+    <!-- Ignore secure flag -->
+    <string name="window_ignore_secure_title">Ignore window secure flags</string>
+    <string name="window_ignore_secure_summary">Remove screenshot / screenrecord limits for all applications</string>
+
 </resources>

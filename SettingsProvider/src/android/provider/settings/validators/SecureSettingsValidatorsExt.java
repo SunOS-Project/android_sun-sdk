@@ -28,5 +28,6 @@ public class SecureSettingsValidatorsExt {
         VALIDATORS.put(Secure.DISPLAY_COLOR_BALANCE_RED, new InclusiveIntegerRangeValidator(0, 255));
         VALIDATORS.put(Secure.DISPLAY_COLOR_BALANCE_GREEN, new InclusiveIntegerRangeValidator(0, 255));
         VALIDATORS.put(Secure.DISPLAY_COLOR_BALANCE_BLUE, new InclusiveIntegerRangeValidator(0, 255));
+        VALIDATORS.put(Secure.WINDOW_IGNORE_SECURE, BOOLEAN_VALIDATOR);
     }
 }

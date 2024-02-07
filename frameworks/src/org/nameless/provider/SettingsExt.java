@@ -735,6 +735,12 @@ public class SettingsExt {
          * @hide
          */
         public static final String DISPLAY_COLOR_BALANCE_BLUE = "display_color_balance_blue";
+
+        /**
+         * Control whether FLAG_SECURE is ignored for all windows.
+         * @hide
+         */
+        public static final String WINDOW_IGNORE_SECURE = "window_ignore_secure";
     }
 
     public static class Global {
