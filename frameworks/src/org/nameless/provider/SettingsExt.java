@@ -697,6 +697,27 @@ public class SettingsExt {
          * @hide
          */
         public static final String LONG_BACK_SWIPE_THRESHOLD_LAND = "long_back_swipe_threshold_land";
+
+        /**
+         * Whether to show brightness slider in QS Panel
+         * 0: Don't show  1: Show in QS  2: Show in both QS & QQS
+         * @hide
+         */
+        public static final String QS_SHOW_BRIGHTNESS_SLIDER = "qs_show_brightness_slider";
+
+        /**
+         * Where to put brightness slider in QS Panel
+         * 0: Top  1: Bottom
+         * @hide
+         */
+        public static final String QS_BRIGHTNESS_SLIDER_POSITION = "qs_brightness_slider_position";
+
+        /**
+         * Whether to show auto brightness icon next to brightness slider
+         * 0: Don't show  1: Show
+         * @hide
+         */
+        public static final String QS_SHOW_AUTO_BRIGHTNESS = "qs_show_auto_brightness";
     }
 
     public static class Secure {

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2022-2024 The Nameless-AOSP Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:settings="http://schemas.android.com/apk/res/com.android.settings"
+    android:title="@string/qs_brightness_slider_title">
+
+    <org.nameless.custom.preference.SystemSettingListPreference
+        android:key="qs_show_brightness_slider"
+        android:title="@string/qs_show_brightness_title"
+        android:entries="@array/qs_show_brightness_entries"
+        android:entryValues="@array/qs_show_brightness_values"
+        android:defaultValue="1" />
+
+    <org.nameless.custom.preference.SystemSettingSwitchPreference
+        android:key="qs_show_auto_brightness"
+        android:title="@string/qs_show_auto_brightness_button_title"
+        android:summary="@string/qs_show_auto_brightness_button_summary"
+        android:defaultValue="true" />
+
+    <org.nameless.custom.preference.SystemSettingSwitchPreference
+        android:key="qs_brightness_slider_position"
+        android:title="@string/qs_brightness_slider_bottom_title"
+        android:summary="@string/qs_brightness_slider_bottom_summary" 
+        android:defaultValue="false" />
+</PreferenceScreen>

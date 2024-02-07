@@ -519,4 +519,16 @@
     <string name="long_back_swipe_threshold_land_title">Long swipe threshold (Landscape)</string>
     <string name="long_swipe_action_tip">To trigger long swipe action, drag back gesture for longer width to reach threshold. Release your finger when you feel haptic feedback or see a double arrow.</string>
 
+    <!-- QS Panel -->
+    <string name="qs_brightness_slider_title">Brightness slider</string>
+    <string name="qs_brightness_slider_summary">Configure brightness slider in QS panel</string>
+    <string name="qs_show_brightness_title">Where to show</string>
+    <string name="qs_show_brightness_hide">Hide</string>
+    <string name="qs_show_brightness_normal">Show in QS Panel</string>
+    <string name="qs_show_brightness_both">Show in QS &amp; Quick QS Panel</string>
+    <string name="qs_show_auto_brightness_button_title">Auto brightness button</string>
+    <string name="qs_show_auto_brightness_button_summary">Show auto brightness button next to the brightness slider</string>
+    <string name="qs_brightness_slider_bottom_title">Move to bottom</string>
+    <string name="qs_brightness_slider_bottom_summary">Show brightness slider in the bottom of QS panel</string>
+
 </resources>

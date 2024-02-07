@@ -102,5 +102,8 @@ public class SystemSettingsExt {
         System.RIGHT_LONG_BACK_SWIPE_ACTION,
         System.LONG_BACK_SWIPE_THRESHOLD_PORT,
         System.LONG_BACK_SWIPE_THRESHOLD_LAND,
+        System.QS_SHOW_BRIGHTNESS_SLIDER,
+        System.QS_BRIGHTNESS_SLIDER_POSITION,
+        System.QS_SHOW_AUTO_BRIGHTNESS,
     };
 }
