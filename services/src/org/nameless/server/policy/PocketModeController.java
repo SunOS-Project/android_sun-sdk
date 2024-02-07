@@ -210,7 +210,7 @@ public class PocketModeController implements IBinder.DeathRecipient {
         }
 
         @Override
-        public void handleMessage(android.os.Message msg) {
+        public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_DISPATCH_CALLBACKS:
                     handleDispatchCallbacks();
@@ -571,6 +571,7 @@ public class PocketModeController implements IBinder.DeathRecipient {
     private void handleDispatchCallbacks() {
         synchronized (mCallbacks) {
             final int N = mCallbacks.size();
+            logD("handleDispatchCallbacks, size=" + N);
             boolean cleanup = false;
             for (int i = 0; i < N; i++) {
                 final IPocketCallback callback = mCallbacks.get(i);
@@ -610,6 +611,7 @@ public class PocketModeController implements IBinder.DeathRecipient {
     }
 
     private void handleSetListeningExternal(boolean listen) {
+        logD("handleSetListeningExternal, listen=" + listen);
         if (listen) {
             // should prevent external processes to register while interactive,
             // while they are allowed to stop listening in any case as for example
@@ -625,6 +627,7 @@ public class PocketModeController implements IBinder.DeathRecipient {
     }
 
     private void handleAddCallback(IPocketCallback callback) {
+        logD("handleAddCallback");
         synchronized (mCallbacks) {
             if (!mCallbacks.contains(callback)) {
                 mCallbacks.add(callback);
@@ -633,6 +636,7 @@ public class PocketModeController implements IBinder.DeathRecipient {
     }
 
     private void handleRemoveCallback(IPocketCallback callback) {
+        logD("handleRemoveCallback");
         synchronized (mCallbacks) {
             if (mCallbacks.contains(callback)) {
                 mCallbacks.remove(callback);
@@ -641,6 +645,8 @@ public class PocketModeController implements IBinder.DeathRecipient {
     }
 
     private void handleInteractiveChanged(boolean interactive) {
+        logD("handleInteractiveChanged, interactive=" + interactive);
+
         // always update interactive state.
         mInteractive = interactive;
 

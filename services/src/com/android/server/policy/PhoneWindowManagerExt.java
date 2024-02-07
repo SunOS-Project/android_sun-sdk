@@ -99,6 +99,10 @@ public class PhoneWindowManagerExt {
         @Override
         public void onStateChanged(boolean isDeviceInPocket, int reason) {
             final boolean wasDeviceInPocket = mIsDeviceInPocket;
+            if (DEBUG_PHONE_WINDOW_MANAGER) {
+                Slog.d(TAG, "onPocketStateChanged, isDeviceInPocket=" + isDeviceInPocket
+                        + ", wasDeviceInPocket=" + wasDeviceInPocket);
+            }
             if (reason == PocketManager.REASON_SENSOR) {
                 mIsDeviceInPocket = isDeviceInPocket;
             } else {
@@ -117,8 +121,6 @@ public class PhoneWindowManagerExt {
         mSystemGesture = new SystemGesture(pw.mContext, this);
         mHasAlertSlider = AlertSliderManager.hasAlertSlider(pw.mContext);
         mAudioManager = pw.mContext.getSystemService(AudioManager.class);
-        mPocketManager = pw.mContext.getSystemService(PocketManager.class);
-        mPocketManager.addCallback(mPocketCallback);
         mPocketLock = new PocketLock(pw.mContext);
     }
 
@@ -130,6 +132,9 @@ public class PhoneWindowManagerExt {
         final DisplayResolutionManager drm =
                 mPhoneWindowManager.mContext.getSystemService(DisplayResolutionManager.class);
         drm.registerDisplayResolutionListener(mDisplayResolutionListener);
+
+        mPocketManager = mPhoneWindowManager.mContext.getSystemService(PocketManager.class);
+        mPocketManager.addCallback(mPocketCallback);
     }
 
     void onConfigureChanged() {
@@ -238,6 +243,7 @@ public class PhoneWindowManagerExt {
                         "Power - Long-Press - Hide Pocket Lock");
                 hidePocketLock(true);
                 mPocketManager.setListeningExternal(false);
+                break;
         }
     }
 
@@ -394,6 +400,10 @@ public class PhoneWindowManagerExt {
 
     private void handleDevicePocketStateChanged() {
         final boolean interactive = mPhoneWindowManager.mPowerManager.isInteractive();
+        if (DEBUG_PHONE_WINDOW_MANAGER) {
+            Slog.d(TAG, "handleDevicePocketStateChanged, interactive=" + interactive
+                    + ", mIsDeviceInPocket=" + mIsDeviceInPocket);
+        }
         if (mIsDeviceInPocket) {
             showPocketLock(interactive);
         } else {
@@ -407,11 +417,17 @@ public class PhoneWindowManagerExt {
                 !mPhoneWindowManager.isKeyguardDrawnLw() ||
                 mPocketLock == null ||
                 mPocketLockShowing) {
+            if (DEBUG_PHONE_WINDOW_MANAGER) {
+                Slog.d(TAG, "showPocketLock, skip due to unready or showing");
+            }
             return;
         }
 
         if (mPhoneWindowManager.mPowerManager.isInteractive() &&
-                !mPhoneWindowManager.isKeyguardShowingAndNotOccluded()){
+                !mPhoneWindowManager.isKeyguardShowingAndNotOccluded()) {
+            if (DEBUG_PHONE_WINDOW_MANAGER) {
+                Slog.d(TAG, "showPocketLock, skip due to not keyguard");
+            }
             return;
         }
 
@@ -430,7 +446,10 @@ public class PhoneWindowManagerExt {
                 !mPhoneWindowManager.mSystemBooted ||
                 !mPhoneWindowManager.isKeyguardDrawnLw() ||
                 mPocketLock == null ||
-                mPocketLockShowing) {
+                !mPocketLockShowing) {
+            if (DEBUG_PHONE_WINDOW_MANAGER) {
+                Slog.d(TAG, "hidePocketLock, skip due to unready or not showing");
+            }
             return;
         }
 

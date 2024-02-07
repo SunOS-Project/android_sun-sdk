@@ -17,7 +17,7 @@
 package org.nameless.os;
 
 /** @hide */
-interface IPocketCallback {
+oneway interface IPocketCallback {
 
     // notify when pocket state changes.
     void onStateChanged(boolean isDeviceInPocket, int reason);
