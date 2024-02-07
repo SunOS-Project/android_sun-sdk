@@ -87,6 +87,6 @@ class ScreenshotControllerExt {
     }
 
     String getForegroundAppLabel() {
-        return mForegroundActivityListener.getForegroundFullscreenPackageName();
+        return mForegroundActivityListener.getTopPackageName();
     }
 }

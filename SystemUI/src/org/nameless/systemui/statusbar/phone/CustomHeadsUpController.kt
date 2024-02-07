@@ -145,6 +145,6 @@ class CustomHeadsUpController @Inject constructor(
             return true
         }
         return blacklistApps.contains(fromPackage) ||
-                stoplistApps.contains(foregroundActivityListener.foregroundFullscreenPackageName)
+                stoplistApps.contains(foregroundActivityListener.getTopPackageName())
     }
 }
