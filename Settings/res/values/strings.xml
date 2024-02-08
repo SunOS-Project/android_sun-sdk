@@ -545,4 +545,9 @@
     <string name="qs_tile_vertical_layout_title">Vertical layout</string>
     <string name="qs_tile_vertical_layout_summary">Enable vertical layout for QS tiles</string>
 
+    <!-- Back gesture height -->
+    <string name="back_height_bottom_label">Bottom</string>
+    <string name="back_height_full_label">Full</string>
+    <string name="back_height_title">Back gesture height</string>
+
 </resources>

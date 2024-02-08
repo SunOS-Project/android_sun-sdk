@@ -675,6 +675,12 @@ public class SettingsExt {
         public static final String BACK_GESTURE_ARROW = "back_gesture_arrow";
 
         /**
+         * Custom back gesture height
+         * @hide
+         */
+        public static final String BACK_GESTURE_HEIGHT = "back_gesture_height";
+
+        /**
          * Gestures nav: left long back swipe action
          * @hide
          */

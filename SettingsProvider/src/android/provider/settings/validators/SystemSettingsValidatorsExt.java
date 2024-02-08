@@ -114,6 +114,7 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.VOLUME_PANEL_SHOW_APP_VOLUME, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.PERSISTED_APP_VOLUME_DATA, new AppVolumeDataValidator());
         VALIDATORS.put(System.BACK_GESTURE_ARROW, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.BACK_GESTURE_HEIGHT, new InclusiveIntegerRangeValidator(0, 3));
         VALIDATORS.put(System.LONG_BACK_SWIPE_THRESHOLD_PORT, new InclusiveFloatRangeValidator(0.1f, 0.9f));
         VALIDATORS.put(System.LONG_BACK_SWIPE_THRESHOLD_LAND, new InclusiveFloatRangeValidator(0.1f, 0.9f));
         VALIDATORS.put(System.QS_SHOW_BRIGHTNESS_SLIDER, new InclusiveIntegerRangeValidator(0, 2));

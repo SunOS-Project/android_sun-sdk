@@ -29,6 +29,11 @@ public class GestureNavigationSettingsObserverExt {
         return InstanceHolder.INSTANCE;
     }
 
+    public static final int GESTURE_HEIGHT_FULL = 0;
+    public static final int GESTURE_HEIGHT_3_4 = 1;
+    public static final int GESTURE_HEIGHT_1_2 = 2;
+    public static final int GESTURE_HEIGHT_1_4 = 3;
+
     private Context mContext;
 
     void init(Context context) {
@@ -38,6 +43,9 @@ public class GestureNavigationSettingsObserverExt {
     void register(ContentResolver cr, ContentObserver observer) {
         cr.registerContentObserver(Settings.System.getUriFor(
                 SettingsExt.System.BACK_GESTURE_ARROW), false,
+                observer, UserHandle.USER_ALL);
+        cr.registerContentObserver(Settings.System.getUriFor(
+                SettingsExt.System.BACK_GESTURE_HEIGHT), false,
                 observer, UserHandle.USER_ALL);
         cr.registerContentObserver(Settings.System.getUriFor(
                 SettingsExt.System.LEFT_LONG_BACK_SWIPE_ACTION), false,
@@ -57,6 +65,12 @@ public class GestureNavigationSettingsObserverExt {
         return Settings.System.getIntForUser(mContext.getContentResolver(),
                 SettingsExt.System.BACK_GESTURE_ARROW,
                 1, UserHandle.USER_CURRENT) != 0;
+    }
+
+    public int getBackGestureHeightSettings() {
+        return Settings.System.getIntForUser(mContext.getContentResolver(),
+                SettingsExt.System.BACK_GESTURE_HEIGHT,
+                GESTURE_HEIGHT_FULL, UserHandle.USER_CURRENT);
     }
 
     public int getLongSwipeLeftAction() {
