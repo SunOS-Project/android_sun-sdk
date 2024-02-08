@@ -78,7 +78,7 @@ public class PickUpSensor implements SensorEventListener {
                     DozeController.getInstance().launchDozePulse();
                     break;
                 case DOZE_ACTION_SHOW_LOCKSCREEN:
-                    DozeController.getInstance().wakeUpScreen();
+                    DozeController.getInstance().wakeUpScreen(true);
                     break;
             }
         }

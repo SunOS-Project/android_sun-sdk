@@ -110,5 +110,12 @@ public class SystemSettingsExt {
         System.QS_TILE_VERTICAL_LAYOUT,
         System.QS_LAYOUT_CUSTOM,
         System.QQS_LAYOUT_CUSTOM,
+        System.TOUCH_GESTURE_SINGLE_TAP_SHOW_AMBIENT,
+        System.TOUCH_GESTURE_MUSIC_CONTROL,
+        System.TOUCH_GESTURE_M,
+        System.TOUCH_GESTURE_O,
+        System.TOUCH_GESTURE_S,
+        System.TOUCH_GESTURE_V,
+        System.TOUCH_GESTURE_W,
     };
 }

@@ -5,6 +5,8 @@
 
 package com.android.server.policy;
 
+import static android.provider.Settings.Secure.USER_SETUP_COMPLETE;
+
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_DOWN;
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_MOVE;
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_MOVE_TRIGGERED;
@@ -23,6 +25,7 @@ import android.os.Message;
 import android.os.Process;
 import android.os.RemoteException;
 import android.os.UserHandle;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.service.dreams.IDreamManager;
 import android.util.Slog;
@@ -43,6 +46,7 @@ import org.nameless.os.PocketManager;
 import org.nameless.provider.SettingsExt;
 import org.nameless.server.policy.PocketLock;
 import org.nameless.server.policy.gesture.SystemGesture;
+import org.nameless.server.policy.gesture.TouchGestureController;
 import org.nameless.view.DisplayResolutionManager;
 import org.nameless.view.IDisplayResolutionListener;
 import org.nameless.view.ISystemGestureListener;
@@ -76,6 +80,7 @@ public class PhoneWindowManagerExt {
     private boolean mThreeFingerSwipeScreenshot;
     private boolean mPocketLockShowing;
     private boolean mIsDeviceInPocket;
+    private boolean mUserSetupCompleted;
     private boolean mVolBtnMusicControls;
     private boolean mVolBtnLongPress;
 
@@ -83,7 +88,7 @@ public class PhoneWindowManagerExt {
         private static final PhoneWindowManagerExt INSTANCE = new PhoneWindowManagerExt();
     }
 
-    static PhoneWindowManagerExt getInstance() {
+    public static PhoneWindowManagerExt getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
@@ -122,10 +127,12 @@ public class PhoneWindowManagerExt {
         mHasAlertSlider = AlertSliderManager.hasAlertSlider(pw.mContext);
         mAudioManager = pw.mContext.getSystemService(AudioManager.class);
         mPocketLock = new PocketLock(pw.mContext);
+        TouchGestureController.getInstance().init(pw.mContext);
     }
 
     void systemReady() {
         mSystemGesture.configure();
+        TouchGestureController.getInstance().systemReady();
     }
 
     void systemBooted() {
@@ -174,6 +181,9 @@ public class PhoneWindowManagerExt {
     }
 
     void observe(ContentResolver resolver, ContentObserver observer) {
+        resolver.registerContentObserver(Settings.Secure.getUriFor(
+                Settings.Secure.USER_SETUP_COMPLETE), false, observer,
+                UserHandle.USER_ALL);
         resolver.registerContentObserver(Settings.System.getUriFor(
                 SettingsExt.System.CLICK_PARTIAL_SCREENSHOT), false, observer,
                 UserHandle.USER_ALL);
@@ -192,6 +202,9 @@ public class PhoneWindowManagerExt {
     }
 
     void updateSettings(ContentResolver resolver) {
+        mUserSetupCompleted = Settings.Secure.getIntForUser(resolver,
+                Settings.Secure.USER_SETUP_COMPLETE, 0,
+                UserHandle.USER_CURRENT) == 1;
         mClickPartialScreenshot = Settings.System.getIntForUser(resolver,
                 SettingsExt.System.CLICK_PARTIAL_SCREENSHOT, 0,
                 UserHandle.USER_CURRENT) == 1;
@@ -207,6 +220,7 @@ public class PhoneWindowManagerExt {
         mVolBtnMusicControls = Settings.System.getIntForUser(resolver,
                 SettingsExt.System.VOLBTN_MUSIC_CONTROLS, 0,
                 UserHandle.USER_CURRENT) == 1;
+        TouchGestureController.getInstance().updateSettings();
     }
 
     void registerSystemGestureListener(String pkg, int gesture, ISystemGestureListener listener) {
@@ -312,9 +326,15 @@ public class PhoneWindowManagerExt {
                 Settings.Secure.FLASHLIGHT_ENABLED, 0) != 0;
     }
 
-    boolean interceptKeyBeforeQueueing(int keyCode, boolean down, boolean interactive) {
+    boolean interceptKeyBeforeQueueing(int keyCode, int scanCode, boolean down, boolean interactive) {
         if (mHasAlertSlider && AlertSliderManager.maybeNotifyUpdate(
                 mPhoneWindowManager.mContext, keyCode, down)) {
+            return true;
+        }
+        if (!mUserSetupCompleted) {
+            return false;
+        }
+        if (TouchGestureController.getInstance().handleKeyEvent(scanCode, down)) {
             return true;
         }
         if (mIsDeviceInPocket && (!interactive || mPocketLockShowing)) {
@@ -361,7 +381,7 @@ public class PhoneWindowManagerExt {
     }
 
     public void takeScreenshotIfSetupCompleted(boolean fullscreen) {
-        if (!mPhoneWindowManager.isUserSetupComplete()) {
+        if (!mUserSetupCompleted) {
             return;
         }
         if (!fullscreen && mPhoneWindowManager.isKeyguardShowing()) {
@@ -469,6 +489,14 @@ public class PhoneWindowManagerExt {
         Message msg = mHandler.obtainMessage(MSG_DISPATCH_VOLKEY_WITH_WAKE_LOCK, event);
         msg.setAsynchronous(true);
         mHandler.sendMessageDelayed(msg, ViewConfiguration.getLongPressTimeout());
+    }
+
+    public void dispatchMediaKeyToMediaSession(int keyCode) {
+        KeyEvent event = new KeyEvent(SystemClock.uptimeMillis(),
+                SystemClock.uptimeMillis(), KeyEvent.ACTION_DOWN, keyCode, 0);
+        mPhoneWindowManager.dispatchMediaKeyWithWakeLockToAudioService(event);
+        mPhoneWindowManager.dispatchMediaKeyWithWakeLockToAudioService(
+                KeyEvent.changeAction(event, KeyEvent.ACTION_UP));
     }
 
     private static boolean isDozeMode() {

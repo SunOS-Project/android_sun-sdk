@@ -137,9 +137,13 @@ public class DozeController {
         mSystemExService.getContext().sendBroadcastAsUser(new Intent(DOZE_INTENT), UserHandle.SYSTEM);
     }
 
-    public void wakeUpScreen() {
+    public void wakeUpScreen(boolean vibrate) {
         mWakeLock.acquire(WAKELOCK_TIMEOUT_MS);
-        mPowerManager.wakeUp(SystemClock.uptimeMillis(), PowerManager.WAKE_REASON_GESTURE, TAG);
+        if (vibrate) {
+            mPowerManager.wakeUp(SystemClock.uptimeMillis(), PowerManager.WAKE_REASON_GESTURE, TAG);
+        } else {
+            mPowerManager.wakeUp(SystemClock.uptimeMillis(), PowerManager.WAKE_REASON_CAMERA_LAUNCH, TAG);
+        }
     }
 
     private static void logD(String msg) {

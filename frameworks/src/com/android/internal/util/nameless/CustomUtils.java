@@ -17,6 +17,7 @@ import android.app.IActivityManager;
 import android.app.IActivityTaskManager;
 import android.app.role.RoleManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -275,5 +276,18 @@ public class CustomUtils {
     public static void turnScreenOff(Context context) {
         final PowerManager powerManager = context.getSystemService(PowerManager.class);
         powerManager.goToSleep(SystemClock.uptimeMillis());
+    }
+
+    public static void startActivityDismissingKeyguard(Intent intent) {
+        if (intent == null) {
+            return;
+        }
+        final IStatusBarService service = IStatusBarService.Stub.asInterface(
+                ServiceManager.getService(Context.STATUS_BAR_SERVICE));
+        try {
+            service.startActivityDismissingKeyguard(intent);
+        } catch (RemoteException e) {
+            // do nothing.
+        }
     }
 }

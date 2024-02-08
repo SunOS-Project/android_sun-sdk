@@ -5,6 +5,8 @@
 
 package com.android.server.am;
 
+import static android.content.Intent.ACTION_SCREEN_CAMERA_GESTURE;
+
 import static org.nameless.server.policy.DozeController.DOZE_INTENT;
 
 import android.content.Intent;
@@ -22,7 +24,8 @@ class ActivityManagerServiceExt {
     }
 
     boolean allowBroadcastFromSystem(String action) {
-        if (DOZE_INTENT.equals(action)) {
+        if (DOZE_INTENT.equals(action) ||
+                ACTION_SCREEN_CAMERA_GESTURE.equals(action)) {
             return true;
         }
         return false;

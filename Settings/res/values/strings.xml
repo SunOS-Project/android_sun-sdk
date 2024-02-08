@@ -550,4 +550,36 @@
     <string name="back_height_full_label">Full</string>
     <string name="back_height_title">Back gesture height</string>
 
+    <!-- Off-screen touch gestures -->
+    <string name="off_screen_gesture_title">Off-screen gestures</string>
+    <string name="off_screen_gesture_summary">Configure touchscreen gestures when screen is off</string>
+    <string name="off_screen_gesture_single_tap_pulse_title">Wake screen on single tap</string>
+    <string name="off_screen_gesture_single_tap_pulse_summary">When screen is dark, single tap to show ambient display</string>
+    <string name="off_screen_gesture_music_control_title">Music control</string>
+    <string name="off_screen_gesture_music_control_summary">Draw \"&lt;\", \"&gt;\", \"||\" to control music track</string>
+    <string name="off_screen_gesture_draw_m_title">Draw M</string>
+    <string name="off_screen_gesture_draw_o_title">Draw O</string>
+    <string name="off_screen_gesture_draw_s_title">Draw S</string>
+    <string name="off_screen_gesture_draw_v_title">Draw V</string>
+    <string name="off_screen_gesture_draw_w_title">Draw W</string>
+
+    <!-- Off-screen gesture actions -->
+    <string name="action_none">Do nothing</string>
+    <string name="action_toggle_flashlight">Toggle flashlight</string>
+    <string name="action_open_browser">Open browser</string>
+    <string name="action_open_camera">Open camera</string>
+    <string name="action_open_dialer">Open dialer</string>
+    <string name="action_open_messages">Open messages</string>
+    <string name="action_open_email">Open email</string>
+    <string name="action_wechat_pay">WeChat pay</string>
+    <string name="action_alipay_pay">Alipay pay</string>
+    <string name="action_wechat_scan">WeChat scan</string>
+    <string name="action_alipay_scan">Alipay scan</string>
+    <string name="action_alipay_trip">Alipay trip</string>
+    <string name="action_wallet_trip">Wallet trip</string>
+    <string name="action_gpay">GPay</string>
+    <string name="action_paytm_pay">Paytm pay</string>
+    <string name="action_paytm_scan">Paytm scan</string>
+    <string name="action_phonepe">PhonePe</string>
+
 </resources>

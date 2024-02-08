@@ -261,4 +261,45 @@
         <item>2</item>
     </string-array>
 
+    <!-- Off-screen gesture actions -->
+    <string-array name="off_screen_gesture_actions_entries" translatable="false">
+        <item>@string/action_none</item>
+        <item>@string/action_toggle_flashlight</item>
+        <item>@string/action_open_browser</item>
+        <item>@string/action_open_camera</item>
+        <item>@string/action_open_dialer</item>
+        <item>@string/action_open_messages</item>
+        <item>@string/action_open_email</item>
+        <item>@string/action_wechat_pay</item>
+        <item>@string/action_alipay_pay</item>
+        <item>@string/action_wechat_scan</item>
+        <item>@string/action_alipay_scan</item>
+        <item>@string/action_alipay_trip</item>
+        <item>@string/action_wallet_trip</item>
+        <item>@string/action_gpay</item>
+        <item>@string/action_paytm_pay</item>
+        <item>@string/action_paytm_scan</item>
+        <item>@string/action_phonepe</item>
+    </string-array>
+
+    <string-array name="off_screen_gesture_actions_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>51</item>
+        <item>52</item>
+        <item>53</item>
+        <item>54</item>
+        <item>55</item>
+        <item>56</item>
+        <item>57</item>
+        <item>58</item>
+        <item>59</item>
+        <item>60</item>
+    </string-array>
+
 </resources>

@@ -748,6 +748,48 @@ public class SettingsExt {
          * @hide
          */
         public static final String QQS_LAYOUT_CUSTOM = "qqs_layout_custom";
+
+        /**
+         * Touch gesture: Single tap to show ambient display
+         * @hide
+         */
+        public static final String TOUCH_GESTURE_SINGLE_TAP_SHOW_AMBIENT = "touch_gesture_single_tap_show_ambient";
+
+        /**
+         * Touch gesture: Music control gestures
+         * @hide
+         */
+        public static final String TOUCH_GESTURE_MUSIC_CONTROL = "touch_gesture_music_control";
+
+        /**
+         * Touch gesture: M
+         * @hide
+         */
+        public static final String TOUCH_GESTURE_M = "touch_gesture_m";
+
+        /**
+         * Touch gesture: O
+         * @hide
+         */
+        public static final String TOUCH_GESTURE_O = "touch_gesture_o";
+
+        /**
+         * Touch gesture: S
+         * @hide
+         */
+        public static final String TOUCH_GESTURE_S = "touch_gesture_s";
+
+        /**
+         * Touch gesture: V
+         * @hide
+         */
+        public static final String TOUCH_GESTURE_V = "touch_gesture_v";
+
+        /**
+         * Touch gesture: W
+         * @hide
+         */
+        public static final String TOUCH_GESTURE_W = "touch_gesture_w";
     }
 
     public static class Secure {
