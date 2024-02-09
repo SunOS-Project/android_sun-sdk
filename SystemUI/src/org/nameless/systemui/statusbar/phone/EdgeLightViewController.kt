@@ -20,6 +20,7 @@ import android.content.Context
 import android.database.ContentObserver
 import android.graphics.Color
 import android.net.Uri
+import android.os.Handler
 import android.os.UserHandle
 import android.service.notification.NotificationListenerService.RankingMap
 import android.service.notification.StatusBarNotification
@@ -31,6 +32,7 @@ import androidx.annotation.GuardedBy
 import com.android.settingslib.Utils
 
 import com.android.systemui.dagger.SysUISingleton
+import com.android.systemui.dagger.qualifiers.Main
 import com.android.systemui.doze.DozeLog
 import com.android.systemui.keyguard.ScreenLifecycle
 import com.android.systemui.settings.UserTracker
@@ -56,6 +58,7 @@ import org.nameless.systemui.statusbar.EdgeLightView
 
 @SysUISingleton
 class EdgeLightViewController @Inject constructor(
+    @Main private val mainHandler: Handler,
     private val context: Context,
     private val keyguardStateController: KeyguardStateController,
     private val systemSettings: SystemSettings,
@@ -92,7 +95,7 @@ class EdgeLightViewController @Inject constructor(
     @GuardedBy("settingsMutex")
     private var alwaysTriggerOnPulse = false
 
-    private val settingsObserver = object : ContentObserver(null) {
+    private val settingsObserver = object : ContentObserver(mainHandler) {
         override fun onChange(selfChange: Boolean, uri: Uri) {
             logD {
                 "setting changed for ${uri.lastPathSegment}"

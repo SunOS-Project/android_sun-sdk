@@ -21,13 +21,14 @@ import android.content.Context
 import android.content.res.Configuration
 import android.database.ContentObserver
 import android.net.Uri
+import android.os.Handler
 import android.os.PowerManager
 import android.os.UserHandle
 import android.view.GestureDetector
 import android.view.MotionEvent
 
 import com.android.systemui.dagger.SysUISingleton
-import com.android.systemui.dagger.qualifiers.Background
+import com.android.systemui.dagger.qualifiers.Main
 import com.android.systemui.plugins.statusbar.StatusBarStateController
 import com.android.systemui.settings.UserTracker
 import com.android.systemui.statusbar.StatusBarState
@@ -46,7 +47,8 @@ import org.nameless.provider.SettingsExt.System.STATUSBAR_GESTURE_PORTRAIT_ONLY
 @SysUISingleton
 class CustomGestureListener @Inject constructor(
     context: Context,
-    @Background private val bgExecutor: Executor,
+    @Main private val mainExecutor: Executor,
+    @Main mainHandler: Handler,
     private val configurationController: ConfigurationController,
     private val powerManager: PowerManager,
     private val statusBarStateController: StatusBarStateController,
@@ -62,7 +64,7 @@ class CustomGestureListener @Inject constructor(
     private var isLandscape: Boolean
 
     init {
-        val settingsObserver = object : ContentObserver(null) {
+        val settingsObserver = object : ContentObserver(mainHandler) {
             override fun onChange(selfChange: Boolean, uri: Uri?) {
                 when (uri?.lastPathSegment) {
                     DOUBLE_TAP_SLEEP_LOCKSCREEN -> updateDoubleTapSleepLockscreen()
@@ -90,7 +92,7 @@ class CustomGestureListener @Inject constructor(
             override fun onUserChanged(newUser: Int, userContext: Context) {
                 updateSettings()
             }
-        }, bgExecutor)
+        }, mainExecutor)
 
         isLandscape = context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         configurationController.addCallback(object : ConfigurationController.ConfigurationListener {

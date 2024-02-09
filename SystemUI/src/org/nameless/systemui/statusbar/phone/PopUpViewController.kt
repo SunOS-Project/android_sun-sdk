@@ -9,12 +9,13 @@ import android.content.Context
 import android.content.res.Configuration
 import android.database.ContentObserver
 import android.net.Uri
+import android.os.Handler
 import android.os.UserHandle
 
 import com.android.internal.util.nameless.PopUpSettingsHelper
 
 import com.android.systemui.dagger.SysUISingleton
-import com.android.systemui.dagger.qualifiers.Background
+import com.android.systemui.dagger.qualifiers.Main
 import com.android.systemui.settings.UserTracker
 import com.android.systemui.statusbar.policy.ConfigurationController
 import com.android.systemui.util.settings.SystemSettings
@@ -29,7 +30,8 @@ import org.nameless.provider.SettingsExt.System.POP_UP_NOTIFICATION_JUMP_LANDSCA
 @SysUISingleton
 class PopUpViewController @Inject constructor(
     private val context: Context,
-    @Background private val bgExecutor: Executor,
+    @Main private val mainExecutor: Executor,
+    @Main mainHandler: Handler,
     private val configurationController: ConfigurationController,
     private val systemSettings: SystemSettings,
     private val userTracker: UserTracker
@@ -41,7 +43,7 @@ class PopUpViewController @Inject constructor(
     private var isLandscape: Boolean
 
     init {
-        val settingsObserver = object : ContentObserver(null) {
+        val settingsObserver = object : ContentObserver(mainHandler) {
             override fun onChange(selfChange: Boolean, uri: Uri?) {
                 when (uri?.lastPathSegment) {
                     POP_UP_NOTIFICATION_JUMP_PORTRAIT -> updateNotificationJumpPort()
@@ -61,7 +63,7 @@ class PopUpViewController @Inject constructor(
             override fun onUserChanged(newUser: Int, userContext: Context) {
                 updateSettings()
             }
-        }, bgExecutor)
+        }, mainExecutor)
 
         isLandscape = context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         configurationController.addCallback(object : ConfigurationController.ConfigurationListener {

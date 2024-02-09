@@ -22,10 +22,11 @@ import android.content.Context
 import android.content.res.Configuration
 import android.database.ContentObserver
 import android.net.Uri
+import android.os.Handler
 import android.os.UserHandle
 
 import com.android.systemui.dagger.SysUISingleton
-import com.android.systemui.dagger.qualifiers.Background
+import com.android.systemui.dagger.qualifiers.Main
 import com.android.systemui.settings.UserTracker
 import com.android.systemui.statusbar.policy.ConfigurationController
 import com.android.systemui.util.settings.SystemSettings
@@ -43,7 +44,8 @@ import org.nameless.systemui.statusbar.policy.ForegroundActivityListener
 @SysUISingleton
 class CustomHeadsUpController @Inject constructor(
     context: Context,
-    @Background private val bgExecutor: Executor,
+    @Main private val mainExecutor: Executor,
+    @Main mainHandler: Handler,
     private val configurationController: ConfigurationController,
     private val foregroundActivityListener: ForegroundActivityListener,
     private val roleManager: RoleManager,
@@ -60,7 +62,7 @@ class CustomHeadsUpController @Inject constructor(
     private var isLandscape: Boolean
 
     init {
-        val settingsObserver = object : ContentObserver(null) {
+        val settingsObserver = object : ContentObserver(mainHandler) {
             override fun onChange(selfChange: Boolean, uri: Uri?) {
                 when (uri?.lastPathSegment) {
                     DISABLE_LANDSCAPE_HEADS_UP -> updateLandscapeHeadsUp()
@@ -88,7 +90,7 @@ class CustomHeadsUpController @Inject constructor(
             override fun onUserChanged(newUser: Int, userContext: Context) {
                 updateSettings()
             }
-        }, bgExecutor)
+        }, mainExecutor)
 
         isLandscape = context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         configurationController.addCallback(object : ConfigurationController.ConfigurationListener {
