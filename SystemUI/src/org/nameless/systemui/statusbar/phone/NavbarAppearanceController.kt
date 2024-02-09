@@ -6,9 +6,12 @@
 package org.nameless.systemui.statusbar.phone
 
 import android.content.Context
+import android.content.om.IOverlayManager
 import android.database.ContentObserver
 import android.net.Uri
 import android.os.Handler
+import android.os.RemoteException
+import android.os.ServiceManager
 import android.os.UserHandle
 
 import com.android.systemui.R
@@ -35,6 +38,9 @@ class NavbarAppearanceController @Inject constructor(
     private val systemSettings: SystemSettings,
     private val userTracker: UserTracker
 ) : UserTracker.Callback {
+
+    private val overlayManager = IOverlayManager.Stub.asInterface(
+            ServiceManager.getService(Context.OVERLAY_SERVICE))
 
     private val callbacks = mutableListOf<NavbarAppearanceChangeCallback>()
 
@@ -106,8 +112,17 @@ class NavbarAppearanceController @Inject constructor(
     }
 
     private fun updateImeSpaceVisibility(notifyChange: Boolean) {
+        val wasVisible = imeSpaceVisible
         imeSpaceVisible = systemSettings.getIntForUser(GESTURE_NAVBAR_IME_SPACE,
                 1, userTracker.userId) == 1
+        if (wasVisible != imeSpaceVisible) {
+            try {
+                overlayManager.setEnabled(PKG_DISABLE_IME_DRAW_NAVBAR_OVERLAY,
+                        !imeSpaceVisible, userTracker.userId)
+                overlayManager.setHighestPriority(PKG_DISABLE_IME_DRAW_NAVBAR_OVERLAY,
+                        userTracker.userId)
+            } catch (e: RemoteException) {}
+        }
         if (notifyChange) {
             notifyAppearanceChanged()
         }
@@ -148,29 +163,30 @@ class NavbarAppearanceController @Inject constructor(
     }
 
     fun getNavbarLength(): Int {
-        return if (barLengthMode == LENGTH_MODE_HIDDEN) {
-            0
-        } else if (barLengthMode == LENGTH_MODE_NORMAL) {
-            -1
-        } else if (barLengthMode == LENGTH_MODE_MEDIUM) {
-            context.resources.getDimensionPixelSize(R.dimen.navigation_home_handle_width_medium)
-        } else if (barLengthMode == LENGTH_MODE_LONG) {
-            context.resources.getDimensionPixelSize(R.dimen.navigation_home_handle_width_long)
-        } else {
-            0
+        return when (barLengthMode) {
+            LENGTH_MODE_HIDDEN -> 0
+            LENGTH_MODE_MEDIUM -> {
+                context.resources.getDimensionPixelSize(R.dimen.navigation_home_handle_width_medium)
+            }
+            LENGTH_MODE_LONG -> {
+                context.resources.getDimensionPixelSize(R.dimen.navigation_home_handle_width_long)
+            }
+            else -> -1
         }
     }
 
     fun getNavbarRadius(): Float {
-        return (if (barRadiusMode == RADIUS_MODE_NORMAL) {
-            context.resources.getDimensionPixelSize(R.dimen.navigation_handle_radius)
-        } else if (barRadiusMode == RADIUS_MODE_MEDIUM) {
-            context.resources.getDimensionPixelSize(R.dimen.navigation_handle_radius_medium)
-        } else if (barRadiusMode == RADIUS_MODE_THICKEST) {
-            context.resources.getDimensionPixelSize(R.dimen.navigation_handle_radius_thickest)
-        } else {
-            context.resources.getDimensionPixelSize(R.dimen.navigation_handle_radius)
-        }).toFloat()
+        return when (barRadiusMode) {
+            RADIUS_MODE_MEDIUM -> {
+                context.resources.getDimensionPixelSize(R.dimen.navigation_handle_radius_medium)
+            }
+            RADIUS_MODE_THICKEST -> {
+                context.resources.getDimensionPixelSize(R.dimen.navigation_handle_radius_thickest)
+            }
+            else -> {
+                context.resources.getDimensionPixelSize(R.dimen.navigation_handle_radius)
+            }
+        }.toFloat()
     }
 
     fun getNavbarHeight(): Int {
@@ -212,6 +228,8 @@ class NavbarAppearanceController @Inject constructor(
         private const val RADIUS_MODE_NORMAL = 0
         private const val RADIUS_MODE_MEDIUM = 1
         private const val RADIUS_MODE_THICKEST = 2
+
+        private const val PKG_DISABLE_IME_DRAW_NAVBAR_OVERLAY = "org.nameless.navbar.disable_ime_draw"
     }
 }
 
