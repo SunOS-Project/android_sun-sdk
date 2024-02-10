@@ -45,6 +45,7 @@ import org.nameless.os.PocketManager;
 import org.nameless.server.battery.BatteryFeatureController;
 import org.nameless.server.display.DisplayFeatureController;
 import org.nameless.server.display.DisplayRefreshRateController;
+import org.nameless.server.pm.LauncherStateController;
 import org.nameless.server.policy.DozeController;
 import org.nameless.server.policy.PocketModeController;
 import org.nameless.server.vibrator.LinearmotorVibratorController;
@@ -105,6 +106,7 @@ public class NamelessSystemExService extends SystemService {
                 PocketModeController.getInstance().onSystemServicesReady();
             }
             DozeController.getInstance().onSystemServicesReady();
+            LauncherStateController.getInstance().onSystemServicesReady();
             LinearmotorVibratorController.getInstance().onSystemServicesReady();
             return;
         }
@@ -122,6 +124,7 @@ public class NamelessSystemExService extends SystemService {
             }
             DisplayRefreshRateController.getInstance().onBootCompleted();
             DisplayRotationController.getInstance().onBootCompleted();
+            LauncherStateController.getInstance().onBootCompleted();
             mPackageRemovedListener.register();
             mPowerStateListener.register();
             mScreenStateListener.register();
@@ -150,7 +153,14 @@ public class NamelessSystemExService extends SystemService {
         DisplayResolutionController.getInstance().initSystemExService(this);
         DisplayRotationController.getInstance().initSystemExService(this);
         DozeController.getInstance().initSystemExService(this);
+        LauncherStateController.getInstance().initSystemExService(this);
         LinearmotorVibratorController.getInstance().initSystemExService(this);
+    }
+
+    @Override
+    public void onUserStarting(TargetUser user) {
+        final int userId = user.getUserIdentifier();
+        LauncherStateController.getInstance().onUserStarting(userId);
     }
 
     @Override
