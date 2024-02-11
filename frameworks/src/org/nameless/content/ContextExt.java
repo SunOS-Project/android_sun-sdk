@@ -22,6 +22,16 @@ public class ContextExt {
 
     /**
      * Use with {@link #getSystemService} to retrieve a
+     * {@link org.nameless.app.AppPropsManager} for managing app props spoof.
+     *
+     * @hide
+     * @see #getSystemService
+     * @see org.nameless.app.AppPropsManager
+     */
+    public static final String APP_PROPS_MANAGER_SERVICE = "app_props";
+
+    /**
+     * Use with {@link #getSystemService} to retrieve a
      * {@link org.nameless.view.DisplayResolutionManager} for managing display resolution.
      *
      * @hide

@@ -14,6 +14,8 @@ import android.os.ServiceManager;
 import com.oplus.os.ILinearmotorVibratorService;
 import com.oplus.os.LinearmotorVibrator;
 
+import org.nameless.app.AppPropsManager;
+import org.nameless.app.IAppPropsManagerService;
 import org.nameless.content.ContextExt;
 import org.nameless.display.IRefreshRateManagerService;
 import org.nameless.display.RefreshRateManager;
@@ -41,6 +43,15 @@ class SystemServiceRegistryExt {
                 IBinder binder = ServiceManager.getService(ContextExt.APP_FOCUS_MANAGER_SERVICE);
                 IAppFocusManagerService service = IAppFocusManagerService.Stub.asInterface(binder);
                 return new AppFocusManager(ctx.getOuterContext(), service);
+            }});
+
+        registerService(ContextExt.APP_PROPS_MANAGER_SERVICE, AppPropsManager.class,
+                new CachedServiceFetcher<AppPropsManager>() {
+            @Override
+            public AppPropsManager createService(ContextImpl ctx) {
+                IBinder binder = ServiceManager.getService(ContextExt.APP_PROPS_MANAGER_SERVICE);
+                IAppPropsManagerService service = IAppPropsManagerService.Stub.asInterface(binder);
+                return new AppPropsManager(ctx.getOuterContext(), service);
             }});
 
         registerService(ContextExt.DISPLAY_RESOLUTION_MANAGER_SERVICE, DisplayResolutionManager.class,

@@ -42,6 +42,7 @@ import com.android.server.wm.TopActivityRecorder;
 import org.nameless.display.DisplayFeatureManager;
 import org.nameless.os.BatteryFeatureManager;
 import org.nameless.os.PocketManager;
+import org.nameless.server.app.AppPropsController;
 import org.nameless.server.battery.BatteryFeatureController;
 import org.nameless.server.display.DisplayFeatureController;
 import org.nameless.server.display.DisplayRefreshRateController;
@@ -97,6 +98,7 @@ public class NamelessSystemExService extends SystemService {
             mPowerStateListener = new PowerStateListener();
             mScreenStateListener = new ScreenStateListener();
             mShutdownListener = new ShutdownListener();
+            AppPropsController.getInstance().onSystemServicesReady();
             if (mBatteryFeatureSupported) {
                 BatteryFeatureController.getInstance().onSystemServicesReady();
             }
@@ -141,6 +143,7 @@ public class NamelessSystemExService extends SystemService {
         mWorker.start();
         mHandler = new Handler(mWorker.getLooper());
 
+        AppPropsController.getInstance().initSystemExService(this);
         TopActivityRecorder.getInstance().initSystemExService(this);
         if (mBatteryFeatureSupported) {
             BatteryFeatureController.getInstance().initSystemExService(this);

@@ -19,6 +19,7 @@ public class DebugConstants {
 
     static {
         CONSTANTS_MAP.put("DEBUG_GLOBAL", "persist.sys.nameless.debug.global");
+        CONSTANTS_MAP.put("DEBUG_APP_PROPS", "persist.sys.nameless.app.props.debug");
         CONSTANTS_MAP.put("DEBUG_AUDIO_SLIDER", "persist.sys.nameless.audio.slider.debug");
         CONSTANTS_MAP.put("DEBUG_BATTERY_FEATURE", "persist.sys.nameless.battery.feature.debug");
         CONSTANTS_MAP.put("DEBUG_DISPLAY_FEATURE", "persist.sys.nameless.display.feature.debug");
@@ -46,6 +47,13 @@ public class DebugConstants {
     // Enable this to debug all nameless features
     private static final boolean DEBUG_GLOBAL = Build.IS_ENG || SystemProperties.getBoolean(
         "persist.sys.nameless.debug.global", false
+    );
+
+    // Enable this to debug AppPropsController
+    // Package: org.nameless.server.app.AppPropsController
+    // Key: AppPropsController, AppPropsManager
+    public static final boolean DEBUG_APP_PROPS = DEBUG_GLOBAL || SystemProperties.getBoolean(
+        "persist.sys.nameless.app.props.debug", false
     );
 
     // Enable this to debug AlertSliderController
