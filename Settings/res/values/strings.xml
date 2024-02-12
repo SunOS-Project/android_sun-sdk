@@ -590,4 +590,7 @@
     <string name="launcher_switcher_reboot_message">This change requires reboot to take effect. Do you want to reboot now?</string>
     <string name="launcher_switcher_reboot">Reboot</string>
 
+    <!-- System Update -->
+    <string name="system_update_title">System update</string>
+
 </resources>
