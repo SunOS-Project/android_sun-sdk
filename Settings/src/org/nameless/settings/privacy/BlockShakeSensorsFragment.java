@@ -44,6 +44,11 @@ public class BlockShakeSensorsFragment extends PerAppListConfigFragment {
     }
 
     @Override
+    protected boolean showSystemApp() {
+        return false;
+    }
+
+    @Override
     protected int getPreferenceScreenResId() {
         return R.xml.block_shake_sensors_config;
     }
