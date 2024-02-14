@@ -48,6 +48,7 @@ import org.nameless.server.display.DisplayRefreshRateController;
 import org.nameless.server.pm.LauncherStateController;
 import org.nameless.server.policy.DozeController;
 import org.nameless.server.policy.PocketModeController;
+import org.nameless.server.sensors.SensorBlockController;
 import org.nameless.server.vibrator.LinearmotorVibratorController;
 import org.nameless.server.wm.DisplayResolutionController;
 import org.nameless.server.wm.DisplayRotationController;
@@ -125,6 +126,7 @@ public class NamelessSystemExService extends SystemService {
             DisplayRefreshRateController.getInstance().onBootCompleted();
             DisplayRotationController.getInstance().onBootCompleted();
             LauncherStateController.getInstance().onBootCompleted();
+            SensorBlockController.getInstance().onBootCompleted();
             mPackageRemovedListener.register();
             mPowerStateListener.register();
             mScreenStateListener.register();
@@ -155,6 +157,7 @@ public class NamelessSystemExService extends SystemService {
         DozeController.getInstance().initSystemExService(this);
         LauncherStateController.getInstance().initSystemExService(this);
         LinearmotorVibratorController.getInstance().initSystemExService(this);
+        SensorBlockController.getInstance().initSystemExService(this);
     }
 
     @Override
@@ -170,11 +173,13 @@ public class NamelessSystemExService extends SystemService {
         DisplayRotationController.getInstance().onUserSwitching(newUserId);
         DozeController.getInstance().onUserSwitching(newUserId);
         PocketModeController.getInstance().onUserSwitching(newUserId);
+        SensorBlockController.getInstance().onUserSwitching(newUserId);
     }
 
     private void onPackageRemoved(String packageName) {
         DisplayRefreshRateController.getInstance().onPackageRemoved(packageName);
         DisplayRotationController.getInstance().onPackageRemoved(packageName);
+        SensorBlockController.getInstance().onPackageRemoved(packageName);
     }
 
     private void onScreenOff() {
@@ -197,6 +202,7 @@ public class NamelessSystemExService extends SystemService {
             mTopFullscreenPackage = packageName;
             DisplayRefreshRateController.getInstance().updateRefreshRate(packageName);
             DisplayRotationController.getInstance().updateAutoRotate(packageName);
+            SensorBlockController.getInstance().updateTopPackage(packageName);
         }
     }
 

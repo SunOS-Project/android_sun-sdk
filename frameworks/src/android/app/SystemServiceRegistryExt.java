@@ -17,6 +17,8 @@ import com.oplus.os.LinearmotorVibrator;
 import org.nameless.content.ContextExt;
 import org.nameless.display.IRefreshRateManagerService;
 import org.nameless.display.RefreshRateManager;
+import org.nameless.hardware.ISensorBlockService;
+import org.nameless.hardware.SensorBlockManager;
 import org.nameless.os.IPocketService;
 import org.nameless.os.IRotateManagerService;
 import org.nameless.os.PocketManager;
@@ -84,6 +86,15 @@ class SystemServiceRegistryExt {
                 IBinder binder = ServiceManager.getService(ContextExt.ROTATE_MANAGER_SERVICE);
                 IRotateManagerService service = IRotateManagerService.Stub.asInterface(binder);
                 return new RotateManager(ctx.getOuterContext(), service);
+            }});
+
+        registerService(ContextExt.SENSOR_BLOCK_MANAGER_SERVICE, SensorBlockManager.class,
+                new CachedServiceFetcher<SensorBlockManager>() {
+            @Override
+            public SensorBlockManager createService(ContextImpl ctx) {
+                IBinder binder = ServiceManager.getService(ContextExt.SENSOR_BLOCK_MANAGER_SERVICE);
+                ISensorBlockService service = ISensorBlockService.Stub.asInterface(binder);
+                return new SensorBlockManager(ctx.getOuterContext(), service);
             }});
     }
 }

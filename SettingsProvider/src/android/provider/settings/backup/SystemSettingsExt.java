@@ -117,5 +117,6 @@ public class SystemSettingsExt {
         System.TOUCH_GESTURE_S,
         System.TOUCH_GESTURE_V,
         System.TOUCH_GESTURE_W,
+        SYstem.SHAKE_SENSORS_BLACKLIST_CONFIG,
     };
 }

@@ -593,4 +593,11 @@
     <!-- System Update -->
     <string name="system_update_title">System update</string>
 
+    <!-- Block shake sensors -->
+    <string name="block_shake_sensors_title">Block shake sensors</string>
+    <string name="block_shake_sensors_summary">Configure shake sensors permission for each apps</string>
+    <string name="shake_sensors_allow">Allow (Default)</string>
+    <string name="shake_sensors_block_first_screen">Block on showing first screen</string>
+    <string name="shake_sensors_block_always">Always block</string>
+
 </resources>

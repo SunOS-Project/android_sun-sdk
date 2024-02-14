@@ -790,6 +790,12 @@ public class SettingsExt {
          * @hide
          */
         public static final String TOUCH_GESTURE_W = "touch_gesture_w";
+
+        /**
+         * Block shake sensors config
+         * @hide
+         */
+        public static final String SHAKE_SENSORS_BLACKLIST_CONFIG = "shake_sensors_blacklist_config";
     }
 
     public static class Secure {

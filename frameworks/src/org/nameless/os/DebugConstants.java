@@ -32,6 +32,7 @@ public class DebugConstants {
         CONSTANTS_MAP.put("DEBUG_PMS", "persist.sys.nameless.pm.debug");
         CONSTANTS_MAP.put("DEBUG_POCKET", "persist.sys.nameless.pocket.debug");
         CONSTANTS_MAP.put("DEBUG_POP_UP", "persist.sys.nameless.popup.debug");
+        CONSTANTS_MAP.put("DEBUG_SENSOR", "persist.sys.nameless.sensor.debug");
         CONSTANTS_MAP.put("DEBUG_TOUCH_GESTURE", "persist.sys.nameless.gesture.debug");
         CONSTANTS_MAP.put("DEBUG_VIBRATION_ADAPTER", "persist.sys.nameless.vibrator.adapter.debug");
         CONSTANTS_MAP.put("DEBUG_WMS_RESOLUTION", "persist.sys.nameless.wm.resolution.debug");
@@ -135,6 +136,13 @@ public class DebugConstants {
     // Search DEBUG_POP_UP for usage
     public static final boolean DEBUG_POP_UP = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.popup.debug", false
+    );
+
+    // Enable this to debug SensorBlockController
+    // Package: org.nameless.server.sensors.SensorBlockController
+    // Key: SensorBlockController
+    public static final boolean DEBUG_SENSOR = DEBUG_GLOBAL || SystemProperties.getBoolean(
+        "persist.sys.nameless.sensor.debug", false
     );
 
     // Enable this to debug TouchGestureController

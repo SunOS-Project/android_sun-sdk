@@ -69,4 +69,14 @@ public class ContextExt {
      * @see org.nameless.os.RotateManager
      */
     public static final String ROTATE_MANAGER_SERVICE = "rotate_ext";
+
+    /**
+     * Use with {@link #getSystemService} to retrieve a
+     * {@link org.nameless.hardware.SensorBlockManager} for managing sensor block state.
+     *
+     * @hide
+     * @see #getSystemService
+     * @see org.nameless.hardware.SensorBlockManager
+     */
+    public static final String SENSOR_BLOCK_MANAGER_SERVICE = "sensor_block";
 }
