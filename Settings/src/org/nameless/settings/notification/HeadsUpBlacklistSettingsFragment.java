@@ -48,12 +48,12 @@ public class HeadsUpBlacklistSettingsFragment extends PerAppSwitchConfigFragment
     }
 
     @Override
-    protected boolean isChecked(String packageName) {
+    protected boolean isChecked(String packageName, int uid) {
         return mCheckedList.contains(packageName);
     }
 
     @Override
-    protected boolean onSetChecked(String packageName, boolean checked) {
+    protected boolean onSetChecked(String packageName, int uid, boolean checked) {
         return true;
     }
 

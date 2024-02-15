@@ -64,12 +64,12 @@ public class PerAppAutoRotateFragment extends PerAppListConfigFragment {
     }
 
     @Override
-    protected int getCurrentValue(String packageName) {
+    protected int getCurrentValue(String packageName, int uid) {
         return mRotateManager.getRotateConfigForPackage(packageName);
     }
 
     @Override
-    protected void onValueChanged(String packageName, int value) {
+    protected void onValueChanged(String packageName, int uid, int value) {
         mRotateManager.setRotateConfigForPackage(packageName, value);
     }
 }
