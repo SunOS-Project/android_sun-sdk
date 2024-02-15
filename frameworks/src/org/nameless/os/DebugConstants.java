@@ -119,7 +119,7 @@ public class DebugConstants {
 
     // Enable this to debug PackageManagerServiceExt
     // Package: com.android.server.pm.PackageManagerServiceExt
-    // Key: PackageManagerServiceExt
+    // Key: PackageManagerServiceExt, ForceFullController
     public static final boolean DEBUG_PMS = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.pm.debug", false
     );

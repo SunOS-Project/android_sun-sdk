@@ -33,7 +33,7 @@ import java.util.List;
 public abstract class BasePerAppConfigFragment extends EmptyTextSettings {
 
     protected Context mContext;
-    private PackageManager mPackageManager;
+    protected PackageManager mPackageManager;
 
     /**
      * Comparator by label, if null or empty then packageName.

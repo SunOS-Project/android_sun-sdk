@@ -600,4 +600,9 @@
     <string name="shake_sensors_block_first_screen">Block on showing first screen</string>
     <string name="shake_sensors_block_always">Always block</string>
 
+    <!-- App force fullscreen -->
+    <string name="app_force_fullscreen_title">App fullscreen display</string>
+    <string name="app_force_fullscreen_summary">Configure fullscreen display for each apps</string>
+    <string name="app_force_fullscreen_info">Enable fullscreen display for selected apps</string>
+
 </resources>
