@@ -264,6 +264,18 @@ public class TopActivityRecorder {
         }
     }
 
+    int getTopFullscreenTaskId() {
+        synchronized (mFocusLock) {
+            if (mTopFullscreenActivity == null) {
+                return INVALID_TASK_ID;
+            }
+            if (mTopFullscreenActivity.task == null) {
+                return INVALID_TASK_ID;
+            }
+            return mTopFullscreenActivity.task.mTaskId;
+        }
+    }
+
     String getTopPinnedWindowPackage() {
         synchronized (mFocusLock) {
             if (mTopPinnedWindowActivity == null) {

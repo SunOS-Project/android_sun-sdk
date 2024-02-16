@@ -9,12 +9,12 @@ import static android.app.ActivityTaskManager.INVALID_TASK_ID;
 import static android.app.WindowConfiguration.WINDOWING_MODE_PINNED_WINDOW_EXT;
 import static android.app.WindowConfiguration.WINDOWING_MODE_MINI_WINDOW_EXT;
 
+import static org.nameless.view.PopUpViewManager.ACTION_PIN_CURRENT_APP;
+
 import android.app.ActivityManager;
 import android.app.ActivityManagerNative;
 import android.app.ActivityOptions;
-import android.app.ActivityTaskManager;
 import android.app.IActivityManager;
-import android.app.IActivityTaskManager;
 import android.app.role.RoleManager;
 import android.content.Context;
 import android.content.Intent;
@@ -189,37 +189,7 @@ public class CustomUtils {
     }
 
     public static void pinCurrentAppIntoWindow(Context context) {
-        final AppFocusManager appFocusManager = context.getSystemService(AppFocusManager.class);
-        final TopAppInfo info = appFocusManager.getTopAppInfo();
-        if (info == null) {
-            return;
-        }
-        final String packageName = info.getPackageName();
-        if (TextUtils.isEmpty(packageName)) {
-            return;
-        }
-        final int taskId = info.getTaskId();
-        if (taskId == INVALID_TASK_ID) {
-            return;
-        }
-        if (info.getWindowingMode() == WINDOWING_MODE_MINI_WINDOW_EXT) {
-            return;
-        }
-
-        final RoleManager roleManager = context.getSystemService(RoleManager.class);
-        final List<String> launchers = roleManager.getRoleHolders(RoleManager.ROLE_HOME);
-        if (PACKAGE_SYSTEMUI.equals(packageName) || launchers.contains(packageName)) {
-            return;
-        }
-
-        final IActivityTaskManager iatm = ActivityTaskManager.getService();
-        final ActivityOptions options = ActivityOptions.makeBasic();
-        options.setLaunchWindowingMode(WINDOWING_MODE_PINNED_WINDOW_EXT);
-        try {
-            iatm.startActivityFromRecents(taskId, options.toBundle());
-        } catch (RemoteException e) {
-            // do nothing.
-        }
+        context.sendBroadcastAsUser(new Intent(ACTION_PIN_CURRENT_APP), UserHandle.SYSTEM);
     }
 
     public static void switchToLastApp(Context context) {

@@ -431,7 +431,8 @@ class TaskWindowSurfaceInfo {
         }
         final boolean hasAnimationLeash = mTask.mSurfaceFreezer.hasLeash() ||
                 mTask.mSurfaceAnimator.hasLeash() ||
-                mPopUpAnimationController.isAnimating();
+                mPopUpAnimationController.isAnimating() ||
+                mTask.mTransitionController.isPlaying();
         if (winConfig.isPopUpWindowMode() && !hasAnimationLeash &&
                 !mService.mTaskPositioningController.isWindowPositioningLocked()) {
             final Rect displayBound = new Rect();

@@ -118,9 +118,9 @@
     <integer name="config_popUpView_defaultSingleTapAction">1</integer>
     <integer name="config_popUpView_defaultDoubleTapAction">2</integer>
     <bool name="config_popUpView_defaultNotificationPortJump">false</bool>
-    <bool name="config_popUpView_defaultNotificationLandJump">true</bool>
-    <bool name="config_popUpView_defaultSettingsJump">true</bool>
-    <bool name="config_popUpView_defaultShareJump">true</bool>
+    <bool name="config_popUpView_defaultNotificationLandJump">false</bool>
+    <bool name="config_popUpView_defaultSettingsJump">false</bool>
+    <bool name="config_popUpView_defaultShareJump">false</bool>
     <string-array name="config_popUpView_forceUpdateDpiPackages" translatable="false">
     </string-array>
 

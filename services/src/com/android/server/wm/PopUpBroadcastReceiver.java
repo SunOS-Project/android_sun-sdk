@@ -5,9 +5,11 @@
 
 package com.android.server.wm;
 
+import static android.app.ActivityTaskManager.INVALID_TASK_ID;
 import static android.app.WindowConfiguration.WINDOWING_MODE_PINNED_WINDOW_EXT;
 import static android.app.WindowConfiguration.WINDOWING_MODE_MINI_WINDOW_EXT;
 
+import static org.nameless.view.PopUpViewManager.ACTION_PIN_CURRENT_APP;
 import static org.nameless.view.PopUpViewManager.ACTION_START_MINI_WINDOW;
 import static org.nameless.view.PopUpViewManager.ACTION_START_PINNED_WINDOW;
 import static org.nameless.view.PopUpViewManager.EXTRA_PACKAGE_NAME;
@@ -45,6 +47,7 @@ public class PopUpBroadcastReceiver extends BroadcastReceiver {
         final IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_START_MINI_WINDOW);
         filter.addAction(ACTION_START_PINNED_WINDOW);
+        filter.addAction(ACTION_PIN_CURRENT_APP);
         context.registerReceiverForAllUsers(this, filter, null, handler);
 
         mBootCompleted = true;
@@ -75,6 +78,23 @@ public class PopUpBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        final String action = intent.getAction();
+
+        if (ACTION_PIN_CURRENT_APP.equals(action)) {
+            if (TopActivityRecorder.getInstance().hasMiniWindow()) {
+                return;
+            }
+            if (TopActivityRecorder.getInstance().isTopFullscreenActivityHome()) {
+                return;
+            }
+            final int topTaskId = TopActivityRecorder.getInstance().getTopFullscreenTaskId();
+            if (topTaskId != INVALID_TASK_ID) {
+                PopUpWindowController.getInstance().notifyNextRecentIsPin();
+                PopUpAppStarter.getInstance().startActivity(topTaskId, PopUpAppStarter.getPinnedWindowBundle());
+            }
+            return;
+        }
+
         final String packageName = intent.getStringExtra(EXTRA_PACKAGE_NAME);
         if (TextUtils.isEmpty(packageName)) {
             return;
@@ -89,7 +109,7 @@ public class PopUpBroadcastReceiver extends BroadcastReceiver {
         final String activityName = intent.getStringExtra(EXTRA_ACTIVITY_NAME);
 
         Bundle bundle = null;
-        switch (intent.getAction()) {
+        switch (action) {
             case ACTION_START_MINI_WINDOW:
                 bundle = PopUpAppStarter.getMiniWindowBundle();
                 break;

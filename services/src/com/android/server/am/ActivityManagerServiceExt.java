@@ -8,10 +8,15 @@ package com.android.server.am;
 import static android.content.Intent.ACTION_SCREEN_CAMERA_GESTURE;
 
 import static org.nameless.server.policy.DozeController.DOZE_INTENT;
+import static org.nameless.view.PopUpViewManager.ACTION_PIN_CURRENT_APP;
+import static org.nameless.view.PopUpViewManager.ACTION_START_MINI_WINDOW;
+import static org.nameless.view.PopUpViewManager.ACTION_START_PINNED_WINDOW;
 
 import android.content.Intent;
 
 import com.android.server.wm.PopUpBroadcastReceiver;
+
+import java.util.Set;
 
 class ActivityManagerServiceExt {
 
@@ -19,16 +24,20 @@ class ActivityManagerServiceExt {
         private static final ActivityManagerServiceExt INSTANCE = new ActivityManagerServiceExt();
     }
 
+    private static final Set<String> SYSTEM_BROADCAST_WHITELIST = Set.of(
+        ACTION_PIN_CURRENT_APP,
+        ACTION_SCREEN_CAMERA_GESTURE,
+        ACTION_START_MINI_WINDOW,
+        ACTION_START_PINNED_WINDOW,
+        DOZE_INTENT
+    );
+
     static ActivityManagerServiceExt getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
     boolean allowBroadcastFromSystem(String action) {
-        if (DOZE_INTENT.equals(action) ||
-                ACTION_SCREEN_CAMERA_GESTURE.equals(action)) {
-            return true;
-        }
-        return false;
+        return SYSTEM_BROADCAST_WHITELIST.contains(action);
     }
 
     Intent hookIntentBeforeBroadcast(Intent intent) {

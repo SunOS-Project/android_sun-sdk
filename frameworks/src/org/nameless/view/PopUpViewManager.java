@@ -18,6 +18,7 @@ public class PopUpViewManager {
 
     public static final String ACTION_START_MINI_WINDOW = "org.nameless.intent.START_MINI_WINDOW";
     public static final String ACTION_START_PINNED_WINDOW = "org.nameless.intent.START_PINNED_WINDOW";
+    public static final String ACTION_PIN_CURRENT_APP = "org.nameless.intent.PIN_CURRENT_APP";
 
     public static final String EXTRA_PACKAGE_NAME = "packageName";
     public static final String EXTRA_ACTIVITY_NAME = "activityName";

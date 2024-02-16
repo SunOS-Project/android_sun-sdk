@@ -155,21 +155,21 @@ class WindowContainerExt {
     }
 
     void prepareTransition() {
-        if (!mTransitionController.isCollecting() && mTransitionController.isShellTransitionsEnabled()) {
-            mTransition = mTransitionController.createTransition(TRANSIT_CHANGE);
-        } else {
-            mTransition = null;
+        if (!mTransitionController.isShellTransitionsEnabled()) {
+            return;
         }
-        if (mTransition != null) {
-            if ((mWc.asWallpaperToken() != null &&
-                    !mTransition.isInTransition(mWc.mDisplayContent)) ||
-                    mWc.getSyncGroup() == null ||
-                    mWc.getSyncGroup() == mWc.mWmService.mSyncEngine.getSyncSet(mTransition.getSyncId())) {
-                mTransitionController.collect(mWc);
-                mTransition.setReady(mWc, true);
-                mPrevBounds.set(mWc.getBounds());
-                mWindowingMode = mWc.getWindowingMode();
-            }
+        if (mTransitionController.isCollecting()) {
+            return;
+        }
+        mTransition = mTransitionController.createTransition(TRANSIT_CHANGE);
+        if ((mWc.asWallpaperToken() != null &&
+                !mTransition.isInTransition(mWc.mDisplayContent)) ||
+                mWc.getSyncGroup() == null ||
+                mWc.getSyncGroup() == mWc.mWmService.mSyncEngine.getSyncSet(mTransition.getSyncId())) {
+            mTransitionController.collect(mWc);
+            mTransition.setReady(mWc, true);
+            mPrevBounds.set(mWc.getBounds());
+            mWindowingMode = mWc.getWindowingMode();
         }
     }
 
@@ -182,7 +182,7 @@ class WindowContainerExt {
                 mFreezerExt.hasFreezeTaskWindowSurfaceInfo()) {
             final TaskWindowSurfaceInfo info = mFreezerExt.getFreezeTaskWindowSurfaceInfo();
             if (info != null) {
-                info.scheduleTransition(info, mWc.getDisplayContent().getDisplayInfo());
+                mTaskWindowSurfaceInfo.scheduleTransition(info, mWc.getDisplayContent().getDisplayInfo());
             }
         }
         if (DEBUG_POP_UP) {

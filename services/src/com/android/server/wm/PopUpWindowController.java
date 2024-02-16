@@ -103,6 +103,7 @@ public class PopUpWindowController {
     private boolean mTryExitWindowingMode;
     private boolean mTryExitWindowingModeByDrag;
     private boolean mLaunchPopUpViewFromRecents;
+    private boolean mNextRecentIsPin;
 
     private WindowState mDimWinState = null;
 
@@ -511,7 +512,11 @@ public class PopUpWindowController {
         }
     }
 
-    boolean tryExitPinnedWindow(Task task, ActivityOptions activityOptions, boolean isFromRecents) {
+    void notifyNextRecentIsPin() {
+        mNextRecentIsPin = true;
+    }
+
+    private boolean tryExitPinnedWindow(Task task, ActivityOptions activityOptions, boolean isFromRecents) {
         if (isFromRecents && activityOptions == null) {
             if (DEBUG_POP_UP) {
                 Slog.d(TAG, "tryExitPinnedWindow skip exit for null options task: " + task);
@@ -559,7 +564,11 @@ public class PopUpWindowController {
             }
         } else if (isFromRecents &&
                 activityOptions.getLaunchWindowingMode() == WINDOWING_MODE_PINNED_WINDOW_EXT) {
-            mLaunchPopUpViewFromRecents = true;
+            if (mNextRecentIsPin) {
+                mNextRecentIsPin = false;
+            } else {
+                mLaunchPopUpViewFromRecents = true;
+            }
         }
         return false;
     }
@@ -677,9 +686,9 @@ public class PopUpWindowController {
 
     private void setWindowingModePopUpView(Task task, int windowingMode) {
         if (task != null) {
+            task.mWindowContainerExt.prepareTransition();
             if (!task.getWindowConfiguration().isPopUpWindowMode()) {
                 capturePopUpViewTaskSnapshot(task);
-                task.mWindowContainerExt.prepareTransition();
                 task.setWindowingMode(windowingMode);
             }
             final Task rootTask = task.getRootTask();
