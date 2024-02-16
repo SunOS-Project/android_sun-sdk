@@ -604,5 +604,7 @@
     <string name="app_force_fullscreen_title">App fullscreen display</string>
     <string name="app_force_fullscreen_summary">Configure fullscreen display for each apps</string>
     <string name="app_force_fullscreen_info">Enable fullscreen display for selected apps</string>
+    <string name="switch_fullscreen_display_warn_title">Warning</string>
+    <string name="switch_fullscreen_display_warn_content">Switch fullscreen display will cause app to reload. Continue to switch?</string>
 
 </resources>
