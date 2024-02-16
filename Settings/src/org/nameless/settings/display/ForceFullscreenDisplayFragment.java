@@ -14,6 +14,11 @@ import org.nameless.settings.fragment.PerAppSwitchConfigFragment;
 public class ForceFullscreenDisplayFragment extends PerAppSwitchConfigFragment {
 
     @Override
+    protected int getAllowedSystemAppListResId() {
+        return R.array.config_fullscreenDisplayAllowedSystemApps;
+    }
+
+    @Override
     protected int getPreferenceScreenResId() {
         return R.xml.force_fullscreen_display;
     }

@@ -44,8 +44,8 @@ public class BlockShakeSensorsFragment extends PerAppListConfigFragment {
     }
 
     @Override
-    protected boolean showSystemApp() {
-        return false;
+    protected int getAllowedSystemAppListResId() {
+        return 0;
     }
 
     @Override
