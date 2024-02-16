@@ -48,10 +48,54 @@
 
     <!-- List of system apps that disallowed from being cloned -->
     <string-array name="config_nonCloneableSystemAppList" translatable="false">
+        <item>com.android.cellbroadcastreceiver.module</item>
+        <item>com.android.launcher3</item>
+        <item>com.android.music</item>
+        <item>com.android.stk</item>
+        <item>com.dolby.daxappui</item>
+        <item>com.google.android.accessibility.soundamplifier</item>
+        <item>com.google.android.apps.emojiwallpaper</item>
+        <item>com.google.android.apps.messaging</item>
+        <item>com.google.android.apps.nexuslauncher</item>
+        <item>com.google.android.apps.restore</item>
+        <item>com.google.android.apps.wallpaper</item>
+        <item>com.google.android.apps.wellbeing</item>
+        <item>com.google.android.contacts</item>
+        <item>com.google.android.deskclock</item>
+        <item>com.google.android.dialer</item>
+        <item>com.google.android.euicc</item>
+        <item>com.google.android.pixel.setupwizard</item>
+        <item>com.google.android.projection.gearhead</item>
+        <item>com.google.android.setupwizard</item>
+        <item>com.google.android.wallpaper.effects</item>
+        <item>com.google.audio.hearing.visualization.accessibility.scribe</item>
+        <item>com.google.pixel.livewallpaper</item>
+        <item>com.motorola.dolby.dolbyui</item>
+        <item>com.oneplus.camera</item>
+        <item>com.oneplus.gallery</item>
+        <item>com.oplus.camera</item>
+        <item>org.lineageos.aperture</item>
     </string-array>
     <!-- List of system apps that hidden from app-clone page list
          but still can be auto cloned by system -->
     <string-array name="config_hiddenCloneableSystemAppList" translatable="false">
+        <item>com.android.settings</item>
+        <item>com.android.settings.intelligence</item>
+        <item>com.android.vending</item>
+        <item>com.google.android.apps.safetyhub</item>
+        <item>com.google.android.apps.turbo</item>
+        <item>com.google.android.as</item>
+        <item>com.google.android.as.oss</item>
+        <item>com.google.android.inputmethod.latin</item>
+        <item>com.google.android.gms</item>
+        <item>com.google.android.googlequicksearchbox</item>
+        <item>com.google.android.marvin.talkback</item>
+        <item>com.google.android.partnersetup</item>
+        <item>com.google.android.settings.intelligence</item>
+        <item>com.google.android.soundpicker</item>
+        <item>com.google.android.tts</item>
+        <item>com.google.android.webview</item>
+        <item>com.google.ar.core</item>
     </string-array>
     <!-- List of user apps that disallow from being cloned -->
     <string-array name="config_nonCloneableUserAppList" translatable="false">
