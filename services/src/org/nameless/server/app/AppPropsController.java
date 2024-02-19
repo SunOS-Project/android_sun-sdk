@@ -9,11 +9,14 @@ import static org.nameless.content.ContextExt.APP_PROPS_MANAGER_SERVICE;
 import static org.nameless.os.DebugConstants.DEBUG_APP_PROPS;
 
 import android.os.Build;
+import android.os.SystemProperties;
 import android.util.ArrayMap;
+import android.util.Pair;
 import android.util.Slog;
 import android.util.Xml;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -21,13 +24,17 @@ import java.util.HashSet;
 import java.util.Map;
 
 import org.nameless.app.IAppPropsManagerService;
+import org.nameless.content.IOnlineConfigurable;
+import org.nameless.content.OnlineConfigManager;
 import org.nameless.server.NamelessSystemExService;
 
 import org.xmlpull.v1.XmlPullParser;
 
-public class AppPropsController {
+public class AppPropsController extends IOnlineConfigurable.Stub {
 
     private static final String TAG = "AppPropsController";
+
+    private static final int VERSION = 1;
 
     private static class InstanceHolder {
         private static AppPropsController INSTANCE = new AppPropsController();
@@ -38,6 +45,7 @@ public class AppPropsController {
     }
 
     private static final String SYSTEM_CONFIG_FILE = "/system_ext/etc/custom_props_config.xml";
+    private static final String LOCAL_CONFIG_FILE = "/data/nameless_configs/custom_props_config.xml";
 
     private static final String KEY_DEFAULT = "Default";
     private static final String KEY_GENERIC = "Generic";
@@ -69,19 +77,96 @@ public class AppPropsController {
         }
     }
 
+    private NamelessSystemExService mSystemExService;
+
     private boolean mInitialized = false;
 
+    @Override
+    public int getVersion() {
+        return VERSION;
+    }
+
+    @Override
+    public String getOnlineConfigUri() {
+        return SystemProperties.get("persist.sys.nameless.uri.props");
+    }
+
+    @Override
+    public String getSystemConfigPath() {
+        return SYSTEM_CONFIG_FILE;
+    }
+
+    @Override
+    public String getLocalConfigPath() {
+        return LOCAL_CONFIG_FILE;
+    }
+
+    @Override
+    public void onConfigUpdated() {
+        mInitialized = false;
+        // We can use local config here safely because this is called after verification.
+        initConfig(LOCAL_CONFIG_FILE);
+        mInitialized = true;
+    }
+
     public void initSystemExService(NamelessSystemExService service) {
+        mSystemExService = service;
         service.publishBinderService(APP_PROPS_MANAGER_SERVICE, new AppPropsManagerService());
     }
 
     public void onSystemServicesReady() {
-        initConfig();
+        initConfig(compareConfigTimestamp());
         mInitialized = true;
+        mSystemExService.getContext().getSystemService(OnlineConfigManager.class).registerOnlineConfigurable(this);
     }
 
-    private void initConfig() {
+    private Pair<Integer, Long> getConfigInfo(String path) {
+        try {
+            FileReader fr = new FileReader(new File(path));
+            XmlPullParser parser = Xml.newPullParser();
+            parser.setInput(fr);
+            int event = parser.getEventType();
+            while (event != XmlPullParser.END_DOCUMENT) {
+                if (event == XmlPullParser.START_TAG) {
+                   if ("info".equals(parser.getName())) {
+                        final String versionStr = parser.getAttributeValue(null, "version");
+                        final String timestampStr = parser.getAttributeValue(null, "timestamp");
+                        return new Pair<>(Integer.parseInt(versionStr), Long.parseLong(timestampStr));
+                    }
+                }
+                event = parser.next();
+            }
+            fr.close();
+        } catch (Exception e) {
+            if (!(e instanceof FileNotFoundException)) {
+                Slog.e(TAG, "exception on get config info", e);
+            }
+        }
+        return new Pair<>(Integer.MAX_VALUE, -1L);
+    }
+
+    private String compareConfigTimestamp() {
+        final Pair<Integer, Long> systemConfigInfo = getConfigInfo(SYSTEM_CONFIG_FILE);
+        final Pair<Integer, Long> localConfigInfo = getConfigInfo(LOCAL_CONFIG_FILE);
+
+        // Online config requires higher framework version. Fallback to system config.
+        if (localConfigInfo.first > VERSION) {
+            return SYSTEM_CONFIG_FILE;
+        }
+
+        return localConfigInfo.second > systemConfigInfo.second ? LOCAL_CONFIG_FILE : SYSTEM_CONFIG_FILE;
+    }
+
+    private void initConfig(String path) {
         synchronized (mLock) {
+            mPropsToChange.clear();
+            mPropsToKeep.clear();
+            mPackagesToChange.clear();
+            mGamePackagesToChange.clear();
+            mPackagesToKeep.clear();
+            mExtraPackagesToChange.clear();
+            mCustomGoogleCameraPackages.clear();
+
             String name;
             String packageName;
             String packagesStr;
@@ -90,7 +175,7 @@ public class AppPropsController {
             String[] props;
             boolean isGame;
             try {
-                FileReader fr = new FileReader(new File(SYSTEM_CONFIG_FILE));
+                FileReader fr = new FileReader(new File(path));
                 XmlPullParser parser = Xml.newPullParser();
                 parser.setInput(fr);
                 int event = parser.getEventType();
