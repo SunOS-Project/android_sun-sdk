@@ -607,4 +607,7 @@
     <string name="switch_fullscreen_display_warn_title">Warning</string>
     <string name="switch_fullscreen_display_warn_content">Switch fullscreen display will cause app to reload. Continue to switch?</string>
 
+    <!-- Force update online config (For debug) -->
+    <string name="force_update_online_config">Force update online config</string>
+
 </resources>

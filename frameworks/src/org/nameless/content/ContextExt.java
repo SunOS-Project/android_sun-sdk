@@ -52,6 +52,16 @@ public class ContextExt {
 
     /**
      * Use with {@link #getSystemService} to retrieve a
+     * {@link org.nameless.content.OnlineConfigManager} for managing online configs.
+     *
+     * @hide
+     * @see #getSystemService
+     * @see org.nameless.content.OnlineConfigManager
+     */
+    public static final String ONLINE_CONFIG_MANAGER_SERVICE = "online_config";
+
+    /**
+     * Use with {@link #getSystemService} to retrieve a
      * {@link org.nameless.os.PocketManager} for accessing and listening to device pocket state.
      *
      * @hide

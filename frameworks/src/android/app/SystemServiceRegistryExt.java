@@ -17,6 +17,8 @@ import com.oplus.os.LinearmotorVibrator;
 import org.nameless.app.AppPropsManager;
 import org.nameless.app.IAppPropsManagerService;
 import org.nameless.content.ContextExt;
+import org.nameless.content.IOnlineConfigManagerService;
+import org.nameless.content.OnlineConfigManager;
 import org.nameless.display.IRefreshRateManagerService;
 import org.nameless.display.RefreshRateManager;
 import org.nameless.hardware.ISensorBlockService;
@@ -70,6 +72,15 @@ class SystemServiceRegistryExt {
                 IBinder binder = ServiceManager.getService(ContextExt.LINEARMOTOR_VIBRATOR_SERVICE);
                 ILinearmotorVibratorService service = ILinearmotorVibratorService.Stub.asInterface(binder);
                 return new LinearmotorVibrator(ctx.getOuterContext(), service);
+            }});
+
+        registerService(ContextExt.ONLINE_CONFIG_MANAGER_SERVICE, OnlineConfigManager.class,
+                new CachedServiceFetcher<OnlineConfigManager>() {
+            @Override
+            public OnlineConfigManager createService(ContextImpl ctx) {
+                IBinder binder = ServiceManager.getService(ContextExt.ONLINE_CONFIG_MANAGER_SERVICE);
+                IOnlineConfigManagerService service = IOnlineConfigManagerService.Stub.asInterface(binder);
+                return new OnlineConfigManager(ctx.getOuterContext(), service);
             }});
 
         registerService(ContextExt.POCKET_SERVICE, PocketManager.class,

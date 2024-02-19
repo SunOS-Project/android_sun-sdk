@@ -14,11 +14,13 @@ import android.os.SystemProperties;
 
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
+import androidx.preference.Preference.OnPreferenceClickListener;
 import androidx.preference.PreferenceScreen;
 
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
 
+import org.nameless.content.OnlineConfigManager;
 import org.nameless.custom.preference.SwitchPreference;
 
 public class DebugFlagsDashboard extends SettingsPreferenceFragment {
@@ -37,6 +39,18 @@ public class DebugFlagsDashboard extends SettingsPreferenceFragment {
         screen.removeAll();
 
         final Context prefContext = getPrefContext();
+
+        final Preference onlineConfigPref = new Preference(prefContext);
+        onlineConfigPref.setTitle(R.string.force_update_online_config);
+        onlineConfigPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                OnlineConfigManager.sendUpdateBroadcast(prefContext);
+                return true;
+            }
+        });
+        screen.addPreference(onlineConfigPref);
+
         for (String key : CONSTANTS_MAP.keySet()) {
             final SwitchPreference pref = new SwitchPreference(prefContext);
             pref.setTitle(key);
