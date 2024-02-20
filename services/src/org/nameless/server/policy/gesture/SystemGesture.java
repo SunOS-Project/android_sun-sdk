@@ -59,6 +59,7 @@ public class SystemGesture {
         mContext = context;
         mDisplay = context.getSystemService(WindowManager.class).getDefaultDisplay();
 
+        mGestureListeners.add(new WindowModeGestureListener(this, mContext));
         mGestureListeners.add(new ThreeFingerGestureListener(this, mContext));
     }
 

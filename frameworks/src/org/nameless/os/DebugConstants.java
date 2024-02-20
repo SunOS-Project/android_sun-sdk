@@ -34,6 +34,7 @@ public class DebugConstants {
         CONSTANTS_MAP.put("DEBUG_POCKET", "persist.sys.nameless.pocket.debug");
         CONSTANTS_MAP.put("DEBUG_POP_UP", "persist.sys.nameless.popup.debug");
         CONSTANTS_MAP.put("DEBUG_SENSOR", "persist.sys.nameless.sensor.debug");
+        CONSTANTS_MAP.put("DEBUG_SYSTEM_TOOL", "persist.sys.nameless.system_tool.debug");
         CONSTANTS_MAP.put("DEBUG_TOUCH_GESTURE", "persist.sys.nameless.gesture.debug");
         CONSTANTS_MAP.put("DEBUG_VIBRATION_ADAPTER", "persist.sys.nameless.vibrator.adapter.debug");
         CONSTANTS_MAP.put("DEBUG_WMS_RESOLUTION", "persist.sys.nameless.wm.resolution.debug");
@@ -151,6 +152,12 @@ public class DebugConstants {
     // Key: SensorBlockController
     public static final boolean DEBUG_SENSOR = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.sensor.debug", false
+    );
+
+    // Enable this to debug System Tool
+    // Key: SystemTool
+    public static final boolean DEBUG_SYSTEM_TOOL = DEBUG_GLOBAL || SystemProperties.getBoolean(
+        "persist.sys.nameless.system_tool.debug", false
     );
 
     // Enable this to debug TouchGestureController

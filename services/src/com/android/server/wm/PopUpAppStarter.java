@@ -9,6 +9,8 @@ import static android.app.ComponentOptions.MODE_BACKGROUND_ACTIVITY_START_ALLOWE
 import static android.app.WindowConfiguration.WINDOWING_MODE_PINNED_WINDOW_EXT;
 import static android.app.WindowConfiguration.WINDOWING_MODE_MINI_WINDOW_EXT;
 
+import static com.android.server.wm.PopUpWindowController.PACKAGE_NAME_SYSTEM_TOOL;
+
 import android.app.ActivityOptions;
 import android.app.ActivityTaskManager;
 import android.app.IActivityTaskManager;
@@ -54,6 +56,9 @@ class PopUpAppStarter {
             return;
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (PACKAGE_NAME_SYSTEM_TOOL.equals(packageName)) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        }
         try {
             mContext.startActivityAsUser(intent, bundle, UserHandle.CURRENT);
         } catch (Exception e) {

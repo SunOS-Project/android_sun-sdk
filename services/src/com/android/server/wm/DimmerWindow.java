@@ -66,6 +66,7 @@ class DimmerWindow {
     private boolean mIsWindowAdded = false;
     private boolean mShowing = false;
     private boolean mSingleTapOnly = false;
+    private boolean mIsSystemTool = false;
 
     private static class InstanceHolder {
         private static final DimmerWindow INSTANCE = new DimmerWindow();
@@ -104,13 +105,17 @@ class DimmerWindow {
             mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
                 @Override
                 public boolean onSingleTapUp(MotionEvent event) {
-                    if (!mSingleTapOnly) {
+                    if (!mSingleTapOnly && !mIsSystemTool) {
                         return true;
                     }
                     if (DEBUG_POP_UP) {
                         Slog.d(TAG, "onSingleTapUp: event=" + event);
                     }
                     if (!getEdgeBarBounds().contains(event.getX(), event.getY())) {
+                        if (mIsSystemTool) {
+                            moveActivityTaskToBack();
+                            return true;
+                        }
                         switch (PopUpSettingsConfig.getInstance().getSingleTapAction()) {
                             case TAP_ACTION_PIN_WINDOW:
                                 enterPinnedWindowingMode();
@@ -125,7 +130,7 @@ class DimmerWindow {
 
                 @Override
                 public boolean onSingleTapConfirmed(MotionEvent event) {
-                    if (mSingleTapOnly) {
+                    if (mSingleTapOnly || mIsSystemTool) {
                         return true;
                     }
                     if (DEBUG_POP_UP) {
@@ -146,7 +151,7 @@ class DimmerWindow {
 
                 @Override
                 public boolean onDoubleTap(MotionEvent event) {
-                    if (mSingleTapOnly) {
+                    if (mSingleTapOnly || mIsSystemTool) {
                         return true;
                     }
                     if (DEBUG_POP_UP) {
@@ -213,7 +218,8 @@ class DimmerWindow {
             Slog.d(TAG, "setTask: " + (task != null ? task : "null"));
         }
         mLastDimmerTask = task;
-        mEdgeBarHelper.setTask(mLastDimmerTask);
+        mIsSystemTool = TopActivityRecorder.getInstance().isTaskSystemTool(task);
+        mEdgeBarHelper.setTask(mLastDimmerTask, mIsSystemTool);
         updateWindowState(task != null);
     }
 

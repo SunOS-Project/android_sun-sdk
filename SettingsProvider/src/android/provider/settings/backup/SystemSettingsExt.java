@@ -118,5 +118,7 @@ public class SystemSettingsExt {
         System.TOUCH_GESTURE_V,
         System.TOUCH_GESTURE_W,
         System.SHAKE_SENSORS_BLACKLIST_CONFIG,
+        System.SYSTEM_TOOL_WINDOWING_MODE_GESTURE,
+        System.SYSTEM_TOOL_MINI_WINDOW_APPS,
     };
 }

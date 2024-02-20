@@ -20,6 +20,7 @@
     <!-- System gesture -->
     <dimen name="bottom_gesture_touch_slop">2dp</dimen>
     <dimen name="screenshot_gesture_valid_distance">33.33dp</dimen>
+    <dimen name="windowing_mode_gesture_valid_distance">52px</dimen>
 
     <!-- Pop-Up View -->
     <dimen name="mini_window_bar_width">114dp</dimen>

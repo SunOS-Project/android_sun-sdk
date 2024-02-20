@@ -796,6 +796,18 @@ public class SettingsExt {
          * @hide
          */
         public static final String SHAKE_SENSORS_BLACKLIST_CONFIG = "shake_sensors_blacklist_config";
+
+        /**
+         * System Tool: Whether to enable windowing mode gesture
+         * @hide
+         */
+        public static final String SYSTEM_TOOL_WINDOWING_MODE_GESTURE = "system_tool_windowing_mode_gesture";
+
+        /**
+         * System Tool: Apps to be shown for quick opening in mini-window
+         * @hide
+         */
+        public static final String SYSTEM_TOOL_MINI_WINDOW_APPS = "system_tool_mini_window_apps";
     }
 
     public static class Secure {

@@ -49,6 +49,7 @@ class MiniWindowEdgeBarHelper {
 
     private boolean mScrolling = false;
     private boolean mListening = false;
+    private boolean mSkipDraw = false;
 
     void onDragResizeChanged(float scale, Rect displayBound, boolean isLandscape) {
         if (mListening && mView != null) {
@@ -88,13 +89,13 @@ class MiniWindowEdgeBarHelper {
     }
 
     void onDraw(Canvas canvas) {
-        if (!mBarBounds.isEmpty()) {
+        if (!mBarBounds.isEmpty() && !mSkipDraw) {
             canvas.drawRoundRect(mBarBounds, mBarRadius, mBarRadius, mPaint);
         }
     }
 
     boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        if (!mBarTouchBounds.contains(e1.getRawX(), e1.getRawY())) {
+        if (!mBarTouchBounds.contains(e1.getRawX(), e1.getRawY()) || mSkipDraw) {
             return false;
         }
         if (passedSlop(e1.getRawX(), e1.getRawY(), e2.getRawX(), e2.getRawY())) {
@@ -171,7 +172,7 @@ class MiniWindowEdgeBarHelper {
         updateBounds();
     }
 
-    void setTask(Task task) {
+    void setTask(Task task, boolean isSystemTool) {
         mTask = task;
         if (DEBUG_POP_UP) {
             Slog.d(TAG, "setTask: " + (task != null));
@@ -181,6 +182,7 @@ class MiniWindowEdgeBarHelper {
         } else {
             mTaskWindowSurfaceInfo = null;
         }
+        mSkipDraw = isSystemTool;
         onResizeChanged();
     }
 

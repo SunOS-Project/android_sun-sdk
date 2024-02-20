@@ -63,6 +63,8 @@ public class PopUpWindowController {
 
     private static final String TAG = "PopUpWindowController";
 
+    public static final String PACKAGE_NAME_SYSTEM_TOOL = "org.nameless.systemtool";
+
     static final int MOVE_TO_BACK_TOUCH_OUTSIDE = 0;
     static final int MOVE_TO_BACK_FROM_LEAVE_BUTTON = 1;
     static final int MOVE_TO_BACK_NEW_MINI = 2;
@@ -602,7 +604,8 @@ public class PopUpWindowController {
                         if (!wasMiniWindow && removePin) {
                             TopActivityRecorder.getInstance().clearPinnedWindow();
                         }
-                        if (removeMini && wasMiniWindow) {
+                        if ((removeMini || TopActivityRecorder.getInstance().isTaskSystemTool(task))
+                                && wasMiniWindow) {
                             TopActivityRecorder.getInstance().removeMiniWindowTask(task);
                         }
                         updateFocusedApp();

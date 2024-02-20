@@ -176,7 +176,7 @@ public class PhoneWindowManagerExt {
         }
     }
 
-    WindowState getWindowState() {
+    public WindowState getWindowState() {
         return mWindowState;
     }
 

@@ -132,6 +132,7 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.TOUCH_GESTURE_V, NON_NEGATIVE_INTEGER_VALIDATOR);
         VALIDATORS.put(System.TOUCH_GESTURE_W, NON_NEGATIVE_INTEGER_VALIDATOR);
         VALIDATORS.put(System.SHAKE_SENSORS_BLACKLIST_CONFIG, new PerAppConfigValidator());
+        VALIDATORS.put(System.SYSTEM_TOOL_WINDOWING_MODE_GESTURE, BOOLEAN_VALIDATOR);
     }
 
     private static class AppVolumeDataValidator implements Validator {

@@ -7,6 +7,8 @@ package com.android.server.wm;
 
 import static android.app.ActivityTaskManager.INVALID_TASK_ID;
 
+import static com.android.server.wm.PopUpWindowController.PACKAGE_NAME_SYSTEM_TOOL;
+
 import static org.nameless.content.ContextExt.APP_FOCUS_MANAGER_SERVICE;
 import static org.nameless.os.DebugConstants.DEBUG_WMS_TOP_APP;
 
@@ -488,6 +490,13 @@ public class TopActivityRecorder {
                 }
             }
         }
+    }
+
+    boolean isTaskSystemTool(Task task) {
+        if (task == null) {
+            return false;
+        }
+        return PACKAGE_NAME_SYSTEM_TOOL.equals(getPackageNameFromTask(task));
     }
 
     private void notifyFullscreenComponentChanged(ComponentName oldComponent, ComponentName newComponent) {

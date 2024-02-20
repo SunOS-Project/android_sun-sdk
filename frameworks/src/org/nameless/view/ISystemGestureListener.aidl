@@ -10,6 +10,8 @@ import android.view.MotionEvent;
 /** @hide */
 interface ISystemGestureListener {
 
+    const int GESTURE_WINDOW_MODE = 1;
+
     oneway void onGestureCanceled(int gesture);
 
     oneway void onGesturePreTrigger(int gesture, in MotionEvent event);
