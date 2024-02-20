@@ -37,13 +37,14 @@ import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.TICK;
 import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.WEAKER_TICK;
 
 import android.os.CombinedVibration;
-import android.os.SystemProperties;
 import android.os.VibrationAttributes;
 import android.os.VibrationEffect;
 import android.util.Log;
+import android.util.Pair;
 import android.util.Xml;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -56,10 +57,13 @@ public class VibrationEffectAdapter {
 
     private static final String TAG = "VibrationEffectAdapter";
 
+    static final int VERSION = 1;
+
+    static final String SYSTEM_CONFIG_FILE = "/system_ext/etc/vibration_effect_map.xml";
+    static final String LOCAL_CONFIG_FILE = "/data/nameless_configs/vibration_effect_map.xml";
+
     private static final CombinedVibration MOCK_EFFECT_CLICK =
             CombinedVibration.createParallel(VibrationEffect.createPredefined(EFFECT_CLICK));
-
-    private static final String VIBRATION_EFFECT_MAP_FILE = "/system_ext/etc/vibration_effect_map.xml";
 
     private static final String KEY_CALCULATOR_ENHANCE = "calculatorEnhance";
     private static final String KEY_DURATION = "duration";
@@ -94,6 +98,8 @@ public class VibrationEffectAdapter {
     private static long sCachedIMEDuration = -1;
     private static int sCachedIMEStrengthLevel = DURATION_STRENGTH_LEVEL1;
 
+    private static final Object sLock = new Object();
+
     static {
         sVibratorExtSupported = VibratorExtManager.getInstance().isSupported();
 
@@ -120,144 +126,192 @@ public class VibrationEffectAdapter {
         calculatorEnhanceSet = new HashSet<>();
     }
 
-    public static void initEffectMap() {
-        String packageName;
-        long maxDuration;
-        long duration;
-        int effectId;
+    private static Pair<Integer, Long> getConfigInfo(String path) {
         try {
-            FileReader fr = new FileReader(new File(VIBRATION_EFFECT_MAP_FILE));
+            FileReader fr = new FileReader(new File(path));
             XmlPullParser parser = Xml.newPullParser();
             parser.setInput(fr);
             int event = parser.getEventType();
             while (event != XmlPullParser.END_DOCUMENT) {
                 if (event == XmlPullParser.START_TAG) {
-                    switch (parser.getName()) {
-                        case KEY_INPUTMETHOD_ENHANCE:
-                            packageName = parser.getAttributeValue(null, KEY_PACKAGE_NAME);
-                            maxDuration = Long.parseLong(parser.getAttributeValue(null, KEY_MAX_DURATION));
-                            inputmethodEnhanceMap.put(packageName, maxDuration);
-                            if (DEBUG_VIBRATION_ADAPTER) {
-                                Log.d(TAG, "Added inputmethod: " + packageName + ", maxDuration: " + maxDuration);
-                            }
-                            break;
-                        case KEY_CALCULATOR_ENHANCE:
-                            packageName = parser.getAttributeValue(null, KEY_PACKAGE_NAME);
-                            calculatorEnhanceSet.add(packageName);
-                            if (DEBUG_VIBRATION_ADAPTER) {
-                                Log.d(TAG, "Added calculator: " + packageName);
-                            }
-                            break;
-                        case KEY_DURATION_TO_EFFECT:
-                            packageName = parser.getAttributeValue(null, KEY_PACKAGE_NAME);
-                            duration = Long.parseLong(parser.getAttributeValue(null, KEY_DURATION));
-                            effectId = Integer.parseInt(parser.getAttributeValue(null, KEY_EFFECT_ID));
-                            if (!durationToEffectMap.containsKey(packageName)) {
-                                durationToEffectMap.put(packageName, new HashMap<>());
-                            }
-                            durationToEffectMap.get(packageName).put(duration, effectId);
-                            if (DEBUG_VIBRATION_ADAPTER) {
-                                Log.d(TAG, "Added durationToEffectId: " + packageName +
-                                        ", duration: " + duration + ", effectId: " + effectId);
-                            }
-                            break;
-                        case KEY_RINGTONE_DURATION:
-                            effectId = Integer.parseInt(parser.getAttributeValue(null, KEY_EFFECT_ID));
-                            duration = Long.parseLong(parser.getAttributeValue(null, KEY_DURATION));
-                            ringtoneDurationMap.put(effectId, duration);
-                            if (DEBUG_VIBRATION_ADAPTER) {
-                                Log.d(TAG, "Added ringtoneEffect: effectId: " +
-                                        effectId + ", duration: " + duration);
-                            }
-                            break;
+                   if ("info".equals(parser.getName())) {
+                        final String versionStr = parser.getAttributeValue(null, "version");
+                        final String timestampStr = parser.getAttributeValue(null, "timestamp");
+                        return new Pair<>(Integer.parseInt(versionStr), Long.parseLong(timestampStr));
                     }
                 }
                 event = parser.next();
             }
             fr.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            if (!(e instanceof FileNotFoundException)) {
+                Log.e(TAG, "exception on get config info", e);
+            }
+        }
+        return new Pair<>(Integer.MAX_VALUE, -1L);
+    }
+
+    static String compareConfigTimestamp() {
+        final Pair<Integer, Long> systemConfigInfo = getConfigInfo(SYSTEM_CONFIG_FILE);
+        final Pair<Integer, Long> localConfigInfo = getConfigInfo(LOCAL_CONFIG_FILE);
+
+        // Online config requires higher framework version. Fallback to system config.
+        if (localConfigInfo.first > VERSION) {
+            return SYSTEM_CONFIG_FILE;
+        }
+
+        return localConfigInfo.second > systemConfigInfo.second ? LOCAL_CONFIG_FILE : SYSTEM_CONFIG_FILE;
+    }
+
+    static void initEffectMap(String path) {
+        synchronized (sLock) {
+            durationToEffectMap.clear();
+            inputmethodEnhanceMap.clear();
+            ringtoneDurationMap.clear();
+            calculatorEnhanceSet.clear();
+
+            String packageName;
+            long maxDuration;
+            long duration;
+            int effectId;
+            try {
+                FileReader fr = new FileReader(new File(path));
+                XmlPullParser parser = Xml.newPullParser();
+                parser.setInput(fr);
+                int event = parser.getEventType();
+                while (event != XmlPullParser.END_DOCUMENT) {
+                    if (event == XmlPullParser.START_TAG) {
+                        switch (parser.getName()) {
+                            case KEY_INPUTMETHOD_ENHANCE:
+                                packageName = parser.getAttributeValue(null, KEY_PACKAGE_NAME);
+                                maxDuration = Long.parseLong(parser.getAttributeValue(null, KEY_MAX_DURATION));
+                                inputmethodEnhanceMap.put(packageName, maxDuration);
+                                if (DEBUG_VIBRATION_ADAPTER) {
+                                    Log.d(TAG, "Added inputmethod: " + packageName + ", maxDuration: " + maxDuration);
+                                }
+                                break;
+                            case KEY_CALCULATOR_ENHANCE:
+                                packageName = parser.getAttributeValue(null, KEY_PACKAGE_NAME);
+                                calculatorEnhanceSet.add(packageName);
+                                if (DEBUG_VIBRATION_ADAPTER) {
+                                    Log.d(TAG, "Added calculator: " + packageName);
+                                }
+                                break;
+                            case KEY_DURATION_TO_EFFECT:
+                                packageName = parser.getAttributeValue(null, KEY_PACKAGE_NAME);
+                                duration = Long.parseLong(parser.getAttributeValue(null, KEY_DURATION));
+                                effectId = Integer.parseInt(parser.getAttributeValue(null, KEY_EFFECT_ID));
+                                if (!durationToEffectMap.containsKey(packageName)) {
+                                    durationToEffectMap.put(packageName, new HashMap<>());
+                                }
+                                durationToEffectMap.get(packageName).put(duration, effectId);
+                                if (DEBUG_VIBRATION_ADAPTER) {
+                                    Log.d(TAG, "Added durationToEffectId: " + packageName +
+                                            ", duration: " + duration + ", effectId: " + effectId);
+                                }
+                                break;
+                            case KEY_RINGTONE_DURATION:
+                                effectId = Integer.parseInt(parser.getAttributeValue(null, KEY_EFFECT_ID));
+                                duration = Long.parseLong(parser.getAttributeValue(null, KEY_DURATION));
+                                ringtoneDurationMap.put(effectId, duration);
+                                if (DEBUG_VIBRATION_ADAPTER) {
+                                    Log.d(TAG, "Added ringtoneEffect: effectId: " +
+                                            effectId + ", duration: " + duration);
+                                }
+                                break;
+                        }
+                    }
+                    event = parser.next();
+                }
+                fr.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static CustomEffect getCustomEffect(VibrationAttributes attributes, String opPkg,
-            CombinedVibration effect, boolean useKeyboardEffect, String reason) {
-        CustomEffect ret = new CustomEffect(effect, -1, isIMEPackage(opPkg));
-        if (!sVibratorExtSupported) {
-            return ret;
-        }
-
-        final long duration = effect.getDuration();
-
-        if (DEBUG_VIBRATION_ADAPTER) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("packageName: ").append(opPkg)
-                    .append(", effect: ").append(effect.toString())
-                    .append(", attributes: ").append(attributes.toString())
-                    .append(", duration: ").append("" + duration);
-            if (reason != null) {
-                sb.append(", reason: ").append(reason);
-            }
-            Log.d(TAG, sb.toString());
-        }
-
-        if (duration >= RTP_START_DURATION_RINGTONE &&
-                duration <= RTP_END_DURATION_RINGTONE &&
-                isRingtone(attributes)) {
-            ret.customEffectId = (int) (duration - RTP_START_DURATION_RINGTONE);
-            if (ringtoneDurationMap.containsKey(ret.customEffectId)) {
-                ret.combinedEffect = obtainRtpRingtoneVibration(ret.customEffectId, isPreviewRingtone(attributes));
-            }
-            return ret;
-        }
-
-        if (attributeToEffect.containsKey(attributes)) {
-            ret.customEffectId = attributeToEffect.get(attributes);
-            return ret;
-        }
-
-        if (ret.isIME) {
-            if (useKeyboardEffect) {
-                ret.combinedEffect = MOCK_EFFECT_CLICK;
-                ret.customEffectId = KEYBOARD_PRESS;
-                return ret;
-            } else if (duration > 0) {
-                ret.combinedEffect = obtainDurationVibration(duration);
-                ret.customEffectId = calculateIMEHapticLevel(opPkg, duration);
+            CombinedVibration effect, String reason) {
+        synchronized (sLock) {
+            CustomEffect ret = new CustomEffect(effect, -1, inputmethodEnhanceMap.containsKey(opPkg));
+            if (!sVibratorExtSupported) {
                 return ret;
             }
-        }
 
-        if (calculatorEnhanceSet.contains(opPkg)) {
-            if (useKeyboardEffect) {
-                ret.combinedEffect = MOCK_EFFECT_CLICK;
-                ret.customEffectId = KEYBOARD_PRESS;
+            final long duration = effect.getDuration();
+
+            if (DEBUG_VIBRATION_ADAPTER) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("packageName: ").append(opPkg)
+                        .append(", effect: ").append(effect.toString())
+                        .append(", attributes: ").append(attributes.toString())
+                        .append(", duration: ").append("" + duration);
+                if (reason != null) {
+                    sb.append(", reason: ").append(reason);
+                }
+                Log.d(TAG, sb.toString());
+            }
+
+            if (duration >= RTP_START_DURATION_RINGTONE &&
+                    duration <= RTP_END_DURATION_RINGTONE &&
+                    isRingtone(attributes)) {
+                ret.customEffectId = (int) (duration - RTP_START_DURATION_RINGTONE);
+                if (ringtoneDurationMap.containsKey(ret.customEffectId)) {
+                    ret.combinedEffect = obtainRtpRingtoneVibration(ret.customEffectId, isPreviewRingtone(attributes));
+                }
                 return ret;
             }
-        }
 
-        if (duration <= 0) {
-            return ret;
-        }
-
-        if (usageToEffect.containsKey(attributes.getUsage())) {
-            ret.customEffectId = usageToEffect.get(attributes.getUsage());
-            return ret;
-        }
-
-        if (durationToEffectMap.containsKey(opPkg)) {
-            ret.customEffectId = durationToEffectMap.get(opPkg).getOrDefault(duration, -1);
-            if (ret.customEffectId != -1) {
-                ret.combinedEffect = MOCK_EFFECT_CLICK;
+            if (attributeToEffect.containsKey(attributes)) {
+                ret.customEffectId = attributeToEffect.get(attributes);
                 return ret;
             }
-        }
 
-        return ret;
+            if (ret.isIME) {
+                if (CustomVibrationSettings.getInstance().isKeyboardEffectEnabled()) {
+                    ret.combinedEffect = MOCK_EFFECT_CLICK;
+                    ret.customEffectId = KEYBOARD_PRESS;
+                    return ret;
+                } else if (duration > 0) {
+                    ret.combinedEffect = obtainDurationVibration(duration);
+                    ret.customEffectId = calculateIMEHapticLevel(opPkg, duration);
+                    return ret;
+                }
+            }
+
+            if (calculatorEnhanceSet.contains(opPkg)) {
+                if (CustomVibrationSettings.getInstance().isKeyboardEffectEnabled()) {
+                    ret.combinedEffect = MOCK_EFFECT_CLICK;
+                    ret.customEffectId = KEYBOARD_PRESS;
+                    return ret;
+                }
+            }
+
+            if (duration <= 0) {
+                return ret;
+            }
+
+            if (usageToEffect.containsKey(attributes.getUsage())) {
+                ret.customEffectId = usageToEffect.get(attributes.getUsage());
+                return ret;
+            }
+
+            if (durationToEffectMap.containsKey(opPkg)) {
+                ret.customEffectId = durationToEffectMap.get(opPkg).getOrDefault(duration, -1);
+                if (ret.customEffectId != -1) {
+                    ret.combinedEffect = MOCK_EFFECT_CLICK;
+                    return ret;
+                }
+            }
+
+            return ret;
+        }
     }
 
     public static boolean isIMEPackage(String opPkg) {
-        return inputmethodEnhanceMap.containsKey(opPkg);
+        synchronized (sLock) {
+            return inputmethodEnhanceMap.containsKey(opPkg);
+        }
     }
 
     private static boolean isPreviewRingtone(VibrationAttributes attributes) {

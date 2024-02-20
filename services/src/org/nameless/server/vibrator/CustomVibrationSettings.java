@@ -46,6 +46,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.nameless.content.IOnlineConfigurable;
+import org.nameless.content.OnlineConfigManager;
 import org.nameless.os.VibratorExtManager;
 import org.nameless.server.vibrator.RichTapVibrationEffect;
 
@@ -53,7 +55,7 @@ import vendor.nameless.hardware.vibratorExt.V1_0.LevelRange;
 import vendor.nameless.hardware.vibratorExt.V1_0.Type;
 
 /** Controls all the custom settings related to vibration. */
-public final class CustomVibrationSettings {
+public final class CustomVibrationSettings extends IOnlineConfigurable.Stub {
 
     private static final int SETTINGS_BACK_GESTURE_DRAG      = 1 << 0;
     private static final int SETTINGS_FACE                   = 1 << 1;
@@ -120,6 +122,32 @@ public final class CustomVibrationSettings {
         ));
     }
 
+    @Override
+    public int getVersion() {
+        return VibrationEffectAdapter.VERSION;
+    }
+
+    @Override
+    public String getOnlineConfigUri() {
+        return SystemProperties.get("persist.sys.nameless.uri.vibration");
+    }
+
+    @Override
+    public String getSystemConfigPath() {
+        return VibrationEffectAdapter.SYSTEM_CONFIG_FILE;
+    }
+
+    @Override
+    public String getLocalConfigPath() {
+        return VibrationEffectAdapter.LOCAL_CONFIG_FILE;
+    }
+
+    @Override
+    public void onConfigUpdated() {
+        // We can use local config here safely because this is called after verification.
+        VibrationEffectAdapter.initEffectMap(VibrationEffectAdapter.LOCAL_CONFIG_FILE);
+    }
+
     public void init(Context context, Handler handler) {
         mContext = context;
         mSettingObserver = new SettingsContentObserver(handler);
@@ -142,7 +170,7 @@ public final class CustomVibrationSettings {
         registerSettingsObserver(Settings.System.getUriFor(VIBRATOR_EXT_HAPTIC_STRENGTH_LEVEL));
         registerSettingsObserver(Settings.System.getUriFor(VIBRATOR_EXT_NOTIFICAITON_STRENGTH_LEVEL));
 
-        VibrationEffectAdapter.initEffectMap();
+        VibrationEffectAdapter.initEffectMap(VibrationEffectAdapter.compareConfigTimestamp());
 
         updateSettings();
 
@@ -158,6 +186,8 @@ public final class CustomVibrationSettings {
             }
         }
         mVibratorExtManager.initVibrator();
+
+        mContext.getSystemService(OnlineConfigManager.class).registerOnlineConfigurable(this);
     }
 
     public void onUserSwitched() {
@@ -326,7 +356,7 @@ public final class CustomVibrationSettings {
         return mForceEnableIMEHaptic;
     }
 
-    public boolean isKeyboardEffectEnabled() {
+    boolean isKeyboardEffectEnabled() {
         return mUseKeyboardEffect;
     }
 
