@@ -90,7 +90,9 @@ public class GestureLongSwipeUtils {
                 CustomUtils.toggleCameraFlash();
                 break;
             case ACTION_PIN_APP_WINDOW:
-                CustomUtils.pinCurrentAppIntoWindow(context);
+                new Handler().postDelayed(() -> {
+                    CustomUtils.pinCurrentAppIntoWindow(context);
+                }, 500L);
                 break;
         }
     }
