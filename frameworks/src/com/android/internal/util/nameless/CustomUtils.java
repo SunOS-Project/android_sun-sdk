@@ -23,6 +23,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
+import android.os.AsyncTask;
 import android.os.PowerManager;
 import android.os.RemoteException;
 import android.os.ServiceManager;
@@ -258,6 +259,37 @@ public class CustomUtils {
             service.startActivityDismissingKeyguard(intent);
         } catch (RemoteException e) {
             // do nothing.
+        }
+    }
+
+    public static void restartSystemUi(Context context) {
+        new RestartSystemUiTask(context).execute();
+    }
+
+    private static class RestartSystemUiTask extends AsyncTask<Void, Void, Void> {
+
+        private final Context mContext;
+
+        public RestartSystemUiTask(Context context) {
+            super();
+            mContext = context;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                final ActivityManager am = mContext.getSystemService(ActivityManager.class);
+                final IActivityManager ams = ActivityManager.getService();
+                for (ActivityManager.RunningAppProcessInfo app : am.getRunningAppProcesses()) {
+                    if ("com.android.systemui".equals(app.processName)) {
+                        ams.killApplicationProcess(app.processName, app.uid);
+                        break;
+                    }
+                }
+            } catch (RemoteException e) {
+                // do nothing.
+            }
+            return null;
         }
     }
 }
