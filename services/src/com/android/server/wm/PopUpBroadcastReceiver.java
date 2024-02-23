@@ -14,6 +14,7 @@ import static org.nameless.view.PopUpViewManager.ACTION_START_MINI_WINDOW;
 import static org.nameless.view.PopUpViewManager.ACTION_START_PINNED_WINDOW;
 import static org.nameless.view.PopUpViewManager.EXTRA_PACKAGE_NAME;
 import static org.nameless.view.PopUpViewManager.EXTRA_ACTIVITY_NAME;
+import static org.nameless.view.PopUpViewManager.FEATURE_SUPPORTED;
 import static org.nameless.view.PopUpViewManager.MI_FREEFORM_API_INTENT;
 import static org.nameless.view.PopUpViewManager.MI_FREEFORM_PACKAGE_NAME;
 
@@ -44,16 +45,21 @@ public class PopUpBroadcastReceiver extends BroadcastReceiver {
     private boolean mBootCompleted = false;
 
     void init(Context context, Handler handler) {
-        final IntentFilter filter = new IntentFilter();
-        filter.addAction(ACTION_START_MINI_WINDOW);
-        filter.addAction(ACTION_START_PINNED_WINDOW);
-        filter.addAction(ACTION_PIN_CURRENT_APP);
-        context.registerReceiverForAllUsers(this, filter, null, handler);
+        if (FEATURE_SUPPORTED) {
+            final IntentFilter filter = new IntentFilter();
+            filter.addAction(ACTION_START_MINI_WINDOW);
+            filter.addAction(ACTION_START_PINNED_WINDOW);
+            filter.addAction(ACTION_PIN_CURRENT_APP);
+            context.registerReceiverForAllUsers(this, filter, null, handler);
+        }
 
         mBootCompleted = true;
     }
 
     public Intent hookMiFreeformIntent(Intent intent) {
+        if (!FEATURE_SUPPORTED) {
+            return intent;
+        }
         if (!MI_FREEFORM_API_INTENT.equals(intent.getAction())) {
             return intent;
         }

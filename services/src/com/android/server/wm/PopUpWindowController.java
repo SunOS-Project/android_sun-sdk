@@ -23,16 +23,21 @@ import static com.android.server.wm.Transition.ChangeInfo.FLAG_CHANGE_SHOULD_SKI
 
 import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_MISC_SCENES;
 import static org.nameless.os.DebugConstants.DEBUG_POP_UP;
+import static org.nameless.view.PopUpViewManager.FEATURE_SUPPORTED;
 
 import android.app.ActivityOptions;
 import android.app.WindowConfiguration;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.om.IOverlayManager;
 import android.graphics.Rect;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.RemoteException;
+import android.os.ServiceManager;
+import android.os.UserHandle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.ArraySet;
@@ -64,6 +69,9 @@ public class PopUpWindowController {
     private static final String TAG = "PopUpWindowController";
 
     public static final String PACKAGE_NAME_SYSTEM_TOOL = "org.nameless.systemtool";
+
+    private static final String PACKAGE_NAME_PIXEL_LAUNCHER_OVERLAY =
+            "com.google.android.apps.nexuslauncher.pop_up.overlay";
 
     static final int MOVE_TO_BACK_TOUCH_OUTSIDE = 0;
     static final int MOVE_TO_BACK_FROM_LEAVE_BUTTON = 1;
@@ -144,6 +152,14 @@ public class PopUpWindowController {
         PopUpSettingsConfig.getInstance().init(mContext, mHandler);
         PopUpAppStarter.getInstance().init(mContext);
         PopUpBroadcastReceiver.getInstance().init(mContext, mHandler);
+
+        final IOverlayManager om = IOverlayManager.Stub.asInterface(
+                ServiceManager.getService(Context.OVERLAY_SERVICE));
+        try {
+            om.setEnabled(PACKAGE_NAME_PIXEL_LAUNCHER_OVERLAY, FEATURE_SUPPORTED, UserHandle.USER_SYSTEM);
+        } catch (RemoteException e) {
+            Slog.e(TAG, "Failed to apply pop-up view overlay for pixel launcher");
+        }
     }
 
     void onWindowAdd(ConfigurationContainer newParent, WindowState win) {
@@ -867,6 +883,13 @@ public class PopUpWindowController {
     }
 
     void computeBeforeExecuteRequest(Request request) {
+        if (!FEATURE_SUPPORTED) {
+            if (request.activityOptions != null && request.activityOptions.isPopUpWindowMode()) {
+                request.activityOptions.setLaunchWindowingMode(WINDOWING_MODE_UNDEFINED);
+            }
+            return;
+        }
+
         if (DEBUG_POP_UP) {
             Slog.d(TAG, "computeBeforeExecuteRequest, caller=" + request.callingPackage
                     + ", intent=" + request.intent);

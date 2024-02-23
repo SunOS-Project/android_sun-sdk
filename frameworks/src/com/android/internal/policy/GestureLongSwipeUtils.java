@@ -5,6 +5,8 @@
 
 package com.android.internal.policy;
 
+import static org.nameless.view.PopUpViewManager.FEATURE_SUPPORTED;
+
 import android.content.Context;
 import android.os.Handler;
 import android.os.UserHandle;
@@ -41,7 +43,7 @@ public class GestureLongSwipeUtils {
     public static final int ACTION_TOGGLE_FLASHLIGHT = 9;
     public static final int ACTION_PIN_APP_WINDOW = 10;
 
-    public static final int ACTION_END = ACTION_PIN_APP_WINDOW;
+    public static final int ACTION_END = FEATURE_SUPPORTED ? ACTION_PIN_APP_WINDOW : ACTION_TOGGLE_FLASHLIGHT;
 
     public static final float[] LONG_SWIPE_THRESHOLD_PORT_VALUES = {
         0.3f, 0.4f, 0.5f, 0.6f, 0.7f

@@ -7,6 +7,8 @@ package android.app;
 
 import static android.app.WindowConfiguration.WINDOWING_MODE_FREEFORM;
 
+import static org.nameless.view.PopUpViewManager.FEATURE_SUPPORTED;
+
 /** @hide */
 class ActivityOptionsExt {
 
@@ -16,10 +18,16 @@ class ActivityOptionsExt {
     private ActivityOptionsExt() {}
 
     static boolean hookLauncherSetLaunchBounds() {
+        if (!FEATURE_SUPPORTED) {
+            return false;
+        }
         return isFromLauncher();
     }
 
     static boolean hookLauncherSetFreeform(int windowingMode) {
+        if (!FEATURE_SUPPORTED) {
+            return false;
+        }
         return isFromLauncher() && windowingMode == WINDOWING_MODE_FREEFORM;
     }
 

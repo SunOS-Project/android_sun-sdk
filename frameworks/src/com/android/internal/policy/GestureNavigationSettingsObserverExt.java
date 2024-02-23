@@ -36,7 +36,7 @@ public class GestureNavigationSettingsObserverExt {
 
     private Context mContext;
 
-    void init(Context context) {
+    public void init(Context context) {
         mContext = context;
     }
 

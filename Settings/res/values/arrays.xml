@@ -232,7 +232,6 @@
         <item>@string/long_swipe_action_screenshot_full</item>
         <item>@string/long_swipe_action_screenshot_partial</item>
         <item>@string/long_swipe_action_toggle_flashlight</item>
-        <item>@string/long_swipe_action_enter_pinned_window</item>
     </string-array>
     <string-array name="back_gesture_long_swipe_action_values" translatable="false">
         <item>0</item>
@@ -245,7 +244,6 @@
         <item>7</item>
         <item>8</item>
         <item>9</item>
-        <item>10</item>
     </string-array>
 
     <!-- QS panel brightness slider -->

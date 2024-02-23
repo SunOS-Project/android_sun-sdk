@@ -5,10 +5,16 @@
 
 package org.nameless.view;
 
+import android.os.SystemProperties;
+
 import java.util.HashSet;
 
 /** @hide */
 public class PopUpViewManager {
+
+    public static final boolean FEATURE_SUPPORTED = SystemProperties.getBoolean(
+        "ro.nameless.feature.pop_up_view", false
+    );
 
     /** TODO: Get rid of these dirty blacklist stuff. Maybe move them to local config file. */
 
