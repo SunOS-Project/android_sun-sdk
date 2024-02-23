@@ -370,7 +370,7 @@ public class TopActivityRecorder {
         }
     }
 
-    boolean hasMiniWindow() {
+    public boolean hasMiniWindow() {
         synchronized (mFocusLock) {
             return mTopMiniWindowActivity.size() > 0;
         }

@@ -69,4 +69,7 @@
     <string name="app_killed">%1$s force stopped</string>
     <string name="empty_app_killed">App force stopped</string>
 
+    <!-- Game mode lock gesture -->
+    <string name="gesture_locked_warning">Swipe again to unlock gestures</string>
+
 </resources>

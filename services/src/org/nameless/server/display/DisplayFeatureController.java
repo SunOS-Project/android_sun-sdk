@@ -144,6 +144,15 @@ public class DisplayFeatureController {
         }
     }
 
+    public void onGameStateChanged(boolean inGame) {
+        if (mEdgeTouchController != null) {
+            mEdgeTouchController.onGameStateChanged(inGame);
+        }
+        if (mHighTouchSampleController != null) {
+            mHighTouchSampleController.onGameStateChanged(inGame);
+        }
+    }
+
     private static void logD(String msg) {
         if (DEBUG_DISPLAY_FEATURE) {
             Slog.d(TAG, msg);

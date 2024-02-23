@@ -15,6 +15,7 @@ import android.os.UserHandle;
 import android.provider.Settings;
 
 import org.nameless.display.DisplayFeatureManager;
+import org.nameless.server.app.GameModeController;
 
 class HighTouchSampleController {
 
@@ -36,10 +37,23 @@ class HighTouchSampleController {
         updateSettings();
     }
 
+    void onGameStateChanged(boolean inGame) {
+        logD(TAG, "onGameStateChanged, inGame: " + inGame);
+        if (inGame) {
+            setHighTouchSampleEnabled(true);
+        } else {
+            setHighTouchSampleEnabled(mEnabled);
+        }
+    }
+
     void updateSettings() {
         mEnabled = Settings.System.getIntForUser(mResolver, HIGH_TOUCH_SAMPLE_MODE,
                 0, UserHandle.USER_SYSTEM) == 1;
         logD(TAG, "updateSettings, mEnabled: " + mEnabled);
+        if (GameModeController.getInstance().isInGame()) {
+            logD(TAG, "Interrupted settings update due to in game mode");
+            return;
+        }
         setHighTouchSampleEnabled(mEnabled);
     }
 

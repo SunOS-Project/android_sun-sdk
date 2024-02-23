@@ -42,6 +42,16 @@ public class ContextExt {
 
     /**
      * Use with {@link #getSystemService} to retrieve a
+     * {@link org.nameless.app.GameModeManager} for managing game mode.
+     *
+     * @hide
+     * @see #getSystemService
+     * @see org.nameless.app.GameModeManager
+     */
+    public static final String GAME_MODE_SERVICE = "game_ext";
+
+    /**
+     * Use with {@link #getSystemService} to retrieve a
      * {@link com.oplus.os.LinearmotorVibrator} for accessing linear motor vibrator state.
      *
      * @hide

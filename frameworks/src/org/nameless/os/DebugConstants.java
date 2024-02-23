@@ -27,6 +27,7 @@ public class DebugConstants {
         CONSTANTS_MAP.put("DEBUG_DISPLAY_ROTATE", "persist.sys.nameless.display.rotate.debug");
         CONSTANTS_MAP.put("DEBUG_DISPLAY_RR", "persist.sys.nameless.display.rr.debug");
         CONSTANTS_MAP.put("DEBUG_DOZE", "persist.sys.nameless.doze.debug");
+        CONSTANTS_MAP.put("DEBUG_GAME", "persist.sys.nameless.game.debug");
         CONSTANTS_MAP.put("DEBUG_LAUNCHER", "persist.sys.nameless.launcher.debug");
         CONSTANTS_MAP.put("DEBUG_NR_MODE", "persist.sys.nameless.radio.nrmode.debug");
         CONSTANTS_MAP.put("DEBUG_PHONE_WINDOW_MANAGER", "persist.sys.nameless.policy.debug");
@@ -104,6 +105,13 @@ public class DebugConstants {
     // Key: DozeController
     public static final boolean DEBUG_DOZE = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.doze.debug", false
+    );
+
+    // Enable this to debug GameModeController
+    // Package: org.nameless.server.app.GameModeController
+    // Key: GameModeController
+    public static final boolean DEBUG_GAME = DEBUG_GLOBAL || SystemProperties.getBoolean(
+        "persist.sys.nameless.game.debug", false
     );
 
     // Enable this to debug LaunchStateController

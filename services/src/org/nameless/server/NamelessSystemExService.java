@@ -43,6 +43,7 @@ import org.nameless.display.DisplayFeatureManager;
 import org.nameless.os.BatteryFeatureManager;
 import org.nameless.os.PocketManager;
 import org.nameless.server.app.AppPropsController;
+import org.nameless.server.app.GameModeController;
 import org.nameless.server.battery.BatteryFeatureController;
 import org.nameless.server.display.DisplayFeatureController;
 import org.nameless.server.display.DisplayRefreshRateController;
@@ -109,6 +110,7 @@ public class NamelessSystemExService extends SystemService {
                 PocketModeController.getInstance().onSystemServicesReady();
             }
             DozeController.getInstance().onSystemServicesReady();
+            GameModeController.getInstance().onSystemServicesReady();
             LauncherStateController.getInstance().onSystemServicesReady();
             LinearmotorVibratorController.getInstance().onSystemServicesReady();
             return;
@@ -127,6 +129,7 @@ public class NamelessSystemExService extends SystemService {
             }
             DisplayRefreshRateController.getInstance().onBootCompleted();
             DisplayRotationController.getInstance().onBootCompleted();
+            GameModeController.getInstance().onBootCompleted();
             LauncherStateController.getInstance().onBootCompleted();
             SensorBlockController.getInstance().onBootCompleted();
             mPackageRemovedListener.register();
@@ -158,6 +161,7 @@ public class NamelessSystemExService extends SystemService {
         DisplayResolutionController.getInstance().initSystemExService(this);
         DisplayRotationController.getInstance().initSystemExService(this);
         DozeController.getInstance().initSystemExService(this);
+        GameModeController.getInstance().initSystemExService(this);
         LauncherStateController.getInstance().initSystemExService(this);
         LinearmotorVibratorController.getInstance().initSystemExService(this);
         SensorBlockController.getInstance().initSystemExService(this);
@@ -175,6 +179,7 @@ public class NamelessSystemExService extends SystemService {
         DisplayRefreshRateController.getInstance().onUserSwitching(newUserId);
         DisplayRotationController.getInstance().onUserSwitching(newUserId);
         DozeController.getInstance().onUserSwitching(newUserId);
+        GameModeController.getInstance().onUserSwitching(newUserId);
         PocketModeController.getInstance().onUserSwitching(newUserId);
         SensorBlockController.getInstance().onUserSwitching(newUserId);
     }
@@ -182,12 +187,14 @@ public class NamelessSystemExService extends SystemService {
     private void onPackageRemoved(String packageName) {
         DisplayRefreshRateController.getInstance().onPackageRemoved(packageName);
         DisplayRotationController.getInstance().onPackageRemoved(packageName);
+        GameModeController.getInstance().onPackageRemoved(packageName);
         SensorBlockController.getInstance().onPackageRemoved(packageName);
     }
 
     private void onScreenOff() {
         DisplayRefreshRateController.getInstance().onScreenOff();
         DisplayRotationController.getInstance().onScreenOff();
+        GameModeController.getInstance().onScreenOff();
         DozeController.getInstance().onScreenOff();
     }
 
@@ -205,6 +212,7 @@ public class NamelessSystemExService extends SystemService {
             mTopFullscreenPackage = packageName;
             DisplayRefreshRateController.getInstance().updateRefreshRate(packageName);
             DisplayRotationController.getInstance().updateAutoRotate(packageName);
+            GameModeController.getInstance().updateGameModeState(packageName, false);
             SensorBlockController.getInstance().updateTopPackage(packageName);
         }
     }

@@ -16,6 +16,8 @@ import com.oplus.os.LinearmotorVibrator;
 
 import org.nameless.app.AppPropsManager;
 import org.nameless.app.IAppPropsManagerService;
+import org.nameless.app.GameModeManager;
+import org.nameless.app.IGameModeManagerService;
 import org.nameless.content.ContextExt;
 import org.nameless.content.IOnlineConfigManagerService;
 import org.nameless.content.OnlineConfigManager;
@@ -63,6 +65,15 @@ class SystemServiceRegistryExt {
                 IBinder binder = ServiceManager.getService(ContextExt.DISPLAY_RESOLUTION_MANAGER_SERVICE);
                 IDisplayResolutionManagerService service = IDisplayResolutionManagerService.Stub.asInterface(binder);
                 return new DisplayResolutionManager(ctx.getOuterContext(), service);
+            }});
+
+        registerService(ContextExt.GAME_MODE_SERVICE, GameModeManager.class,
+                new CachedServiceFetcher<GameModeManager>() {
+            @Override
+            public GameModeManager createService(ContextImpl ctx) {
+                IBinder binder = ServiceManager.getService(ContextExt.GAME_MODE_SERVICE);
+                IGameModeManagerService service = IGameModeManagerService.Stub.asInterface(binder);
+                return new GameModeManager(ctx.getOuterContext(), service);
             }});
 
         registerService(ContextExt.LINEARMOTOR_VIBRATOR_SERVICE, LinearmotorVibrator.class,

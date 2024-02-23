@@ -808,6 +808,60 @@ public class SettingsExt {
          * @hide
          */
         public static final String SYSTEM_TOOL_MINI_WINDOW_APPS = "system_tool_mini_window_apps";
+
+        /**
+         * Game mode: Game app list
+         * @hide
+         */
+        public static final String GAME_MODE_APP_LIST = "game_mode_app_list";
+
+        /**
+         * Game mode: Whether to disable auto brightness
+         * @hide
+         */
+        public static final String GAME_MODE_DISABLE_AUTO_BRIGHTNESS = "game_mode_disable_auto_brightness";
+
+        /**
+         * Game mode: Whether to disable three-finger gestures
+         * @hide
+         */
+        public static final String GAME_MODE_DISABLE_THREE_FINGER_GESTURES = "game_mode_disable_three_finger_gestures";
+
+        /**
+         * Game mode: Whether to disable heads up
+         * @hide
+         */
+        public static final String GAME_MODE_DISABLE_HEADS_UP = "game_mode_disable_heads_up";
+
+         /**
+         * Game mode: Whether to lock gestures in game
+         * @hide
+         */
+        public static final String GAME_MODE_LOCK_GESTURES = "game_mode_lock_gestures";
+
+        /**
+         * Game mode: Whether to lock status bar in game
+         * @hide
+         */
+        public static final String GAME_MODE_LOCK_STATUS_BAR = "game_mode_lock_status_bar";
+
+        /**
+         * Game mode: Ringer mode in games
+         * @hide
+         */
+        public static final String GAME_MODE_RINGER_MODE = "game_mode_ringer_mode";
+
+        /**
+         * Game mode: Whether to stay awake in games
+         * @hide
+         */
+        public static final String GAME_MODE_STAY_AWAKE = "game_mode_stay_awake";
+
+        /**
+         * Game mode: Whether to suppress fullscreen intent
+         * @hide
+         */
+        public static final String GAME_MODE_SUPPRESS_FULLSCREEN_INTENT = "game_mode_suppress_fullscreen_intent";
     }
 
     public static class Secure {

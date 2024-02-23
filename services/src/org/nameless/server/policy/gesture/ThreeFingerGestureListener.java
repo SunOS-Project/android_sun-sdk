@@ -20,6 +20,8 @@ import com.android.internal.policy.SystemBarUtils;
 
 import java.util.HashMap;
 
+import org.nameless.server.app.GameModeController;
+
 class ThreeFingerGestureListener extends GestureListenerBase {
 
     private static final String TAG = "SystemGesture::ThreeFingerGestureListener";
@@ -95,6 +97,9 @@ class ThreeFingerGestureListener extends GestureListenerBase {
     @Override
     public boolean interceptMotionBeforeQueueing(MotionEvent event) {
         if (!mSystemGesture.getPhoneWindowManagerExt().isThreeFingerGestureOn()) {
+            return false;
+        }
+        if (GameModeController.getInstance().shouldDisableThreeFingerGestures()) {
             return false;
         }
 

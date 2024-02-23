@@ -35,6 +35,9 @@ import java.util.concurrent.Executor
 
 import javax.inject.Inject
 
+import org.nameless.app.GameModeInfo
+import org.nameless.app.GameModeManager
+import org.nameless.app.IGameModeInfoListener
 import org.nameless.provider.SettingsExt.System.DISABLE_LANDSCAPE_HEADS_UP
 import org.nameless.provider.SettingsExt.System.HEADS_UP_BLACKLIST
 import org.nameless.provider.SettingsExt.System.HEADS_UP_STOPLIST
@@ -58,6 +61,8 @@ class CustomHeadsUpController @Inject constructor(
 
     private var disableInLandscape = false
     private var lessBoring = false
+
+    private var disabledByGame = false
 
     private var isLandscape: Boolean
 
@@ -98,6 +103,14 @@ class CustomHeadsUpController @Inject constructor(
                 isLandscape = newConfig?.orientation == Configuration.ORIENTATION_LANDSCAPE
             }
         })
+
+        context.getSystemService(GameModeManager::class.java).registerGameModeInfoListener(
+            object : IGameModeInfoListener.Stub() {
+                override fun onGameModeInfoChanged(info: GameModeInfo) {
+                    disabledByGame = info.shouldDisableHeadsUp()
+                }
+            }
+        )
     }
 
     private fun updateSettings() {
@@ -132,6 +145,9 @@ class CustomHeadsUpController @Inject constructor(
     }
 
     fun interceptHeadsUp(fromPackage: String): Boolean {
+        if (disabledByGame) {
+            return true
+        }
         // Always allow heads up from dialer app
         if (fromPackage == roleManager.getRoleHolders(RoleManager.ROLE_DIALER).firstOrNull()) {
             return false

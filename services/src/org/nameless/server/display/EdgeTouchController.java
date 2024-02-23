@@ -15,6 +15,7 @@ import android.os.UserHandle;
 import android.provider.Settings;
 
 import org.nameless.display.DisplayFeatureManager;
+import org.nameless.server.app.GameModeController;
 
 class EdgeTouchController {
 
@@ -36,9 +37,22 @@ class EdgeTouchController {
         updateSettings();
     }
 
+    void onGameStateChanged(boolean inGame) {
+        logD(TAG, "onGameStateChanged, inGame: " + inGame);
+        if (inGame) {
+            setEdgeTouchEnabled(true);
+        } else {
+            setEdgeTouchEnabled(mEnabled);
+        }
+    }
+
     void updateSettings() {
         mEnabled = Settings.System.getIntForUser(mResolver, UNLIMIT_EDGE_TOUCH_MODE,
                 0, UserHandle.USER_SYSTEM) == 1;
+        if (GameModeController.getInstance().isInGame()) {
+            logD(TAG, "Interrupted settings update due to in game mode");
+            return;
+        }
         logD(TAG, "updateSettings, mEnabled: " + mEnabled);
         setEdgeTouchEnabled(mEnabled);
     }
