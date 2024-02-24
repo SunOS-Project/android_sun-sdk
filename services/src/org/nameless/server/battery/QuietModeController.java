@@ -63,10 +63,8 @@ class QuietModeController {
     private final class QuietModeAlarm implements AlarmManager.OnAlarmListener {
         @Override
         public void onAlarm() {
-            mHandler.post(() -> {
-                setQuietMode(mNextEnable);
-                maybeEnableQuietMode(false);
-            });
+            setQuietMode(mNextEnable);
+            maybeEnableQuietMode(false);
         }
 
         void set(Calendar time) {
@@ -85,12 +83,12 @@ class QuietModeController {
         }
     }
 
-    QuietModeController(NamelessSystemExService service,
+    QuietModeController(Handler handler, NamelessSystemExService service,
             BatteryFeatureManager batteryFeatureManager, NotificationPoster poster) {
+        mHandler = handler;
         mBatteryFeatureManager = batteryFeatureManager;
         mPoster = poster;
         mContext = service.getContext();
-        mHandler = service.getHandler();
         mAlarmManager = mContext.getSystemService(AlarmManager.class);
     }
 

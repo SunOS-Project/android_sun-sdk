@@ -5,6 +5,8 @@
 
 package org.nameless.server.policy.gesture;
 
+import static android.os.Process.THREAD_PRIORITY_DEFAULT;
+
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_CANCEL;
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_DOWN;
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_MOVE;
@@ -19,6 +21,7 @@ import android.graphics.PointF;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.Message;
 import android.os.RemoteException;
 import android.os.SystemClock;
@@ -27,6 +30,7 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 
+import com.android.server.ServiceThread;
 import com.android.server.policy.PhoneWindowManager;
 import com.android.server.policy.PhoneWindowManagerExt;
 
@@ -48,7 +52,8 @@ public class SystemGesture {
     private final ArrayList<GestureListenerBase> mGestureListeners = new ArrayList<>();
     private final ArrayList<SystemGestureClient> mSystemGestureClients = new ArrayList<>();
 
-    private final Handler mHandler = new H();
+    private final Handler mHandler;
+    private final ServiceThread mServiceThread;
 
     private PointF mLastDownPos;
 
@@ -59,8 +64,12 @@ public class SystemGesture {
         mContext = context;
         mDisplay = context.getSystemService(WindowManager.class).getDefaultDisplay();
 
+        mServiceThread = new ServiceThread(TAG, THREAD_PRIORITY_DEFAULT, false);
+        mServiceThread.start();
+        mHandler = new H(mServiceThread.getLooper());
+
         mGestureListeners.add(new WindowModeGestureListener(this, mContext));
-        mGestureListeners.add(new ThreeFingerGestureListener(this, mContext));
+        mGestureListeners.add(new ThreeFingerGestureListener(this, mContext, mServiceThread.getLooper()));
     }
 
     Display getDisplay() {
@@ -214,6 +223,10 @@ public class SystemGesture {
     }
 
     private final class H extends Handler {
+        H(Looper looper) {
+            super(looper);
+        }
+
         @Override
         public void handleMessage(Message message) {
             switch (message.what) {

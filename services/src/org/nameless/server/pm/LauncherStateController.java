@@ -7,6 +7,7 @@ package org.nameless.server.pm;
 
 import static android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DEFAULT;
 import static android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+import static android.os.Process.THREAD_PRIORITY_DEFAULT;
 
 import static org.nameless.os.DebugConstants.DEBUG_LAUNCHER;
 
@@ -14,6 +15,7 @@ import android.app.AppGlobals;
 import android.content.Context;
 import android.content.pm.IPackageManager;
 import android.content.pm.UserInfo;
+import android.os.Handler;
 import android.os.IUserManager;
 import android.os.RemoteException;
 import android.os.ServiceManager;
@@ -21,6 +23,8 @@ import android.os.SystemProperties;
 import android.util.Slog;
 
 import com.android.internal.util.nameless.LauncherUtils;
+
+import com.android.server.ServiceThread;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +34,9 @@ import org.nameless.server.NamelessSystemExService;
 public class LauncherStateController {
 
     private static final String TAG = "LauncherStateController";
+
+    private final Handler mHandler;
+    private final ServiceThread mServiceThread;
 
     private IPackageManager mPm;
     private IUserManager mUm;
@@ -43,6 +50,12 @@ public class LauncherStateController {
         private static LauncherStateController INSTANCE = new LauncherStateController();
     }
 
+    private LauncherStateController() {
+        mServiceThread = new ServiceThread(TAG, THREAD_PRIORITY_DEFAULT, false);
+        mServiceThread.start();
+        mHandler = new Handler(mServiceThread.getLooper());
+    }
+
     public static LauncherStateController getInstance() {
         return InstanceHolder.INSTANCE;
     }
@@ -52,16 +65,18 @@ public class LauncherStateController {
     }
 
     public void onSystemServicesReady() {
-        mPm = AppGlobals.getPackageManager();
-        mUm = IUserManager.Stub.asInterface(ServiceManager.getService(Context.USER_SERVICE));
-        mOpPackageName = mSystemExService.getContext().getOpPackageName();
-        mCachedLauncher = LauncherUtils.getCachedLauncher();
-        mLauncherList = LauncherUtils.getLauncherList(mSystemExService.getContext());
-        mSupportedLauncher = mLauncherList.contains(mCachedLauncher);
+        mHandler.post(() -> {
+            mPm = AppGlobals.getPackageManager();
+            mUm = IUserManager.Stub.asInterface(ServiceManager.getService(Context.USER_SERVICE));
+            mOpPackageName = mSystemExService.getContext().getOpPackageName();
+            mCachedLauncher = LauncherUtils.getCachedLauncher();
+            mLauncherList = LauncherUtils.getLauncherList(mSystemExService.getContext());
+            mSupportedLauncher = mLauncherList.contains(mCachedLauncher);
+        });
     }
 
     public void onBootCompleted() {
-        mSystemExService.getHandler().post(() -> {
+        mHandler.post(() -> {
             List<UserInfo> users = null;
             try {
                 users = mUm.getUsers(false, false, false);
@@ -78,7 +93,7 @@ public class LauncherStateController {
     }
 
     public void onUserStarting(int userId) {
-        mSystemExService.getHandler().post(() -> {
+        mHandler.post(() -> {
             updatePackageState(userId);
         });
     }

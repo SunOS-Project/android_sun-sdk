@@ -69,7 +69,7 @@ class OptimizedChargeController {
     private final class UpdateAlarm implements AlarmManager.OnAlarmListener {
         @Override
         public void onAlarm() {
-            mHandler.post(() -> setUpdateAlarm());
+            setUpdateAlarm();
         }
 
         public void set(Calendar time) {
@@ -87,14 +87,14 @@ class OptimizedChargeController {
         }
     }
 
-    OptimizedChargeController(NamelessSystemExService service,
+    OptimizedChargeController(Handler handler, NamelessSystemExService service,
             BatteryFeatureManager batteryFeatureManager, NotificationPoster poster) {
+        mHandler = handler;
         mService = service;
         mBatteryFeatureManager = batteryFeatureManager;
         mPoster = poster;
         mResolver = service.getContentResolver();
         mContext = service.getContext();
-        mHandler = service.getHandler();
         mAlarmManager = mContext.getSystemService(AlarmManager.class);
     }
 

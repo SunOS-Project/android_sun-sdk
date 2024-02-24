@@ -5,6 +5,7 @@
 
 package org.nameless.server.wm;
 
+import static android.os.Process.THREAD_PRIORITY_DEFAULT;
 import static android.view.Display.DEFAULT_DISPLAY;
 
 import static org.nameless.content.ContextExt.DISPLAY_RESOLUTION_MANAGER_SERVICE;
@@ -36,6 +37,7 @@ import android.view.Display;
 import com.android.internal.R;
 import com.android.internal.util.nameless.CustomUtils;
 
+import com.android.server.ServiceThread;
 import com.android.server.wm.WindowManagerService;
 
 import java.util.ArrayList;
@@ -54,14 +56,16 @@ public class DisplayResolutionController {
     private static final String PROP_SCALE_BOOTANIMATION =
             "persist.sys.nameless.bootanimation.scale";
 
+    private final Handler mHandler;
+    private final ServiceThread mServiceThread;
+
     private ContentResolver mContentResolver;
     private Context mContext;
-    private Handler mHandler;
     private WindowManagerService mWms;
 
     private final ArrayList<String> mFhdOverlays = new ArrayList<>();
 
-    private final Object mLock = new Object();
+    private final Object mListenerLock = new Object();
 
     private static class InstanceHolder {
         private static DisplayResolutionController INSTANCE = new DisplayResolutionController();
@@ -87,19 +91,15 @@ public class DisplayResolutionController {
     private final class DisplayResolutionManagerService extends IDisplayResolutionManagerService.Stub {
         @Override
         public Point getDisplayResolution() {
-            synchronized (mLock) {
-                updateHeightIfNeeded();
-                final Point p = new Point(mWidth, mHeight);
-                logD("getDisplayResolution, ret=" + p.x + "x" + p.y);
-                return p;
-            }
+            updateHeightIfNeeded();
+            final Point p = new Point(mWidth, mHeight);
+            logD("getDisplayResolution, ret=" + p.x + "x" + p.y);
+            return p;
         }
 
         @Override
         public void setDisplayResolution(int width) {
-            synchronized (mLock) {
-                setResolutionInternal(width, false);
-            }
+            setResolutionInternal(width, false);
         }
 
         @Override
@@ -108,7 +108,7 @@ public class DisplayResolutionController {
             IBinder.DeathRecipient dr = new IBinder.DeathRecipient() {
                 @Override
                 public void binderDied() {
-                    synchronized (mLock) {
+                    synchronized (mListenerLock) {
                         for (int i = 0; i < mListeners.size(); i++) {
                             if (listenerBinder == mListeners.get(i).mListener.asBinder()) {
                                 DisplayResolutionListener removed = mListeners.remove(i);
@@ -123,12 +123,12 @@ public class DisplayResolutionController {
                 }
             };
 
-            synchronized (mLock) {
+            synchronized (mListenerLock) {
                 try {
                     listener.asBinder().linkToDeath(dr, 0);
                     mListeners.add(new DisplayResolutionListener(listener, dr));
                     updateHeightIfNeeded();
-                    notifyDisplayResolutionChanged(listener);
+                    mHandler.post(() -> notifyDisplayResolutionChanged(listener));
                 } catch (RemoteException e) {
                     // Client died, no cleanup needed.
                     return false;
@@ -141,7 +141,7 @@ public class DisplayResolutionController {
         public boolean unregisterDisplayResolutionListener(IDisplayResolutionListener listener) {
             boolean found = false;
             final IBinder listenerBinder = listener.asBinder();
-            synchronized (mLock) {
+            synchronized (mListenerLock) {
                 for (int i = 0; i < mListeners.size(); i++) {
                     found = true;
                     DisplayResolutionListener drListener = mListeners.get(i);
@@ -167,10 +167,15 @@ public class DisplayResolutionController {
     private int mWidth = -1;
     private int mHeight = -1;
 
-    public void init(Context context, Handler handler, WindowManagerService wms) {
+    private DisplayResolutionController() {
+        mServiceThread = new ServiceThread(TAG, THREAD_PRIORITY_DEFAULT, false);
+        mServiceThread.start();
+        mHandler = new Handler(mServiceThread.getLooper());
+    }
+
+    public void init(Context context, WindowManagerService wms) {
         mContentResolver = context.getContentResolver();
         mContext = context;
-        mHandler = handler;
         mWms = wms;
     }
 
@@ -195,10 +200,8 @@ public class DisplayResolutionController {
 
         mSystemReady = true;
 
-        synchronized (mLock) {
-            mWidth = getStoredDisplayWidth();
-            mHandler.post(() -> setResolutionInternal(mWidth, true));
-        }
+        mWidth = getStoredDisplayWidth();
+        setResolutionInternal(mWidth, true);
     }
 
     public Point getResolution() {
@@ -252,19 +255,21 @@ public class DisplayResolutionController {
     private void notifyDisplayResolutionChanged() {
         updateHeightIfNeeded();
         logD("notifyDisplayResolutionChanged, resolution=" + mWidth + "x" + mHeight);
-        for (DisplayResolutionListener listener : mListeners) {
-            notifyDisplayResolutionChanged(listener.mListener);
-        }
+        mHandler.post(() -> {
+            synchronized (mListenerLock) {
+                for (DisplayResolutionListener listener : mListeners) {
+                    notifyDisplayResolutionChanged(listener.mListener);
+                }
+            }
+        });
     }
 
     private void notifyDisplayResolutionChanged(IDisplayResolutionListener listener) {
-        mHandler.post(() -> {
-            try {
-                listener.onDisplayResolutionChanged(mWidth, mHeight);
-            } catch (RemoteException | RuntimeException e) {
-                logE("Failed to notify display resolution changed");
-            }
-        });
+        try {
+            listener.onDisplayResolutionChanged(mWidth, mHeight);
+        } catch (RemoteException | RuntimeException e) {
+            logE("Failed to notify display resolution changed");
+        }
     }
 
     private void applyOverlay(boolean enabled) {

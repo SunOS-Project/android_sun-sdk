@@ -33,25 +33,21 @@ public class LinearmotorVibratorController {
         return InstanceHolder.INSTANCE;
     }
 
-    private final Object mLock = new Object();
-
     private NamelessSystemExService mSystemExService;
     private Vibrator mVibrator;
 
     private final class LinearmotorVibratorService extends ILinearmotorVibratorService.Stub {
         @Override
         public void vibrate(WaveformEffect effect) {
-            synchronized (mLock) {
-                if (mVibrator == null) {
-                    return;
-                }
-                final long ident = Binder.clearCallingIdentity();
-                try {
-                    logD("WaveformEffect: " + effect);
-                    mVibrator.vibrate(EFFECT_CLICK); // TODO: Use different effect for each WaveformEffect id.
-                } finally {
-                    Binder.restoreCallingIdentity(ident);
-                }
+            if (mVibrator == null) {
+                return;
+            }
+            final long ident = Binder.clearCallingIdentity();
+            try {
+                logD("WaveformEffect: " + effect);
+                mVibrator.vibrate(EFFECT_CLICK); // TODO: Use different effect for each WaveformEffect id.
+            } finally {
+                Binder.restoreCallingIdentity(ident);
             }
         }
     }

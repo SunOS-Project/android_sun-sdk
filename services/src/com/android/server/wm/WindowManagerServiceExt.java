@@ -38,7 +38,7 @@ class WindowManagerServiceExt {
         mWms = wms;
         TopActivityRecorder.getInstance().initWms(wms);
         PopUpWindowController.getInstance().init(wms.mContext, wms);
-        DisplayResolutionController.getInstance().init(wms.mContext, DisplayThread.getHandler(), wms);
+        DisplayResolutionController.getInstance().init(wms.mContext, wms);
     }
 
     void systemReady() {

@@ -5,6 +5,8 @@
 
 package org.nameless.server.policy;
 
+import static android.os.Process.THREAD_PRIORITY_DEFAULT;
+
 import static org.nameless.os.DebugConstants.DEBUG_DOZE;
 import static org.nameless.provider.SettingsExt.System.DOZE_PICK_UP_ACTION;
 
@@ -22,6 +24,8 @@ import android.util.Slog;
 
 import com.android.internal.util.nameless.DozeHelper;
 
+import com.android.server.ServiceThread;
+
 import org.nameless.server.NamelessSystemExService;
 import org.nameless.server.policy.sensor.PickUpSensor;
 
@@ -34,6 +38,9 @@ public class DozeController {
     private static final long WAKELOCK_TIMEOUT_MS = 300L;
 
     private final Object mLock = new Object();
+
+    private final Handler mHandler;
+    private final ServiceThread mServiceThread;
 
     private PickUpSensor mPickUpSensor;
 
@@ -66,15 +73,18 @@ public class DozeController {
 
         @Override
         public void onChange(boolean selfChange, Uri uri) {
-            synchronized (mLock) {
-                logD("onSettingsUpdated");
-                switch (uri.getLastPathSegment()) {
-                    case DOZE_PICK_UP_ACTION:
-                        mPickUpSensor.updateSettings();
-                        break;
-                }
+            switch (uri.getLastPathSegment()) {
+                case DOZE_PICK_UP_ACTION:
+                    mPickUpSensor.updateSettings();
+                    break;
             }
         }
+    }
+
+    private DozeController() {
+        mServiceThread = new ServiceThread(TAG, THREAD_PRIORITY_DEFAULT, false);
+        mServiceThread.start();
+        mHandler = new Handler(mServiceThread.getLooper());
     }
 
     public void initSystemExService(NamelessSystemExService service) {
@@ -82,7 +92,7 @@ public class DozeController {
     }
 
     public void onSystemServicesReady() {
-        synchronized (mLock) {
+        mHandler.post(() -> {
             logD("onSystemServicesReady");
 
             mPowerManager = mSystemExService.getContext().getSystemService(PowerManager.class);
@@ -98,52 +108,56 @@ public class DozeController {
                 logD("PickUpSensor is not supported");
             }
 
-            mSettingsObserver = new SettingsObserver(mSystemExService.getHandler());
+            mSettingsObserver = new SettingsObserver(mHandler);
             mSettingsObserver.observe();
-        }
+        });
     }
 
     public void onUserSwitching(int newUserId) {
-        synchronized (mLock) {
+        mHandler.post(() -> {
             logD("onUserSwitching, newUserId: " + newUserId);
 
             if (mPickUpSensor != null && mPickUpSensor.isSupported()) {
                 mPickUpSensor.onUserSwitching(newUserId);
             }
-        }
+        });
     }
 
     public void onScreenOff() {
-        synchronized (mLock) {
+        mHandler.post(() -> {
             logD("onScreenOff");
 
             if (mPickUpSensor != null && mPickUpSensor.isSupported()) {
                 mPickUpSensor.onScreenOff();
             }
-        }
+        });
     }
 
     public void onScreenOn() {
-        synchronized (mLock) {
+        mHandler.post(() -> {
             logD("onScreenOn");
 
             if (mPickUpSensor != null && mPickUpSensor.isSupported()) {
                 mPickUpSensor.onScreenOn();
             }
-        }
+        });
     }
 
     public void launchDozePulse() {
-        mSystemExService.getContext().sendBroadcastAsUser(new Intent(DOZE_INTENT), UserHandle.SYSTEM);
+        mHandler.post(() -> {
+            mSystemExService.getContext().sendBroadcastAsUser(new Intent(DOZE_INTENT), UserHandle.SYSTEM);
+        });
     }
 
     public void wakeUpScreen(boolean vibrate) {
-        mWakeLock.acquire(WAKELOCK_TIMEOUT_MS);
-        if (vibrate) {
-            mPowerManager.wakeUp(SystemClock.uptimeMillis(), PowerManager.WAKE_REASON_GESTURE, TAG);
-        } else {
-            mPowerManager.wakeUp(SystemClock.uptimeMillis(), PowerManager.WAKE_REASON_CAMERA_LAUNCH, TAG);
-        }
+        mHandler.post(() -> {
+            mWakeLock.acquire(WAKELOCK_TIMEOUT_MS);
+            if (vibrate) {
+                mPowerManager.wakeUp(SystemClock.uptimeMillis(), PowerManager.WAKE_REASON_GESTURE, TAG);
+            } else {
+                mPowerManager.wakeUp(SystemClock.uptimeMillis(), PowerManager.WAKE_REASON_CAMERA_LAUNCH, TAG);
+            }
+        });
     }
 
     private static void logD(String msg) {

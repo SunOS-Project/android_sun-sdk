@@ -5,6 +5,8 @@
 
 package org.nameless.server.sensors;
 
+import static android.os.Process.THREAD_PRIORITY_DEFAULT;
+
 import static org.nameless.content.ContextExt.SENSOR_BLOCK_MANAGER_SERVICE;
 import static org.nameless.hardware.SensorBlockManager.APP_FIRST_SCREEN_MS;
 import static org.nameless.hardware.SensorBlockManager.SHAKE_SENSORS_ALLOW;
@@ -16,11 +18,14 @@ import static org.nameless.os.DebugConstants.DEBUG_SENSOR;
 import static org.nameless.provider.SettingsExt.System.SHAKE_SENSORS_BLACKLIST_CONFIG;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Slog;
+
+import com.android.server.ServiceThread;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -40,26 +45,26 @@ public final class SensorBlockController {
         return InstanceHolder.INSTANCE;
     }
 
-    private static final int MSG_SAVE_SETTINGS = 0;
     private static final int MSG_UNBLOCK_SHAKE_SENSOR = 1;
 
     private final HashMap<String, Integer> mShakeSensorsConfig = new HashMap<>();
     private final HashSet<String> mShakeSensorsBlockingPackages = new HashSet<>();
 
-    private final Handler mHandler = new H();
+    private final Handler mHandler;
+    private final ServiceThread mServiceThread;
+
     private final Object mLock = new Object();
 
     private NamelessSystemExService mSystemExService;
 
-    private String mTopPackageName = "";
-
     private final class H extends Handler {
+        H(Looper looper) {
+            super(looper);
+        }
+
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case MSG_SAVE_SETTINGS:
-                    saveConfigIntoSettingsLocked();
-                    break;
                 case MSG_UNBLOCK_SHAKE_SENSOR:
                     String packageName = (String) msg.obj;
                     synchronized (mLock) {
@@ -92,7 +97,7 @@ public final class SensorBlockController {
                 if (config == SHAKE_SENSORS_ALLOW) {
                     mShakeSensorsBlockingPackages.remove(packageName);
                 } else if (config == SHAKE_SENSORS_BLOCK_FIRST_SCREEN) {
-                    if (mTopPackageName.equals(packageName)) {
+                    if (mSystemExService.getTopFullscreenPackage().equals(packageName)) {
                         mShakeSensorsBlockingPackages.add(packageName);
                         mHandler.sendMessageDelayed(mHandler.obtainMessage(
                                 MSG_UNBLOCK_SHAKE_SENSOR, packageName), APP_FIRST_SCREEN_MS);
@@ -100,7 +105,7 @@ public final class SensorBlockController {
                 } else if (config == SHAKE_SENSORS_BLOCK_ALWAYS) {
                     mShakeSensorsBlockingPackages.add(packageName);
                 }
-                mHandler.sendEmptyMessage(MSG_SAVE_SETTINGS);
+                mHandler.post(() -> saveConfigIntoSettingsLocked());
             }
         }
 
@@ -116,63 +121,77 @@ public final class SensorBlockController {
         }
     }
 
+    private SensorBlockController() {
+        mServiceThread = new ServiceThread(TAG, THREAD_PRIORITY_DEFAULT, false);
+        mServiceThread.start();
+        mHandler = new H(mServiceThread.getLooper());
+    }
+
     public void initSystemExService(NamelessSystemExService service) {
         mSystemExService = service;
         mSystemExService.publishBinderService(SENSOR_BLOCK_MANAGER_SERVICE, new SensorBlockManagerService());
     }
 
-    public void onBootCompleted() {
-        synchronized (mLock) {
-            if (DEBUG_SENSOR) {
-                Slog.d(TAG, "onBootCompleted");
+    public void onSystemServicesReady() {
+        mHandler.post(() -> {
+            synchronized (mLock) {
+                if (DEBUG_SENSOR) {
+                    Slog.d(TAG, "onSystemServicesReady");
+                }
+                parseSettingsIntoMapLocked(UserHandle.USER_CURRENT);
             }
-            parseSettingsIntoMapLocked(UserHandle.USER_CURRENT);
-        }
+        });
     }
 
     public void onUserSwitching(int newUserId) {
-        synchronized (mLock) {
-            if (DEBUG_SENSOR) {
-                Slog.d(TAG, "onUserSwitching, newUserId: " + newUserId);
+        mHandler.post(() -> {
+            synchronized (mLock) {
+                if (DEBUG_SENSOR) {
+                    Slog.d(TAG, "onUserSwitching, newUserId: " + newUserId);
+                }
+                parseSettingsIntoMapLocked(newUserId);
             }
-            parseSettingsIntoMapLocked(newUserId);
-        }
+        });
     }
 
     public void onPackageRemoved(String packageName) {
-        synchronized (mLock) {
-            if (DEBUG_SENSOR) {
-                Slog.d(TAG, "onPackageRemoved, packageName: " + packageName);
-            }
-            if (mShakeSensorsConfig.containsKey(packageName)) {
-                mShakeSensorsConfig.remove(packageName);
-                mShakeSensorsBlockingPackages.remove(packageName);
-                mHandler.sendEmptyMessage(MSG_SAVE_SETTINGS);
-            }
-        }
-    }
-
-    public void updateTopPackage(String packageName) {
-        synchronized (mLock) {
-            if (DEBUG_SENSOR) {
-                Slog.d(TAG, "updateTopPackage, from=" + mTopPackageName + ", to=" + packageName);
-            }
-            if (mHandler.hasMessages(MSG_UNBLOCK_SHAKE_SENSOR)) {
-                mHandler.removeMessages(MSG_UNBLOCK_SHAKE_SENSOR);
-            }
-            mTopPackageName = packageName;
-            final int config = mShakeSensorsConfig.getOrDefault(mTopPackageName, SHAKE_SENSORS_ALLOW);
-            if (DEBUG_SENSOR) {
-                Slog.d(TAG, "updateTopPackage, newConfig=" + shakeSensorsConfigToString(config));
-            }
-            if (config != SHAKE_SENSORS_ALLOW) {
-                mShakeSensorsBlockingPackages.add(mTopPackageName);
-                if (config == SHAKE_SENSORS_BLOCK_FIRST_SCREEN) {
-                    mHandler.sendMessageDelayed(mHandler.obtainMessage(
-                            MSG_UNBLOCK_SHAKE_SENSOR, mTopPackageName), APP_FIRST_SCREEN_MS);
+        mHandler.post(() -> {
+            synchronized (mLock) {
+                if (DEBUG_SENSOR) {
+                    Slog.d(TAG, "onPackageRemoved, packageName: " + packageName);
+                }
+                if (mShakeSensorsConfig.containsKey(packageName)) {
+                    mShakeSensorsConfig.remove(packageName);
+                    mShakeSensorsBlockingPackages.remove(packageName);
+                    saveConfigIntoSettingsLocked();
                 }
             }
-        }
+        });
+    }
+
+    public void onTopFullscreenPackageChanged(String packageName) {
+        mHandler.post(() -> {
+            synchronized (mLock) {
+                if (DEBUG_SENSOR) {
+                    Slog.d(TAG, "onTopFullscreenPackageChanged: " + packageName);
+                }
+                if (mHandler.hasMessages(MSG_UNBLOCK_SHAKE_SENSOR)) {
+                    mHandler.removeMessages(MSG_UNBLOCK_SHAKE_SENSOR);
+                }
+                final int config = mShakeSensorsConfig.getOrDefault(packageName, SHAKE_SENSORS_ALLOW);
+                if (DEBUG_SENSOR) {
+                    Slog.d(TAG, "onTopFullscreenPackageChanged, newConfig=" +
+                            shakeSensorsConfigToString(config));
+                }
+                if (config != SHAKE_SENSORS_ALLOW) {
+                    mShakeSensorsBlockingPackages.add(packageName);
+                    if (config == SHAKE_SENSORS_BLOCK_FIRST_SCREEN) {
+                        mHandler.sendMessageDelayed(mHandler.obtainMessage(
+                                MSG_UNBLOCK_SHAKE_SENSOR, packageName), APP_FIRST_SCREEN_MS);
+                    }
+                }
+            }
+        });
     }
 
     private void parseSettingsIntoMapLocked(int userId) {

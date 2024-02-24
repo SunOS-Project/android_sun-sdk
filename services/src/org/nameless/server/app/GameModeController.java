@@ -5,6 +5,8 @@
 
 package org.nameless.server.app;
 
+import static android.os.Process.THREAD_PRIORITY_DEFAULT;
+
 import static org.nameless.content.ContextExt.GAME_MODE_SERVICE;
 import static org.nameless.os.DebugConstants.DEBUG_GAME;
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_APP_LIST;
@@ -33,6 +35,8 @@ import android.widget.Toast;
 
 import com.android.internal.R;
 
+import com.android.server.ServiceThread;
+import com.android.server.UiThread;
 import com.android.server.audio.AudioServiceExt;
 import com.android.server.wm.TopActivityRecorder;
 
@@ -74,6 +78,11 @@ public class GameModeController {
     private final Object mListenerLock = new Object();
     private final Object mPackageLock = new Object();
     private final Object mStateLock = new Object();
+
+    private final Handler mHandler;
+    private final ServiceThread mServiceThread;
+
+    private final Handler mUiHandler = new Handler(UiThread.getHandler().getLooper());
 
     private final HashSet<String> mGamePackages = new HashSet<>();
 
@@ -292,63 +301,79 @@ public class GameModeController {
         }
     }
 
+    private GameModeController() {
+        mServiceThread = new ServiceThread(TAG, THREAD_PRIORITY_DEFAULT, false);
+        mServiceThread.start();
+        mHandler = new Handler(mServiceThread.getLooper());
+    }
+
     public void initSystemExService(NamelessSystemExService service) {
         mSystemExService = service;
         mSystemExService.publishBinderService(GAME_MODE_SERVICE, new GameModeManagerService());
-    }
-
-    public void onBootCompleted() {
-        if (DEBUG_GAME) {
-            Slog.d(TAG, "onBootCompleted");
-        }
-        synchronized (mPackageLock) {
-            initGameAppsListLocked(UserHandle.USER_CURRENT);
-        }
     }
 
     public void onSystemServicesReady() {
         if (DEBUG_GAME) {
             Slog.d(TAG, "onSystemServicesReady");
         }
-        mSettingsObserver = new SettingsObserver(mSystemExService.getHandler());
+        mSettingsObserver = new SettingsObserver(mHandler);
         mSettingsObserver.observe();
-        updateSettings(UserHandle.USER_CURRENT);
+        mHandler.post(() -> {
+            updateSettings(UserHandle.USER_CURRENT);
+            synchronized (mPackageLock) {
+                initGameAppsListLocked(UserHandle.USER_CURRENT);
+            }
+        });
     }
 
     public void onUserSwitching(int newUserId) {
         if (DEBUG_GAME) {
             Slog.d(TAG, "onUserSwitching, newUserId: " + newUserId);
         }
-        synchronized (mPackageLock) {
-            initGameAppsListLocked(newUserId);
+        mHandler.post(() -> {
             updateSettings(newUserId);
-            updateGameModeState(mSystemExService.getTopFullscreenPackage(), true);
-        }
+            synchronized (mPackageLock) {
+                initGameAppsListLocked(newUserId);
+                updateGameModeState(mSystemExService.getTopFullscreenPackage(), true);
+            }
+        });
     }
 
     public void onPackageRemoved(String packageName) {
         if (DEBUG_GAME) {
             Slog.d(TAG, "onPackageRemoved, packageName: " + packageName);
         }
-        synchronized (mPackageLock) {
-            if (mGamePackages.contains(packageName)) {
-                if (DEBUG_GAME) {
-                    Slog.d(TAG, "removeGame: " + packageName);
+        mHandler.post(() -> {
+            synchronized (mPackageLock) {
+                if (mGamePackages.contains(packageName)) {
+                    if (DEBUG_GAME) {
+                        Slog.d(TAG, "removeGame: " + packageName);
+                    }
+                    mGamePackages.remove(packageName);
+                    saveGameListIntoSettingsLocked();
+                    updateGameModeState(mSystemExService.getTopFullscreenPackage(), false);
                 }
-                mGamePackages.remove(packageName);
-                saveGameListIntoSettingsLocked();
-                updateGameModeState(mSystemExService.getTopFullscreenPackage(), false);
             }
-        }
+        });
     }
 
     public void onScreenOff() {
-        synchronized (mPackageLock) {
-            updateGameModeState("", false);
-        }
+        mHandler.post(() -> {
+            synchronized (mPackageLock) {
+                updateGameModeState("", false);
+            }
+        });
     }
 
-    public void updateGameModeState(String packageName, boolean force) {
+    public void onTopFullscreenPackageChanged(String packageName) {
+        mHandler.post(() -> {
+            synchronized (mPackageLock) {
+                updateGameModeState(packageName, false);
+            }
+        });
+    }
+
+    private void updateGameModeState(String packageName, boolean force) {
         synchronized (mStateLock) {
             final boolean isGame = mGamePackages.contains(packageName);
             if (isGame == mInGame && !force) {
@@ -530,7 +555,9 @@ public class GameModeController {
     }
 
     public void warnGestureLocked() {
-        Toast.makeText(ActivityThread.currentActivityThread().getSystemUiContext(),
-                R.string.gesture_locked_warning, Toast.LENGTH_SHORT).show();
+        mUiHandler.post(() -> {
+            Toast.makeText(ActivityThread.currentActivityThread().getSystemUiContext(),
+                    R.string.gesture_locked_warning, Toast.LENGTH_SHORT).show();
+        });
     }
 }

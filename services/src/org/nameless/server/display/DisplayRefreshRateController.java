@@ -5,6 +5,8 @@
 
 package org.nameless.server.display;
 
+import static android.os.Process.THREAD_PRIORITY_DEFAULT;
+
 import static org.nameless.content.ContextExt.REFRESH_RATE_MANAGER_SERVICE;
 import static org.nameless.os.DebugConstants.DEBUG_DISPLAY_RR;
 import static org.nameless.provider.SettingsExt.System.EXTREME_REFRESH_RATE;
@@ -21,6 +23,8 @@ import android.util.Slog;
 
 import com.android.internal.util.nameless.DisplayRefreshRateHelper;
 
+import com.android.server.ServiceThread;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -32,8 +36,11 @@ public final class DisplayRefreshRateController {
 
     private static final String TAG = "DisplayRefreshRateController";
 
-    private final Handler mHandler = new Handler();
-    private final Object mLock = new Object();
+    private final Handler mHandler;
+    private final ServiceThread mServiceThread;
+
+    private final Object mConfigLock = new Object();
+    private final Object mListenerLock = new Object();
 
     private NamelessSystemExService mSystemExService;
 
@@ -69,83 +76,88 @@ public final class DisplayRefreshRateController {
     private final class RefreshRateManagerService extends IRefreshRateManagerService.Stub {
         @Override
         public void requestMemcRefreshRate(int refreshRate) {
-            synchronized (mLock) {
+            synchronized (mConfigLock) {
                 if (mRequestedMemcRefreshRate != refreshRate) {
                     logD("requestMemcRefreshRate, refreshRate: " + refreshRate);
                     mRequestedMemcRefreshRate = refreshRate;
-                    notifyMemcRefreshRateChanged();
+                    mHandler.post(() -> notifyMemcRefreshRateChanged());
                 }
             }
         }
 
         @Override
         public void clearRequestedMemcRefreshRate() {
-            synchronized (mLock) {
+            synchronized (mConfigLock) {
                 if (mRequestedMemcRefreshRate > 0) {
                     logD("clearRequestedMemcRefreshRate");
                     mRequestedMemcRefreshRate = -1;
-                    notifyMemcRefreshRateChanged();
+                    mHandler.post(() -> notifyMemcRefreshRateChanged());
                 }
             }
         }
 
         @Override
         public int getRefreshRateForPackage(String packageName) {
-            synchronized (mLock) {
+            synchronized (mConfigLock) {
                 return mAppRefreshRateConfigMap.getOrDefault(packageName, -1);
             }
         }
 
         @Override
         public void setRefreshRateForPackage(String packageName, int refreshRate) {
-            synchronized (mLock) {
+            synchronized (mConfigLock) {
                 if (refreshRate > 0) {
                     logD("setRefreshRateForPackage, packageName: "
                             + packageName + ", refreshRate: " + refreshRate);
                     mAppRefreshRateConfigMap.put(packageName, refreshRate);
-                    mHandler.post(() -> saveConfigIntoSettingsLocked(UserHandle.USER_CURRENT));
                 } else if (mAppRefreshRateConfigMap.containsKey(packageName)) {
                     logD("unsetRefreshRateForPackage, packageName: " + packageName);
                     mAppRefreshRateConfigMap.remove(packageName);
-                    mHandler.post(() -> saveConfigIntoSettingsLocked(UserHandle.USER_CURRENT));
                 }
-                updateRefreshRateLocked(mSystemExService.getTopFullscreenPackage());
+                mHandler.post(() -> {
+                    saveConfigIntoSettingsLocked();
+                    updateRefreshRateLocked(mSystemExService.getTopFullscreenPackage());
+                });
             }
         }
 
         @Override
         public void unsetRefreshRateForPackage(String packageName) {
-            synchronized (mLock) {
+            synchronized (mConfigLock) {
                 if (mAppRefreshRateConfigMap.containsKey(packageName)) {
                     logD("unsetRefreshRateForPackage, packageName: " + packageName);
                     mAppRefreshRateConfigMap.remove(packageName);
-                    mHandler.post(() -> saveConfigIntoSettingsLocked(UserHandle.USER_CURRENT));
-                    updateRefreshRateLocked(mSystemExService.getTopFullscreenPackage());
+                    mHandler.post(() -> {
+                        saveConfigIntoSettingsLocked();
+                        updateRefreshRateLocked(mSystemExService.getTopFullscreenPackage());
+                    });
                 }
             }
         }
 
         @Override
         public void setExtremeRefreshRateEnabled(boolean enabled) {
-            synchronized (mLock) {
+            synchronized (mConfigLock) {
                 if (mExtremeMode != enabled) {
                     logD("setExtremeRefreshRateEnabled, enabled: " + enabled);
                     mExtremeMode = enabled;
                     Settings.System.putIntForUser(mSystemExService.getContentResolver(), EXTREME_REFRESH_RATE,
                             enabled ? 1 : 0, UserHandle.USER_CURRENT);
-                    if (enabled) {
-                        mRequestedRefreshRate = getMaxAllowedRefreshRate();
-                        notifyRefreshRateChanged();
-                    } else {
-                        updateRefreshRateLocked(mSystemExService.getTopFullscreenPackage());
-                    }
+                    mHandler.post(() -> {
+                        if (enabled) {
+                            mRequestedRefreshRate = getMaxAllowedRefreshRate();
+                            notifyRefreshRateChanged();
+                        } else {
+                            updateRefreshRateLocked(mSystemExService.getTopFullscreenPackage());
+                        }
+                    });
                 }
             }
         }
 
         @Override
         public int getRequestedRefreshRate() {
-            synchronized (mLock) {
+            synchronized (mConfigLock) {
                 logD("getRequestedRefreshRate, refreshRate: " + mRequestedRefreshRate);
                 return mRequestedRefreshRate;
             }
@@ -153,7 +165,7 @@ public final class DisplayRefreshRateController {
 
         @Override
         public int getRequestedMemcRefreshRate() {
-            synchronized (mLock) {
+            synchronized (mConfigLock) {
                 logD("getRequestedMemcRefreshRate, refreshRate: " + mRequestedMemcRefreshRate);
                 return mRequestedMemcRefreshRate;
             }
@@ -165,7 +177,7 @@ public final class DisplayRefreshRateController {
             IBinder.DeathRecipient dr = new IBinder.DeathRecipient() {
                 @Override
                 public void binderDied() {
-                    synchronized (mLock) {
+                    synchronized (mListenerLock) {
                         for (int i = 0; i < mListeners.size(); i++) {
                             if (listenerBinder == mListeners.get(i).mListener.asBinder()) {
                                 RefreshRateListener removed = mListeners.remove(i);
@@ -180,12 +192,16 @@ public final class DisplayRefreshRateController {
                 }
             };
 
-            synchronized (mLock) {
+            synchronized (mListenerLock) {
                 try {
                     listener.asBinder().linkToDeath(dr, 0);
                     mListeners.add(new RefreshRateListener(listener, dr));
-                    notifyRefreshRateChanged(listener);
-                    notifyMemcRefreshRateChanged(listener);
+                    mHandler.post(() -> {
+                        synchronized (mConfigLock) {
+                            notifyRefreshRateChanged(listener);
+                            notifyMemcRefreshRateChanged(listener);
+                        }
+                    });
                 } catch (RemoteException e) {
                     // Client died, no cleanup needed.
                     return false;
@@ -198,7 +214,7 @@ public final class DisplayRefreshRateController {
         public boolean unregisterRefreshRateListener(IRefreshRateListener listener) {
             boolean found = false;
             final IBinder listenerBinder = listener.asBinder();
-            synchronized (mLock) {
+            synchronized (mListenerLock) {
                 for (int i = 0; i < mListeners.size(); i++) {
                     found = true;
                     RefreshRateListener refreshRateListener = mListeners.get(i);
@@ -216,80 +232,98 @@ public final class DisplayRefreshRateController {
         }
     }
 
+    private DisplayRefreshRateController() {
+        mServiceThread = new ServiceThread(TAG, THREAD_PRIORITY_DEFAULT, false);
+        mServiceThread.start();
+        mHandler = new Handler(mServiceThread.getLooper());
+    }
+
     public void initSystemExService(NamelessSystemExService service) {
         mSystemExService = service;
         mSystemExService.publishBinderService(REFRESH_RATE_MANAGER_SERVICE, new RefreshRateManagerService());
     }
 
     public void onBootCompleted() {
-        synchronized (mLock) {
-            logD("onBootCompleted");
-            mHelper = DisplayRefreshRateHelper.getInstance(mSystemExService.getContext());
-            parseSettingsIntoMapLocked(UserHandle.USER_CURRENT);
-            mExtremeMode = Settings.System.getIntForUser(mSystemExService.getContentResolver(),
-                    EXTREME_REFRESH_RATE, 0, UserHandle.USER_CURRENT) != 0;
-            if (mExtremeMode) {
-                mRequestedRefreshRate = getMaxAllowedRefreshRate();
-                notifyRefreshRateChanged();
+        mHandler.post(() -> {
+            synchronized (mConfigLock) {
+                logD("onBootCompleted");
+                mHelper = DisplayRefreshRateHelper.getInstance(mSystemExService.getContext());
+                parseSettingsIntoMapLocked(UserHandle.USER_CURRENT);
+                mExtremeMode = Settings.System.getIntForUser(mSystemExService.getContentResolver(),
+                        EXTREME_REFRESH_RATE, 0, UserHandle.USER_CURRENT) != 0;
+                if (mExtremeMode) {
+                    mRequestedRefreshRate = getMaxAllowedRefreshRate();
+                    notifyRefreshRateChanged();
+                }
             }
-        }
+        });
     }
 
     public void onUserSwitching(int newUserId) {
-        synchronized (mLock) {
-            logD("onUserSwitching, newUserId: " + newUserId);
-            parseSettingsIntoMapLocked(newUserId);
+        mHandler.post(() -> {
+            synchronized (mConfigLock) {
+                logD("onUserSwitching, newUserId: " + newUserId);
+                parseSettingsIntoMapLocked(newUserId);
 
-            mExtremeMode = Settings.System.getIntForUser(mSystemExService.getContentResolver(),
-                    EXTREME_REFRESH_RATE, 0, newUserId) != 0;
-            if (mExtremeMode) {
-                mRequestedRefreshRate = getMaxAllowedRefreshRate();
-                notifyRefreshRateChanged();
-            } else {
-                updateRefreshRateLocked(mSystemExService.getTopFullscreenPackage());
+                mExtremeMode = Settings.System.getIntForUser(mSystemExService.getContentResolver(),
+                        EXTREME_REFRESH_RATE, 0, newUserId) != 0;
+                if (mExtremeMode) {
+                    mRequestedRefreshRate = getMaxAllowedRefreshRate();
+                    notifyRefreshRateChanged();
+                } else {
+                    updateRefreshRateLocked(mSystemExService.getTopFullscreenPackage());
+                }
             }
-        }
+        });
     }
 
     public void onPackageRemoved(String packageName) {
-        synchronized (mLock) {
-            logD("onPackageRemoved, packageName: " + packageName);
-            if (mAppRefreshRateConfigMap.containsKey(packageName)) {
-                logD("unsetRefreshRateForPackage, packageName: " + packageName);
-                mAppRefreshRateConfigMap.remove(packageName);
-                mHandler.post(() -> saveConfigIntoSettingsLocked(UserHandle.USER_CURRENT));
-                updateRefreshRateLocked(mSystemExService.getTopFullscreenPackage());
+        mHandler.post(() -> {
+            synchronized (mConfigLock) {
+                logD("onPackageRemoved, packageName: " + packageName);
+                if (mAppRefreshRateConfigMap.containsKey(packageName)) {
+                    logD("unsetRefreshRateForPackage, packageName: " + packageName);
+                    mAppRefreshRateConfigMap.remove(packageName);
+                    saveConfigIntoSettingsLocked();
+                    updateRefreshRateLocked(mSystemExService.getTopFullscreenPackage());
+                }
             }
-        }
+        });
     }
 
     public void onScreenOff() {
-        synchronized (mLock) {
-            if (mRequestedRefreshRate != -1) {
-                logD("onScreenOff, restore refresh rate");
-                mRequestedRefreshRate = -1;
-                notifyRefreshRateChanged();
+        mHandler.post(() -> {
+            synchronized (mConfigLock) {
+                if (mRequestedRefreshRate != -1) {
+                    logD("onScreenOff, restore refresh rate");
+                    mRequestedRefreshRate = -1;
+                    notifyRefreshRateChanged();
+                }
             }
-        }
+        });
     }
 
     public void onScreenOn() {
-        synchronized (mLock) {
-            if (mExtremeMode) {
-                logD("onScreenOn, set refresh rate to highest");
-                mRequestedRefreshRate = getMaxAllowedRefreshRate();
-                notifyRefreshRateChanged();
+        mHandler.post(() -> {
+            synchronized (mConfigLock) {
+                if (mExtremeMode) {
+                    logD("onScreenOn, set refresh rate to highest");
+                    mRequestedRefreshRate = getMaxAllowedRefreshRate();
+                    notifyRefreshRateChanged();
+                }
             }
-        }
+        });
     }
 
-    public void updateRefreshRate(String packageName) {
-        synchronized (mLock) {
-            updateRefreshRateLocked(packageName);
-        }
+    public void onTopFullscreenPackageChanged(String packageName) {
+        mHandler.post(() -> {
+            synchronized (mConfigLock) {
+                updateRefreshRateLocked(packageName);
+            }
+        });
     }
 
-    public void updateRefreshRateLocked(String packageName) {
+    private void updateRefreshRateLocked(String packageName) {
         if (mExtremeMode) {
             logD("Skip update refresh rate due to in extreme mode");
         } else if (mAppRefreshRateConfigMap.containsKey(packageName)) {
@@ -304,37 +338,37 @@ public final class DisplayRefreshRateController {
     }
 
     private void notifyRefreshRateChanged() {
-        logD("notifyRefreshRateChanged, refreshRate: " + mRequestedRefreshRate);
-        for (RefreshRateListener listener : mListeners) {
-            notifyRefreshRateChanged(listener.mListener);
+        synchronized (mListenerLock) {
+            logD("notifyRefreshRateChanged, refreshRate: " + mRequestedRefreshRate);
+            for (RefreshRateListener listener : mListeners) {
+                notifyRefreshRateChanged(listener.mListener);
+            }
         }
     }
 
     private void notifyRefreshRateChanged(IRefreshRateListener listener) {
-        mHandler.post(() -> {
-            try {
-                listener.onRequestedRefreshRate(mRequestedRefreshRate);
-            } catch (RemoteException | RuntimeException e) {
-                logE("Failed to notify refresh rate changed");
-            }
-        });
+        try {
+            listener.onRequestedRefreshRate(mRequestedRefreshRate);
+        } catch (RemoteException | RuntimeException e) {
+            logE("Failed to notify refresh rate changed");
+        }
     }
 
     private void notifyMemcRefreshRateChanged() {
-        logD("notifyMemcRefreshRateChanged, refreshRate: " + mRequestedMemcRefreshRate);
-        for (RefreshRateListener listener : mListeners) {
-            notifyMemcRefreshRateChanged(listener.mListener);
+        synchronized (mListenerLock) {
+            logD("notifyMemcRefreshRateChanged, refreshRate: " + mRequestedMemcRefreshRate);
+            for (RefreshRateListener listener : mListeners) {
+                notifyMemcRefreshRateChanged(listener.mListener);
+            }
         }
     }
 
     private void notifyMemcRefreshRateChanged(IRefreshRateListener listener) {
-        mHandler.post(() -> {
-            try {
-                listener.onRequestedMemcRefreshRate(mRequestedMemcRefreshRate);
-            } catch (RemoteException | RuntimeException e) {
-                logE("Failed to notify memc refresh rate changed");
-            }
-        });
+        try {
+            listener.onRequestedMemcRefreshRate(mRequestedMemcRefreshRate);
+        } catch (RemoteException | RuntimeException e) {
+            logE("Failed to notify memc refresh rate changed");
+        }
     }
 
     private int getMaxAllowedRefreshRate() {
@@ -370,14 +404,14 @@ public final class DisplayRefreshRateController {
         }
     }
 
-    private void saveConfigIntoSettingsLocked(int userId) {
+    private void saveConfigIntoSettingsLocked() {
         StringBuilder sb = new StringBuilder();
         for (String app : mAppRefreshRateConfigMap.keySet()) {
             sb.append(app).append(",");
             sb.append(String.valueOf(mAppRefreshRateConfigMap.get(app))).append(";");
         }
         Settings.System.putStringForUser(mSystemExService.getContentResolver(),
-                REFRESH_RATE_CONFIG_CUSTOM, sb.toString(), userId);
+                REFRESH_RATE_CONFIG_CUSTOM, sb.toString(), UserHandle.USER_CURRENT);
         logD("saveConfigIntoSettingsLocked, config: " + sb.toString());
     }
 

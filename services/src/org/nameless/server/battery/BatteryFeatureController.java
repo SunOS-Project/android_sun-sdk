@@ -5,6 +5,8 @@
 
 package org.nameless.server.battery;
 
+import static android.os.Process.THREAD_PRIORITY_DEFAULT;
+
 import static org.nameless.os.DebugConstants.DEBUG_BATTERY_FEATURE;
 import static org.nameless.provider.SettingsExt.System.OPTIMIZED_CHARGE_CEILING;
 import static org.nameless.provider.SettingsExt.System.OPTIMIZED_CHARGE_ENABLED;
@@ -32,6 +34,8 @@ import android.util.Slog;
 
 import com.android.internal.R;
 
+import com.android.server.ServiceThread;
+
 import org.nameless.os.BatteryFeatureManager;
 import org.nameless.server.NamelessSystemExService;
 
@@ -39,7 +43,8 @@ public class BatteryFeatureController {
 
     private static final String TAG = "BatteryFeatureController";
 
-    private final Object mLock = new Object();
+    private final Handler mHandler;
+    private final ServiceThread mServiceThread;
 
     private BatteryFeatureManager mBatteryFeatureManager;
     private NamelessSystemExService mSystemExService;
@@ -110,31 +115,34 @@ public class BatteryFeatureController {
 
         @Override
         public void onChange(boolean selfChange, Uri uri) {
-            synchronized (mLock) {
-                logD("onSettingsUpdated");
-                switch (uri.getLastPathSegment()) {
-                    case OPTIMIZED_CHARGE_CEILING:
-                    case OPTIMIZED_CHARGE_ENABLED:
-                    case OPTIMIZED_CHARGE_FLOOR:
-                    case OPTIMIZED_CHARGE_STATUS:
-                    case OPTIMIZED_CHARGE_TIME:
-                        mOptimizedChargeController.updateSettings();
-                        break;
-                    case WIRELESS_CHARGING_QUIET_MODE_ENABLED:
-                    case WIRELESS_CHARGING_QUIET_MODE_STATUS:
-                    case WIRELESS_CHARGING_QUIET_MODE_TIME:
-                        mQuietModeController.updateSettings();
-                        break;
-                    case WIRELESS_CHARGING_ENABLED:
-                        mWirelessChargeController.updateWirelessChargingSettings();
-                        break;
-                    case WIRELESS_REVERSE_CHARGING_ENABLED:
-                    case WIRELESS_REVERSE_CHARGING_MIN_LEVEL:
-                        mWirelessChargeController.updateReverseChargingSettings();
-                        break;
-                }
+            switch (uri.getLastPathSegment()) {
+                case OPTIMIZED_CHARGE_CEILING:
+                case OPTIMIZED_CHARGE_ENABLED:
+                case OPTIMIZED_CHARGE_FLOOR:
+                case OPTIMIZED_CHARGE_STATUS:
+                case OPTIMIZED_CHARGE_TIME:
+                    mOptimizedChargeController.updateSettings();
+                    break;
+                case WIRELESS_CHARGING_QUIET_MODE_ENABLED:
+                case WIRELESS_CHARGING_QUIET_MODE_STATUS:
+                case WIRELESS_CHARGING_QUIET_MODE_TIME:
+                    mQuietModeController.updateSettings();
+                    break;
+                case WIRELESS_CHARGING_ENABLED:
+                    mWirelessChargeController.updateWirelessChargingSettings();
+                    break;
+                case WIRELESS_REVERSE_CHARGING_ENABLED:
+                case WIRELESS_REVERSE_CHARGING_MIN_LEVEL:
+                    mWirelessChargeController.updateReverseChargingSettings();
+                    break;
             }
         }
+    }
+
+    private BatteryFeatureController() {
+        mServiceThread = new ServiceThread(TAG, THREAD_PRIORITY_DEFAULT, false);
+        mServiceThread.start();
+        mHandler = new Handler(mServiceThread.getLooper());
     }
 
     public void initSystemExService(NamelessSystemExService service) {
@@ -143,13 +151,13 @@ public class BatteryFeatureController {
     }
 
     public void onSystemServicesReady() {
-        synchronized (mLock) {
+        mHandler.post(() -> {
             logD("onSystemServicesReady");
 
             mNotificationPoster = new NotificationPoster(mSystemExService.getContext());
 
             if (mBatteryFeatureManager.hasFeature(SUSPEND_CHARGING)) {
-                mOptimizedChargeController = new OptimizedChargeController(
+                mOptimizedChargeController = new OptimizedChargeController(mHandler,
                         mSystemExService, mBatteryFeatureManager, mNotificationPoster);
             } else {
                 mOptimizedChargeController = null;
@@ -157,7 +165,7 @@ public class BatteryFeatureController {
             }
 
             if (mBatteryFeatureManager.hasFeature(WIRELESS_CHARGING_QUIET_MODE)) {
-                mQuietModeController = new QuietModeController(
+                mQuietModeController = new QuietModeController(mHandler,
                         mSystemExService, mBatteryFeatureManager, mNotificationPoster);
             } else {
                 mQuietModeController = null;
@@ -173,13 +181,13 @@ public class BatteryFeatureController {
                 logD("WirelessChargeController is not supported");
             }
 
-            mSettingsObserver = new SettingsObserver(mSystemExService.getHandler());
+            mSettingsObserver = new SettingsObserver(mHandler);
             mSettingsObserver.observe();
-        }
+        });
     }
 
     public void onBootCompleted() {
-        synchronized (mLock) {
+        mHandler.post(() -> {
             logD("onBootCompleted");
             if (mOptimizedChargeController != null) {
                 mOptimizedChargeController.onBootCompleted();
@@ -190,22 +198,26 @@ public class BatteryFeatureController {
             if (mWirelessChargeController != null) {
                 mWirelessChargeController.onBootCompleted();
             }
-        }
+        });
     }
 
     public void onBatteryStateChanged() {
-        if (mOptimizedChargeController != null) {
-            mOptimizedChargeController.onBatteryStateChanged();
-        }
-        if (mWirelessChargeController != null) {
-            mWirelessChargeController.onBatteryStateChanged();
-        }
+        mHandler.post(() -> {
+            if (mOptimizedChargeController != null) {
+                mOptimizedChargeController.onBatteryStateChanged();
+            }
+            if (mWirelessChargeController != null) {
+                mWirelessChargeController.onBatteryStateChanged();
+            }
+        });
     }
 
     public void onPowerSaveChanged() {
-        if (mWirelessChargeController != null) {
-            mWirelessChargeController.onPowerSaveChanged();
-        }
+        mHandler.post(() -> {
+            if (mWirelessChargeController != null) {
+                mWirelessChargeController.onPowerSaveChanged();
+            }
+        });
     }
 
     private static void logD(String msg) {

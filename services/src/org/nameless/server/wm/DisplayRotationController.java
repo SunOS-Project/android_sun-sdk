@@ -5,6 +5,8 @@
 
 package org.nameless.server.wm;
 
+import static android.os.Process.THREAD_PRIORITY_DEFAULT;
+
 import static org.nameless.content.ContextExt.ROTATE_MANAGER_SERVICE;
 import static org.nameless.os.DebugConstants.DEBUG_DISPLAY_ROTATE;
 import static org.nameless.os.RotateManager.ROTATE_FOLLOW_SYSTEM;
@@ -26,6 +28,8 @@ import android.view.Surface;
 
 import com.android.internal.view.RotationPolicy;
 
+import com.android.server.ServiceThread;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -38,8 +42,11 @@ public class DisplayRotationController {
 
     private static final String TAG = "DisplayRotationController";
 
-    private final Handler mHandler = new Handler();
-    private final Object mLock = new Object();
+    private final Handler mHandler;
+    private final ServiceThread mServiceThread;
+
+    private final Object mConfigLock = new Object();
+    private final Object mListenerLock = new Object();
 
     private final DisplayFeatureManager mDisplayFeatureManager =
             DisplayFeatureManager.getInstance();
@@ -74,31 +81,32 @@ public class DisplayRotationController {
     private final class RotateManagerService extends IRotateManagerService.Stub {
         @Override
         public int getRotateConfigForPackage(String packageName) {
-            synchronized (mLock) {
+            synchronized (mConfigLock) {
                 return mAppRotateConfigMap.getOrDefault(packageName, ROTATE_FOLLOW_SYSTEM);
             }
         }
 
         @Override
         public void setRotateConfigForPackage(String packageName, int config) {
-            synchronized (mLock) {
+            synchronized (mConfigLock) {
                 if (config != ROTATE_FOLLOW_SYSTEM) {
                     logD("setRotateConfigForPackage, packageName: "
                             + packageName + ", config: " + configToString(config));
                     mAppRotateConfigMap.put(packageName, config);
-                    mHandler.post(() -> saveConfigIntoSettingsLocked(UserHandle.USER_CURRENT));
                 } else if (mAppRotateConfigMap.containsKey(packageName)) {
                     logD("unsetRotateConfigForPackage, packageName: " + packageName);
                     mAppRotateConfigMap.remove(packageName);
-                    mHandler.post(() -> saveConfigIntoSettingsLocked(UserHandle.USER_CURRENT));
                 }
-                updateAutoRotateLocked(mSystemExService.getTopFullscreenPackage());
+                mHandler.post(() -> {
+                    saveConfigIntoSettingsLocked();
+                    updateAutoRotateLocked(mSystemExService.getTopFullscreenPackage());
+                });
             }
         }
 
         @Override
         public int getCurrentRotateConfig() {
-            synchronized (mLock) {
+            synchronized (mConfigLock) {
                 logD("getCurrentRotateConfig, ret: " + configToString(mRotateConfig));
                 return mRotateConfig;
             }
@@ -110,7 +118,7 @@ public class DisplayRotationController {
             IBinder.DeathRecipient dr = new IBinder.DeathRecipient() {
                 @Override
                 public void binderDied() {
-                    synchronized (mLock) {
+                    synchronized (mListenerLock) {
                         for (int i = 0; i < mListeners.size(); i++) {
                             if (listenerBinder == mListeners.get(i).mListener.asBinder()) {
                                 RotateConfigListener removed = mListeners.remove(i);
@@ -125,11 +133,15 @@ public class DisplayRotationController {
                 }
             };
 
-            synchronized (mLock) {
+            synchronized (mListenerLock) {
                 try {
                     listener.asBinder().linkToDeath(dr, 0);
                     mListeners.add(new RotateConfigListener(listener, dr));
-                    notifyRotateConfigChanged(listener);
+                    mHandler.post(() -> {
+                        synchronized (mConfigLock) {
+                            notifyRotateConfigChanged(listener);
+                        }
+                    });
                 } catch (RemoteException e) {
                     // Client died, no cleanup needed.
                     return false;
@@ -142,7 +154,7 @@ public class DisplayRotationController {
         public boolean unregisterRotateConfigListener(IRotateConfigListener listener) {
             boolean found = false;
             final IBinder listenerBinder = listener.asBinder();
-            synchronized (mLock) {
+            synchronized (mListenerLock) {
                 for (int i = 0; i < mListeners.size(); i++) {
                     found = true;
                     RotateConfigListener rotateConfigListener = mListeners.get(i);
@@ -160,78 +172,98 @@ public class DisplayRotationController {
         }
     }
 
+    private DisplayRotationController() {
+        mServiceThread = new ServiceThread(TAG, THREAD_PRIORITY_DEFAULT, false);
+        mServiceThread.start();
+        mHandler = new Handler(mServiceThread.getLooper());
+    }
+
     public void initSystemExService(NamelessSystemExService service) {
         mSystemExService = service;
         mSystemExService.publishBinderService(ROTATE_MANAGER_SERVICE, new RotateManagerService());
     }
 
-    public void onBootCompleted() {
-        synchronized (mLock) {
-            logD("onBootCompleted");
-            parseSettingsIntoMapLocked(UserHandle.USER_CURRENT);
-            mRotateLockedSystem = RotationPolicy.isRotationLocked(mSystemExService.getContext());
-        }
+    public void onSystemServicesReady() {
+        mHandler.post(() -> {
+            synchronized (mConfigLock) {
+                logD("onSystemServicesReady");
+                parseSettingsIntoMapLocked(UserHandle.USER_CURRENT);
+                mRotateLockedSystem = RotationPolicy.isRotationLocked(mSystemExService.getContext());
+            }
+        });
     }
 
     public void onUserSwitching(int newUserId) {
-        synchronized (mLock) {
-            logD("onUserSwitching, newUserId: " + newUserId);
-            parseSettingsIntoMapLocked(newUserId);
-            updateAutoRotateLocked(mSystemExService.getTopFullscreenPackage());
-        }
+        mHandler.post(() -> {
+            synchronized (mConfigLock) {
+                logD("onUserSwitching, newUserId: " + newUserId);
+                parseSettingsIntoMapLocked(newUserId);
+                updateAutoRotateLocked(mSystemExService.getTopFullscreenPackage());
+            }
+        });
     }
 
     public void onPackageRemoved(String packageName) {
-        synchronized (mLock) {
-            logD("onPackageRemoved, packageName: " + packageName);
-            if (mAppRotateConfigMap.containsKey(packageName)) {
-                logD("unsetRotateConfigForPackage, packageName: " + packageName);
-                mAppRotateConfigMap.remove(packageName);
-                mHandler.post(() -> saveConfigIntoSettingsLocked(UserHandle.USER_CURRENT));
-                updateAutoRotateLocked(mSystemExService.getTopFullscreenPackage());
+        mHandler.post(() -> {
+            synchronized (mConfigLock) {
+                logD("onPackageRemoved, packageName: " + packageName);
+                if (mAppRotateConfigMap.containsKey(packageName)) {
+                    logD("unsetRotateConfigForPackage, packageName: " + packageName);
+                    mAppRotateConfigMap.remove(packageName);
+                    saveConfigIntoSettingsLocked();
+                    updateAutoRotateLocked(mSystemExService.getTopFullscreenPackage());
+                }
             }
-        }
+        });
     }
 
     public void onScreenOff() {
-        synchronized (mLock) {
-            if (mRotateConfig != ROTATE_FOLLOW_SYSTEM) {
-                logD("onScreenOff, restore auto rotate");
-                mRotateConfig = ROTATE_FOLLOW_SYSTEM;
-                setAutoRotateLocked(false);
+        mHandler.post(() -> {
+            synchronized (mConfigLock) {
+                if (mRotateConfig != ROTATE_FOLLOW_SYSTEM) {
+                    logD("onScreenOff, restore auto rotate");
+                    mRotateConfig = ROTATE_FOLLOW_SYSTEM;
+                    setAutoRotateLocked(false);
+                }
             }
-        }
+        });
     }
 
     public void onShutdown() {
-        synchronized (mLock) {
-            if (mRotateConfig != ROTATE_FOLLOW_SYSTEM) {
-                logD("onShutdown, restore auto rotate");
-                mRotateConfig = ROTATE_FOLLOW_SYSTEM;
-                setAutoRotateLocked(false);
+        mHandler.post(() -> {
+            synchronized (mConfigLock) {
+                if (mRotateConfig != ROTATE_FOLLOW_SYSTEM) {
+                    logD("onShutdown, restore auto rotate");
+                    mRotateConfig = ROTATE_FOLLOW_SYSTEM;
+                    setAutoRotateLocked(false);
+                }
             }
-        }
+        });
     }
 
     public void updateRotation(int rotation) {
-        switch (rotation) {
-            case Surface.ROTATION_0:
-            case Surface.ROTATION_180:
-                mDisplayFeatureManager.setDisplayOrientation(0);
-                break;
-            case Surface.ROTATION_90:
-                mDisplayFeatureManager.setDisplayOrientation(90);
-                break;
-            case Surface.ROTATION_270:
-                mDisplayFeatureManager.setDisplayOrientation(270);
-                break;
-        }
+        mHandler.post(() -> {
+            switch (rotation) {
+                case Surface.ROTATION_0:
+                case Surface.ROTATION_180:
+                    mDisplayFeatureManager.setDisplayOrientation(0);
+                    break;
+                case Surface.ROTATION_90:
+                    mDisplayFeatureManager.setDisplayOrientation(90);
+                    break;
+                case Surface.ROTATION_270:
+                    mDisplayFeatureManager.setDisplayOrientation(270);
+                    break;
+            }
+        });
     }
 
-    public void updateAutoRotate(String packageName) {
-        synchronized (mLock) {
-            updateAutoRotateLocked(packageName);
-        }
+    public void onTopFullscreenPackageChanged(String packageName) {
+        mHandler.post(() -> {
+            synchronized (mConfigLock) {
+                updateAutoRotateLocked(packageName);
+            }
+        });
     }
 
     public void updateAutoRotateLocked(String packageName) {
@@ -260,20 +292,20 @@ public class DisplayRotationController {
     }
 
     private void notifyRotateConfigChanged() {
-        logD("notifyRotateConfigChanged, config: " + configToString(mRotateConfig));
-        for (RotateConfigListener listener : mListeners) {
-            notifyRotateConfigChanged(listener.mListener);
+        synchronized (mListenerLock) {
+            logD("notifyRotateConfigChanged, config: " + configToString(mRotateConfig));
+            for (RotateConfigListener listener : mListeners) {
+                notifyRotateConfigChanged(listener.mListener);
+            }
         }
     }
 
     private void notifyRotateConfigChanged(IRotateConfigListener listener) {
-        mHandler.post(() -> {
-            try {
-                listener.onRotateConfigChanged(mRotateConfig);
-            } catch (RemoteException | RuntimeException e) {
-                logE("Failed to notify rotate config changed");
-            }
-        });
+        try {
+            listener.onRotateConfigChanged(mRotateConfig);
+        } catch (RemoteException | RuntimeException e) {
+            logE("Failed to notify rotate config changed");
+        }
     }
 
     private void parseSettingsIntoMapLocked(int userId) {
@@ -301,14 +333,14 @@ public class DisplayRotationController {
         }
     }
 
-    private void saveConfigIntoSettingsLocked(int userId) {
+    private void saveConfigIntoSettingsLocked() {
         StringBuilder sb = new StringBuilder();
         for (String app : mAppRotateConfigMap.keySet()) {
             sb.append(app).append(",");
             sb.append(String.valueOf(mAppRotateConfigMap.get(app))).append(";");
         }
         Settings.System.putStringForUser(mSystemExService.getContentResolver(),
-                AUTO_ROTATE_CONFIG_CUSTOM, sb.toString(), userId);
+                AUTO_ROTATE_CONFIG_CUSTOM, sb.toString(), UserHandle.USER_CURRENT);
         logD("saveConfigIntoSettingsLocked, config: " + sb.toString());
     }
 

@@ -9,6 +9,7 @@ import static org.nameless.os.DebugConstants.DEBUG_PHONE_WINDOW_MANAGER;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
 import android.util.Slog;
@@ -31,10 +32,14 @@ class ThreeFingerGestureListener extends GestureListenerBase {
     private static final long PARTIAL_SCREENSHOT_HOLD_DURATION = 1000L;
     private static final long SCREENSHOT_GESTURE_VALID_DURATION = 50L;
 
-    private static final int MSG_TAKE_PARTIAL_SCREENSHOT = 1;
-    private static final int MSG_TAKE_FULL_SCREENSHOT = 2;
+    private static final int MSG_TAKE_PARTIAL_SCREENSHOT = 11;
+    private static final int MSG_TAKE_FULL_SCREENSHOT = 12;
 
     private final class H extends Handler {
+        H(Looper looper) {
+            super(looper);
+        }
+
         @Override
         public void handleMessage(Message message) {
             switch (message.what) {
@@ -49,7 +54,7 @@ class ThreeFingerGestureListener extends GestureListenerBase {
         }
     }
 
-    private final Handler mHandler = new H();
+    private final Handler mHandler;
 
     private final HashMap<Integer, Float[]> mPointersDown = new HashMap<>();
     private final HashMap<Integer, Float[]> mPointersUp = new HashMap<>();
@@ -62,8 +67,9 @@ class ThreeFingerGestureListener extends GestureListenerBase {
 
     private boolean mHandledPartial = false;
 
-    ThreeFingerGestureListener(SystemGesture systemGesture, Context context) {
+    ThreeFingerGestureListener(SystemGesture systemGesture, Context context, Looper looper) {
         super(systemGesture, context);
+        mHandler = new H(looper);
     }
 
     @Override

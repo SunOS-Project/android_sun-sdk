@@ -6,6 +6,7 @@
 package com.android.server.wm;
 
 import static android.app.ActivityTaskManager.INVALID_TASK_ID;
+import static android.os.Process.THREAD_PRIORITY_DEFAULT;
 
 import static com.android.server.wm.PopUpWindowController.PACKAGE_NAME_SYSTEM_TOOL;
 
@@ -18,6 +19,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Slog;
+
+import com.android.server.ServiceThread;
 
 import java.util.ArrayList;
 
@@ -41,7 +44,8 @@ public class TopActivityRecorder {
     private final Object mFocusLock = new Object();
     private final Object mObserverLock = new Object();
 
-    private final Handler mHandler = new Handler();
+    private final Handler mHandler;
+    private final ServiceThread mServiceThread;
 
     private final ArrayList<AppFocusObserver> mObservers = new ArrayList<>();
 
@@ -164,6 +168,12 @@ public class TopActivityRecorder {
     private NamelessSystemExService mSystemExService;
     private WindowManagerService mWms;
 
+    private TopActivityRecorder() {
+        mServiceThread = new ServiceThread(TAG, THREAD_PRIORITY_DEFAULT, false);
+        mServiceThread.start();
+        mHandler = new Handler(mServiceThread.getLooper());
+    }
+
     public void initSystemExService(NamelessSystemExService service) {
         mSystemExService = service;
         mSystemExService.publishBinderService(APP_FOCUS_MANAGER_SERVICE, new AppFocusManagerService());
@@ -213,9 +223,7 @@ public class TopActivityRecorder {
                         mTopFullscreenActivity = new ActivityInfo(newFocus, newTask);
                     }
                     logD("Top fullscreen window activity changed to " + newFocus);
-                    mHandler.post(() -> {
-                        notifyFullscreenComponentChanged(oldComponent, newComponent);
-                    });
+                    mHandler.post(() -> notifyFullscreenComponentChanged(oldComponent, newComponent));
                 }
             }
         }

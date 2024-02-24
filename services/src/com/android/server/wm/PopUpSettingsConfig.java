@@ -43,6 +43,7 @@ class PopUpSettingsConfig {
     private final HashSet<String> mUserNotificationBlacklist = new HashSet<>();
 
     private Context mContext;
+    private Handler mHandler;
     private SettingsObserver mObserver;
 
     private boolean mKeepMuteInMini = true;
@@ -53,11 +54,10 @@ class PopUpSettingsConfig {
 
     void init(Context context, Handler handler) {
         mContext = context;
+        mHandler = handler;
         mObserver = new SettingsObserver(handler);
         mObserver.observe();
-        handler.post(() -> {
-            updateAll();
-        });
+        updateAll();
     }
 
     private void updatePopUpKeepMuteInMini() {
@@ -122,12 +122,14 @@ class PopUpSettingsConfig {
     }
 
     void updateAll() {
-        updatePopUpKeepMuteInMini();
-        updatePopUpSingleTapAction();
-        updatePopUpDoubleTapAction();
-        updateHookMiFreeform();
-        updateSettingsJump();
-        updateNotificationBlacklist();
+        mHandler.post(() -> {
+            updatePopUpKeepMuteInMini();
+            updatePopUpSingleTapAction();
+            updatePopUpDoubleTapAction();
+            updateHookMiFreeform();
+            updateSettingsJump();
+            updateNotificationBlacklist();
+        });
     }
 
     private final class SettingsObserver extends ContentObserver {

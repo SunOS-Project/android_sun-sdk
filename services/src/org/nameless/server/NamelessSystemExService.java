@@ -77,8 +77,6 @@ public class NamelessSystemExService extends SystemService {
     private ScreenStateListener mScreenStateListener;
     private ShutdownListener mShutdownListener;
 
-    private final Object mLock = new Object();
-
     private String mTopFullscreenPackage = "";
 
     private int mBatterLevel;
@@ -109,10 +107,12 @@ public class NamelessSystemExService extends SystemService {
             if (mPocketModeSupported) {
                 PocketModeController.getInstance().onSystemServicesReady();
             }
+            DisplayRotationController.getInstance().onSystemServicesReady();
             DozeController.getInstance().onSystemServicesReady();
             GameModeController.getInstance().onSystemServicesReady();
             LauncherStateController.getInstance().onSystemServicesReady();
             LinearmotorVibratorController.getInstance().onSystemServicesReady();
+            SensorBlockController.getInstance().onSystemServicesReady();
             return;
         }
 
@@ -128,10 +128,7 @@ public class NamelessSystemExService extends SystemService {
                 PocketModeController.getInstance().onBootCompleted();
             }
             DisplayRefreshRateController.getInstance().onBootCompleted();
-            DisplayRotationController.getInstance().onBootCompleted();
-            GameModeController.getInstance().onBootCompleted();
             LauncherStateController.getInstance().onBootCompleted();
-            SensorBlockController.getInstance().onBootCompleted();
             mPackageRemovedListener.register();
             mPowerStateListener.register();
             mScreenStateListener.register();
@@ -208,13 +205,11 @@ public class NamelessSystemExService extends SystemService {
     }
 
     public void onTopFullscreenPackageChanged(String packageName) {
-        synchronized (mLock) {
-            mTopFullscreenPackage = packageName;
-            DisplayRefreshRateController.getInstance().updateRefreshRate(packageName);
-            DisplayRotationController.getInstance().updateAutoRotate(packageName);
-            GameModeController.getInstance().updateGameModeState(packageName, false);
-            SensorBlockController.getInstance().updateTopPackage(packageName);
-        }
+        mTopFullscreenPackage = packageName;
+        DisplayRefreshRateController.getInstance().onTopFullscreenPackageChanged(packageName);
+        DisplayRotationController.getInstance().onTopFullscreenPackageChanged(packageName);
+        GameModeController.getInstance().onTopFullscreenPackageChanged(packageName);
+        SensorBlockController.getInstance().onTopFullscreenPackageChanged(packageName);
     }
 
     private void onBatteryStateChanged() {
@@ -237,14 +232,8 @@ public class NamelessSystemExService extends SystemService {
         return mResolver;
     }
 
-    public Handler getHandler() {
-        return mHandler;
-    }
-
     public String getTopFullscreenPackage() {
-        synchronized (mLock) {
-            return mTopFullscreenPackage;
-        }
+        return mTopFullscreenPackage;
     }
 
     public int getBatteryLevel() {

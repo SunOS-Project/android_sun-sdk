@@ -103,10 +103,12 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
 
     @Override
     public void onConfigUpdated() {
-        mInitialized = false;
-        // We can use local config here safely because this is called after verification.
-        initConfig(LOCAL_CONFIG_FILE);
-        mInitialized = true;
+        synchronized (mLock) {
+            mInitialized = false;
+            // We can use local config here safely because this is called after verification.
+            initConfigLocked(LOCAL_CONFIG_FILE);
+            mInitialized = true;
+        }
     }
 
     public void initSystemExService(NamelessSystemExService service) {
@@ -115,8 +117,10 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
     }
 
     public void onSystemServicesReady() {
-        initConfig(compareConfigTimestamp());
-        mInitialized = true;
+        synchronized (mLock) {
+            initConfigLocked(compareConfigTimestamp());
+            mInitialized = true;
+        }
         mSystemExService.getContext().getSystemService(OnlineConfigManager.class).registerOnlineConfigurable(this);
     }
 
@@ -157,115 +161,113 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
         return localConfigInfo.second > systemConfigInfo.second ? LOCAL_CONFIG_FILE : SYSTEM_CONFIG_FILE;
     }
 
-    private void initConfig(String path) {
-        synchronized (mLock) {
-            mPropsToChange.clear();
-            mPropsToKeep.clear();
-            mPackagesToChange.clear();
-            mGamePackagesToChange.clear();
-            mPackagesToKeep.clear();
-            mExtraPackagesToChange.clear();
-            mCustomGoogleCameraPackages.clear();
+    private void initConfigLocked(String path) {
+        mPropsToChange.clear();
+        mPropsToKeep.clear();
+        mPackagesToChange.clear();
+        mGamePackagesToChange.clear();
+        mPackagesToKeep.clear();
+        mExtraPackagesToChange.clear();
+        mCustomGoogleCameraPackages.clear();
 
-            String name;
-            String packageName;
-            String packagesStr;
-            String propsStr;
-            String[] packages;
-            String[] props;
-            boolean isGame;
-            try {
-                FileReader fr = new FileReader(new File(path));
-                XmlPullParser parser = Xml.newPullParser();
-                parser.setInput(fr);
-                int event = parser.getEventType();
-                while (event != XmlPullParser.END_DOCUMENT) {
-                    if (event == XmlPullParser.START_TAG) {
-                        switch (parser.getName()) {
-                            case "propsToChange":
-                                name = parser.getAttributeValue(null, "name");
-                                propsStr = parser.getAttributeValue(null, "props");
-                                props = propsStr.split(";");
-                                for (String prop : props) {
-                                    final int colonIdx = prop.indexOf(":");
-                                    final String key = prop.substring(0, colonIdx).trim();
-                                    final String val = prop.substring(colonIdx + 1).trim();
-                                    if (!mPropsToChange.containsKey(name)) {
-                                        mPropsToChange.put(name, new ArrayMap<>());
+        String name;
+        String packageName;
+        String packagesStr;
+        String propsStr;
+        String[] packages;
+        String[] props;
+        boolean isGame;
+        try {
+            FileReader fr = new FileReader(new File(path));
+            XmlPullParser parser = Xml.newPullParser();
+            parser.setInput(fr);
+            int event = parser.getEventType();
+            while (event != XmlPullParser.END_DOCUMENT) {
+                if (event == XmlPullParser.START_TAG) {
+                    switch (parser.getName()) {
+                        case "propsToChange":
+                            name = parser.getAttributeValue(null, "name");
+                            propsStr = parser.getAttributeValue(null, "props");
+                            props = propsStr.split(";");
+                            for (String prop : props) {
+                                final int colonIdx = prop.indexOf(":");
+                                final String key = prop.substring(0, colonIdx).trim();
+                                final String val = prop.substring(colonIdx + 1).trim();
+                                if (!mPropsToChange.containsKey(name)) {
+                                    mPropsToChange.put(name, new ArrayMap<>());
+                                }
+                                mPropsToChange.get(name).put(key, val);
+                                logD("Added propsToChange, model=" + name + ", key=" + key + ", val=" + val);
+                            }
+                            break;
+                        case "propsToKeep":
+                            packageName = parser.getAttributeValue(null, "package");
+                            propsStr = parser.getAttributeValue(null, "props");
+                            props = propsStr.split(";");
+                            for (String prop : props) {
+                                final String trimedProp = prop.trim();
+                                if (!mPropsToKeep.containsKey(packageName)) {
+                                    mPropsToKeep.put(packageName, new HashSet<>());
+                                }
+                                mPropsToKeep.get(packageName).add(trimedProp);
+                                logD("Added propsToKeep, packageName=" + packageName + ", prop=" + trimedProp);
+                            }
+                            break;
+                        case "packagesToChange":
+                            name = parser.getAttributeValue(null, "name");
+                            isGame = "true".equals(parser.getAttributeValue(null, "game"));
+                            packagesStr = parser.getAttributeValue(null, "packages");
+                            packages = packagesStr.split(";");
+                            for (String pkg : packages) {
+                                final String trimedPkg = pkg.trim();
+                                if (isGame) {
+                                    if (!mGamePackagesToChange.containsKey(name)) {
+                                        mGamePackagesToChange.put(name, new HashSet<>());
                                     }
-                                    mPropsToChange.get(name).put(key, val);
-                                    logD("Added propsToChange, model=" + name + ", key=" + key + ", val=" + val);
-                                }
-                                break;
-                            case "propsToKeep":
-                                packageName = parser.getAttributeValue(null, "package");
-                                propsStr = parser.getAttributeValue(null, "props");
-                                props = propsStr.split(";");
-                                for (String prop : props) {
-                                    final String trimedProp = prop.trim();
-                                    if (!mPropsToKeep.containsKey(packageName)) {
-                                        mPropsToKeep.put(packageName, new HashSet<>());
+                                    mGamePackagesToChange.get(name).add(trimedPkg);
+                                } else {
+                                    if (!mPackagesToChange.containsKey(name)) {
+                                        mPackagesToChange.put(name, new HashSet<>());
                                     }
-                                    mPropsToKeep.get(packageName).add(trimedProp);
-                                    logD("Added propsToKeep, packageName=" + packageName + ", prop=" + trimedProp);
+                                    mPackagesToChange.get(name).add(trimedPkg);
                                 }
-                                break;
-                            case "packagesToChange":
-                                name = parser.getAttributeValue(null, "name");
-                                isGame = "true".equals(parser.getAttributeValue(null, "game"));
-                                packagesStr = parser.getAttributeValue(null, "packages");
-                                packages = packagesStr.split(";");
-                                for (String pkg : packages) {
-                                    final String trimedPkg = pkg.trim();
-                                    if (isGame) {
-                                        if (!mGamePackagesToChange.containsKey(name)) {
-                                            mGamePackagesToChange.put(name, new HashSet<>());
-                                        }
-                                        mGamePackagesToChange.get(name).add(trimedPkg);
-                                    } else {
-                                        if (!mPackagesToChange.containsKey(name)) {
-                                            mPackagesToChange.put(name, new HashSet<>());
-                                        }
-                                        mPackagesToChange.get(name).add(trimedPkg);
-                                    }
-                                    logD("Added packagesToChange, model=" + name + ", isGame=" + isGame + ", packageName=" + trimedPkg);
-                                }
-                                break;
-                            case "packagesToKeep":
-                                packagesStr = parser.getAttributeValue(null, "packages");
-                                packages = packagesStr.split(";");
-                                for (String pkg : packages) {
-                                    final String trimedPkg = pkg.trim();
-                                    mPackagesToKeep.add(trimedPkg);
-                                    logD("Added packagesToKeep, packageName=" + trimedPkg);
-                                }
-                                break;
-                            case "extraPackagesToChange":
-                                packagesStr = parser.getAttributeValue(null, "packages");
-                                packages = packagesStr.split(";");
-                                for (String pkg : packages) {
-                                    final String trimedPkg = pkg.trim();
-                                    mExtraPackagesToChange.add(trimedPkg);
-                                    logD("Added extraPackagesToChange, packageName=" + trimedPkg);
-                                }
-                                break;
-                            case "customGoogleCamera":
-                                packagesStr = parser.getAttributeValue(null, "packages");
-                                packages = packagesStr.split(";");
-                                for (String pkg : packages) {
-                                    final String trimedPkg = pkg.trim();
-                                    mCustomGoogleCameraPackages.add(trimedPkg);
-                                    logD("Added customGoogleCamera, packageName=" + trimedPkg);
-                                }
-                                break;
-                        }
+                                logD("Added packagesToChange, model=" + name + ", isGame=" + isGame + ", packageName=" + trimedPkg);
+                            }
+                            break;
+                        case "packagesToKeep":
+                            packagesStr = parser.getAttributeValue(null, "packages");
+                            packages = packagesStr.split(";");
+                            for (String pkg : packages) {
+                                final String trimedPkg = pkg.trim();
+                                mPackagesToKeep.add(trimedPkg);
+                                logD("Added packagesToKeep, packageName=" + trimedPkg);
+                            }
+                            break;
+                        case "extraPackagesToChange":
+                            packagesStr = parser.getAttributeValue(null, "packages");
+                            packages = packagesStr.split(";");
+                            for (String pkg : packages) {
+                                final String trimedPkg = pkg.trim();
+                                mExtraPackagesToChange.add(trimedPkg);
+                                logD("Added extraPackagesToChange, packageName=" + trimedPkg);
+                            }
+                            break;
+                        case "customGoogleCamera":
+                            packagesStr = parser.getAttributeValue(null, "packages");
+                            packages = packagesStr.split(";");
+                            for (String pkg : packages) {
+                                final String trimedPkg = pkg.trim();
+                                mCustomGoogleCameraPackages.add(trimedPkg);
+                                logD("Added customGoogleCamera, packageName=" + trimedPkg);
+                            }
+                            break;
                     }
-                    event = parser.next();
                 }
-                fr.close();
-            } catch (Exception e) {
-                Slog.e(TAG, "exception on initConfig", e);
+                event = parser.next();
             }
+            fr.close();
+        } catch (Exception e) {
+            Slog.e(TAG, "exception on initConfig", e);
         }
     }
 

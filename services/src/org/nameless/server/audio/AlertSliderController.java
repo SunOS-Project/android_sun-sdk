@@ -14,6 +14,7 @@ import static android.media.AudioSystem.DEVICE_OUT_EARPIECE;
 import static android.media.AudioSystem.DEVICE_OUT_SPEAKER;
 import static android.media.AudioSystem.DEVICE_OUT_SPEAKER_SAFE;
 import static android.media.AudioSystem.STREAM_MUSIC;
+import static android.os.Process.THREAD_PRIORITY_DEFAULT;
 
 import static org.nameless.audio.AlertSliderManager.STATE_BOTTOM;
 import static org.nameless.audio.AlertSliderManager.STATE_MIDDLE;
@@ -27,6 +28,7 @@ import android.database.ContentObserver;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.SystemProperties;
 import android.os.UEventObserver;
@@ -39,6 +41,7 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Slog;
 
+import com.android.server.ServiceThread;
 import com.android.server.audio.AudioService;
 
 import org.nameless.audio.AlertSliderManager;
@@ -80,8 +83,10 @@ public class AlertSliderController {
     private final Context mContext;
     private final Vibrator mVibrator;
 
-    private final AlertSliderHandler mHandler = new AlertSliderHandler();
-    private final SettingsObserver mSettingsObserver = new SettingsObserver(mHandler);
+    private final Handler mHandler;
+    private final ServiceThread mServiceThread;
+
+    private final SettingsObserver mSettingsObserver;
 
     private final UEventObserver mAlertSliderEventObserver = new UEventObserver() {
         @Override
@@ -129,6 +134,12 @@ public class AlertSliderController {
         mContext = context;
         mResolver = context.getContentResolver();
         mVibrator = vibrator;
+
+        mServiceThread = new ServiceThread(TAG, THREAD_PRIORITY_DEFAULT, false);
+        mServiceThread.start();
+        mHandler = new AlertSliderHandler(mServiceThread.getLooper());
+
+        mSettingsObserver = new SettingsObserver(mHandler);
     }
 
     public void onOutputDeviceChanged(boolean isBtAudio, boolean isWiredAudio) {
@@ -371,6 +382,10 @@ public class AlertSliderController {
     }
 
     private final class AlertSliderHandler extends Handler {
+        AlertSliderHandler(Looper looper) {
+            super(looper);
+        }
+
         @Override
         public void handleMessage(Message message) {
             switch (message.what) {

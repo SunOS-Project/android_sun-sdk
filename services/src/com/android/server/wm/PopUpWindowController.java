@@ -10,6 +10,7 @@ import static android.app.WindowConfiguration.WINDOWING_MODE_MINI_WINDOW_EXT;
 import static android.app.WindowConfiguration.WINDOWING_MODE_MULTI_WINDOW;
 import static android.app.WindowConfiguration.WINDOWING_MODE_PINNED_WINDOW_EXT;
 import static android.app.WindowConfiguration.WINDOWING_MODE_UNDEFINED;
+import static android.os.Process.THREAD_PRIORITY_DEFAULT;
 import static android.view.Display.DEFAULT_DISPLAY;
 import static android.view.WindowManager.LayoutParams.TYPE_MINI_WINDOW_DIMMER;
 import static android.view.WindowManager.LayoutParams.TYPE_PINNED_WINDOW_DISMISS_HINT;
@@ -34,7 +35,6 @@ import android.content.om.IOverlayManager;
 import android.graphics.Rect;
 import android.os.Binder;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.UserHandle;
@@ -51,6 +51,7 @@ import android.view.WindowInsets.Type;
 import android.window.TransitionInfo;
 import android.window.TransitionInfo.Change;
 
+import com.android.server.ServiceThread;
 import com.android.server.wm.ActivityStarter.Request;
 import com.android.server.wm.LaunchParamsController.LaunchParams;
 import com.android.server.wm.Transition.ChangeInfo;
@@ -100,7 +101,7 @@ public class PopUpWindowController {
     };
 
     private final Handler mHandler;
-    private final HandlerThread mHandlerThread;
+    private final ServiceThread mServiceThread;
 
     private ActivityTaskManagerService mAtmService;
     private Context mContext;
@@ -130,9 +131,9 @@ public class PopUpWindowController {
     }
 
     private PopUpWindowController() {
-        mHandlerThread = new HandlerThread("PopUpWindow-handler");
-        mHandlerThread.start();
-        mHandler = new Handler(mHandlerThread.getLooper());
+        mServiceThread = new ServiceThread(TAG, THREAD_PRIORITY_DEFAULT, false);
+        mServiceThread.start();
+        mHandler = new Handler(mServiceThread.getLooper());
     }
 
     public void init(Context context, WindowManagerService wms) {
@@ -228,9 +229,7 @@ public class PopUpWindowController {
     }
 
     void onUserSwitched() {
-        mHandler.post(() -> {
-            PopUpSettingsConfig.getInstance().updateAll();
-        });
+        PopUpSettingsConfig.getInstance().updateAll();
         findAndExitAllPopUp();
     }
 

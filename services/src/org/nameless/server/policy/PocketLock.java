@@ -26,6 +26,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.android.server.UiThread;
+
 /**
  * This class provides a fullscreen overlays view, displaying itself
  * even on top of lock screen. While this view is displaying touch
@@ -40,7 +42,7 @@ public class PocketLock {
     private final WindowManager mWindowManager;
     private final WindowManager.LayoutParams mLayoutParams;
 
-    private final Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler(UiThread.getHandler().getLooper());
 
     private boolean mAttached;
     private boolean mAnimating;

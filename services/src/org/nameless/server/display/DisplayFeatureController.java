@@ -5,6 +5,8 @@
 
 package org.nameless.server.display;
 
+import static android.os.Process.THREAD_PRIORITY_DEFAULT;
+
 import static org.nameless.os.DebugConstants.DEBUG_DISPLAY_FEATURE;
 import static org.nameless.provider.SettingsExt.System.DC_DIMMING_STATE;
 import static org.nameless.provider.SettingsExt.System.HIGH_TOUCH_SAMPLE_MODE;
@@ -17,10 +19,11 @@ import static vendor.nameless.hardware.displayfeature.V1_0.Feature.HIGH_SAMPLE_T
 import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Handler;
-import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.util.Slog;
+
+import com.android.server.ServiceThread;
 
 import org.nameless.display.DisplayFeatureManager;
 import org.nameless.server.NamelessSystemExService;
@@ -29,7 +32,8 @@ public class DisplayFeatureController {
 
     private static final String TAG = "DisplayFeatureController";
 
-    private final Object mLock = new Object();
+    private final Handler mHandler;
+    private final ServiceThread mServiceThread;
 
     private DisplayFeatureManager mDisplayFeatureManager;
     private NamelessSystemExService mSystemExService;
@@ -74,20 +78,24 @@ public class DisplayFeatureController {
 
         @Override
         public void onChange(boolean selfChange, Uri uri) {
-            synchronized (mLock) {
-                switch (uri.getLastPathSegment()) {
-                    case DC_DIMMING_STATE:
-                        mDcDimmingController.updateSettings();
-                        break;
-                    case UNLIMIT_EDGE_TOUCH_MODE:
-                        mEdgeTouchController.updateSettings();
-                        break;
-                    case HIGH_TOUCH_SAMPLE_MODE:
-                        mHighTouchSampleController.updateSettings();
-                        break;
-                }
+            switch (uri.getLastPathSegment()) {
+                case DC_DIMMING_STATE:
+                    mDcDimmingController.updateSettings();
+                    break;
+                case UNLIMIT_EDGE_TOUCH_MODE:
+                    mEdgeTouchController.updateSettings();
+                    break;
+                case HIGH_TOUCH_SAMPLE_MODE:
+                    mHighTouchSampleController.updateSettings();
+                    break;
             }
         }
+    }
+
+    private DisplayFeatureController() {
+        mServiceThread = new ServiceThread(TAG, THREAD_PRIORITY_DEFAULT, false);
+        mServiceThread.start();
+        mHandler = new Handler(mServiceThread.getLooper());
     }
 
     public void initSystemExService(NamelessSystemExService service) {
@@ -96,7 +104,7 @@ public class DisplayFeatureController {
     }
 
     public void onSystemServicesReady() {
-        synchronized (mLock) {
+        mHandler.post(() -> {
             logD("onSystemServicesReady");
 
             if (mDisplayFeatureManager.hasFeature(DC_DIMMING)) {
@@ -123,13 +131,13 @@ public class DisplayFeatureController {
                 logD("HighTouchSampleController is not supported");
             }
 
-            mSettingsObserver = new SettingsObserver(mSystemExService.getHandler());
+            mSettingsObserver = new SettingsObserver(mHandler);
             mSettingsObserver.observe();
-        }
+        });
     }
 
     public void onBootCompleted() {
-        synchronized (mLock) {
+        mHandler.post(() -> {
             logD("onBootCompleted");
 
             if (mDcDimmingController != null) {
@@ -141,16 +149,18 @@ public class DisplayFeatureController {
             if (mHighTouchSampleController != null) {
                 mHighTouchSampleController.onBootCompleted();
             }
-        }
+        });
     }
 
     public void onGameStateChanged(boolean inGame) {
-        if (mEdgeTouchController != null) {
-            mEdgeTouchController.onGameStateChanged(inGame);
-        }
-        if (mHighTouchSampleController != null) {
-            mHighTouchSampleController.onGameStateChanged(inGame);
-        }
+        mHandler.post(() -> {
+            if (mEdgeTouchController != null) {
+                mEdgeTouchController.onGameStateChanged(inGame);
+            }
+            if (mHighTouchSampleController != null) {
+                mHighTouchSampleController.onGameStateChanged(inGame);
+            }
+        });
     }
 
     private static void logD(String msg) {
