@@ -54,12 +54,15 @@
         <item>com.android.stk</item>
         <item>com.dolby.daxappui</item>
         <item>com.google.android.accessibility.soundamplifier</item>
+        <item>com.google.android.apps.aiwallpapers</item>
         <item>com.google.android.apps.emojiwallpaper</item>
         <item>com.google.android.apps.messaging</item>
         <item>com.google.android.apps.nexuslauncher</item>
         <item>com.google.android.apps.restore</item>
         <item>com.google.android.apps.wallpaper</item>
+        <item>com.google.android.apps.weather</item>
         <item>com.google.android.apps.wellbeing</item>
+        <item>com.google.android.apps.work.clouddpc</item>
         <item>com.google.android.contacts</item>
         <item>com.google.android.deskclock</item>
         <item>com.google.android.dialer</item>
