@@ -45,6 +45,7 @@ import org.nameless.os.PocketManager;
 import org.nameless.server.app.AppPropsController;
 import org.nameless.server.app.GameModeController;
 import org.nameless.server.battery.BatteryFeatureController;
+import org.nameless.server.content.OnlineConfigController;
 import org.nameless.server.display.DisplayFeatureController;
 import org.nameless.server.display.DisplayRefreshRateController;
 import org.nameless.server.pm.LauncherStateController;
@@ -161,6 +162,7 @@ public class NamelessSystemExService extends SystemService {
         GameModeController.getInstance().initSystemExService(this);
         LauncherStateController.getInstance().initSystemExService(this);
         LinearmotorVibratorController.getInstance().initSystemExService(this);
+        OnlineConfigController.getInstance().initSystemExService(this);
         SensorBlockController.getInstance().initSystemExService(this);
     }
 
