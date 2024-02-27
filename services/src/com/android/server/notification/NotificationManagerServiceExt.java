@@ -18,6 +18,7 @@ import android.provider.Settings;
 
 import org.nameless.os.VibrationPatternManager;
 import org.nameless.os.VibrationPatternManager.Type;
+import org.nameless.server.app.GameModeController;
 
 class NotificationManagerServiceExt {
 
@@ -64,6 +65,9 @@ class NotificationManagerServiceExt {
     }
 
     boolean shouldSkipSoundVib() {
+        if (GameModeController.getInstance().shouldSilentNotification()) {
+            return true;
+        }
         return mService.mScreenOn && mSilentNotificationScreenOn;
     }
 

@@ -624,11 +624,8 @@
     <string name="game_mode_disable_heads_up">Disable heads-up notification</string>
     <string name="game_mode_suppress_fullscreen_title">Block fullscreen events</string>
     <string name="game_mode_suppress_fullscreen_summary">Prevent fullscreen events like incoming call from appearing</string>
-    <string name="game_mode_ringer_mode_title">Ringer mode</string>
-    <string name="game_mode_ringer_mode_no_change">No change</string>
-    <string name="game_mode_ringer_mode_silent">Silent</string>
-    <string name="game_mode_ringer_mode_vibrate">Vibrate</string>
-    <string name="game_mode_ringer_mode_normal">Normal</string>
+    <string name="game_mode_silent_notification_title">Silent notifcations</string>
+    <string name="game_mode_silent_notification_summary">Don\'t play sound and vibration for notifications</string>
     <string name="game_mode_prevent_mistouch_options">Prevent mistouch options</string>
     <string name="game_mode_lock_gestures_title">Lock fullscreen gestures</string>
     <string name="game_mode_lock_gestures_summary">Require double swipe to unlock gestures in fullscreen games</string>

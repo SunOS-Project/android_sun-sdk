@@ -38,9 +38,6 @@ public class AudioServiceExt {
     private boolean mBtAudio = false;
     private boolean mWiredAudio = false;
 
-    private boolean mIgnoreNextRingerModeChange = false;
-    private int mOrigRingerMode = -1;
-
     void init(AudioService service, Context context, Vibrator vibrator) {
         mService = service;
         if (AlertSliderManager.hasAlertSlider(context)) {
@@ -56,13 +53,6 @@ public class AudioServiceExt {
     }
 
     void onRingerModeChanged(int ringerMode) {
-        if (mIgnoreNextRingerModeChange) {
-            mIgnoreNextRingerModeChange = false;
-            return;
-        }
-        if (mOrigRingerMode != -1) {
-            mOrigRingerMode = -1;
-        }
         if (mSystemReady && mAlertSliderController != null) {
             mAlertSliderController.onRingerModeChanged(ringerMode);
         }
@@ -92,20 +82,6 @@ public class AudioServiceExt {
 
         if (mSystemReady && mAlertSliderController != null) {
             mAlertSliderController.onOutputDeviceChanged(mBtAudio, mWiredAudio);
-        }
-    }
-
-    public void setTempRingerMode(int ringerMode) {
-        if (mOrigRingerMode == -1) {
-            mOrigRingerMode = mService.getRingerModeInternal();
-        }
-        mIgnoreNextRingerModeChange = true;
-        mService.setRingerModeInternal(ringerMode, "android");
-    }
-
-    public void restoreRingerMode() {
-        if (mOrigRingerMode != -1) {
-            mService.setRingerModeInternal(mOrigRingerMode, "android");
         }
     }
 }

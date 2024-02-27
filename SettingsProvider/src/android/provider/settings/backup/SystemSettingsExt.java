@@ -126,7 +126,7 @@ public class SystemSettingsExt {
         System.GAME_MODE_DISABLE_HEADS_UP,
         System.GAME_MODE_LOCK_GESTURES,
         System.GAME_MODE_LOCK_STATUS_BAR,
-        System.GAME_MODE_RINGER_MODE,
+        System.GAME_MODE_SILENT_NOTIFICATION,
         System.GAME_MODE_SUPPRESS_FULLSCREEN_INTENT,
     };
 }

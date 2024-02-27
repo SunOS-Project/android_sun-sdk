@@ -15,7 +15,7 @@ import static org.nameless.provider.SettingsExt.System.GAME_MODE_DISABLE_HEADS_U
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_DISABLE_THREE_FINGER_GESTURES;
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_LOCK_GESTURES;
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_LOCK_STATUS_BAR;
-import static org.nameless.provider.SettingsExt.System.GAME_MODE_RINGER_MODE;
+import static org.nameless.provider.SettingsExt.System.GAME_MODE_SILENT_NOTIFICATION;
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_SUPPRESS_FULLSCREEN_INTENT;
 
 import android.app.ActivityThread;
@@ -36,7 +36,6 @@ import com.android.internal.R;
 
 import com.android.server.ServiceThread;
 import com.android.server.UiThread;
-import com.android.server.audio.AudioServiceExt;
 import com.android.server.wm.TopActivityRecorder;
 
 import java.util.ArrayList;
@@ -96,8 +95,8 @@ public class GameModeController {
     private boolean mDisableThreeFingerGestures;
     private boolean mLockGestures;
     private boolean mLockStatusbar;
+    private boolean mSilentNotification;
     private boolean mSuppressFullscreenIntent;
-    private int mGameRingerMode;
 
     private long mLastGestureSwipeTime = -1L;
     private long mLastGestureUnlockedTime = -1L;
@@ -113,7 +112,7 @@ public class GameModeController {
                     return false;
                 }
                 saveGameListIntoSettingsLocked();
-                updateGameModeState(mSystemExService.getTopFullscreenPackage(), false);
+                updateGameModeState(mSystemExService.getTopFullscreenPackage());
                 return true;
             }
         }
@@ -128,7 +127,7 @@ public class GameModeController {
                     return false;
                 }
                 saveGameListIntoSettingsLocked();
-                updateGameModeState(mSystemExService.getTopFullscreenPackage(), false);
+                updateGameModeState(mSystemExService.getTopFullscreenPackage());
                 return true;
             }
         }
@@ -225,7 +224,7 @@ public class GameModeController {
                     Settings.System.getUriFor(GAME_MODE_LOCK_STATUS_BAR),
                     false, this, UserHandle.USER_ALL);
             mSystemExService.getContentResolver().registerContentObserver(
-                    Settings.System.getUriFor(GAME_MODE_RINGER_MODE),
+                    Settings.System.getUriFor(GAME_MODE_SILENT_NOTIFICATION),
                     false, this, UserHandle.USER_ALL);
             mSystemExService.getContentResolver().registerContentObserver(
                     Settings.System.getUriFor(GAME_MODE_SUPPRESS_FULLSCREEN_INTENT),
@@ -270,14 +269,11 @@ public class GameModeController {
                         mLastGestureSwipeTime = -1L;
                         mLastGestureUnlockedTime = -1L;
                         break;
-                    case GAME_MODE_RINGER_MODE:
-                        mGameRingerMode = Settings.System.getIntForUser(
+                    case GAME_MODE_SILENT_NOTIFICATION:
+                        mSilentNotification = Settings.System.getIntForUser(
                                 mSystemExService.getContentResolver(),
-                                GAME_MODE_RINGER_MODE,
-                                -1, UserHandle.USER_CURRENT);
-                        if (mGameRingerMode != -1 && mInGame) {
-                            AudioServiceExt.getInstance().setTempRingerMode(mGameRingerMode);
-                        }
+                                GAME_MODE_SILENT_NOTIFICATION,
+                                0, UserHandle.USER_CURRENT) == 1;
                         break;
                     case GAME_MODE_SUPPRESS_FULLSCREEN_INTENT:
                         mSuppressFullscreenIntent = Settings.System.getIntForUser(
@@ -323,7 +319,7 @@ public class GameModeController {
             updateSettings(newUserId);
             synchronized (mPackageLock) {
                 initGameAppsListLocked(newUserId);
-                updateGameModeState(mSystemExService.getTopFullscreenPackage(), true);
+                updateGameModeState(mSystemExService.getTopFullscreenPackage());
             }
         });
     }
@@ -340,7 +336,7 @@ public class GameModeController {
                     }
                     mGamePackages.remove(packageName);
                     saveGameListIntoSettingsLocked();
-                    updateGameModeState(mSystemExService.getTopFullscreenPackage(), false);
+                    updateGameModeState(mSystemExService.getTopFullscreenPackage());
                 }
             }
         });
@@ -349,7 +345,7 @@ public class GameModeController {
     public void onScreenOff() {
         mHandler.post(() -> {
             synchronized (mPackageLock) {
-                updateGameModeState("", false);
+                updateGameModeState("");
             }
         });
     }
@@ -357,15 +353,15 @@ public class GameModeController {
     public void onTopFullscreenPackageChanged(String packageName) {
         mHandler.post(() -> {
             synchronized (mPackageLock) {
-                updateGameModeState(packageName, false);
+                updateGameModeState(packageName);
             }
         });
     }
 
-    private void updateGameModeState(String packageName, boolean force) {
+    private void updateGameModeState(String packageName) {
         synchronized (mStateLock) {
             final boolean isGame = mGamePackages.contains(packageName);
-            if (isGame == mInGame && !force) {
+            if (isGame == mInGame) {
                 return;
             }
             mInGame = isGame;
@@ -373,13 +369,6 @@ public class GameModeController {
                 Slog.d(TAG, "updateGameModeState, inGame=" + mInGame);
             }
             DisplayFeatureController.getInstance().onGameStateChanged(mInGame);
-            if (mGameRingerMode != -1) {
-                if (mInGame) {
-                    AudioServiceExt.getInstance().setTempRingerMode(mGameRingerMode);
-                } else {
-                    AudioServiceExt.getInstance().restoreRingerMode();
-                }
-            }
             notifyGameStateChanged();
         }
     }
@@ -406,10 +395,10 @@ public class GameModeController {
                     mSystemExService.getContentResolver(),
                     GAME_MODE_LOCK_STATUS_BAR,
                     0, userId) == 1;
-            mGameRingerMode = Settings.System.getIntForUser(
+            mSilentNotification = Settings.System.getIntForUser(
                     mSystemExService.getContentResolver(),
-                    GAME_MODE_RINGER_MODE,
-                    -1, userId);
+                    GAME_MODE_SILENT_NOTIFICATION,
+                    0, userId) == 1;
             mSuppressFullscreenIntent = Settings.System.getIntForUser(
                     mSystemExService.getContentResolver(),
                     GAME_MODE_SUPPRESS_FULLSCREEN_INTENT,
@@ -480,6 +469,12 @@ public class GameModeController {
     public boolean shouldDisableThreeFingerGestures() {
         synchronized (mStateLock) {
             return mInGame && mDisableThreeFingerGestures;
+        }
+    }
+
+    public boolean shouldSilentNotification() {
+        synchronized (mStateLock) {
+            return mInGame && mSilentNotification;
         }
     }
 

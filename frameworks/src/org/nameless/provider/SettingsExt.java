@@ -846,10 +846,10 @@ public class SettingsExt {
         public static final String GAME_MODE_LOCK_STATUS_BAR = "game_mode_lock_status_bar";
 
         /**
-         * Game mode: Ringer mode in games
+         * Game mode: Whether to silent notifications in game
          * @hide
          */
-        public static final String GAME_MODE_RINGER_MODE = "game_mode_ringer_mode";
+        public static final String GAME_MODE_SILENT_NOTIFICATION = "game_mode_silent_notification";
 
         /**
          * Game mode: Whether to suppress fullscreen intent

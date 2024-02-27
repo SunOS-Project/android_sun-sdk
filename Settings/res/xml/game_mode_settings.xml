@@ -44,12 +44,11 @@
             android:summary="@string/game_mode_suppress_fullscreen_summary"
             android:defaultValue="false" />
 
-        <org.nameless.custom.preference.SystemSettingListPreference
-            android:key="game_mode_ringer_mode"
-            android:title="@string/game_mode_ringer_mode_title"
-            android:entries="@array/game_mode_ringer_mode_entries"
-            android:entryValues="@array/game_mode_ringer_mode_values"
-            android:defaultValue="-1" />
+        <org.nameless.custom.preference.SystemSettingSwitchPreference
+            android:key="game_mode_silent_notification"
+            android:title="@string/game_mode_silent_notification_title"
+            android:summary="@string/game_mode_silent_notification_summary"
+            android:defaultValue="false" />
     </PreferenceCategory>
 
     <PreferenceCategory
