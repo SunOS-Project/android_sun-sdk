@@ -16,7 +16,6 @@ import static org.nameless.provider.SettingsExt.System.GAME_MODE_DISABLE_THREE_F
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_LOCK_GESTURES;
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_LOCK_STATUS_BAR;
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_RINGER_MODE;
-import static org.nameless.provider.SettingsExt.System.GAME_MODE_STAY_AWAKE;
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_SUPPRESS_FULLSCREEN_INTENT;
 
 import android.app.ActivityThread;
@@ -97,7 +96,6 @@ public class GameModeController {
     private boolean mDisableThreeFingerGestures;
     private boolean mLockGestures;
     private boolean mLockStatusbar;
-    private boolean mStayAwake;
     private boolean mSuppressFullscreenIntent;
     private int mGameRingerMode;
 
@@ -230,9 +228,6 @@ public class GameModeController {
                     Settings.System.getUriFor(GAME_MODE_RINGER_MODE),
                     false, this, UserHandle.USER_ALL);
             mSystemExService.getContentResolver().registerContentObserver(
-                    Settings.System.getUriFor(GAME_MODE_STAY_AWAKE),
-                    false, this, UserHandle.USER_ALL);
-            mSystemExService.getContentResolver().registerContentObserver(
                     Settings.System.getUriFor(GAME_MODE_SUPPRESS_FULLSCREEN_INTENT),
                     false, this, UserHandle.USER_ALL);
         }
@@ -283,12 +278,6 @@ public class GameModeController {
                         if (mGameRingerMode != -1 && mInGame) {
                             AudioServiceExt.getInstance().setTempRingerMode(mGameRingerMode);
                         }
-                        break;
-                    case GAME_MODE_STAY_AWAKE:
-                        mStayAwake = Settings.System.getIntForUser(
-                                mSystemExService.getContentResolver(),
-                                GAME_MODE_STAY_AWAKE,
-                                0, UserHandle.USER_CURRENT) == 1;
                         break;
                     case GAME_MODE_SUPPRESS_FULLSCREEN_INTENT:
                         mSuppressFullscreenIntent = Settings.System.getIntForUser(
@@ -421,10 +410,6 @@ public class GameModeController {
                     mSystemExService.getContentResolver(),
                     GAME_MODE_RINGER_MODE,
                     -1, userId);
-            mStayAwake = Settings.System.getIntForUser(
-                    mSystemExService.getContentResolver(),
-                    GAME_MODE_STAY_AWAKE,
-                    0, userId) == 1;
             mSuppressFullscreenIntent = Settings.System.getIntForUser(
                     mSystemExService.getContentResolver(),
                     GAME_MODE_SUPPRESS_FULLSCREEN_INTENT,
@@ -439,7 +424,6 @@ public class GameModeController {
                 .setInGame(mInGame)
                 .setDisableAutoBrightness(mDisableAutoBrightness)
                 .setDisableHeadsUp(mDisableHeadsUp)
-                .setStayAwake(mStayAwake)
                 .setSuppressFullscreenIntent(mSuppressFullscreenIntent)
                 .build();
     }

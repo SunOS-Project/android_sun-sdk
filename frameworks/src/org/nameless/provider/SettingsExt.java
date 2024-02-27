@@ -852,12 +852,6 @@ public class SettingsExt {
         public static final String GAME_MODE_RINGER_MODE = "game_mode_ringer_mode";
 
         /**
-         * Game mode: Whether to stay awake in games
-         * @hide
-         */
-        public static final String GAME_MODE_STAY_AWAKE = "game_mode_stay_awake";
-
-        /**
          * Game mode: Whether to suppress fullscreen intent
          * @hide
          */

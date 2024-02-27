@@ -27,14 +27,12 @@ public class GameModeInfo implements Parcelable {
     private boolean mInGame;
     private boolean mDisableAutoBrightness;
     private boolean mDisableHeadsUp;
-    private boolean mStayAwake;
     private boolean mSuppressFullscreenIntent;
 
     private GameModeInfo() {
         mInGame = false;
         mDisableAutoBrightness = false;
         mDisableHeadsUp = false;
-        mStayAwake = false;
         mSuppressFullscreenIntent = false;
     }
 
@@ -42,7 +40,6 @@ public class GameModeInfo implements Parcelable {
         mInGame = in.readBoolean();
         mDisableAutoBrightness = in.readBoolean();
         mDisableHeadsUp = in.readBoolean();
-        mStayAwake = in.readBoolean();
         mSuppressFullscreenIntent = in.readBoolean();
     }
 
@@ -58,10 +55,6 @@ public class GameModeInfo implements Parcelable {
         return mInGame && mDisableHeadsUp;
     }
 
-    public boolean shouldStayAwake() {
-        return mInGame && mStayAwake;
-    }
-
     public boolean shouldSuppressFullscreenIntent() {
         return mInGame && mSuppressFullscreenIntent;
     }
@@ -70,14 +63,12 @@ public class GameModeInfo implements Parcelable {
         private boolean mInGame;
         private boolean mDisableAutoBrightness;
         private boolean mDisableHeadsUp;
-        private boolean mStayAwake;
         private boolean mSuppressFullscreenIntent;
 
         public Builder() {
             mInGame = false;
             mDisableAutoBrightness = false;
             mDisableHeadsUp = false;
-            mStayAwake = false;
             mSuppressFullscreenIntent = false;
         }
 
@@ -85,7 +76,6 @@ public class GameModeInfo implements Parcelable {
             mInGame = info.isInGame();
             mDisableAutoBrightness = info.shouldDisableAutoBrightness();
             mDisableHeadsUp = info.shouldDisableHeadsUp();
-            mStayAwake = info.shouldStayAwake();
             mSuppressFullscreenIntent = info.shouldSuppressFullscreenIntent();
         }
 
@@ -94,7 +84,6 @@ public class GameModeInfo implements Parcelable {
             info.mInGame = mInGame;
             info.mDisableAutoBrightness = mDisableAutoBrightness;
             info.mDisableHeadsUp = mDisableHeadsUp;
-            info.mStayAwake = mStayAwake;
             info.mSuppressFullscreenIntent = mSuppressFullscreenIntent;
             return info;
         }
@@ -114,11 +103,6 @@ public class GameModeInfo implements Parcelable {
             return this;
         }
 
-        public Builder setStayAwake(boolean stayAwake) {
-            mStayAwake = stayAwake;
-            return this;
-        }
-
         public Builder setSuppressFullscreenIntent(boolean suppress) {
             mSuppressFullscreenIntent = suppress;
             return this;
@@ -135,7 +119,6 @@ public class GameModeInfo implements Parcelable {
         dest.writeBoolean(mInGame);
         dest.writeBoolean(mDisableAutoBrightness);
         dest.writeBoolean(mDisableHeadsUp);
-        dest.writeBoolean(mStayAwake);
         dest.writeBoolean(mSuppressFullscreenIntent);
     }
 
@@ -144,7 +127,6 @@ public class GameModeInfo implements Parcelable {
         return "{mInGame=" + mInGame
                 + ", mDisableAutoBrightness=" + mDisableAutoBrightness
                 + ", mDisableHeadsUp=" + mDisableHeadsUp
-                + ", mStayAwake=" + mStayAwake
                 + ", mSuppressFullscreenIntent=" + mSuppressFullscreenIntent
                 + "}";
     }
