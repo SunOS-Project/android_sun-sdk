@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2024 The Nameless-AOSP Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/game_mode_preference_title">
+
+    <com.android.settingslib.widget.TopIntroPreference
+        android:key="game_mode_intro"
+        android:title="@string/game_mode_intro_text"
+        android:selectable="false"
+        android:persistent="false" />
+
+    <Preference
+        android:key="manage_game"
+        android:title="@string/game_mode_manage_apps_title"
+        android:summary="@string/game_mode_manage_apps_summary"
+        android:fragment="org.nameless.settings.system.ManageGamesFragment" />
+
+    <PreferenceCategory
+        android:key="in_game_options"
+        android:title="@string/game_mode_in_game_options">
+
+        <org.nameless.custom.preference.SystemSettingSwitchPreference
+            android:key="game_mode_disable_auto_brightness"
+            android:title="@string/game_mode_disable_auto_brightness"
+            android:defaultValue="false" />
+
+        <org.nameless.custom.preference.SystemSettingSwitchPreference
+            android:key="game_mode_disable_three_finger_gestures"
+            android:title="@string/game_mode_disable_three_finger_gestures"
+            android:defaultValue="true" />
+
+        <org.nameless.custom.preference.SystemSettingSwitchPreference
+            android:key="game_mode_disable_heads_up"
+            android:title="@string/game_mode_disable_heads_up"
+            android:defaultValue="false" />
+
+        <org.nameless.custom.preference.SystemSettingSwitchPreference
+            android:key="game_mode_suppress_fullscreen_intent"
+            android:title="@string/game_mode_suppress_fullscreen_title"
+            android:summary="@string/game_mode_suppress_fullscreen_summary"
+            android:defaultValue="false" />
+
+        <org.nameless.custom.preference.SystemSettingListPreference
+            android:key="game_mode_ringer_mode"
+            android:title="@string/game_mode_ringer_mode_title"
+            android:entries="@array/game_mode_ringer_mode_entries"
+            android:entryValues="@array/game_mode_ringer_mode_values"
+            android:defaultValue="-1" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="prevent_mistouch_options"
+        android:title="@string/game_mode_prevent_mistouch_options">
+
+        <org.nameless.custom.preference.SystemSettingSwitchPreference
+            android:key="game_mode_lock_gestures"
+            android:title="@string/game_mode_lock_gestures_title"
+            android:summary="@string/game_mode_lock_gestures_summary"
+            android:defaultValue="false" />
+
+        <org.nameless.custom.preference.SystemSettingSwitchPreference
+            android:key="game_mode_lock_status_bar"
+            android:title="@string/game_mode_lock_statusbar_title"
+            android:summary="@string/game_mode_lock_statusbar_summary"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -613,4 +613,26 @@
     <!-- Screen resolution -->
     <string name="screen_resolution_footer_custom">Full resolution uses more of your battery. SystemUI will be restarted to reload proper layout.</string>
 
+    <!-- Game mode settings -->
+    <string name="game_mode_preference_title">Game mode</string>
+    <string name="game_mode_intro_text">Get more immersive experience in games</string>
+    <string name="game_mode_manage_apps_title">Manage games</string>
+    <string name="game_mode_manage_apps_summary">Manage apps that need to enable game mode</string>
+    <string name="game_mode_in_game_options">In-Game options</string>
+    <string name="game_mode_disable_auto_brightness">Disable auto brightness</string>
+    <string name="game_mode_disable_three_finger_gestures">Disable three-finger gestures</string>
+    <string name="game_mode_disable_heads_up">Disable heads-up notification</string>
+    <string name="game_mode_suppress_fullscreen_title">Block fullscreen events</string>
+    <string name="game_mode_suppress_fullscreen_summary">Prevent fullscreen events like incoming call from appearing</string>
+    <string name="game_mode_ringer_mode_title">Ringer mode</string>
+    <string name="game_mode_ringer_mode_no_change">No change</string>
+    <string name="game_mode_ringer_mode_silent">Silent</string>
+    <string name="game_mode_ringer_mode_vibrate">Vibrate</string>
+    <string name="game_mode_ringer_mode_normal">Normal</string>
+    <string name="game_mode_prevent_mistouch_options">Prevent mistouch options</string>
+    <string name="game_mode_lock_gestures_title">Lock fullscreen gestures</string>
+    <string name="game_mode_lock_gestures_summary">Require double swipe to unlock gestures in fullscreen games</string>
+    <string name="game_mode_lock_statusbar_title">Lock status bar</string>
+    <string name="game_mode_lock_statusbar_summary">To enable status bar, swipe from screen left/right side</string>
+
 </resources>

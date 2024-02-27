@@ -300,4 +300,19 @@
         <item>60</item>
     </string-array>
 
+    <!-- Game mode ringer mode -->
+    <string-array name="game_mode_ringer_mode_entries" translatable="false">
+        <item>@string/game_mode_ringer_mode_no_change</item>
+        <item>@string/game_mode_ringer_mode_silent</item>
+        <item>@string/game_mode_ringer_mode_vibrate</item>
+        <item>@string/game_mode_ringer_mode_normal</item>
+    </string-array>
+
+    <string-array name="game_mode_ringer_mode_values" translatable="false">
+        <item>-1</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
 </resources>
