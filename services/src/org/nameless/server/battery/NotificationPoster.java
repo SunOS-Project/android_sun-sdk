@@ -39,10 +39,10 @@ class NotificationPoster {
         mNotificationManager = context.getSystemService(NotificationManager.class);
         final NotificationChannel ncOptimizedCharge = new NotificationChannel(CHANNEL_ID,
                 context.getString(R.string.optimized_charge_notification_channel_label),
-                NotificationManager.IMPORTANCE_MIN);
+                NotificationManager.IMPORTANCE_DEFAULT);
         final NotificationChannel ncWirelessTX = new NotificationChannel(CHANNEL_ID,
                 context.getString(R.string.wireless_reverse_charging_notification_channel_label),
-                NotificationManager.IMPORTANCE_MIN);
+                NotificationManager.IMPORTANCE_DEFAULT);
         mNotificationManager.createNotificationChannel(ncOptimizedCharge);
         mNotificationManager.createNotificationChannel(ncWirelessTX);
 
@@ -63,9 +63,8 @@ class NotificationPoster {
                 mContext.getString(R.string.tap_to_view_more_options));
         builder.setContentIntent(pIntent);
         builder.setSmallIcon(R.drawable.ic_battery);
-        builder.setOnlyAlertOnce(true);
         mNotificationOptimizedCharge = builder.build();
-        mNotificationOptimizedCharge.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
+        mNotificationOptimizedCharge.flags |= Notification.FLAG_NO_CLEAR;
 
         intent = new Intent().setComponent(new ComponentName(
                 "com.android.settings",
@@ -79,9 +78,8 @@ class NotificationPoster {
                 mContext.getString(R.string.tap_to_view_more_options));
         builder.setContentIntent(pIntent);
         builder.setSmallIcon(R.drawable.ic_wireless_reverse_charging);
-        builder.setOnlyAlertOnce(true);
         mNotificationWirelessTX = builder.build();
-        mNotificationWirelessTX.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
+        mNotificationWirelessTX.flags |= Notification.FLAG_NO_CLEAR;
     }
 
     void postOptimizedChargeNotif() {
