@@ -20,6 +20,7 @@ import static android.os.PowerManager.ACTION_POWER_SAVE_MODE_CHANGED;
 import static android.os.Process.THREAD_PRIORITY_DEFAULT;
 
 import android.app.KeyguardManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -60,6 +61,8 @@ public class NamelessSystemExService extends SystemService {
 
     private static final String TAG = "NamelessSystemExService";
 
+    private static final String ACTION_REBOOT = "org.nameless.intent.REBOOT_NOW";
+
     private final ContentResolver mResolver;
 
     private final boolean mBatteryFeatureSupported =
@@ -75,6 +78,7 @@ public class NamelessSystemExService extends SystemService {
 
     private PackageRemovedListener mPackageRemovedListener;
     private PowerStateListener mPowerStateListener;
+    private RebootListener mRebootListener;
     private ScreenStateListener mScreenStateListener;
     private ShutdownListener mShutdownListener;
 
@@ -96,6 +100,7 @@ public class NamelessSystemExService extends SystemService {
             mBatteryManagerInternal = LocalServices.getService(BatteryManagerInternal.class);
             mPackageRemovedListener = new PackageRemovedListener();
             mPowerStateListener = new PowerStateListener();
+            mRebootListener = new RebootListener();
             mScreenStateListener = new ScreenStateListener();
             mShutdownListener = new ShutdownListener();
             AppPropsController.getInstance().onSystemServicesReady();
@@ -131,6 +136,7 @@ public class NamelessSystemExService extends SystemService {
             DisplayRefreshRateController.getInstance().onBootCompleted();
             LauncherStateController.getInstance().onBootCompleted();
             mPackageRemovedListener.register();
+            mRebootListener.register();
             mPowerStateListener.register();
             mScreenStateListener.register();
             mShutdownListener.register();
@@ -250,6 +256,10 @@ public class NamelessSystemExService extends SystemService {
         return mPowerSave;
     }
 
+    public PendingIntent getRebootPendingIntent() {
+        return PendingIntent.getBroadcast(getContext(), 0, new Intent(ACTION_REBOOT), PendingIntent.FLAG_IMMUTABLE);
+    }
+
     private final class PackageRemovedListener extends BroadcastReceiver {
 
         private static final String EXTRA_UID = "EXTRA_UID";
@@ -333,6 +343,29 @@ public class NamelessSystemExService extends SystemService {
             final IntentFilter filter = new IntentFilter();
             filter.addAction(ACTION_BATTERY_CHANGED);
             filter.addAction(ACTION_POWER_SAVE_MODE_CHANGED);
+            getContext().registerReceiverForAllUsers(this, filter, null, mHandler);
+        }
+    }
+
+    private final class RebootListener extends BroadcastReceiver {
+
+        private final PowerManager mPowerManager;
+
+        public RebootListener() {
+            mPowerManager = getContext().getSystemService(PowerManager.class);
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case ACTION_REBOOT:
+                    mPowerManager.reboot(null);
+                    break;
+            }
+        }
+
+        public void register() {
+            final IntentFilter filter = new IntentFilter(ACTION_REBOOT);
             getContext().registerReceiverForAllUsers(this, filter, null, mHandler);
         }
     }

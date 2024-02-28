@@ -72,4 +72,9 @@
     <!-- Game mode lock gesture -->
     <string name="gesture_locked_warning">Swipe again to unlock gestures</string>
 
+    <!-- App props config update -->
+    <string name="app_prop_config_updated_title">App spoof config updated</string>
+    <string name="app_prop_config_updated_content">Reboot is needed to fully apply change</string>
+    <string name="reboot_now">Reboot now</string>
+
 </resources>

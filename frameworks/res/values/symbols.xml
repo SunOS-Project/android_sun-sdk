@@ -174,4 +174,10 @@
     <!-- Game mode lock gesture -->
     <java-symbol type="string" name="gesture_locked_warning" />
 
+    <!-- App props config update -->
+    <java-symbol type="drawable" name="ic_update" />
+    <java-symbol type="string" name="app_prop_config_updated_title" />
+    <java-symbol type="string" name="app_prop_config_updated_content" />
+    <java-symbol type="string" name="reboot_now" />
+
 </resources>

@@ -17,4 +17,8 @@ public class SystemMessageExt {
     // Notify the user about wireless reversed charge status.
     // package: android
     public static final int NOTE_WIRELESS_REVERSED_CHARGE = CUSTOM_NOTIFICATION_ID_START + 2;
+
+    // Notify the user about app spoof config updated
+    // package: android
+    public static final int NOTE_APP_PROPS_CONFIG_UPATED = CUSTOM_NOTIFICATION_ID_START + 3;
 }

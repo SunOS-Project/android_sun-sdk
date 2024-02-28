@@ -8,12 +8,18 @@ package org.nameless.server.app;
 import static org.nameless.content.ContextExt.APP_PROPS_MANAGER_SERVICE;
 import static org.nameless.os.DebugConstants.DEBUG_APP_PROPS;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.os.Build;
 import android.os.SystemProperties;
 import android.util.ArrayMap;
 import android.util.Pair;
 import android.util.Slog;
 import android.util.Xml;
+
+import com.android.internal.R;
+import com.android.internal.messages.SystemMessageExt;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -79,6 +85,8 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
 
     private NamelessSystemExService mSystemExService;
 
+    private NotificationManager mNotificationManager;
+
     private boolean mInitialized = false;
 
     @Override
@@ -109,6 +117,7 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
             initConfigLocked(LOCAL_CONFIG_FILE);
             mInitialized = true;
         }
+        postConfigUpdatedNotification();
     }
 
     public void initSystemExService(NamelessSystemExService service) {
@@ -122,6 +131,11 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
             mInitialized = true;
         }
         mSystemExService.getContext().getSystemService(OnlineConfigManager.class).registerOnlineConfigurable(this);
+
+        mNotificationManager = mSystemExService.getContext().getSystemService(NotificationManager.class);
+        final NotificationChannel channel = new NotificationChannel(TAG, TAG,
+                NotificationManager.IMPORTANCE_HIGH);
+        mNotificationManager.createNotificationChannel(channel);
     }
 
     private Pair<Integer, Long> getConfigInfo(String path) {
@@ -336,6 +350,20 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
         }
 
         return spoofMap;
+    }
+
+    private void postConfigUpdatedNotification() {
+        Notification.Builder builder = new Notification.Builder(mSystemExService.getContext(), TAG);
+        builder.setContentTitle(
+                mSystemExService.getContext().getString(R.string.app_prop_config_updated_title));
+        builder.setContentText(
+                mSystemExService.getContext().getString(R.string.app_prop_config_updated_content));
+        builder.setSmallIcon(R.drawable.ic_update);
+        builder.addAction(R.drawable.ic_update,
+                mSystemExService.getContext().getString(R.string.reboot_now),
+                mSystemExService.getRebootPendingIntent());
+
+        mNotificationManager.notify(SystemMessageExt.NOTE_APP_PROPS_CONFIG_UPATED, builder.build());
     }
 
     private static void logD(String msg) {
