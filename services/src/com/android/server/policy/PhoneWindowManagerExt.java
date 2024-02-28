@@ -418,6 +418,10 @@ public class PhoneWindowManagerExt {
         return mVolBtnMusicControls;
     }
 
+    public boolean isTouching() {
+        return mSystemGesture.isTouching();
+    }
+
     private void handleDevicePocketStateChanged() {
         final boolean interactive = mPhoneWindowManager.mPowerManager.isInteractive();
         if (DEBUG_PHONE_WINDOW_MANAGER) {

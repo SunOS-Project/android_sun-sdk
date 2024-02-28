@@ -36,6 +36,7 @@ import com.android.server.policy.PhoneWindowManagerExt;
 
 import java.util.ArrayList;
 
+import org.nameless.server.display.DisplayFeatureController;
 import org.nameless.server.policy.gesture.GestureListenerBase.GestureState;
 import org.nameless.view.ISystemGestureListener;
 
@@ -58,6 +59,8 @@ public class SystemGesture {
     private PointF mLastDownPos;
 
     private GestureListenerBase mTargetGestureListener;
+
+    private boolean mTouching;
 
     public SystemGesture(Context context, PhoneWindowManagerExt ext) {
         mPhoneWindowManagerExt = ext;
@@ -94,6 +97,7 @@ public class SystemGesture {
         boolean intercept = false;
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
+                mTouching = true;
                 for (GestureListenerBase listener : mGestureListeners) {
                     if (listener.interceptMotionBeforeQueueing(event)) {
                         intercept = listener.shouldInterceptGesture();
@@ -122,6 +126,8 @@ public class SystemGesture {
                 }
                 return SYSTEM_GESTURE_NONE;
             case MotionEvent.ACTION_UP:
+                mTouching = false;
+                DisplayFeatureController.getInstance().maybeUpdateGameState();
                 if (mTargetGestureListener == null) {
                     return SYSTEM_GESTURE_NONE;
                 }
@@ -154,6 +160,10 @@ public class SystemGesture {
                     mTargetGestureListener.interceptMotionBeforeQueueing(event);
                 }
                 return SYSTEM_GESTURE_NONE;
+            case MotionEvent.ACTION_CANCEL:
+                mTouching = false;
+                DisplayFeatureController.getInstance().maybeUpdateGameState();
+                return SYSTEM_GESTURE_NONE;
             default:
                 return SYSTEM_GESTURE_NONE;
         }
@@ -172,6 +182,10 @@ public class SystemGesture {
                 }
             }
         }
+    }
+
+    public boolean isTouching() {
+        return mTouching;
     }
 
     public void registerSystemGestureListener(String pkg, int gesture, ISystemGestureListener listener)

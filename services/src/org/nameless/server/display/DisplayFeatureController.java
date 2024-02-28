@@ -24,9 +24,11 @@ import android.provider.Settings;
 import android.util.Slog;
 
 import com.android.server.ServiceThread;
+import com.android.server.policy.PhoneWindowManagerExt;
 
 import org.nameless.display.DisplayFeatureManager;
 import org.nameless.server.NamelessSystemExService;
+import org.nameless.server.app.GameModeController;
 
 public class DisplayFeatureController {
 
@@ -43,6 +45,8 @@ public class DisplayFeatureController {
     private HighTouchSampleController mHighTouchSampleController;
 
     private SettingsObserver mSettingsObserver;
+
+    private boolean mDelayedUpdateGameState;
 
     private static class InstanceHolder {
         private static DisplayFeatureController INSTANCE = new DisplayFeatureController();
@@ -153,6 +157,11 @@ public class DisplayFeatureController {
     }
 
     public void onGameStateChanged(boolean inGame) {
+        if (PhoneWindowManagerExt.getInstance().isTouching()) {
+            logD("Delay game state update due to in touching");
+            mDelayedUpdateGameState = true;
+            return;
+        }
         mHandler.post(() -> {
             if (mEdgeTouchController != null) {
                 mEdgeTouchController.onGameStateChanged(inGame);
@@ -161,6 +170,21 @@ public class DisplayFeatureController {
                 mHighTouchSampleController.onGameStateChanged(inGame);
             }
         });
+    }
+
+    public void maybeUpdateGameState() {
+        if (mDelayedUpdateGameState) {
+            mDelayedUpdateGameState = false;
+            mHandler.post(() -> {
+                final boolean inGame = GameModeController.getInstance().isInGame();
+                if (mEdgeTouchController != null) {
+                    mEdgeTouchController.onGameStateChanged(inGame);
+                }
+                if (mHighTouchSampleController != null) {
+                    mHighTouchSampleController.onGameStateChanged(inGame);
+                }
+            });
+        }
     }
 
     private static void logD(String msg) {
