@@ -17,7 +17,7 @@ import android.content.Intent;
 import android.os.UserHandle;
 
 import com.android.internal.R;
-import com.android.internal.messages.nano.SystemMessageProto.SystemMessage;
+import com.android.internal.messages.SystemMessageExt;
 
 class NotificationPoster {
 
@@ -89,7 +89,7 @@ class NotificationPoster {
             return;
         }
         logD(TAG, "postOptimizedChargeNotif");
-        mNotificationManager.notify(SystemMessage.NOTE_OPTIMIZED_CHARGE, mNotificationOptimizedCharge);
+        mNotificationManager.notify(SystemMessageExt.NOTE_OPTIMIZED_CHARGE, mNotificationOptimizedCharge);
         mNotifOptimizedChargePosted = true;
     }
 
@@ -98,7 +98,7 @@ class NotificationPoster {
             return;
         }
         logD(TAG, "cancelOptimizedChargeNotif");
-        mNotificationManager.cancel(SystemMessage.NOTE_OPTIMIZED_CHARGE);
+        mNotificationManager.cancel(SystemMessageExt.NOTE_OPTIMIZED_CHARGE);
         mNotifOptimizedChargePosted = false;
     }
 
@@ -107,7 +107,7 @@ class NotificationPoster {
             return;
         }
         logD(TAG, "postWirelessTxNotif");
-        mNotificationManager.notify(SystemMessage.NOTE_WIRELESS_REVERSED_CHARGE, mNotificationWirelessTX);
+        mNotificationManager.notify(SystemMessageExt.NOTE_WIRELESS_REVERSED_CHARGE, mNotificationWirelessTX);
         mNotifWirelessTxPosted = true;
     }
 
@@ -116,7 +116,7 @@ class NotificationPoster {
             return;
         }
         logD(TAG, "cancelWirelessTxNotif");
-        mNotificationManager.cancel(SystemMessage.NOTE_WIRELESS_REVERSED_CHARGE);
+        mNotificationManager.cancel(SystemMessageExt.NOTE_WIRELESS_REVERSED_CHARGE);
         mNotifWirelessTxPosted = false;
     }
 }
