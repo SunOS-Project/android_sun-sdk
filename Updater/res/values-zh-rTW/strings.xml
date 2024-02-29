@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2017 The LineageOS Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- App name -->
+    <string name="app_name">系統更新</string>
+    <!-- Notifications -->
+    <string name="export_channel_title">導出已完成</string>
+    <string name="new_updates_channel_title">新的更新</string>
+    <string name="ongoing_channel_title">當前下載</string>
+    <string name="update_failed_channel_title">更新失敗</string>
+    <string name="verification_failed_notification">驗證失敗</string>
+    <string name="verifying_download_notification">正在驗證更新</string>
+    <string name="downloading_notification">下載中</string>
+    <string name="download_paused_notification">下載暫停</string>
+    <string name="download_paused_error_notification">下載錯誤</string>
+    <string name="download_completed_notification">下載完成</string>
+    <string name="download_starting_notification">正在開始下載</string>
+    <string name="update_failed_notification">更新失敗</string>
+    <string name="check_for_update">檢查更新</string>
+    <!-- Menu -->
+    <string name="menu_delete_update">刪除</string>
+    <string name="menu_export_update">導出更新</string>
+    <!-- General -->
+    <string name="update_found_notification">有可用的系統更新</string>
+    <string name="snack_no_updates_found">未發現新的更新</string>
+    <string name="snack_updates_check_failed">檢查更新失敗。請檢查您的網路然後再試一次。</string>
+    <string name="snack_download_failed">下載更新失敗。請檢查您的網路然後再試一次。</string>
+    <string name="snack_download_verification_failed">驗證更新失敗</string>
+    <string name="snack_download_verified">下載完成.</string>
+    <string name="snack_update_not_installable">在當前的版本上無法安裝更新。</string>
+    <string name="list_download_progress_new"><xliff:g example="12.2" id="filesize_without_unit">%1$s</xliff:g> 的 <xliff:g example="310 MB" id="filesize_without_unit">%2$s</xliff:g> • <xliff:g example="56" id="percentage">%3$s</xliff:g></string>
+    <string name="list_download_progress_eta_new"><xliff:g example="12.2" id="filesize_without_unit">%1$s</xliff:g> 的 <xliff:g example="310 MB" id="filesize_without_unit">%2$s</xliff:g> (<xliff:g example="3 minutes left" id="eta">%3$s</xliff:g>) • <xliff:g example="56" id="percentage">%4$s</xliff:g></string>
+    <string name="list_verifying_update">正在驗證更新</string>
+    <string name="list_no_updates">未發現新的更新.</string>
+    <string name="forbidden_download_title">禁止下載</string>
+    <string name="forbidden_download_summary">本次更新禁止直接下載安裝。\n\n檢查更改日誌或群組以獲取更多詳細信息。</string>
+    <!-- Actions -->
+    <string name="action_download">下載</string>
+    <string name="action_pause">暫停</string>
+    <string name="action_resume">繼續</string>
+    <string name="action_install">安裝</string>
+    <string name="action_delete">刪除</string>
+    <string name="confirm_delete_dialog_title">刪除文件</string>
+    <string name="confirm_delete_dialog_message">您確定要刪除此更新檔案？</string>
+    <string name="pause_button">暫停</string>
+    <string name="resume_button">繼續</string>
+    <string name="reboot">重新啟動</string>
+    <string name="reboot_needed_dialog_title">需要重新啟動</string>
+    <string name="reboot_needed_dialog_summary">您的設備需要重新啟動才能完成安裝更新。 \n\n如果您想要保留 Magisk 更新，請點擊\"取消\"並在重啟前將 Magisk 安裝到另一個分區。 \n\n您想現在就重啟嗎？</string>
+    <string name="details_button">更新日誌</string>
+    <!-- Installation -->
+    <string name="apply_update_dialog_title">應用更新</string>
+    <string name="apply_update_dialog_message">您將要更新到 <xliff:g id="update_name">%1$s</xliff:g>。\n\n如果按下<xliff:g id="ok">%2$s</xliff:g>，您的設備將會重啟到恢復模式並安裝更新。\n\n注意：此功能需要一個相容的Recovery，否則您將需要手動安裝更新。</string>
+    <string name="apply_update_dialog_message_ab">您將要升級到 <xliff:g id="update_name">%1$s</xliff:g>。 \n\n如果您按下<xliff:g id="ok">%2$s</xliff:g>，設備將會在後台進行安裝。 \n\n當安裝完畢後，將會提示您重新啟動。</string>
+    <string name="installing_update">正在安裝更新包</string>
+    <string name="installing_update_error">安裝錯誤</string>
+    <string name="installing_update_finished">更新已安裝</string>
+    <string name="finalizing_package">正在完成更新包安裝</string>
+    <string name="dialog_prepare_zip_message">正在準備更新</string>
+    <string name="dialog_battery_low_title">低電量</string>
+    <string name="dialog_battery_low_message_pct">電池電量過低，您需要至少 <xliff:g id="percent_discharging">%1$d</xliff:g>%% 的電量才能繼續；如果正在充電，則需要 <xliff:g id="percent_charging">%2$d</xliff:g>%% 的電量才能繼續。</string>
+    <!-- Export update -->
+    <string name="dialog_export_title">導出更新至內部儲存空間</string>
+    <string name="notification_export_success">已導出更新至內部儲存空間</string>
+    <string name="notification_export_fail">導出更新至內部儲存空間失敗</string>
+    <string name="toast_already_exporting">以導出更新</string>
+    <!-- ETA -->
+    <plurals name="eta_seconds">
+        <item quantity="other">剩餘<xliff:g id="count">%d</xliff:g> 秒</item>
+    </plurals>
+    <plurals name="eta_minutes">
+        <item quantity="other">剩餘<xliff:g id="count">%d</xliff:g> 分</item>
+    </plurals>
+    <plurals name="eta_hours">
+        <item quantity="other">剩餘<xliff:g id="count">%d</xliff:g> 小時</item>
+    </plurals>
+    <!-- Mobile data warning -->
+    <string name="update_on_mobile_data_title">行動數據使用警告</string>
+    <string name="update_on_mobile_data_message">您將通過行動數據下載更新包，這可能會導致較大的數據用量，是否繼續？</string>
+    <string name="checkbox_mobile_data_warning">不再顯示</string>
+    <!-- Info section -->
+    <string name="maintainer_info_title">維護者</string>
+    <string name="maintainer_info_unknown">不明</string>
+    <string name="donate_info_title">捐獻</string>
+    <string name="donate_info_summary">請作者喝一杯咖啡</string>
+    <string name="group_info_title">Telegram</string>
+    <string name="group_info_summary">加入以獲得最新消息&amp; 支援</string>
+    <string name="error_open_url">打開連結失敗</string>
+    <!-- Local update -->
+    <string name="local_update_title">本地更新</string>
+    <string name="local_update_summary">從儲存空間安裝更新</string>
+    <string name="local_update_import_success">您已選擇：\n%1$s\n\n你想要現在安裝嗎?</string>
+    <string name="local_update_import_disabled">下載或安裝更新時無法導入本地更新</string>
+    <string name="local_update_import_failure">導入本地更新失敗</string>
+    <string name="local_update_import_install">安裝</string>
+    <string name="local_update_import_progress">正在導入本地更新\u2026</string>
+    <!-- Changelog -->
+    <string name="fetch_changelog_failed">抓取更新日誌失敗</string>
+    <string name="fetch_changelog_title">更新日誌</string>
+    <string name="fetch_changelog_progress">正在抓取更新日誌\u2026</string>
+    <string name="copy_changelog">複製</string>
+    <string name="copy_changelog_success">已成功將更新日誌複製到剪貼板</string>
+</resources>

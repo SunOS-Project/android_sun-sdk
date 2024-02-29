@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2017 The LineageOS Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- App name -->
+    <string name="app_name">עדכון מערכת</string>
+    <!-- Notifications -->
+    <string name="export_channel_title">הייצוא הושלם</string>
+    <string name="new_updates_channel_title">עדכונים חדשים</string>
+    <string name="ongoing_channel_title">הורדות בתהליך</string>
+    <string name="update_failed_channel_title">עדכון נכשל</string>
+    <string name="verification_failed_notification">האימות נכשל</string>
+    <string name="verifying_download_notification">מאמת עדכון</string>
+    <string name="downloading_notification">מוריד</string>
+    <string name="download_paused_notification">ההורדה מושהית</string>
+    <string name="download_paused_error_notification">שגיאה בהורדה</string>
+    <string name="download_completed_notification">ההורדה הושלמה</string>
+    <string name="download_starting_notification">מתחיל הורדה</string>
+    <string name="update_failed_notification">עדכון נכשל</string>
+    <string name="check_for_update">בדוק עדכונים</string>
+    <!-- Menu -->
+    <string name="menu_delete_update">מחק</string>
+    <string name="menu_export_update">ייצוא עדכון</string>
+    <!-- General -->
+    <string name="update_found_notification">עדכון מערכת זמין</string>
+    <string name="snack_no_updates_found">לא נמצאו עדכונים חדשים</string>
+    <string name="snack_updates_check_failed">בדיקת העדכון נכשלה. אנא בדוק את חיבור האינטרנט שלך ונסה שוב מאוחר יותר.</string>
+    <string name="snack_download_failed">ההורדה נכשלה. אנא בדוק את חיבור האינטרנט שלך ונסה שוב מאוחר יותר.</string>
+    <string name="snack_download_verification_failed">אימות העדכון נכשל.</string>
+    <string name="snack_download_verified">ההורדה הושלמה.</string>
+    <string name="snack_update_not_installable">לא ניתן להתקין עדכון זה על גבי גרסת הבנייה הנוכחית.</string>
+    <string name="list_download_progress_new"><xliff:g example="12.2" id="filesize_without_unit">%1$s</xliff:g> מתוך <xliff:g example="310 MB" id="filesize_without_unit">%2$s</xliff:g> • <xliff:g example="56" id="percentage">%3$s</xliff:g></string>
+    <string name="list_download_progress_eta_new"><xliff:g example="12.2" id="filesize_without_unit">%1$s</xliff:g> מתוך <xliff:g example="310 MB" id="filesize_without_unit">%2$s</xliff:g> (<xliff:g example="3 minutes left" id="eta">%3$s</xliff:g>) • <xliff:g example="56" id="percentage">%4$s</xliff:g></string>
+    <string name="list_verifying_update">מאמת עדכון</string>
+    <string name="list_no_updates">לא נמצאו עדכונים חדשים.</string>
+    <string name="forbidden_download_title">הורדה אסורה</string>
+    <string name="forbidden_download_summary">עדכון זה אסור להורדה והתקנה ישירות.\n\nבדוק את יומן השינויים או את הקבוצה לפרטים נוספים.</string>
+    <!-- Actions -->
+    <string name="action_download">הורדה</string>
+    <string name="action_pause">השהה</string>
+    <string name="action_resume">המשך</string>
+    <string name="action_install">התקן</string>
+    <string name="action_delete">מחק</string>
+    <string name="confirm_delete_dialog_title">מחק קובץ</string>
+    <string name="confirm_delete_dialog_message">למחוק את קובץ העדכון שנבחר?</string>
+    <string name="pause_button">השהה</string>
+    <string name="resume_button">המשך</string>
+    <string name="reboot">הפעל מחדש</string>
+    <string name="reboot_needed_dialog_title">יש צורך בהפעלה מחדש</string>
+    <string name="reboot_needed_dialog_summary">כדי להשלים את התקנת העדכון, יש להפעיל מחדש את המכשיר שלך.\n\nאם ברצונך להשאיר את Magisk מותקן, אנא לחץ על \'ביטול\' והתקן (flash) את Magisk לסלוט החדש לפני אתחול.\n\nהאם ברצונך להפעיל מחדש עכשיו?</string>
+    <string name="details_button">יומן שינויים</string>
+    <!-- Installation -->
+    <string name="apply_update_dialog_title">החל עדכון</string>
+    <string name="apply_update_dialog_message">אתה עומד לשדרג ל <xliff:g id="update_name">%1$s</xliff:g>.\n\nאם תלחץ <xliff:g id="ok">%2$s</xliff:g>, המכשיר יאתחל את עצמו במצב שחזור כדי להתקין את העדכון.\n\nהערה: תכונה זו דורשת שחזור תואם או שיהיה צורך להתקין את העדכונים באופן ידני.</string>
+    <string name="apply_update_dialog_message_ab">אתה עומד לשדרג ל <xliff:g id="update_name">%1$s</xliff:g>.\n\nאם תלחץ <xliff:g id="ok">%2$s</xliff:g>, המכשיר יתחיל להתקין ברקע.\n\nלאחר השלמתו, תתבקש לאתחל.</string>
+    <string name="installing_update">מתקין חבילת עדכון</string>
+    <string name="installing_update_error">שגיאת התקנה</string>
+    <string name="installing_update_finished">העדכון הותקן</string>
+    <string name="finalizing_package">סיום התקנת החבילה</string>
+    <string name="dialog_prepare_zip_message">הכנה לעדכון ראשוני</string>
+    <string name="dialog_battery_low_title">סוללה חלשה</string>
+    <string name="dialog_battery_low_message_pct">רמת הסוללה נמוכה מדי, אתה צריך לפחות <xliff:g id="percent_discharging">%1$d</xliff:g>%% של הסוללה כדי להמשיך, <xliff:g id="percent_charging">%2$d</xliff:g>%% אם בטעינה.</string>
+    <!-- Export update -->
+    <string name="dialog_export_title">מייצא עדכון לאחסון פנימי</string>
+    <string name="notification_export_success">העדכון יוצא לאחסון פנימי</string>
+    <string name="notification_export_fail">ייצוא העדכון לאחסון פנימי נכשל</string>
+    <string name="toast_already_exporting">כבר מייצא עדכון</string>
+    <!-- ETA -->
+    <plurals name="eta_seconds">
+        <item quantity="one">שנייה אחת נותרה</item>
+        <item quantity="two"><xliff:g id="count">%d</xliff:g>נותרו שתי שניות</item>
+        <item quantity="many"><xliff:g id="count">%d</xliff:g> שניות הרבה נותרו</item>
+        <item quantity="other"><xliff:g id="count">%d</xliff:g> נותרו שניות</item>
+    </plurals>
+    <plurals name="eta_minutes">
+        <item quantity="one">דקה אחת נותרה</item>
+        <item quantity="two"><xliff:g id="count">%d</xliff:g> דקות נותרו</item>
+        <item quantity="many"><xliff:g id="count">%d</xliff:g> דקות נותרו</item>
+        <item quantity="other"><xliff:g id="count">%d</xliff:g> minutes left</item>
+    </plurals>
+    <plurals name="eta_hours">
+        <item quantity="one">שעה אחת נותרה</item>
+        <item quantity="two"><xliff:g id="count">%d</xliff:g> hours left</item>
+        <item quantity="many"><xliff:g id="count">%d</xliff:g> שעות נותרו</item>
+        <item quantity="other"><xliff:g id="count">%d</xliff:g> hours left</item>
+    </plurals>
+    <!-- Mobile data warning -->
+    <string name="update_on_mobile_data_title">אזהרה</string>
+    <string name="update_on_mobile_data_message">אתה עומד להוריד חבילת עדכון באמצעות נתונים סלולריים שסביר להניח שיגרום לשימוש רב בנתונים. האם תרצה להמשיך?</string>
+    <string name="checkbox_mobile_data_warning">אל תציג שוב</string>
+    <!-- Info section -->
+    <string name="maintainer_info_title">מתחזק</string>
+    <string name="maintainer_info_unknown">לא ידוע</string>
+    <string name="donate_info_title">תרום</string>
+    <string name="donate_info_summary">תמכו בפיתוח</string>
+    <string name="group_info_title">טלגרם</string>
+    <string name="group_info_summary">הצטרף כדי לקבל חדשות &amp; תמיכה</string>
+    <string name="error_open_url">פתיחת כתובת האתר בדפדפן נכשלה</string>
+    <!-- Local update -->
+    <string name="local_update_title">עדכון מקומי</string>
+    <string name="local_update_summary">החל עדכון מאחסון מקומי</string>
+    <string name="local_update_import_success">בחרת:\n%1$s\n\nהאם ברצונך להתקין אותו?</string>
+    <string name="local_update_import_disabled">לא ניתן לייבא עדכון מקומי בעת הורדה או התקנת עדכון</string>
+    <string name="local_update_import_failure">ייבוא העדכון המקומי נכשל</string>
+    <string name="local_update_import_install">התקן</string>
+    <string name="local_update_import_progress">מייבא עדכון מקומי\u2026</string>
+    <!-- Changelog -->
+    <string name="fetch_changelog_failed">אחזור יומן השינויים נכשל</string>
+    <string name="fetch_changelog_title">יומן שינויים</string>
+    <string name="fetch_changelog_progress">מביא יומן שינויים\u2026</string>
+    <string name="copy_changelog">העתק</string>
+    <string name="copy_changelog_success">יומן השינויים הועתק בהצלחה ללוח</string>
+</resources>

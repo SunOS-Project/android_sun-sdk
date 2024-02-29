@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2017 The LineageOS Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- App name -->
+    <string name="app_name">Atualização do sistema</string>
+    <!-- Notifications -->
+    <string name="export_channel_title">Exportação concluída</string>
+    <string name="new_updates_channel_title">Novas atualizações</string>
+    <string name="ongoing_channel_title">Descargas em andamento</string>
+    <string name="update_failed_channel_title">Atualização falhou</string>
+    <string name="verification_failed_notification">Verificação falhou</string>
+    <string name="verifying_download_notification">A verificar a atualização</string>
+    <string name="downloading_notification">A descarregar</string>
+    <string name="download_paused_notification">Descarregamento em pausa</string>
+    <string name="download_paused_error_notification">Erro ao descarregar</string>
+    <string name="download_completed_notification">Descarregamento completa</string>
+    <string name="download_starting_notification">Inicio do descarregamento</string>
+    <string name="update_failed_notification">Atualização falhou</string>
+    <string name="check_for_update">Verificar por atualização</string>
+    <!-- Menu -->
+    <string name="menu_delete_update">Apagar</string>
+    <string name="menu_export_update">Exportar a atualização</string>
+    <!-- General -->
+    <string name="update_found_notification">Atualização de sistema disponível
+ 
+chave: atualização_encontrada_notificação
+atualização_encontrada_notificação
+Geral</string>
+    <string name="snack_no_updates_found">Não há novas atualizações</string>
+    <string name="snack_updates_check_failed">A verificação de atualização falhou. Verifique a sua ligação à Internet e tente novamente mais tarde.</string>
+    <string name="snack_download_failed">O descarregamento falhou. Verifique a sua ligação à Internet e tente novamente mais tarde.</string>
+    <string name="snack_download_verification_failed">A verificação da atualização falhou.</string>
+    <string name="snack_download_verified">Descarregamento completo.</string>
+    <string name="snack_update_not_installable">Esta atualização não pode ser instalada sobre a compilação atual.</string>
+    <string name="list_download_progress_new"><xliff:g exemplo="12.2" id="tamanho do ficheiro_sem_unidade">%1$s</xliff:g> of <xliff:g exemplo="310 MB" id="tamanho do ficheiro_sem_unidade">%2$s</xliff:g> • <xliff:g exemplo="56" id="percentagem">%3$s</xliff:g></string>
+    <string name="list_download_progress_eta_new"><xliff:g exemplo="12.2" id="tamanho do ficheiro_sem_unidade">%1$s</xliff:g> of <xliff:g exemplo="310 MB" id="tamanho do ficheiro_sem_unidade">%2$s</xliff:g> (<xliff:g exemplo="3 minutos restantes" id="eta">%3$s</xliff:g>) • <xliff:g exemplo="56" id="percentagem">%4$s</xliff:g></string>
+    <string name="list_verifying_update">Verificando a atualização</string>
+    <string name="list_no_updates">Não foi encontrada nova atualização.</string>
+    <string name="forbidden_download_title">Descarregamento proibido</string>
+    <string name="forbidden_download_summary">Esta atualização é proibida de baixar e instalar diretamente.\n\nVerifique o changelog ou o grupo para mais detalhes.</string>
+    <!-- Actions -->
+    <string name="action_download">Descarregamento</string>
+    <string name="action_pause">Pausa</string>
+    <string name="action_resume">Resumo</string>
+    <string name="action_install">Instalar</string>
+    <string name="action_delete">Apagar</string>
+    <string name="confirm_delete_dialog_title">Apagar ficheiro</string>
+    <string name="confirm_delete_dialog_message">Apagar o ficheiro da atualização selecionado?</string>
+    <string name="pause_button">Pausa</string>
+    <string name="resume_button">Resumo</string>
+    <string name="reboot">Reiniciar</string>
+    <string name="reboot_needed_dialog_title">Reiniciar necessário</string>
+    <string name="reboot_needed_dialog_summary">Para concluir a instalação da atualização, o seu dispositivo precisa ser reiniciado.\n\nSe desejar manter o magisk instalado, clique em \'cancelar\' e instale o magisk no novo slot antes de reiniciar.\n\nDeseja reiniciar agora?</string>
+    <string name="details_button">Log de alterações</string>
+    <!-- Installation -->
+    <string name="apply_update_dialog_title">Aplicar atualização</string>
+    <string name="apply_update_dialog_message">Você está prestes a atualizar para <xliff:g id="atualização_nome">%1$s</xliff:g>.\n\nSe você pressionar <xliff:g id="ok">%2$s</xliff:g>, o dispositivo reiniciará no modo de recuperação para instalar a atualização.\n\nObservação: Este recurso requer uma recuperação compatível ou as atualizações precisarão ser instaladas manualmente.</string>
+    <string name="apply_update_dialog_message_ab">Você está prestes a atualizar para <xliff:g id="atualização_nome">%1$s</xliff:g>.\n\nSe você pressionar <xliff:g id="ok">%2$s</xliff:g>, o dispositivo começará a instalação em segundo plano.\n\nDepois de concluído, você será solicitado a reiniciar.</string>
+    <string name="installing_update">Instalando o pacote de atualização</string>
+    <string name="installing_update_error">Erro na instalação</string>
+    <string name="installing_update_finished">Atualização instalada</string>
+    <string name="finalizing_package">A finalizar a instalação do pacote</string>
+    <string name="dialog_prepare_zip_message">Preparação de atualização preliminar</string>
+    <string name="dialog_battery_low_title">Low battery</string>
+    <string name="dialog_battery_low_message_pct">The battery level is too low, you need at least <xliff:g id="percent_discharging">%1$d</xliff:g>%% of the battery to continue, <xliff:g id="percent_charging">%2$d</xliff:g>%% if charging.</string>
+    <!-- Export update -->
+    <string name="dialog_export_title">Exporting update to internal storage</string>
+    <string name="notification_export_success">Update exported to internal storage</string>
+    <string name="notification_export_fail">Failed to export update to internal storage</string>
+    <string name="toast_already_exporting">Already exporting an update</string>
+    <!-- ETA -->
+    <plurals name="eta_seconds">
+        <item quantity="one">1 second left</item>
+        <item quantity="other"><xliff:g id="count">%d</xliff:g> seconds left</item>
+    </plurals>
+    <plurals name="eta_minutes">
+        <item quantity="one">1 minute left</item>
+        <item quantity="other"><xliff:g id="count">%d</xliff:g> minutes left</item>
+    </plurals>
+    <plurals name="eta_hours">
+        <item quantity="one">1 hour left</item>
+        <item quantity="other"><xliff:g id="count">%d</xliff:g> hours left</item>
+    </plurals>
+    <!-- Mobile data warning -->
+    <string name="update_on_mobile_data_title">Warning</string>
+    <string name="update_on_mobile_data_message">You\'re about to download an update package using mobile data which is likely going to cause high data usage. Would you like to proceed?</string>
+    <string name="checkbox_mobile_data_warning">Do not show again</string>
+    <!-- Info section -->
+    <string name="maintainer_info_title">Maintainer</string>
+    <string name="maintainer_info_unknown">Unknown</string>
+    <string name="donate_info_title">Donate</string>
+    <string name="donate_info_summary">Support the development</string>
+    <string name="group_info_title">Telegram</string>
+    <string name="group_info_summary">Join to get news &amp; support</string>
+    <string name="error_open_url">Failed to open URL in browser</string>
+    <!-- Local update -->
+    <string name="local_update_title">Local update</string>
+    <string name="local_update_summary">Apply update from local storage</string>
+    <string name="local_update_import_success">You have chosen:\n%1$s\n\nDo you want to install it?</string>
+    <string name="local_update_import_disabled">Can\'t import local update when downloading or installing update</string>
+    <string name="local_update_import_failure">Failed to import local update</string>
+    <string name="local_update_import_install">Install</string>
+    <string name="local_update_import_progress">Importing local update\u2026</string>
+    <!-- Changelog -->
+    <string name="fetch_changelog_failed">Failed to fetch changelog</string>
+    <string name="fetch_changelog_title">Changelog</string>
+    <string name="fetch_changelog_progress">Fetching changelog\u2026</string>
+    <string name="copy_changelog">Copy</string>
+    <string name="copy_changelog_success">Successfully copied changelog to clipboard</string>
+</resources>

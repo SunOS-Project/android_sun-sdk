@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2017 The LineageOS Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- App name -->
+    <string name="app_name">Systemupdate</string>
+    <!-- Notifications -->
+    <string name="export_channel_title">Abschluss des Exports</string>
+    <string name="new_updates_channel_title">Neue Updates</string>
+    <string name="ongoing_channel_title">Laufende Downloads</string>
+    <string name="update_failed_channel_title">Update fehlgeschlagen</string>
+    <string name="verification_failed_notification">Überprüfung fehlgeschlagen</string>
+    <string name="verifying_download_notification">Überprüfung des Updates</string>
+    <string name="downloading_notification">Wird heruntergeladen</string>
+    <string name="download_paused_notification">Download angehalten</string>
+    <string name="download_paused_error_notification">Downloadfehler</string>
+    <string name="download_completed_notification">Download abgeschlossen</string>
+    <string name="download_starting_notification">Download wird gestartet</string>
+    <string name="update_failed_notification">Update fehlgeschlagen</string>
+    <string name="check_for_update">Auf Update überprüfen</string>
+    <!-- Menu -->
+    <string name="menu_delete_update">Löschen</string>
+    <string name="menu_export_update">Update exportieren</string>
+    <!-- General -->
+    <string name="update_found_notification">Systemupdate verfügbar</string>
+    <string name="snack_no_updates_found">Keine neuen Updates gefunden</string>
+    <string name="snack_updates_check_failed">Die Update-Prüfung ist fehlgeschlagen. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es später erneut.</string>
+    <string name="snack_download_failed">Der Download ist fehlgeschlagen. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es später erneut.</string>
+    <string name="snack_download_verification_failed">Die Update-Überprüfung ist fehlgeschlagen.</string>
+    <string name="snack_download_verified">Download abgeschlossen.</string>
+    <string name="snack_update_not_installable">Dieses Update kann nicht zusätzlich zum aktuellen Build installiert werden.</string>
+    <string name="list_download_progress_new"><xliff:g example="12.2" id="filesize_without_unit">%1$s</xliff:g> von <xliff:g example="310 MB" id="filesize_without_unit">%2$s</xliff:g> • <xliff:g example="56" id="percentage">%3$s</xliff:g></string>
+    <string name="list_download_progress_eta_new"><xliff:g example="12.2" id="filesize_without_unit">%1$s</xliff:g> von <xliff:g example="310 MB" id="filesize_without_unit">%2$s</xliff:g> (<xliff:g example="3 minutes left" id="eta">%3$s</xliff:g>) • <xliff:g example="56" id="percentage">%4$s</xliff:g></string>
+    <string name="list_verifying_update">Überprüfung des Updates</string>
+    <string name="list_no_updates">Keine neuen Updates gefunden.</string>
+    <string name="forbidden_download_title">Verbotener Download</string>
+    <string name="forbidden_download_summary">Es ist nicht erlaubt dieses Update direkt herunterzuladen und zu installieren.\n\nSiehe Änderungen oder Gruppe für weitere Details.</string>
+    <!-- Actions -->
+    <string name="action_download">Herunterladen</string>
+    <string name="action_pause">Pause</string>
+    <string name="action_resume">Fortsetzen</string>
+    <string name="action_install">Installieren</string>
+    <string name="action_delete">Löschen</string>
+    <string name="confirm_delete_dialog_title">Datei löschen</string>
+    <string name="confirm_delete_dialog_message">Ausgewählte Update-Datei löschen?</string>
+    <string name="pause_button">Pause</string>
+    <string name="resume_button">Fortsetzen</string>
+    <string name="reboot">Neustart</string>
+    <string name="reboot_needed_dialog_title">Neustart erforderlich</string>
+    <string name="reboot_needed_dialog_summary">Um die Installation des Updates abzuschließen, muss Ihr Gerät neu gestartet werden.\n\nWenn Sie Magisk installiert lassen möchten, klicken Sie bitte auf „Abbrechen“ und flashen Sie Magisk vor dem Neustart auf den neuen Steckplatz.\n\nMöchten Sie jetzt neu starten?</string>
+    <string name="details_button">Änderungsprotokoll</string>
+    <!-- Installation -->
+    <string name="apply_update_dialog_title">Änderungen übernehmen</string>
+    <string name="apply_update_dialog_message">Sie sind dabei, ein Upgrade auf durchzuführen <xliff:g id="update_name">%1$s</xliff:g>.\n\nWenn Sie <xliff:g id="ok">%2$s</xliff:g> drücken, startet sich das Gerät im Wiederherstellungsmodus neu, um das Update zu installieren.\n\nHinweis: Diese Funktion erfordert eine kompatible Wiederherstellung oder Updates müssen manuell installiert werden.</string>
+    <string name="apply_update_dialog_message_ab">Sie sind dabei, ein Upgrade auf durchzuführen <xliff:g id="update_name">%1$s</xliff:g>.\n\nWenn Sie <xliff:g id="ok">%2$s</xliff:g> drücken, beginnt das Gerät mit der Installation im Hintergrund.\n\nNach Abschluss werden Sie zum Neustart aufgefordert.</string>
+    <string name="installing_update">Aktualisierungspaket installieren</string>
+    <string name="installing_update_error">Installationsfehler</string>
+    <string name="installing_update_finished">Aktualisierung installiert</string>
+    <string name="finalizing_package">Paketinstallation abschließen</string>
+    <string name="dialog_prepare_zip_message">Vorläufige Update-Vorbereitung</string>
+    <string name="dialog_battery_low_title">Niedriger Batteriestatus</string>
+    <string name="dialog_battery_low_message_pct">Der Akkustand ist zu niedrig, Sie brauchen mindestens <xliff:g id="percent_discharging">%1$d</xliff:g>%% der Batterie, um fortzufahren,<xliff:g id="percent_charging">%2$d</xliff:g>%% wenn aufgeladen.</string>
+    <!-- Export update -->
+    <string name="dialog_export_title">Exportieren des Updates in den internen Speicher</string>
+    <string name="notification_export_success">Update in den internen Speicher exportiert</string>
+    <string name="notification_export_fail">Update konnte nicht in den internen Speicher exportiert werden</string>
+    <string name="toast_already_exporting">Exportiere bereits ein Update</string>
+    <!-- ETA -->
+    <plurals name="eta_seconds">
+        <item quantity="one">1 Sekunde übrig</item>
+        <item quantity="other"><xliff:g id="count">%d</xliff:g> Sekunden übrig</item>
+    </plurals>
+    <plurals name="eta_minutes">
+        <item quantity="one">1 Minute übrig</item>
+        <item quantity="other"><xliff:g id="count">%d</xliff:g> Minute übrig</item>
+    </plurals>
+    <plurals name="eta_hours">
+        <item quantity="one">1 Stunde übrig</item>
+        <item quantity="other"><xliff:g id="count">%d</xliff:g> Stunde übrig</item>
+    </plurals>
+    <!-- Mobile data warning -->
+    <string name="update_on_mobile_data_title">Warnung</string>
+    <string name="update_on_mobile_data_message">Sie sind im Begriff, ein Update-Paket über mobile Daten herunterzuladen, was wahrscheinlich zu einer hohen Datennutzung führen wird. Möchten Sie fortfahren?</string>
+    <string name="checkbox_mobile_data_warning">Nicht mehr anzeigen</string>
+    <!-- Info section -->
+    <string name="maintainer_info_title">Betreuer</string>
+    <string name="maintainer_info_unknown">Unbekannt</string>
+    <string name="donate_info_title">Spenden</string>
+    <string name="donate_info_summary">Unterstützen Sie die Entwicklung</string>
+    <string name="group_info_title">Telegram</string>
+    <string name="group_info_summary">Melden Sie sich an, um Neuigkeiten zu erhalten &amp; Support</string>
+    <string name="error_open_url">Fehler beim Öffnen der URL im Browser</string>
+    <!-- Local update -->
+    <string name="local_update_title">Lokales Update</string>
+    <string name="local_update_summary">Wenden Sie das Update vom lokalen Speicher an</string>
+    <string name="local_update_import_success">Sie haben gewählt:\n%1$s\n\nMöchten Sie es installieren?</string>
+    <string name="local_update_import_disabled">Lokales Update kann beim Herunterladen oder Installieren des Updates nicht importiert werden</string>
+    <string name="local_update_import_failure">Lokales Update konnte nicht importiert werden</string>
+    <string name="local_update_import_install">Installieren</string>
+    <string name="local_update_import_progress">Lokales Update importieren\u2026</string>
+    <!-- Changelog -->
+    <string name="fetch_changelog_failed">Änderungsprotokoll konnte nicht abgerufen werden</string>
+    <string name="fetch_changelog_title">Änderungsprotokoll</string>
+    <string name="fetch_changelog_progress">Änderungsprotokoll wird abgerufen\u2026</string>
+    <string name="copy_changelog">Kopieren</string>
+    <string name="copy_changelog_success">Changelog erfolgreich in die Zwischenablage kopiert</string>
+</resources>

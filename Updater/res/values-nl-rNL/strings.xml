@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2017 The LineageOS Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- App name -->
+    <string name="app_name">Systeemupdate</string>
+    <!-- Notifications -->
+    <string name="export_channel_title">Export compleet</string>
+    <string name="new_updates_channel_title">Nieuwe updates</string>
+    <string name="ongoing_channel_title">Lopende downloads</string>
+    <string name="update_failed_channel_title">Update mislukt</string>
+    <string name="verification_failed_notification">Verificatie mislukt</string>
+    <string name="verifying_download_notification">Update verifiëren</string>
+    <string name="downloading_notification">Downloaden</string>
+    <string name="download_paused_notification">Download onderbroken</string>
+    <string name="download_paused_error_notification">Downloadfout</string>
+    <string name="download_completed_notification">Download voltooid</string>
+    <string name="download_starting_notification">Download starten</string>
+    <string name="update_failed_notification">Update mislukt</string>
+    <string name="check_for_update">Op update controleren</string>
+    <!-- Menu -->
+    <string name="menu_delete_update">Verwijderen</string>
+    <string name="menu_export_update">Update exporteren</string>
+    <!-- General -->
+    <string name="update_found_notification">Systeemupdate beschikbaar</string>
+    <string name="snack_no_updates_found">Geen nieuwe updates gevonden</string>
+    <string name="snack_updates_check_failed">De updatecontrole is mislukt. Controleer je internetverbinding en probeer het later opnieuw.</string>
+    <string name="snack_download_failed">De download is mislukt. Controleer je internetverbinding en probeer het later opnieuw.</string>
+    <string name="snack_download_verification_failed">De updateverificatie is mislukt.</string>
+    <string name="snack_download_verified">Download voltooid.</string>
+    <string name="snack_update_not_installable">Deze update kan niet worden geïnstalleerd bovenop de huidige build.</string>
+    <string name="list_download_progress_new"><xliff:g example="12.2" id="filesize_without_unit">%1$s</xliff:g> van <xliff:g example="310 MB" id="filesize_without_unit">%2$s</xliff:g> • <xliff:g example="56" id="percentage">%3$s</xliff:g></string>
+    <string name="list_download_progress_eta_new"><xliff:g example="12.2" id="filesize_without_unit">%1$s</xliff:g> van <xliff:g example="310 MB" id="filesize_without_unit">%2$s</xliff:g> (<xliff:g example="3 minutes left" id="eta">%3$s</xliff:g>) • <xliff:g example="56" id="percentage">%4$s</xliff:g></string>
+    <string name="list_verifying_update">Update verifiëren</string>
+    <string name="list_no_updates">Geen nieuwe updates gevonden.</string>
+    <string name="forbidden_download_title">Verboden download</string>
+    <string name="forbidden_download_summary">Het is verboden deze update direct te downloaden en installeren.\n\nBekijk het changelog of de groep voor meer details.</string>
+    <!-- Actions -->
+    <string name="action_download">Downloaden</string>
+    <string name="action_pause">Onderbreken</string>
+    <string name="action_resume">Hervatten</string>
+    <string name="action_install">Installeren</string>
+    <string name="action_delete">Verwijderen</string>
+    <string name="confirm_delete_dialog_title">Bestand verwijderen</string>
+    <string name="confirm_delete_dialog_message">Geselecteerd updatebestand verwijderen?</string>
+    <string name="pause_button">Onderbreken</string>
+    <string name="resume_button">Hervatten</string>
+    <string name="reboot">Herstarten</string>
+    <string name="reboot_needed_dialog_title">Herstart vereist</string>
+    <string name="reboot_needed_dialog_summary">Om de installatie van de update te voltooien, moet je apparaat worden herstart.\n\nAls je magisk geïnstalleerd wilt houden, druk dan op \'Annuleren\' en flash magisk in het nieuwe slot alvorens te herstarten.\n\nWil je nu herstarten?</string>
+    <string name="details_button">Changelog</string>
+    <!-- Installation -->
+    <string name="apply_update_dialog_title">Update toepassen</string>
+    <string name="apply_update_dialog_message">Je staat op het punt naar <xliff:g id="update_name">%1$s</xliff:g> te upgraden.\n\nAls je op <xliff:g id="ok">%2$s</xliff:g> tikt, wordt het apparaat opnieuw opgestart naar de herstelmodus om de update te installeren.\n\nAls er geen compatibele herstelmodus beschikbaar is moeten updates handmatig worden geïnstalleerd.</string>
+    <string name="apply_update_dialog_message_ab">Je staat op het punt naar <xliff:g id="update_name">%1$s</xliff:g> te upgraden.\n\nAls je op <xliff:g id="ok">%2$s</xliff:g> tikt, zal de update op de achtergrond worden geïnstalleerd.\n\nAls dit voltooid is, zal je worden gevraagd opnieuw op te starten.</string>
+    <string name="installing_update">Updatepakket installeren</string>
+    <string name="installing_update_error">Installatiefout</string>
+    <string name="installing_update_finished">Update geïnstalleerd</string>
+    <string name="finalizing_package">Pakketinstallatie afronden</string>
+    <string name="dialog_prepare_zip_message">Update voorbereiden</string>
+    <string name="dialog_battery_low_title">Laag batterijniveau</string>
+    <string name="dialog_battery_low_message_pct">Het batterijniveau is te laag; ten minste <xliff:g id="percent_discharging">%1$d</xliff:g>%% is vereist om door te gaan, <xliff:g id="percent_charging">%2$d</xliff:g> bij opladen.</string>
+    <!-- Export update -->
+    <string name="dialog_export_title">Update exporteren naar interne opslag</string>
+    <string name="notification_export_success">Update geëxporteerd naar interne opslag</string>
+    <string name="notification_export_fail">Update exporteren naar interne opslag mislukt</string>
+    <string name="toast_already_exporting">Er wordt al een update geëxporteerd</string>
+    <!-- ETA -->
+    <plurals name="eta_seconds">
+        <item quantity="one">1 seconde resterend</item>
+        <item quantity="other"><xliff:g id="count">%d</xliff:g> seconden resterend</item>
+    </plurals>
+    <plurals name="eta_minutes">
+        <item quantity="one">1 minuut resterend</item>
+        <item quantity="other"><xliff:g id="count">%d</xliff:g> minuten resterend</item>
+    </plurals>
+    <plurals name="eta_hours">
+        <item quantity="one">1 uur resterend</item>
+        <item quantity="other"><xliff:g id="count">%d</xliff:g> uur resterend</item>
+    </plurals>
+    <!-- Mobile data warning -->
+    <string name="update_on_mobile_data_title">Waarschuwing</string>
+    <string name="update_on_mobile_data_message">Je staat op het punt een updatepakket te downloaden met mobiele gegevens, wat waarschijnlijk tot hoog gegevensverbruik leidt. Wil je doorgaan?</string>
+    <string name="checkbox_mobile_data_warning">Niet opnieuw tonen</string>
+    <!-- Info section -->
+    <string name="maintainer_info_title">Onderhouder</string>
+    <string name="maintainer_info_unknown">Onbekend</string>
+    <string name="donate_info_title">Doneren</string>
+    <string name="donate_info_summary">Ontwikkeling ondersteunen</string>
+    <string name="group_info_title">Telegram</string>
+    <string name="group_info_summary">Word lid voor nieuws &amp; ondersteuning</string>
+    <string name="error_open_url">URL openen in browser mislukt</string>
+    <!-- Local update -->
+    <string name="local_update_title">Lokale update</string>
+    <string name="local_update_summary">Update toepassen vanuit lokale opslag</string>
+    <string name="local_update_import_success">Je hebt gekozen:\n%1$s\n\nWil je deze installeren?</string>
+    <string name="local_update_import_disabled">Kan lokale update niet importeren tijdens het downloaden of installeren van een update</string>
+    <string name="local_update_import_failure">Importeren lokale update mislukt</string>
+    <string name="local_update_import_install">Installeren</string>
+    <string name="local_update_import_progress">Lokale update importeren\u2026</string>
+    <!-- Changelog -->
+    <string name="fetch_changelog_failed">Changelog ophalen mislukt</string>
+    <string name="fetch_changelog_title">Changelog</string>
+    <string name="fetch_changelog_progress">Changelog ophalen\u2026</string>
+    <string name="copy_changelog">Kopiëren</string>
+    <string name="copy_changelog_success">Changelog succesvol naar klembord gekopieerd</string>
+</resources>
