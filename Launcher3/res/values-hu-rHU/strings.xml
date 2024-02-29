@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2024 The Nameless-AOSP Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- Launcher settings -->
+    <string name="settings_title">Settings</string>
+    <string name="home_homescreen_title">Home screen</string>
+    <string name="home_homescreen_summary">Customize your home screen</string>
+    <string name="home_drawer_title">App drawer</string>
+    <string name="home_drawer_summary">Customize your app drawer</string>
+    <string name="home_icon_title">Icons</string>
+    <string name="home_icon_summary">Customize your app icons</string>
+    <string name="home_recent_title">Recent</string>
+    <string name="home_recent_summary">Customize your recent overview</string>
+    <string name="home_misc_title">Miscellaneous</string>
+    <string name="home_misc_summary">Discover more miracle</string>
+    <string name="developer_options_title">Developer Options</string>
+    <string name="developer_options_summary">Enable hidden features as your own risk</string>
+    <!-- Folder titles -->
+    <!-- Settings title to show Google Now at -1 screen on launcher. [CHAR LIMIT=50] -->
+    <string name="title_show_google_feed">Swipe to access Google feed</string>
+    <string name="pref_show_google_now_summary">From home screen, swipe right to open Google feed</string>
+    <!-- Suggestions -->
+    <string name="suggestion_pref_screen_title">Suggestions</string>
+    <string name="suggestion_pref_screen_desc">For All Apps &amp; Home screen suggestions</string>
+    <!-- Edit workspace -->
+    <string name="settings_lock_layout_title">Lock layout</string>
+    <string name="settings_lock_layout_summary_on">Icons and widgets can\'t be added, removed and moved on the homescreen</string>
+    <string name="settings_lock_layout_summary_off">Icons and widgets can be added, removed and moved on the homescreen</string>
+    <string name="settings_edit_widgets_error">It\'s not possible to add widgets to the home screen</string>
+    <!-- Hide labels -->
+    <string name="desktop_show_labels_title">Icon label</string>
+    <string name="desktop_show_labels_summary">Show icon labels on homescreen</string>
+    <string name="drawer_show_labels_title">Icon label</string>
+    <string name="drawer_show_labels_summary">Show icon labels in app drawer</string>
+    <!-- Hotseat searchbar -->
+    <string name="label_search">Search</string>
+    <string name="label_lens">Google Lens</string>
+    <string name="label_voice_search">Voice search</string>
+    <string name="dock_category">Dock</string>
+    <string name="dock_search_title">Google search bar</string>
+    <string name="dock_search_summary">Show search bar in the bottom dock</string>
+    <!-- Recents -->
+    <string name="actions_category_title">Quick actions</string>
+    <string name="recents_screenshot_title">Screenshot</string>
+    <string name="recents_clear_all_title">Clear all</string>
+    <string name="recents_lens_title">Lens</string>
+    <!-- Smartspace -->
+    <string name="smartspace_pref_title">At a Glance</string>
+    <string name="smartspace_pref_summary">Show smartspace at the top of home screen</string>
+    <!-- Kill App recents action shortcut -->
+    <string name="recent_task_option_kill_app">Force close</string>
+    <string name="recents_app_killed">App closed</string>
+    <!-- App label lines -->
+    <string name="icon_multi_lines_title">Multi-lines label</string>
+    <string name="icon_multi_lines_summary">Allow icon labels to be displayed in multiple lines</string>
+    <!-- Themed icons -->
+    <string name="themed_icons_title">Themed icon</string>
+    <string name="themed_icons_summary">Enable themed icon for Homescreen apps</string>
+    <string name="themed_icons_all_title">Enable for app drawer</string>
+    <string name="themed_icons_all_summary">Apply themed icon to both App Drawer &amp; Homescreen</string>
+    <!-- AppInfo -->
+    <string name="app_info_source">Source</string>
+    <string name="app_info_source_system">System</string>
+    <string name="app_info_last_update">Last update</string>
+    <string name="app_info_version">Version</string>
+    <string name="app_info_more">More</string>
+    <!-- Icon pack -->
+    <string name="icon_pack_title">Icon pack</string>
+    <string name="icon_pack_default_label">Default</string>
+    <string name="icon_pack_add">Install more</string>
+    <string name="icon_pack_no_market">There\'s no available app store</string>
+    <!-- Wallpaper scrolling -->
+    <string name="allow_wallpaper_scrolling">Wallpaper scrolling</string>
+    <string name="allow_wallpaper_scrolling_summary">Enable wallpaper scrolling effect for multiple screens</string>
+    <!-- Wallpaper zooming -->
+    <string name="allow_wallpaper_zooming">Wallpaper zooming</string>
+    <string name="allow_wallpaper_zooming_summary">Zoom in or out the wallpaper when using drawer or recent apps</string>
+    <!-- Automatically show keyboard -->
+    <string name="auto_show_keyboard_title">Smart keyboard</string>
+    <string name="auto_show_keyboard_summary">Automatically show keyboard when entering app drawer</string>
+</resources>

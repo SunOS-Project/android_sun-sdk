@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2022-2024 The Nameless-AOSP Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- Screenshot delete action  -->
+    <string name="screenshot_delete_label">删除</string>
+    <string name="screenshot_delete_description">删除截图</string>
+    <!-- Google Lens -->
+    <string name="google_lens">智能镜头</string>
+    <string name="google_lens_unavailable">未安装 Google 智能镜头</string>
+    <!-- Refresh rate QS tile -->
+    <string name="refresh_rate_tile_label">刷新率</string>
+    <string name="refresh_rate_unknown">未知</string>
+    <!-- DC Dimming -->
+    <string name="quick_settings_dc_dimming_label">防闪烁模式</string>
+    <!-- HBM QS tile -->
+    <string name="quick_settings_hbm_label">高亮度模式</string>
+    <!-- Wireless reverse charging QS tile -->
+    <string name="quick_settings_wireless_reverse_charging_label">反向无线充电</string>
+    <string name="quick_settings_wireless_reverse_charging_suspended_label">暂停</string>
+    <!-- Optimized charge -->
+    <string name="quick_settings_optimized_charge_label">充电优化</string>
+    <string name="quick_settings_optimized_charge_always">总是开启</string>
+    <!-- Wireless charging quiet mode -->
+    <string name="quick_settings_quiet_mode_label">静音模式</string>
+    <string name="quick_settings_quiet_mode_always">总是开启</string>
+    <!-- Indication on the keyguard that is shown when the device is charging with a OEM charger -->
+    <string name="keyguard_indication_dash_charging_time"><xliff:g id="percentage">%2$s</xliff:g> • Dash 闪充中 • 将于 <xliff:g id="charging_time_left" example="4 hr, 2 min">%1$s</xliff:g> 后充满</string>
+    <string name="keyguard_plugged_in_dash_charging"><xliff:g id="percentage">%s</xliff:g> • Dash 闪充中</string>
+    <string name="keyguard_indication_warp_charging_time"><xliff:g id="percentage">%2$s</xliff:g> • Warp 闪充中 • 将于 <xliff:g id="charging_time_left" example="4 hr, 2 min">%1$s</xliff:g> 后充满</string>
+    <string name="keyguard_plugged_in_warp_charging"><xliff:g id="percentage">%s</xliff:g> • Warp 闪充中</string>
+    <string name="keyguard_indication_vooc_charging_time"><xliff:g id="percentage">%2$s</xliff:g> • VOOC 闪充中 • 将于 <xliff:g id="charging_time_left" example="4 hr, 2 min">%1$s</xliff:g> 后充满</string>
+    <string name="keyguard_plugged_in_vooc_charging"><xliff:g id="percentage">%s</xliff:g> • VOOC 闪充中</string>
+    <string name="keyguard_indication_turbo_charging_time"><xliff:g id="percentage">%2$s</xliff:g> • Turbo 闪充中 • 将于 <xliff:g id="charging_time_left" example="4 hr, 2 min">%1$s</xliff:g> 后充满</string>
+    <string name="keyguard_plugged_in_turbo_charging"><xliff:g id="percentage">%s</xliff:g> • Turbo 闪充中</string>
+    <!-- Press or drag to add/remove QS tile -->
+    <string name="press_or_drag_to_add_tiles">点按或拖动以添加或移除</string>
+    <!-- Screenrecord delete action -->
+    <string name="screenrecord_delete_label">删除</string>
+    <string name="screenrecord_delete_description">已删除屏幕录制</string>
+    <!-- Statusbar tuner -->
+    <string name="statusbar_items_title">状态栏图标</string>
+    <string name="status_bar_call_strength">通话强度</string>
+    <string name="status_bar_data_saver">流量节省程序</string>
+    <!-- Accessibility label for nfc icon (not shown on screen) [CHAR LIMIT=NONE] -->
+    <!-- Screen record -->
+    <string name="screenrecord_stopdot_label">显示终止小红点\n长按以移动</string>
+    <string name="screenrecord_lowquality_label">降低画质</string>
+    <string name="screenrecord_longer_timeout_switch_label">增大文件体积限制\n允许录制最大 15 GiB 的视频</string>
+    <string name="screenrecord_hevc_switch_label">启用 HEVC</string>
+    <!-- Caffeine QS tile -->
+    <string name="quick_settings_caffeine_label">保持亮屏</string>
+    <string name="accessibility_quick_settings_caffeine_off">保持亮屏已关闭</string>
+    <string name="accessibility_quick_settings_caffeine_on">保持亮屏已开启</string>
+    <!-- AOD QS tile -->
+    <string name="quick_settings_aod_label">始终显示</string>
+    <string name="quick_settings_aod_on_charge">仅充电时开启</string>
+    <string name="quick_settings_aod_power_save">省电模式</string>
+    <!-- Heads up QS tile -->
+    <string name="quick_settings_heads_up_label">浮动通知</string>
+    <string name="accessibility_quick_settings_heads_up_off">浮动通知已关闭</string>
+    <string name="accessibility_quick_settings_heads_up_on">浮动通知已开启</string>
+    <!-- Sync QS tile -->
+    <string name="quick_settings_sync_label">同步</string>
+    <string name="accessibility_quick_settings_sync_off">同步已关闭.</string>
+    <string name="accessibility_quick_settings_sync_on">同步已开启.</string>
+    <!-- USB tethering QS tile -->
+    <string name="quick_settings_usb_tether_label">USB 网络共享</string>
+    <!-- VPN QS tile -->
+    <string name="quick_settings_vpn_connect_dialog_title">连接到\u2026</string>
+    <string name="vpn_credentials_hint">请输入您的凭据以连接到<xliff:g id="name">%s</xliff:g></string>
+    <string name="vpn_credentials_username">用户名</string>
+    <string name="vpn_credentials_password">密码</string>
+    <string name="vpn_credentials_dialog_connect">连接</string>
+    <!-- Compass QS Tile -->
+    <string name="quick_settings_compass_label">指南针</string>
+    <string name="quick_settings_compass_init">初始化中\u2026</string>
+    <string name="accessibility_quick_settings_compass_off">关闭指南针</string>
+    <string name="accessibility_quick_settings_compass_on">开启指南针</string>
+    <string name="accessibility_quick_settings_compass_changed_off">指南针已关闭</string>
+    <string name="accessibility_quick_settings_compass_changed_on">指南针已开启</string>
+    <!-- Language toggle tile -->
+    <string name="quick_settings_locale_label">语言</string>
+    <string name="quick_settings_locale_more_locales_toast">请配置多种语言以启用切换功能</string>
+    <!-- DataSwitch Tile -->
+    <string name="qs_data_switch_label">切换流量卡</string>
+    <string name="qs_data_switch_toast_0">当前未插入 SIM 卡</string>
+    <string name="qs_data_switch_toast_1">当前仅有一张 SIM 卡插入</string>
+    <string name="qs_data_switch_changed_1">已将流量卡切换为卡 1</string>
+    <string name="qs_data_switch_changed_2">已将流量卡切换为卡 2</string>
+    <!-- Sound QS Tile -->
+    <string name="quick_settings_sound_label">声音</string>
+    <string name="quick_settings_sound_ring">响铃</string>
+    <string name="quick_settings_sound_vibrate">振动</string>
+    <string name="quick_settings_sound_mute">静音</string>
+    <!-- System vibration tile -->
+    <string name="quick_settings_system_vibration_label">全局振动</string>
+    <!-- CPUInfo tile -->
+    <string name="quick_settings_cpuinfo_label">CPU 性能监视</string>
+    <!-- Advance location quick setting tile -->
+    <string name="quick_settings_secondary_location_off"></string>
+    <string name="accessibility_quick_settings_location_off">位置报告已关闭</string>
+    <string name="quick_settings_location_secondary_battery_saving">省电模式</string>
+    <string name="accessibility_quick_settings_location_battery_saving">当前位置信息: 省电模式</string>
+    <string name="quick_settings_location_secondary_gps_only">仅传感器模式</string>
+    <string name="accessibility_quick_settings_location_gps_only">当前位置信息: 仅传感器模式</string>
+    <string name="quick_settings_location_secondary_high_accuracy">高精度模式</string>
+    <string name="accessibility_quick_settings_location_high_accuracy">当前位置信息: 高精度模式</string>
+    <!-- Screenshot QS tile -->
+    <string name="quick_settings_screenshot_label">截图</string>
+    <string name="quick_settings_full_screenshot_label">全屏模式</string>
+    <string name="quick_settings_region_screenshot_label">局部模式</string>
+    <!-- 5G tile -->
+    <!-- Power Menu -->
+    <string name="global_action_reboot">重启</string>
+    <string name="global_action_reboot_more">高级重启</string>
+    <string name="global_action_reboot_sub">系统</string>
+    <string name="global_action_reboot_systemui">系统界面</string>
+    <string name="global_action_settings">设置</string>
+    <!-- Text while recognizing face -->
+    <string name="face_unlock_recognizing">识别人脸中...</string>
+</resources>

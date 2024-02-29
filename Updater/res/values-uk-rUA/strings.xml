@@ -80,27 +80,27 @@
     <string name="toast_already_exporting">Оновлення вже експортується</string>
     <!-- ETA -->
     <plurals name="eta_seconds">
-        <item quantity="one">Лишилась <xliff:g id="count">%d</xliff:g> секунда</item>
+        <item quantity="one">1 second left</item>
         <item quantity="few">Лишилось <xliff:g id="count">%d</xliff:g> секунди</item>
         <item quantity="many">Лишилось <xliff:g id="count">%d</xliff:g> секунд</item>
         <item quantity="other">Лишилось <xliff:g id="count">%d</xliff:g> секунд</item>
     </plurals>
     <plurals name="eta_minutes">
-        <item quantity="one">Лишилась <xliff:g id="count">%d</xliff:g> хвилина</item>
+        <item quantity="one">1 minute left</item>
         <item quantity="few">Лишилось <xliff:g id="count">%d</xliff:g> хвилини</item>
         <item quantity="many">Лишилось <xliff:g id="count">%d</xliff:g> хвилин</item>
         <item quantity="other">Лишилось <xliff:g id="count">%d</xliff:g> хвилин</item>
     </plurals>
     <plurals name="eta_hours">
-        <item quantity="one">Лишилась <xliff:g id="count">%d</xliff:g> година</item>
+        <item quantity="one">1 hour left</item>
         <item quantity="few">Лишилось <xliff:g id="count">%d</xliff:g> години</item>
         <item quantity="many">Лишилось <xliff:g id="count">%d</xliff:g> годин</item>
         <item quantity="other">Лишилось <xliff:g id="count">%d</xliff:g> годин</item>
     </plurals>
     <!-- Mobile data warning -->
-    <string name="update_on_mobile_data_title">Попередження</string>
-    <string name="update_on_mobile_data_message">Ви збираєтеся завантажити оновлення, використовуючи мобільний Інтернет, що може привести до високої витрати інтернет трафіку. Хочете продовжити?</string>
-    <string name="checkbox_mobile_data_warning">Не показувати ще раз</string>
+    <string name="update_over_metered_network_title">Warning</string>
+    <string name="update_over_metered_network_message">You\'re about to download an update package over a metered network which is likely going to cause high data usage. Would you like to proceed?</string>
+    <string name="checkbox_metered_network_warning">Do not show again</string>
     <!-- Info section -->
     <string name="maintainer_info_title">Супроводжуючий</string>
     <string name="maintainer_info_unknown">Невідомо</string>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2023-2024 The Nameless-AOSP Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- App name -->
+    <!-- Settings title -->
+    <string name="nrmode_settings_title">设置 5G 模式</string>
+    <!-- Sim card -->
+    <string name="sim_card_1">Sim 1</string>
+    <string name="sim_card_2">Sim 2</string>
+    <!-- NrMode options -->
+    <string name="preferred_nr_mode_title">首选 5G 模式</string>
+    <string name="nr_mode_auto">自动（默认）</string>
+    <string name="nr_mode_nsa_only">仅 NSA 模式</string>
+    <string name="nr_mode_nsa_preferred">优先 NSA 模式</string>
+    <string name="nr_mode_sa_only">仅 SA 模式</string>
+    <string name="nr_mode_sa_preferred">优先 SA 模式</string>
+    <!-- Error conditions -->
+    <string name="error_fail_to_set">设置首选 5G 模式失败。请重试或向开发者报告这项错误。</string>
+    <string name="error_sim_card_unavailable">Sim 卡不可用</string>
+</resources>

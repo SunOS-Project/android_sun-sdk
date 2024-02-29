@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2024 The Nameless-AOSP Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- Launcher settings -->
+    <string name="settings_title">设置</string>
+    <string name="home_homescreen_title">主屏幕</string>
+    <string name="home_homescreen_summary">自定义您的主屏幕</string>
+    <string name="home_drawer_title">应用抽屉</string>
+    <string name="home_drawer_summary">自定义您的应用抽屉</string>
+    <string name="home_icon_title">图标</string>
+    <string name="home_icon_summary">自定义您的应用图标</string>
+    <string name="home_recent_title">最近任务</string>
+    <string name="home_recent_summary">自定义您的最近任务卡片</string>
+    <string name="home_misc_title">杂项</string>
+    <string name="home_misc_summary">探索更多的功能</string>
+    <string name="developer_options_title">开发者选项</string>
+    <string name="developer_options_summary">启用一些实验性功能</string>
+    <!-- Folder titles -->
+    <!-- Settings title to show Google Now at -1 screen on launcher. [CHAR LIMIT=50] -->
+    <string name="title_show_google_feed">滑动即可访问 Google 应用</string>
+    <string name="pref_show_google_now_summary">从主屏幕中，向右滑动即可打开 Google 应用</string>
+    <!-- Suggestions -->
+    <string name="suggestion_pref_screen_title">建议</string>
+    <string name="suggestion_pref_screen_desc">用于所有应用和主屏幕的建议</string>
+    <!-- Edit workspace -->
+    <string name="settings_lock_layout_title">锁定布局</string>
+    <string name="settings_lock_layout_summary_on">禁止在主屏幕对图标进行添加，删除和移动</string>
+    <string name="settings_lock_layout_summary_off">允许在主屏幕对图标进行添加，删除和移动</string>
+    <string name="settings_edit_widgets_error">无法将小部件添加到主屏幕</string>
+    <!-- Hide labels -->
+    <string name="desktop_show_labels_title">图标标签</string>
+    <string name="desktop_show_labels_summary">在主屏幕显示图标标签</string>
+    <string name="drawer_show_labels_title">图标标签</string>
+    <string name="drawer_show_labels_summary">在应用抽屉显示图标标签</string>
+    <!-- Hotseat searchbar -->
+    <string name="label_search">搜索栏</string>
+    <string name="label_lens">Google 智能镜头</string>
+    <string name="label_voice_search">语音搜索</string>
+    <string name="dock_category">底栏</string>
+    <string name="dock_search_title">Google 搜索栏</string>
+    <string name="dock_search_summary">在底部显示搜索栏</string>
+    <!-- Recents -->
+    <string name="actions_category_title">快捷操作</string>
+    <string name="recents_screenshot_title">截图</string>
+    <string name="recents_clear_all_title">全部清除</string>
+    <string name="recents_lens_title">智能镜头</string>
+    <!-- Smartspace -->
+    <string name="smartspace_pref_title">资讯一览</string>
+    <string name="smartspace_pref_summary">在主屏幕顶部显示资讯一览</string>
+    <!-- Kill App recents action shortcut -->
+    <string name="recent_task_option_kill_app">强行停止</string>
+    <string name="recents_app_killed">应用已被强行停止</string>
+    <!-- App label lines -->
+    <string name="icon_multi_lines_title">多行标签</string>
+    <string name="icon_multi_lines_summary">允许图标显示多行标签</string>
+    <!-- Themed icons -->
+    <string name="themed_icons_title">主题图标</string>
+    <string name="themed_icons_summary">为主屏幕应用启用主题图标</string>
+    <string name="themed_icons_all_title">为应用抽屉启用</string>
+    <string name="themed_icons_all_summary">为主屏幕和应用抽屉应用同时启用主题图标</string>
+    <!-- AppInfo -->
+    <string name="app_info_source">安装来源</string>
+    <string name="app_info_source_system">系统</string>
+    <string name="app_info_last_update">最近更新</string>
+    <string name="app_info_version">版本号</string>
+    <string name="app_info_more">更多</string>
+    <!-- Icon pack -->
+    <string name="icon_pack_title">图标包</string>
+    <string name="icon_pack_default_label">默认</string>
+    <string name="icon_pack_add">安装更多</string>
+    <string name="icon_pack_no_market">未安装应用商店</string>
+    <!-- Wallpaper scrolling -->
+    <string name="allow_wallpaper_scrolling">壁纸滚动</string>
+    <string name="allow_wallpaper_scrolling_summary">为多屏幕启用壁纸滚动效果</string>
+    <!-- Wallpaper zooming -->
+    <string name="allow_wallpaper_zooming">壁纸缩放</string>
+    <string name="allow_wallpaper_zooming_summary">使用抽屉或查看最近任务时缩放壁纸</string>
+    <!-- Automatically show keyboard -->
+    <string name="auto_show_keyboard_title">智能键盘</string>
+    <string name="auto_show_keyboard_summary">进入应用抽屉后自动弹出键盘</string>
+</resources>

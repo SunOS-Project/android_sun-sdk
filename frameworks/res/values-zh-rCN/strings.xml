@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2022-2024 Nameless-AOSP
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- Vibration patterns - Notification -->
+    <string name="vibrationPattern_notification_bell">铃</string>
+    <string name="vibrationPattern_notification_kick">打击</string>
+    <string name="vibrationPattern_notification_strings">弦乐</string>
+    <string name="vibrationPattern_notification_water_drop">水滴</string>
+    <!-- Vibration patterns - Ringtone -->
+    <string name="vibrationPattern_ringtone_drums">击鼓</string>
+    <string name="vibrationPattern_ringtone_raise">晋升</string>
+    <string name="vibrationPattern_ringtone_waltz">华尔兹</string>
+    <string name="vibrationPattern_ringtone_cut">切割</string>
+    <string name="vibrationPattern_ringtone_clock">钟摆</string>
+    <string name="vibrationPattern_ringtone_short">短促</string>
+    <!-- Memc toast -->
+    <string name="motion_graphics_smoothing_starting">视频高帧率模式启动中</string>
+    <!-- Optimized charge notification -->
+    <string name="optimized_charge_notification_channel_label">充电优化</string>
+    <string name="optimized_charge_notification_title">充电已被停止</string>
+    <!-- Wireless reverse charging -->
+    <string name="wireless_reverse_charging_notification_channel_label">反向无线充电</string>
+    <string name="wireless_reverse_charging_notification_title">反向无线充电已开启</string>
+    <!-- Battery feature notifications -->
+    <string name="tap_to_view_more_options">点按即可查看更多选项</string>
+    <!-- Deep sleep -->
+    <string name="status_deep_sleep">(深度睡眠: %1$d%2$s)</string>
+    <!-- Global actions -->
+    <string name="reboot_to_bootloader_title">重启至 Bootloader</string>
+    <string name="reboot_to_bootloader_message">正在重启至 Bootloader\u2026</string>
+    <string name="reboot_to_recovery_title">重启至 Recovery</string>
+    <string name="reboot_to_recovery_message">正在重启至 Recovery\u2026</string>
+    <string name="reboot_system_title">重启至系统</string>
+    <string name="reboot_system_message">正在重启至系统\u2026</string>
+    <!-- Pocket Lock -->
+    <string name="pocket_lock_message_long_press">长按电源键以解除口袋模式</string>
+    <string name="pocket_view_title">口袋模式已开启</string>
+    <string name="pocket_view_title_cancel">若要使用你的手机：</string>
+    <string name="pocket_view_top_tag_cancel">请不要覆盖屏幕上的蓝色区域，并清理污垢与灰尘</string>
+    <string name="pocket_view_top_tag_cancel2">长按电源键以强制退出口袋模式</string>
+    <!-- Launcher shortcut: Pop-Up View -->
+    <string name="recent_task_option_pop_up">悬浮小窗</string>
+    <!-- Kill app -->
+    <string name="app_killed">%1$s 已被强行停止</string>
+    <string name="empty_app_killed">应用已被强行停止</string>
+    <!-- Game mode lock gesture -->
+    <string name="gesture_locked_warning">再次划动以解锁手势</string>
+    <!-- App props config update -->
+    <string name="app_prop_config_updated_title">已更新应用机型伪装配置</string>
+    <string name="app_prop_config_updated_content">需要重启系统以应用修改</string>
+    <string name="reboot_now">现在重启</string>
+</resources>

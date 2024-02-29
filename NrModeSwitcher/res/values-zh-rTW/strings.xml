@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2023-2024 The Nameless-AOSP Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- App name -->
+    <!-- Settings title -->
+    <string name="nrmode_settings_title">Select preferred 5G mode</string>
+    <!-- Sim card -->
+    <string name="sim_card_1">Sim 1</string>
+    <string name="sim_card_2">Sim 2</string>
+    <!-- NrMode options -->
+    <string name="preferred_nr_mode_title">Preferred 5G mode</string>
+    <string name="nr_mode_auto">Automatic (Default)</string>
+    <string name="nr_mode_nsa_only">NSA only</string>
+    <string name="nr_mode_nsa_preferred">NSA preferred</string>
+    <string name="nr_mode_sa_only">SA only</string>
+    <string name="nr_mode_sa_preferred">SA preferred</string>
+    <!-- Error conditions -->
+    <string name="error_fail_to_set">Failed to set preferred 5G mode. Please retry or report this to developer</string>
+    <string name="error_sim_card_unavailable">Sim card is unavailable</string>
+</resources>

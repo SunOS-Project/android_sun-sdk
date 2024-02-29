@@ -42,8 +42,8 @@
     <string name="snack_download_verification_failed">验证更新失败。</string>
     <string name="snack_download_verified">下载完成。</string>
     <string name="snack_update_not_installable">在当前的版本上无法安装更新。</string>
-    <string name="list_download_progress_new"><xliff:g example="12.2" id="filesize_without_unit">%1$s</xliff:g> of <xliff:g example="310 MB" id="filesize_without_unit">%2$s</xliff:g> • <xliff:g example="56" id="percentage">%3$s</xliff:g></string>
-    <string name="list_download_progress_eta_new"><xliff:g example="12.2" id="filesize_without_unit">%1$s</xliff:g> of <xliff:g example="310 MB" id="filesize_without_unit">%2$s</xliff:g> (<xliff:g example="3 minutes left" id="eta">%3$s</xliff:g>) • <xliff:g example="56" id="percentage">%4$s</xliff:g></string>
+    <string name="list_download_progress_new"><xliff:g example="12.2" id="filesize_without_unit">%1$s</xliff:g> / <xliff:g example="310 MB" id="filesize_without_unit">%2$s</xliff:g> • <xliff:g example="56" id="percentage">%3$s</xliff:g></string>
+    <string name="list_download_progress_eta_new"><xliff:g example="12.2" id="filesize_without_unit">%1$s</xliff:g> / <xliff:g example="310 MB" id="filesize_without_unit">%2$s</xliff:g> (<xliff:g example="3 minutes left" id="eta">%3$s</xliff:g>) • <xliff:g example="56" id="percentage">%4$s</xliff:g></string>
     <string name="list_verifying_update">正在验证更新</string>
     <string name="list_no_updates">未发现新的更新</string>
     <string name="forbidden_download_title">无法下载</string>
@@ -89,9 +89,9 @@
         <item quantity="other">剩余 <xliff:g id="count">%d</xliff:g> 时</item>
     </plurals>
     <!-- Mobile data warning -->
-    <string name="update_on_mobile_data_title">移动数据使用警告</string>
-    <string name="update_on_mobile_data_message">您将通过移动数据网络下载更新包，这可能会导致较大的数据用量，是否继续？</string>
-    <string name="checkbox_mobile_data_warning">不再显示</string>
+    <string name="update_over_metered_network_title">警告</string>
+    <string name="update_over_metered_network_message">您将通过移动数据网络下载更新包，这可能会导致较大的数据用量，是否继续？</string>
+    <string name="checkbox_metered_network_warning">不再显示</string>
     <!-- Info section -->
     <string name="maintainer_info_title">维护者</string>
     <string name="maintainer_info_unknown">未知</string>

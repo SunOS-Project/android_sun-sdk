@@ -64,8 +64,8 @@
     <string name="details_button">Değişiklik günlüğü</string>
     <!-- Installation -->
     <string name="apply_update_dialog_title">Güncellemeyi uygula</string>
-    <string name="apply_update_dialog_message">%1$s sürümüne geçmek üzeresiniz.\n\n%2$s\'a basarsanız, güncellemeyi yüklemek için cihaz kendini kurtarma modunda yeniden başlatır.\n\nNot: Bu özellik uyumlu bir Kurtarma gerektirir veya güncellemelerin manuel olarak yüklenmesi gerekir.</string>
-    <string name="apply_update_dialog_message_ab">%1$s sürümüne geçmek üzeresiniz.\n\n%2$s\'a basarsanız, güncellemeyi yüklemek için cihaz kendini kurtarma modunda yeniden başlatır.\n\nNot: Bu özellik uyumlu bir Kurtarma gerektirir veya güncellemelerin manuel olarak yüklenmesi gerekir.</string>
+    <string name="apply_update_dialog_message">You are about to upgrade to <xliff:g id="update_name">%1$s</xliff:g>.\n\nIf you press <xliff:g id="ok">%2$s</xliff:g>, the device will restart itself in recovery mode to install the update.\n\nNote: This feature requires a compatible Recovery or updates will need to be installed manually.</string>
+    <string name="apply_update_dialog_message_ab">You are about to upgrade to <xliff:g id="update_name">%1$s</xliff:g>.\n\nIf you press <xliff:g id="ok">%2$s</xliff:g>, the device will begin installing in the background.\n\nOnce completed, you will be prompted to reboot.</string>
     <string name="installing_update">Güncelleme paketini yükleme</string>
     <string name="installing_update_error">Yükleme hatası</string>
     <string name="installing_update_finished">Güncelleme yüklendi</string>
@@ -92,9 +92,9 @@
         <item quantity="other"><xliff:g id="count">%d</xliff:g> saat kaldı</item>
     </plurals>
     <!-- Mobile data warning -->
-    <string name="update_on_mobile_data_title">Uyarı</string>
-    <string name="update_on_mobile_data_message">Mobil veri kullanan ve yüksek veri kullanımına neden olabilecek bir güncelleme paketi indirmek üzeresiniz. Devam etmek ister misiniz?</string>
-    <string name="checkbox_mobile_data_warning">Tekrar gösterme</string>
+    <string name="update_over_metered_network_title">Warning</string>
+    <string name="update_over_metered_network_message">You\'re about to download an update package over a metered network which is likely going to cause high data usage. Would you like to proceed?</string>
+    <string name="checkbox_metered_network_warning">Do not show again</string>
     <!-- Info section -->
     <string name="maintainer_info_title">Sorumlu</string>
     <string name="maintainer_info_unknown">Bilinmeyen</string>
