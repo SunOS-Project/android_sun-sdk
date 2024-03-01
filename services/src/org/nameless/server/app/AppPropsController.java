@@ -40,7 +40,7 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
 
     private static final String TAG = "AppPropsController";
 
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
 
     private static class InstanceHolder {
         private static AppPropsController INSTANCE = new AppPropsController();
