@@ -35,6 +35,8 @@ import org.nameless.settings.preference.SystemSettingMainSwitchPreference;
 public class EdgeLightSettingsFragment extends SettingsPreferenceFragment implements
         OnMainSwitchChangeListener, OnPreferenceChangeListener {
 
+    private static final int COLOR_MODE_CUSTOM = 2;
+
     private ContentResolver mResolver;
 
     private SystemSettingMainSwitchPreference mEnabled;
@@ -55,7 +57,7 @@ public class EdgeLightSettingsFragment extends SettingsPreferenceFragment implem
                 0, UserHandle.USER_CURRENT) == 1;
         final boolean customColor = Settings.System.getIntForUser(mResolver,
                 EDGE_LIGHT_COLOR_MODE,
-                0, UserHandle.USER_CURRENT) == 3;
+                0, UserHandle.USER_CURRENT) == COLOR_MODE_CUSTOM;
         final String color = Settings.System.getStringForUser(mResolver,
                 EDGE_LIGHT_CUSTOM_COLOR,
                 UserHandle.USER_CURRENT);
@@ -89,7 +91,7 @@ public class EdgeLightSettingsFragment extends SettingsPreferenceFragment implem
             final boolean enabled = Settings.System.getIntForUser(mResolver,
                     EDGE_LIGHT_ENABLED,
                     0, UserHandle.USER_CURRENT) == 1;
-            mColor.setEnabled(enabled && value == 3);
+            mColor.setEnabled(enabled && value == COLOR_MODE_CUSTOM);
         } else if (preference == mColor) {
             final String color = ColorPickerPreference.convertToRGB(
                     Integer.valueOf(String.valueOf(newValue)));
@@ -105,7 +107,7 @@ public class EdgeLightSettingsFragment extends SettingsPreferenceFragment implem
     public void onSwitchChanged(Switch switchView, boolean isChecked) {
         final boolean customColor = Settings.System.getIntForUser(mResolver,
                 EDGE_LIGHT_COLOR_MODE,
-                0, UserHandle.USER_CURRENT) == 3;
+                0, UserHandle.USER_CURRENT) == COLOR_MODE_CUSTOM;
         mAlwaysTrigger.setEnabled(isChecked);
         mRepeat.setEnabled(isChecked);
         mColorMode.setEnabled(isChecked);
