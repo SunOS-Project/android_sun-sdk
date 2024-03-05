@@ -10,6 +10,7 @@ import static org.nameless.provider.SettingsExt.Secure.ADVANCED_REBOOT;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.os.Handler;
+import android.os.SystemProperties;
 import android.os.UserHandle;
 
 import com.android.systemui.settings.UserTracker;
@@ -123,5 +124,12 @@ class GlobalActionsDialogLiteExt {
 
     boolean shouldAddSystemUIAction(String actionKey) {
         return isAdvancedRebootEnabled() && GLOBAL_ACTION_KEY_REBOOT_SYSUI.equals(actionKey);
+    }
+
+    boolean isFastbootAvailable() {
+        final boolean dynamic = SystemProperties.getBoolean("ro.boot.dynamic_partitions", false);
+        final boolean retrofit = SystemProperties.getBoolean("ro.boot.dynamic_partitions_retrofit", false);
+        final boolean overrideFastboot = SystemProperties.getBoolean("ro.fastbootd.available", false);
+        return dynamic || retrofit || overrideFastboot;
     }
 }
