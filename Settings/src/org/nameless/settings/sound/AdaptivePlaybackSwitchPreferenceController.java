@@ -25,7 +25,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.UserHandle;
 import android.provider.Settings;
-import android.widget.Switch;
+import android.widget.CompoundButton;
 
 import androidx.preference.PreferenceScreen;
 
@@ -82,7 +82,7 @@ public class AdaptivePlaybackSwitchPreferenceController extends
     }
 
     @Override
-    public void onSwitchChanged(Switch switchView, boolean isChecked) {
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         Settings.System.putIntForUser(mContext.getContentResolver(),
                 ADAPTIVE_PLAYBACK_ENABLED, isChecked ? 1 : 0,
                 UserHandle.USER_CURRENT);

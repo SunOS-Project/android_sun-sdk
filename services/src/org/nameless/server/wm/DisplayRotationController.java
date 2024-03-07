@@ -284,9 +284,9 @@ public class DisplayRotationController {
             mRotateLockedSystem = RotationPolicy.isRotationLocked(mSystemExService.getContext());
         }
         if (mRotateConfig == ROTATE_FOLLOW_SYSTEM) {
-            RotationPolicy.setRotationLock(mSystemExService.getContext(), mRotateLockedSystem);
+            RotationPolicy.setRotationLock(mSystemExService.getContext(), mRotateLockedSystem, TAG);
         } else {
-            RotationPolicy.setRotationLock(mSystemExService.getContext(), mRotateConfig == ROTATE_FORCE_OFF);
+            RotationPolicy.setRotationLock(mSystemExService.getContext(), mRotateConfig == ROTATE_FORCE_OFF, TAG);
         }
         notifyRotateConfigChanged();
     }

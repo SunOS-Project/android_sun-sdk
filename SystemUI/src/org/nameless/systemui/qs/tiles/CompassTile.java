@@ -27,25 +27,22 @@ import android.os.Handler;
 import android.os.Looper;
 import android.service.quicksettings.Tile;
 import android.view.View;
-import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
 import com.android.internal.logging.MetricsLogger;
 
-import com.android.systemui.R;
-import com.android.systemui.broadcast.BroadcastDispatcher;
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
 import com.android.systemui.plugins.ActivityStarter;
 import com.android.systemui.plugins.FalsingManager;
-import com.android.systemui.plugins.qs.QSIconView;
 import com.android.systemui.plugins.qs.QSTile.BooleanState;
 import com.android.systemui.plugins.statusbar.StatusBarStateController;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.QsEventLogger;
 import com.android.systemui.qs.logging.QSLogger;
 import com.android.systemui.qs.tileimpl.QSTileImpl;
+import com.android.systemui.res.R;
 
 import javax.inject.Inject;
 
@@ -64,9 +61,7 @@ public class CompassTile extends QSTileImpl<BooleanState> implements SensorEvent
     private float[] mAcceleration;
     private float[] mGeomagnetic;
 
-    private ImageView mImage;
     private boolean mListeningSensors;
-    private Handler mHandler;
 
     @Inject
     public CompassTile(
@@ -82,7 +77,6 @@ public class CompassTile extends QSTileImpl<BooleanState> implements SensorEvent
         ) {
         super(host, uiEventLogger, backgroundLooper, mainHandler, falsingManager,
                 metricsLogger, statusBarStateController, activityStarter, qsLogger);
-        mHandler = mainHandler;
         mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
         mAccelerationSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mGeomagneticFieldSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
@@ -100,14 +94,6 @@ public class CompassTile extends QSTileImpl<BooleanState> implements SensorEvent
         super.handleDestroy();
         setListeningSensors(false);
         mSensorManager = null;
-        mImage = null;
-    }
-
-    @Override
-    public QSIconView createTileView(Context context) {
-        QSIconView iconView = super.createTileView(context);
-        mImage = (ImageView) iconView.findViewById(android.R.id.icon);
-        return iconView;
     }
 
     @Override
@@ -156,20 +142,8 @@ public class CompassTile extends QSTileImpl<BooleanState> implements SensorEvent
             state.state = Tile.STATE_ACTIVE;
             if (arg != null) {
                 state.label = formatValueWithCardinalDirection(degrees);
-                mHandler.post(() -> {
-                    if (mImage == null)
-                        return;
-                    float target = 360 - degrees;
-                    float relative = target - mImage.getRotation();
-                    if (relative > 180) relative -= 360;
-                    mImage.setRotation(mImage.getRotation() + relative / 2);
-                });
             } else {
                 state.label = mContext.getString(R.string.quick_settings_compass_init);
-                mHandler.post(() -> {
-                    if (mImage != null)
-                        mImage.setRotation(0);
-                });
             }
             state.contentDescription = mContext.getString(
                     R.string.accessibility_quick_settings_compass_on);
@@ -178,10 +152,6 @@ public class CompassTile extends QSTileImpl<BooleanState> implements SensorEvent
             state.contentDescription = mContext.getString(
                     R.string.accessibility_quick_settings_compass_off);
             state.state = Tile.STATE_INACTIVE;
-            mHandler.post(() -> {
-                if (mImage != null)
-                    mImage.setRotation(0);
-            });
         }
     }
 

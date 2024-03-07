@@ -17,7 +17,7 @@ import android.database.ContentObserver;
 import android.os.Handler;
 import android.os.UserHandle;
 
-import com.android.systemui.R;
+import com.android.systemui.res.R;
 import com.android.systemui.settings.UserTracker;
 import com.android.systemui.util.settings.SystemSettings;
 

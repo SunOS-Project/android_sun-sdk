@@ -46,10 +46,15 @@
     <string name="status_bar_data_saver">流量节省程序</string>
     <!-- Accessibility label for nfc icon (not shown on screen) [CHAR LIMIT=NONE] -->
     <!-- Screen record -->
-    <string name="screenrecord_stopdot_label">显示终止小红点\n长按以移动</string>
+    <string name="screenrecord_taps_summary">在触屏位置上显示小白点</string>
+    <string name="screenrecord_stopdot_label">显示终止小红点</string>
+    <string name="screenrecord_stopdot_summary">长按以移动</string>
     <string name="screenrecord_lowquality_label">降低画质</string>
-    <string name="screenrecord_longer_timeout_switch_label">增大文件体积限制\n允许录制最大 15 GiB 的视频</string>
+    <string name="screenrecord_lowquality_summary">缩减生成的文件大小</string>
+    <string name="screenrecord_longer_timeout_switch_label">增大文件体积限制</string>
+    <string name="screenrecord_longer_timeout_switch_summary">允许录制最大 15 GB 的视频</string>
     <string name="screenrecord_hevc_switch_label">启用 HEVC</string>
+    <string name="screenrecord_hevc_switch_summary">使用更高效的 HEVC 视频编码</string>
     <!-- Caffeine QS tile -->
     <string name="quick_settings_caffeine_label">保持亮屏</string>
     <string name="accessibility_quick_settings_caffeine_off">保持亮屏已关闭</string>

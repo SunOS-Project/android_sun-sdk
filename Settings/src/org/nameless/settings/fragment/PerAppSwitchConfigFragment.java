@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedHashMap;
 
-import org.nameless.custom.preference.SwitchPreference;
+import org.nameless.custom.preference.SwitchPreferenceCompat;
 import org.nameless.settings.widget.AppSwitchPreference;
 
 public abstract class PerAppSwitchConfigFragment extends BasePerAppConfigFragment {
@@ -23,7 +23,7 @@ public abstract class PerAppSwitchConfigFragment extends BasePerAppConfigFragmen
 
     @Override
     protected Preference createAppPreference(Context prefContext, AppData appData) {
-        final SwitchPreference pref = new AppSwitchPreference(prefContext);
+        final SwitchPreferenceCompat pref = new AppSwitchPreference(prefContext);
         pref.setIcon(getIcon(appData.packageName));
         pref.setTitle(appData.label);
         pref.setSummary(appData.packageName);
@@ -35,7 +35,7 @@ public abstract class PerAppSwitchConfigFragment extends BasePerAppConfigFragmen
         pref.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                final boolean ret = onSetChecked((SwitchPreference) preference,
+                final boolean ret = onSetChecked((SwitchPreferenceCompat) preference,
                         appData.packageName, appData.uid, (Boolean) newValue);
                 if (ret) {
                     mPkgCheckState.put(appData.packageName, (Boolean) newValue);
@@ -60,7 +60,7 @@ public abstract class PerAppSwitchConfigFragment extends BasePerAppConfigFragmen
 
     protected abstract boolean isChecked(String packageName, int uid);
 
-    protected abstract boolean onSetChecked(SwitchPreference pref, String packageName, int uid, boolean checked);
+    protected abstract boolean onSetChecked(SwitchPreferenceCompat pref, String packageName, int uid, boolean checked);
 
     protected abstract void onCheckedListUpdated(List<String> pkgList);
 }

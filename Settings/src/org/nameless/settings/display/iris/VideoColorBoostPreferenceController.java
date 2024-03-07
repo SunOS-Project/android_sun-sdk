@@ -32,7 +32,7 @@ import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnStart;
 import com.android.settingslib.core.lifecycle.events.OnStop;
 
-import org.nameless.custom.preference.SwitchPreference;
+import org.nameless.custom.preference.SwitchPreferenceCompat;
 
 public class VideoColorBoostPreferenceController extends TogglePreferenceController
         implements LifecycleObserver, OnStart, OnStop {
@@ -50,7 +50,7 @@ public class VideoColorBoostPreferenceController extends TogglePreferenceControl
     private final PowerManager mPowerManager;
     private boolean mPowerSaveOn;
 
-    private SwitchPreference mPreference;
+    private SwitchPreferenceCompat mPreference;
     private SettingObserver mSettingObserver;
 
     public VideoColorBoostPreferenceController(Context context, String key) {

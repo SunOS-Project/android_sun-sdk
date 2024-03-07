@@ -18,7 +18,7 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import com.android.internal.logging.MetricsLogger;
-import com.android.systemui.R;
+
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
 import com.android.systemui.plugins.ActivityStarter;
@@ -27,9 +27,10 @@ import com.android.systemui.plugins.qs.QSTile.BooleanState;
 import com.android.systemui.plugins.statusbar.StatusBarStateController;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.QsEventLogger;
-import com.android.systemui.qs.SettingObserver;
+import com.android.systemui.qs.UserSettingObserver;
 import com.android.systemui.qs.logging.QSLogger;
 import com.android.systemui.qs.tileimpl.QSTileImpl;
+import com.android.systemui.res.R;
 import com.android.systemui.util.settings.SystemSettings;
 
 import javax.inject.Inject;
@@ -45,7 +46,7 @@ public class DcDimmingTile extends QSTileImpl<BooleanState> {
     private final Icon mIcon = ResourceIcon.get(R.drawable.ic_dc_dimming_tile);
 
     private final DisplayFeatureManager mManager;
-    private final SettingObserver mSetting;
+    private final UserSettingObserver mSetting;
 
     @Inject
     public DcDimmingTile(
@@ -64,7 +65,7 @@ public class DcDimmingTile extends QSTileImpl<BooleanState> {
                 metricsLogger, statusBarStateController, activityStarter, qsLogger);
 
         mManager = DisplayFeatureManager.getInstance();
-        mSetting = new SettingObserver(systemSettings, mHandler,
+        mSetting = new UserSettingObserver(systemSettings, mHandler,
                 System.DC_DIMMING_STATE, UserHandle.USER_SYSTEM) {
             @Override
             protected void handleValueChanged(int value, boolean observedChange) {

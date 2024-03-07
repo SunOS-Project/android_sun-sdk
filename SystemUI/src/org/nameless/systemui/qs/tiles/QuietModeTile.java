@@ -32,7 +32,6 @@ import androidx.annotation.Nullable;
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.util.nameless.BatteryFeatureSettingsHelper;
 
-import com.android.systemui.R;
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
 import com.android.systemui.plugins.ActivityStarter;
@@ -41,9 +40,10 @@ import com.android.systemui.plugins.statusbar.StatusBarStateController;
 import com.android.systemui.plugins.qs.QSTile.BooleanState;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.QsEventLogger;
-import com.android.systemui.qs.SettingObserver;
+import com.android.systemui.qs.UserSettingObserver;
 import com.android.systemui.qs.logging.QSLogger;
 import com.android.systemui.qs.tileimpl.QSTileImpl;
+import com.android.systemui.res.R;
 import com.android.systemui.util.settings.SystemSettings;
 
 import javax.inject.Inject;
@@ -57,9 +57,9 @@ public class QuietModeTile extends QSTileImpl<BooleanState> {
     private final BatteryFeatureManager mBatteryFeatureManager;  
     private final Icon mIcon = ResourceIcon.get(R.drawable.ic_qs_quiet_mode);
 
-    private final SettingObserver mEnabledSetting;
-    private final SettingObserver mStatusSetting;
-    private final SettingObserver mWirelessChargingSetting;
+    private final UserSettingObserver mEnabledSetting;
+    private final UserSettingObserver mStatusSetting;
+    private final UserSettingObserver mWirelessChargingSetting;
 
     @Inject
     public QuietModeTile(
@@ -78,21 +78,21 @@ public class QuietModeTile extends QSTileImpl<BooleanState> {
 
         mBatteryFeatureManager = BatteryFeatureManager.getInstance();
 
-        mEnabledSetting = new SettingObserver(systemSettings, mHandler,
+        mEnabledSetting = new UserSettingObserver(systemSettings, mHandler,
                 WIRELESS_CHARGING_QUIET_MODE_ENABLED, UserHandle.USER_SYSTEM) {
             @Override
             protected void handleValueChanged(int value, boolean observedChange) {
                 refreshState();
             }
         };
-        mStatusSetting = new SettingObserver(systemSettings, mHandler,
+        mStatusSetting = new UserSettingObserver(systemSettings, mHandler,
                 WIRELESS_CHARGING_QUIET_MODE_STATUS, UserHandle.USER_SYSTEM) {
             @Override
             protected void handleValueChanged(int value, boolean observedChange) {
                 refreshState();
             }
         };
-        mWirelessChargingSetting = new SettingObserver(systemSettings, mHandler,
+        mWirelessChargingSetting = new UserSettingObserver(systemSettings, mHandler,
                 WIRELESS_CHARGING_ENABLED, UserHandle.USER_SYSTEM, CHARGING_ENABLED) {
             @Override
             protected void handleValueChanged(int value, boolean observedChange) {

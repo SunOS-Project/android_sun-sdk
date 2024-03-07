@@ -96,13 +96,13 @@ class EdgeLightViewController @Inject constructor(
     private var alwaysTriggerOnPulse = false
 
     private val settingsObserver = object : ContentObserver(mainHandler) {
-        override fun onChange(selfChange: Boolean, uri: Uri) {
+        override fun onChange(selfChange: Boolean, uri: Uri?) {
             logD {
-                "setting changed for ${uri.lastPathSegment}"
+                "setting changed for ${uri?.lastPathSegment}"
             }
             coroutineScope.launch {
                 settingsMutex.withLock {
-                    when (uri.lastPathSegment) {
+                    when (uri?.lastPathSegment) {
                         SettingsExt.System.EDGE_LIGHT_ENABLED ->
                             edgeLightEnabled = isEdgeLightEnabled()
                         SettingsExt.System.EDGE_LIGHT_ALWAYS_TRIGGER_ON_PULSE ->

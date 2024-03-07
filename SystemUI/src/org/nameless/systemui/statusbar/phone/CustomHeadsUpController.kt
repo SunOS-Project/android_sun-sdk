@@ -104,7 +104,7 @@ class CustomHeadsUpController @Inject constructor(
             }
         })
 
-        context.getSystemService(GameModeManager::class.java).registerGameModeInfoListener(
+        context.getSystemService(GameModeManager::class.java)!!.registerGameModeInfoListener(
             object : IGameModeInfoListener.Stub() {
                 override fun onGameModeInfoChanged(info: GameModeInfo) {
                     disabledByGame = info.shouldDisableHeadsUp()

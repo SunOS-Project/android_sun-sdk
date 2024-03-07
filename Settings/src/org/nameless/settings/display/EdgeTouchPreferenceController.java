@@ -29,7 +29,7 @@ import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnStart;
 import com.android.settingslib.core.lifecycle.events.OnStop;
 
-import org.nameless.custom.preference.SwitchPreference;
+import org.nameless.custom.preference.SwitchPreferenceCompat;
 import org.nameless.display.DisplayFeatureManager;
 
 public class EdgeTouchPreferenceController extends TogglePreferenceController
@@ -37,7 +37,7 @@ public class EdgeTouchPreferenceController extends TogglePreferenceController
 
     private final DisplayFeatureManager mManager;
 
-    private SwitchPreference mPreference;
+    private SwitchPreferenceCompat mPreference;
     private SettingObserver mSettingObserver;
 
     public EdgeTouchPreferenceController(Context context, String key) {

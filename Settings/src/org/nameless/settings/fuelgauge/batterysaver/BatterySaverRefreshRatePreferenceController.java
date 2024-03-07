@@ -31,13 +31,13 @@ import com.android.internal.util.nameless.DisplayRefreshRateHelper;
 import com.android.settings.R;
 import com.android.settings.core.TogglePreferenceController;
 
-import org.nameless.custom.preference.SwitchPreference;
+import org.nameless.custom.preference.SwitchPreferenceCompat;
 
 public class BatterySaverRefreshRatePreferenceController extends TogglePreferenceController {
 
     private final DisplayRefreshRateHelper mHelper;
 
-    private SwitchPreference mPreference;
+    private SwitchPreferenceCompat mPreference;
 
     public BatterySaverRefreshRatePreferenceController(Context context, String key) {
         super(context, key);

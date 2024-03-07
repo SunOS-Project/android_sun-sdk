@@ -22,14 +22,14 @@ import androidx.preference.Preference;
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
 
-import org.nameless.custom.preference.SwitchPreference;
+import org.nameless.custom.preference.SwitchPreferenceCompat;
 import org.nameless.settings.preference.GlobalSettingMainSwitchPreference;
 
 public class HeadsUpSettingsFragment extends SettingsPreferenceFragment implements
         Preference.OnPreferenceChangeListener {
 
     private GlobalSettingMainSwitchPreference mHeadsUpEnabled;
-    private SwitchPreference mLessBoring;
+    private SwitchPreferenceCompat mLessBoring;
     private Preference mDisableInLandscape;
     private Preference mTimeout;
     private Preference mSnoozeTime;
@@ -42,7 +42,7 @@ public class HeadsUpSettingsFragment extends SettingsPreferenceFragment implemen
         addPreferencesFromResource(R.xml.heads_up_settings);
 
         mHeadsUpEnabled = (GlobalSettingMainSwitchPreference) findPreference(HEADS_UP_NOTIFICATIONS_ENABLED);
-        mLessBoring = (SwitchPreference) findPreference(LESS_BORING_HEADS_UP);
+        mLessBoring = (SwitchPreferenceCompat) findPreference(LESS_BORING_HEADS_UP);
         mDisableInLandscape = findPreference(DISABLE_LANDSCAPE_HEADS_UP);
         mTimeout = findPreference(HEADS_UP_TIMEOUT);
         mSnoozeTime = findPreference(HEADS_UP_NOTIFICATION_SNOOZE);

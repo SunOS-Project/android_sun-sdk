@@ -35,7 +35,7 @@ import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnStart;
 import com.android.settingslib.core.lifecycle.events.OnStop;
 
-import org.nameless.custom.preference.SwitchPreference;
+import org.nameless.custom.preference.SwitchPreferenceCompat;
 import org.nameless.view.DisplayResolutionManager;
 import org.nameless.view.IDisplayResolutionListener;
 
@@ -64,7 +64,7 @@ public class MemcPreferenceController extends TogglePreferenceController
     private final PowerManager mPowerManager;
     private boolean mPowerSaveOn;
 
-    private SwitchPreference mPreference;
+    private SwitchPreferenceCompat mPreference;
     private SettingObserver mSettingObserver;
 
     public MemcPreferenceController(Context context, String key) {

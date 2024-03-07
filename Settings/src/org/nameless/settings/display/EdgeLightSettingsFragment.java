@@ -17,7 +17,8 @@ import android.os.Bundle;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.widget.Switch;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
@@ -25,15 +26,13 @@ import androidx.preference.Preference.OnPreferenceChangeListener;
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
 
-import com.android.settingslib.widget.OnMainSwitchChangeListener;
-
 import org.nameless.custom.colorpicker.ColorPickerPreference;
 import org.nameless.custom.preference.SystemSettingListPreference;
 import org.nameless.custom.preference.SystemSettingSwitchPreference;
 import org.nameless.settings.preference.SystemSettingMainSwitchPreference;
 
 public class EdgeLightSettingsFragment extends SettingsPreferenceFragment implements
-        OnMainSwitchChangeListener, OnPreferenceChangeListener {
+        OnCheckedChangeListener, OnPreferenceChangeListener {
 
     private static final int COLOR_MODE_CUSTOM = 2;
 
@@ -104,7 +103,7 @@ public class EdgeLightSettingsFragment extends SettingsPreferenceFragment implem
     }
 
     @Override
-    public void onSwitchChanged(Switch switchView, boolean isChecked) {
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         final boolean customColor = Settings.System.getIntForUser(mResolver,
                 EDGE_LIGHT_COLOR_MODE,
                 0, UserHandle.USER_CURRENT) == COLOR_MODE_CUSTOM;

@@ -7,7 +7,7 @@ package com.android.systemui.biometrics;
 
 import android.provider.Settings;
 
-import com.android.systemui.R;
+import com.android.systemui.res.R;
 import com.android.systemui.util.concurrency.DelayableExecutor;
 
 class UdfpsControllerExt {

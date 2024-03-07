@@ -18,7 +18,7 @@ class ForegroundActivityListener @Inject constructor(
     context: Context
 ) {
 
-    private val appFocusManager = context.getSystemService(AppFocusManager::class.java)
+    private val appFocusManager = context.getSystemService(AppFocusManager::class.java)!!
 
     private var fullscreenPackageName = ""
     private var fullscreenActivityName = ""

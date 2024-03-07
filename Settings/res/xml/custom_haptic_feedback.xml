@@ -14,32 +14,32 @@
         app:vibrateOnClick="false"
         app:controller="org.nameless.settings.accessibility.TouchFeedbackMainSwitchPreferenceController" />
 
-    <SwitchPreference
+    <SwitchPreferenceCompat
         android:key="back_gesture_vibration_preference_screen"
         android:title="@string/back_gesture_vibration_title"
         app:controller="org.nameless.settings.accessibility.BackGestureVibrationPreferenceController" />
 
-    <SwitchPreference
+    <SwitchPreferenceCompat
         android:key="off_screen_gesture_vibration_preference_screen"
         android:title="@string/off_screen_gesture_vibration_title"
         app:controller="org.nameless.settings.accessibility.OffScreenGestureVibrationPreferenceController" />
 
-    <SwitchPreference
+    <SwitchPreferenceCompat
         android:key="qs_tile_vibration_preference_screen"
         android:title="@string/qs_tiles_vibration_title"
         app:controller="org.nameless.settings.accessibility.QSTileVibrationPreferenceController" />
 
-    <SwitchPreference
+    <SwitchPreferenceCompat
         android:key="slider_vibration_preference_screen"
         android:title="@string/slider_vibration_title"
         app:controller="org.nameless.settings.accessibility.SliderVibrationPreferenceController" />
 
-    <SwitchPreference
+    <SwitchPreferenceCompat
         android:key="switch_vibration_preference_screen"
         android:title="@string/switch_vibration_title"
         app:controller="org.nameless.settings.accessibility.SwitchVibrationPreferenceController" />
 
-    <SwitchPreference
+    <SwitchPreferenceCompat
         android:key="misc_scenes_vibration_preference_screen"
         android:title="@string/misc_scenes_vibration_title"
         app:controller="org.nameless.settings.accessibility.MiscScenesVibrationPreferenceController" />
@@ -49,7 +49,7 @@
         android:title="@string/vibration_effect_category"
         app:controller="org.nameless.settings.accessibility.VibrationEffectCategoryPreferenceController">
 
-        <SwitchPreference
+        <SwitchPreferenceCompat
             android:key="mechanical_keyboard_effect_preference_screen"
             android:title="@string/keyboard_press_effect_title"
             android:summary="@string/keyboard_press_effect_summary"

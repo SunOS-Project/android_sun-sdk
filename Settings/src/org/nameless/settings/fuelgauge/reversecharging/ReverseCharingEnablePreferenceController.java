@@ -6,7 +6,8 @@
 package org.nameless.settings.fuelgauge.reversecharging;
 
 import android.content.Context;
-import android.widget.Switch;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import androidx.preference.PreferenceScreen;
 
@@ -15,10 +16,9 @@ import com.android.internal.util.nameless.BatteryFeatureSettingsHelper;
 import com.android.settings.core.TogglePreferenceController;
 
 import com.android.settingslib.widget.MainSwitchPreference;
-import com.android.settingslib.widget.OnMainSwitchChangeListener;
 
 public class ReverseCharingEnablePreferenceController extends
-        TogglePreferenceController implements OnMainSwitchChangeListener {
+        TogglePreferenceController implements OnCheckedChangeListener {
 
     private final Context mContext;
 
@@ -49,7 +49,7 @@ public class ReverseCharingEnablePreferenceController extends
     }
 
     @Override
-    public void onSwitchChanged(Switch switchView, boolean isChecked) {
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         final boolean enabled = isChecked();
         if (isChecked != enabled) {
             setChecked(isChecked);

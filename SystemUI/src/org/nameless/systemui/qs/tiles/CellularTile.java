@@ -20,12 +20,16 @@ import android.annotation.NonNull;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.NetworkStats;
+import android.net.NetworkTemplate;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.service.quicksettings.Tile;
+import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
+import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
@@ -35,29 +39,34 @@ import androidx.annotation.Nullable;
 
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
+import com.android.internal.util.ArrayUtils;
+
 import com.android.settingslib.net.DataUsageController;
-import com.android.systemui.R;
+
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
 import com.android.systemui.plugins.ActivityStarter;
 import com.android.systemui.plugins.FalsingManager;
 import com.android.systemui.plugins.qs.QSIconView;
-import com.android.systemui.plugins.qs.QSTile.SignalState;
+import com.android.systemui.plugins.qs.QSTile.BooleanState;
 import com.android.systemui.plugins.statusbar.StatusBarStateController;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.QsEventLogger;
-import com.android.systemui.qs.SignalTileView;
 import com.android.systemui.qs.logging.QSLogger;
+import com.android.systemui.res.R;
 import com.android.systemui.statusbar.connectivity.IconState;
 import com.android.systemui.statusbar.connectivity.MobileDataIndicators;
 import com.android.systemui.statusbar.connectivity.NetworkController;
 import com.android.systemui.statusbar.connectivity.SignalCallback;
 import com.android.systemui.statusbar.policy.KeyguardStateController;
 
+import java.util.List;
+import java.util.Set;
+
 import javax.inject.Inject;
 
 /** Quick settings tile: Cellular **/
-public class CellularTile extends SecureQSTile<SignalState> {
+public class CellularTile extends SecureQSTile<BooleanState> {
 
     public static final String TILE_SPEC = "cell";
 
@@ -81,7 +90,6 @@ public class CellularTile extends SecureQSTile<SignalState> {
             QSLogger qsLogger,
             NetworkController networkController,
             KeyguardStateController keyguardStateController
-
     ) {
         super(host, uiEventLogger, backgroundLooper, mainHandler, falsingManager,
                 metricsLogger, statusBarStateController,
@@ -93,13 +101,8 @@ public class CellularTile extends SecureQSTile<SignalState> {
     }
 
     @Override
-    public SignalState newTileState() {
-        return new SignalState();
-    }
-
-    @Override
-    public QSIconView createTileView(Context context) {
-        return new SignalTileView(context);
+    public BooleanState newTileState() {
+        return new BooleanState();
     }
 
     @Override
@@ -132,19 +135,18 @@ public class CellularTile extends SecureQSTile<SignalState> {
     }
 
     @Override
-    protected void handleUpdateState(SignalState state, Object arg) {
+    protected void handleUpdateState(BooleanState state, Object arg) {
         CallbackInfo cb = (CallbackInfo) arg;
         if (cb == null) {
             cb = mSignalCallback.mInfo;
         }
 
-        DataUsageController.DataUsageInfo carrierLabelInfo = mDataController.getDataUsageInfo();
+        DataUsageController.DataUsageInfo carrierLabelInfo = mDataController.getDataUsageInfo(
+                getMobileTemplate(mContext, mDataController.getSubscriptionId()));
         final Resources r = mContext.getResources();
         boolean mobileDataEnabled = mDataController.isMobileDataSupported()
                 && mDataController.isMobileDataEnabled();
         state.value = mobileDataEnabled;
-        state.activityIn = mobileDataEnabled && cb.activityIn;
-        state.activityOut = mobileDataEnabled && cb.activityOut;
         state.expandedAccessibilityClassName = Switch.class.getName();
         if (cb.noSim) {
             state.label = r.getString(R.string.mobile_data);
@@ -224,8 +226,6 @@ public class CellularTile extends SecureQSTile<SignalState> {
         CharSequence dataSubscriptionName;
         @Nullable
         CharSequence dataContentDescription;
-        boolean activityIn;
-        boolean activityOut;
         boolean noSim;
         boolean roaming;
         boolean multipleSubs;
@@ -243,8 +243,6 @@ public class CellularTile extends SecureQSTile<SignalState> {
             mInfo.dataSubscriptionName = mController.getMobileDataNetworkName();
             mInfo.dataContentDescription = indicators.qsDescription != null
                     ? indicators.typeContentDescriptionHtml : null;
-            mInfo.activityIn = indicators.activityIn;
-            mInfo.activityOut = indicators.activityOut;
             mInfo.roaming = indicators.roaming;
             mInfo.multipleSubs = mController.getNumberSubscriptions() > 1;
             refreshState(mInfo);
@@ -271,5 +269,69 @@ public class CellularTile extends SecureQSTile<SignalState> {
                     SubscriptionManager.getDefaultDataSubscriptionId());
         }
         return intent;
+    }
+
+    private static NetworkTemplate getMobileTemplate(Context context, int subId) {
+        final TelephonyManager telephonyManager = context.getSystemService(TelephonyManager.class);
+        final int mobileDefaultSubId = telephonyManager.getSubscriptionId();
+
+        final SubscriptionManager subscriptionManager =
+                context.getSystemService(SubscriptionManager.class);
+        final List<SubscriptionInfo> subInfoList =
+                subscriptionManager.getAvailableSubscriptionInfoList();
+        if (subInfoList == null) {
+            return getMobileTemplateForSubId(telephonyManager, mobileDefaultSubId);
+        }
+
+        for (SubscriptionInfo subInfo : subInfoList) {
+            if (subInfo != null && subInfo.getSubscriptionId() == subId) {
+                return getNormalizedMobileTemplate(telephonyManager, subId);
+            }
+        }
+        return getMobileTemplateForSubId(telephonyManager, mobileDefaultSubId);
+    }
+
+    private static NetworkTemplate getMobileTemplateForSubId(
+            TelephonyManager telephonyManager, int subId) {
+        // Create template that matches any mobile network when the subscriberId is null.
+        String subscriberId = telephonyManager.getSubscriberId(subId);
+        return subscriberId != null
+                ? new NetworkTemplate.Builder(NetworkTemplate.MATCH_CARRIER)
+                .setSubscriberIds(Set.of(subscriberId))
+                .setMeteredness(NetworkStats.METERED_YES)
+                .build()
+                : new NetworkTemplate.Builder(NetworkTemplate.MATCH_MOBILE)
+                        .setMeteredness(NetworkStats.METERED_YES)
+                        .build();
+    }
+
+    private static NetworkTemplate getNormalizedMobileTemplate(
+            TelephonyManager telephonyManager, int subId) {
+        final NetworkTemplate mobileTemplate = getMobileTemplateForSubId(telephonyManager, subId);
+        final Set<String> mergedSubscriberIds = Set.of(telephonyManager
+                .createForSubscriptionId(subId).getMergedImsisFromGroup());
+        if (ArrayUtils.isEmpty(mergedSubscriberIds)) {
+            return mobileTemplate;
+        }
+
+        return normalizeMobileTemplate(mobileTemplate, mergedSubscriberIds);
+    }
+
+    private static NetworkTemplate normalizeMobileTemplate(
+            NetworkTemplate template, Set<String> mergedSet) {
+        if (template.getSubscriberIds().isEmpty()) return template;
+        // The input template should have at most 1 subscriberId.
+        final String subscriberId = template.getSubscriberIds().iterator().next();
+
+        if (mergedSet.contains(subscriberId)) {
+            // Requested template subscriber is part of the merge group; return
+            // a template that matches all merged subscribers.
+            return new NetworkTemplate.Builder(template.getMatchRule())
+                    .setSubscriberIds(mergedSet)
+                    .setWifiNetworkKeys(template.getWifiNetworkKeys())
+                    .setMeteredness(NetworkStats.METERED_YES).build();
+        }
+
+        return template;
     }
 }

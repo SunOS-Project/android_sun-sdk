@@ -5,7 +5,6 @@
 
 package com.android.keyguard;
 
-import static com.android.keyguard.FaceAuthUiEvent.FACE_AUTH_UPDATED_KEYGUARD_VISIBILITY_CHANGED;
 import static com.android.keyguard.KeyguardUpdateMonitor.BIOMETRIC_ACTION_UPDATE;
 
 import android.content.Context;
@@ -57,8 +56,7 @@ class KeyguardUpdateMonitorExt {
     boolean handleMessage(int what) {
         switch (what) {
             case MSG_POCKET_STATE_CHANGED:
-                mMonitor.updateBiometricListeningState(BIOMETRIC_ACTION_UPDATE,
-                        FACE_AUTH_UPDATED_KEYGUARD_VISIBILITY_CHANGED);
+                mMonitor.updateFingerprintListeningState(BIOMETRIC_ACTION_UPDATE);
                 return true;
         }
         return false;

@@ -37,10 +37,10 @@ import com.android.settings.core.BasePreferenceController;
 import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnStart;
 import com.android.settingslib.core.lifecycle.events.OnStop;
-import com.android.settingslib.widget.RadioButtonPreference;
+import com.android.settingslib.widget.SelectorWithWidgetPreference;
 
 public class AdaptivePlaybackSoundPreferenceController extends BasePreferenceController
-        implements RadioButtonPreference.OnClickListener, LifecycleObserver, OnStart, OnStop {
+        implements SelectorWithWidgetPreference.OnClickListener, LifecycleObserver, OnStart, OnStop {
 
     private static final String KEY_NO_TIMEOUT = "adaptive_playback_timeout_none";
     private static final String KEY_30_SECS = "adaptive_playback_timeout_30_secs";
@@ -60,12 +60,12 @@ public class AdaptivePlaybackSoundPreferenceController extends BasePreferenceCon
     private int mAdaptivePlaybackTimeout;
 
     private PreferenceCategory mPreferenceCategory;
-    private RadioButtonPreference mTimeoutNonePref;
-    private RadioButtonPreference mTimeout30SecPref;
-    private RadioButtonPreference mTimeout1MinPref;
-    private RadioButtonPreference mTimeout2MinPref;
-    private RadioButtonPreference mTimeout5MinPref;
-    private RadioButtonPreference mTimeout10MinPref;
+    private SelectorWithWidgetPreference mTimeoutNonePref;
+    private SelectorWithWidgetPreference mTimeout30SecPref;
+    private SelectorWithWidgetPreference mTimeout1MinPref;
+    private SelectorWithWidgetPreference mTimeout2MinPref;
+    private SelectorWithWidgetPreference mTimeout5MinPref;
+    private SelectorWithWidgetPreference mTimeout10MinPref;
 
     private final SettingObserver mSettingObserver;
 
@@ -85,14 +85,14 @@ public class AdaptivePlaybackSoundPreferenceController extends BasePreferenceCon
         super.displayPreference(screen);
 
         mPreferenceCategory = screen.findPreference(getPreferenceKey());
-        mTimeoutNonePref = makeRadioPreference(KEY_NO_TIMEOUT,
+        mTimeoutNonePref = makeSelectorPreference(KEY_NO_TIMEOUT,
                 R.string.adaptive_playback_timeout_none);
-        mTimeout30SecPref = makeRadioPreference(KEY_30_SECS,
+        mTimeout30SecPref = makeSelectorPreference(KEY_30_SECS,
                 R.string.adaptive_playback_timeout_30_secs);
-        mTimeout1MinPref = makeRadioPreference(KEY_1_MIN, R.string.adaptive_playback_timeout_1_min);
-        mTimeout2MinPref = makeRadioPreference(KEY_2_MIN, R.string.adaptive_playback_timeout_2_min);
-        mTimeout5MinPref = makeRadioPreference(KEY_5_MIN, R.string.adaptive_playback_timeout_5_min);
-        mTimeout10MinPref = makeRadioPreference(KEY_10_MIN,
+        mTimeout1MinPref = makeSelectorPreference(KEY_1_MIN, R.string.adaptive_playback_timeout_1_min);
+        mTimeout2MinPref = makeSelectorPreference(KEY_2_MIN, R.string.adaptive_playback_timeout_2_min);
+        mTimeout5MinPref = makeSelectorPreference(KEY_5_MIN, R.string.adaptive_playback_timeout_5_min);
+        mTimeout10MinPref = makeSelectorPreference(KEY_10_MIN,
                 R.string.adaptive_playback_timeout_10_min);
         updateState(null);
     }
@@ -103,7 +103,7 @@ public class AdaptivePlaybackSoundPreferenceController extends BasePreferenceCon
     }
 
     @Override
-    public void onRadioButtonClicked(RadioButtonPreference preference) {
+    public void onRadioButtonClicked(SelectorWithWidgetPreference preference) {
         final int adaptivePlaybackTimeout = keyToSetting(preference.getKey());
         if (adaptivePlaybackTimeout != Settings.System.getIntForUser(
                 mContext.getContentResolver(),
@@ -184,8 +184,8 @@ public class AdaptivePlaybackSoundPreferenceController extends BasePreferenceCon
         }
     }
 
-    private RadioButtonPreference makeRadioPreference(String key, int titleId) {
-        final RadioButtonPreference pref = new RadioButtonPreference(mPreferenceCategory.getContext());
+    private SelectorWithWidgetPreference makeSelectorPreference(String key, int titleId) {
+        final SelectorWithWidgetPreference pref = new SelectorWithWidgetPreference(mPreferenceCategory.getContext());
         pref.setKey(key);
         pref.setTitle(titleId);
         pref.setOnClickListener(this);

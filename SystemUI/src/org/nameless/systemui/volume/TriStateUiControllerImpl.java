@@ -53,10 +53,10 @@ import android.widget.TextView;
 
 import com.android.internal.policy.SystemBarUtils;
 
-import com.android.systemui.R;
 import com.android.systemui.plugins.VolumeDialogController;
 import com.android.systemui.plugins.VolumeDialogController.Callbacks;
 import com.android.systemui.plugins.VolumeDialogController.State;
+import com.android.systemui.res.R;
 import com.android.systemui.statusbar.policy.ConfigurationController;
 import com.android.systemui.statusbar.policy.ConfigurationController.ConfigurationListener;
 

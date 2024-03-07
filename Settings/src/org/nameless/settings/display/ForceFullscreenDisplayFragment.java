@@ -11,7 +11,7 @@ import com.android.settings.R;
 
 import java.util.List;
 
-import org.nameless.custom.preference.SwitchPreference;
+import org.nameless.custom.preference.SwitchPreferenceCompat;
 import org.nameless.settings.fragment.PerAppSwitchConfigFragment;
 
 public class ForceFullscreenDisplayFragment extends PerAppSwitchConfigFragment {
@@ -37,7 +37,7 @@ public class ForceFullscreenDisplayFragment extends PerAppSwitchConfigFragment {
     }
 
     @Override
-    protected boolean onSetChecked(SwitchPreference pref, String packageName, int uid, boolean checked) {
+    protected boolean onSetChecked(SwitchPreferenceCompat pref, String packageName, int uid, boolean checked) {
         new AlertDialog.Builder(mContext)
                 .setTitle(mContext.getText(R.string.switch_fullscreen_display_warn_title))
                 .setMessage(mContext.getText(R.string.switch_fullscreen_display_warn_content))

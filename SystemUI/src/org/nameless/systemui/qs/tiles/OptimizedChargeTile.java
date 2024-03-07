@@ -27,7 +27,6 @@ import androidx.annotation.Nullable;
 
 import com.android.internal.util.nameless.BatteryFeatureSettingsHelper;
 
-import com.android.systemui.R;
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
 import com.android.systemui.plugins.ActivityStarter;
@@ -36,9 +35,10 @@ import com.android.systemui.plugins.qs.QSTile.BooleanState;
 import com.android.systemui.plugins.statusbar.StatusBarStateController;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.QsEventLogger;
-import com.android.systemui.qs.SettingObserver;
+import com.android.systemui.qs.UserSettingObserver;
 import com.android.systemui.qs.logging.QSLogger;
 import com.android.systemui.qs.tileimpl.QSTileImpl;
+import com.android.systemui.res.R;
 import com.android.systemui.util.settings.SystemSettings;
 
 import com.android.internal.logging.MetricsLogger;
@@ -54,8 +54,8 @@ public class OptimizedChargeTile extends QSTileImpl<BooleanState> {
     private final BatteryFeatureManager mBatteryFeatureManager;
     private final Icon mIcon = ResourceIcon.get(R.drawable.ic_optimized_charge);
 
-    private final SettingObserver mEnabledSetting;
-    private final SettingObserver mStatusSetting;
+    private final UserSettingObserver mEnabledSetting;
+    private final UserSettingObserver mStatusSetting;
 
     @Inject
     public OptimizedChargeTile(
@@ -74,14 +74,14 @@ public class OptimizedChargeTile extends QSTileImpl<BooleanState> {
 
         mBatteryFeatureManager = BatteryFeatureManager.getInstance();
 
-        mEnabledSetting = new SettingObserver(systemSettings, mHandler,
+        mEnabledSetting = new UserSettingObserver(systemSettings, mHandler,
                 OPTIMIZED_CHARGE_ENABLED, UserHandle.USER_SYSTEM) {
             @Override
             protected void handleValueChanged(int value, boolean observedChange) {
                 refreshState();
             }
         };
-        mStatusSetting = new SettingObserver(systemSettings, mHandler,
+        mStatusSetting = new UserSettingObserver(systemSettings, mHandler,
                 OPTIMIZED_CHARGE_STATUS, UserHandle.USER_SYSTEM) {
             @Override
             protected void handleValueChanged(int value, boolean observedChange) {

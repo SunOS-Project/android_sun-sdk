@@ -21,7 +21,6 @@ import androidx.annotation.Nullable;
 
 import com.android.internal.logging.MetricsLogger;
 
-import com.android.systemui.R;
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
 import com.android.systemui.plugins.ActivityStarter;
@@ -30,9 +29,10 @@ import com.android.systemui.plugins.qs.QSTile.BooleanState;
 import com.android.systemui.plugins.statusbar.StatusBarStateController;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.QsEventLogger;
-import com.android.systemui.qs.SettingObserver;
+import com.android.systemui.qs.UserSettingObserver;
 import com.android.systemui.qs.logging.QSLogger;
 import com.android.systemui.qs.tileimpl.QSTileImpl;
+import com.android.systemui.res.R;
 import com.android.systemui.settings.UserTracker;
 import com.android.systemui.util.settings.SystemSettings;
 
@@ -52,7 +52,7 @@ public class SystemVibrationTile extends QSTileImpl<BooleanState> {
 
     private final Icon mIcon = ResourceIcon.get(R.drawable.ic_system_vibration);
 
-    private final SettingObserver mSetting;
+    private final UserSettingObserver mSetting;
     private final Vibrator mVibrator;
 
     @Inject
@@ -71,7 +71,7 @@ public class SystemVibrationTile extends QSTileImpl<BooleanState> {
         super(host, uiEventLogger, backgroundLooper, mainHandler, falsingManager,
                 metricsLogger, statusBarStateController, activityStarter, qsLogger);
 
-        mSetting = new SettingObserver(systemSettings, mHandler,
+        mSetting = new UserSettingObserver(systemSettings, mHandler,
                 VIBRATE_ON, userTracker.getUserId(), 1) {
             @Override
             protected void handleValueChanged(int value, boolean observedChange) {
@@ -105,7 +105,8 @@ public class SystemVibrationTile extends QSTileImpl<BooleanState> {
     @Override
     public Intent getLongClickIntent() {
         return new Intent().setComponent(new ComponentName(
-            "com.android.settings", "com.android.settings.Settings$VibrationSettingsActivity"));
+                "com.android.settings",
+                "com.android.settings.Settings$VibrationSettingsActivity"));
     }
 
     @Override

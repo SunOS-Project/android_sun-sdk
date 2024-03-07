@@ -27,12 +27,12 @@ import androidx.preference.PreferenceScreen;
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
 
-import org.nameless.custom.preference.SwitchPreference;
+import org.nameless.custom.preference.SwitchPreferenceCompat;
 import org.nameless.hardware.TouchGestureManager;
 
 public class OffScreenGesturesFragment extends SettingsPreferenceFragment {
 
-    private final class GestureSwitchPreference extends SwitchPreference {
+    private final class GestureSwitchPreference extends SwitchPreferenceCompat {
 
         GestureSwitchPreference(Context context, String settings, boolean defaultOn,
                 int titleResId, int summaryResId) {

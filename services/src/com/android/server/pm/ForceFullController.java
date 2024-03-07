@@ -19,11 +19,12 @@ import android.view.InsetsSource;
 import android.view.InsetsState;
 import android.view.WindowInsets.Type;
 
+import com.android.internal.pm.pkg.component.ComponentMutateUtils;
+import com.android.internal.pm.pkg.component.ParsedActivity;
+
 import com.android.server.pm.PackageManagerService.IPackageManagerImpl;
 import com.android.server.pm.pkg.AndroidPackage;
 import com.android.server.pm.pkg.PackageStateInternal;
-import com.android.server.pm.pkg.component.ComponentMutateUtils;
-import com.android.server.pm.pkg.component.ParsedActivity;
 
 import java.util.List;
 

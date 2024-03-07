@@ -23,7 +23,6 @@ import com.android.internal.logging.MetricsLogger;
 import com.android.internal.telephony.IccCardConstants;
 import com.android.internal.telephony.TelephonyIntents;
 
-import com.android.systemui.R;
 import com.android.systemui.SysUIToast;
 import com.android.systemui.broadcast.BroadcastDispatcher;
 import com.android.systemui.dagger.qualifiers.Background;
@@ -35,10 +34,11 @@ import com.android.systemui.plugins.statusbar.StatusBarStateController;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.QsEventLogger;
 import com.android.systemui.qs.logging.QSLogger;
+import com.android.systemui.res.R;
 import com.android.systemui.statusbar.policy.KeyguardStateController;
 
-import java.util.concurrent.Executors;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 

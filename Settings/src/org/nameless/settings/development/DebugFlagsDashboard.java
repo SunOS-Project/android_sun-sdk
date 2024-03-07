@@ -21,7 +21,7 @@ import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
 
 import org.nameless.content.OnlineConfigManager;
-import org.nameless.custom.preference.SwitchPreference;
+import org.nameless.custom.preference.SwitchPreferenceCompat;
 
 public class DebugFlagsDashboard extends SettingsPreferenceFragment {
 
@@ -52,7 +52,7 @@ public class DebugFlagsDashboard extends SettingsPreferenceFragment {
         screen.addPreference(onlineConfigPref);
 
         for (String key : CONSTANTS_MAP.keySet()) {
-            final SwitchPreference pref = new SwitchPreference(prefContext);
+            final SwitchPreferenceCompat pref = new SwitchPreferenceCompat(prefContext);
             pref.setTitle(key);
             pref.setSummary(CONSTANTS_MAP.get(key));
             pref.setChecked(SystemProperties.getBoolean(CONSTANTS_MAP.get(key), false));

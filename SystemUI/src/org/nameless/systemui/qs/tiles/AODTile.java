@@ -29,7 +29,6 @@ import androidx.annotation.Nullable;
 
 import com.android.internal.logging.MetricsLogger;
 
-import com.android.systemui.R;
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
 import com.android.systemui.plugins.ActivityStarter;
@@ -38,9 +37,10 @@ import com.android.systemui.plugins.qs.QSTile.BooleanState;
 import com.android.systemui.plugins.statusbar.StatusBarStateController;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.QsEventLogger;
-import com.android.systemui.qs.SettingObserver;
+import com.android.systemui.qs.UserSettingObserver;
 import com.android.systemui.qs.logging.QSLogger;
 import com.android.systemui.qs.tileimpl.QSTileImpl;
+import com.android.systemui.res.R;
 import com.android.systemui.settings.UserTracker;
 import com.android.systemui.statusbar.policy.BatteryController;
 import com.android.systemui.util.settings.SecureSettings;
@@ -57,8 +57,8 @@ public class AODTile extends QSTileImpl<BooleanState> implements
     private final Icon mIcon = ResourceIcon.get(R.drawable.ic_qs_aod);
     private final BatteryController mBatteryController;
 
-    private final SettingObserver mAodSetting;
-    private final SettingObserver mAodOnChargeSetting;
+    private final UserSettingObserver mAodSetting;
+    private final UserSettingObserver mAodOnChargeSetting;
 
     @Inject
     public AODTile(
@@ -78,7 +78,7 @@ public class AODTile extends QSTileImpl<BooleanState> implements
         super(host, uiEventLogger, backgroundLooper, mainHandler, falsingManager,
                 metricsLogger, statusBarStateController, activityStarter, qsLogger);
 
-        mAodSetting = new SettingObserver(secureSettings, mHandler,
+        mAodSetting = new UserSettingObserver(secureSettings, mHandler,
                 Settings.Secure.DOZE_ALWAYS_ON,
                 userTracker.getUserId()) {
             @Override
@@ -86,7 +86,7 @@ public class AODTile extends QSTileImpl<BooleanState> implements
                 handleRefreshState(value);
             }
         };
-        mAodOnChargeSetting = new SettingObserver(secureSettings, mHandler,
+        mAodOnChargeSetting = new UserSettingObserver(secureSettings, mHandler,
                 SettingsExt.Secure.DOZE_ON_CHARGE,
                 userTracker.getUserId()) {
             @Override

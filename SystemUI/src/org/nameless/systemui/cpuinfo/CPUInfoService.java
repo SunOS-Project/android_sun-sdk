@@ -36,7 +36,7 @@ import android.view.WindowManager;
 
 import com.android.internal.util.nameless.FileUtils;
 
-import com.android.systemui.R;
+import com.android.systemui.res.R;
 
 public class CPUInfoService extends Service {
 

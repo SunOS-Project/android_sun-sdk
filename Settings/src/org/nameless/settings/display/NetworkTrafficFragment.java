@@ -13,19 +13,18 @@ import static org.nameless.provider.SettingsExt.System.NETWORK_TRAFFIC_STATE;
 import android.app.settings.SettingsEnums;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.widget.Switch;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
-
-import com.android.settingslib.widget.OnMainSwitchChangeListener;
 
 import org.nameless.custom.preference.SystemSettingListPreference;
 import org.nameless.custom.preference.SystemSettingSeekBarPreference;
 import org.nameless.settings.preference.SystemSettingMainSwitchPreference;
 
 public class NetworkTrafficFragment extends SettingsPreferenceFragment
-        implements OnMainSwitchChangeListener {
+        implements OnCheckedChangeListener {
 
     private SystemSettingListPreference mIndicatorMode;
     private SystemSettingSeekBarPreference mThreshold;
@@ -55,7 +54,7 @@ public class NetworkTrafficFragment extends SettingsPreferenceFragment
     }
 
     @Override
-    public void onSwitchChanged(Switch switchView, boolean isChecked) {
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         mIndicatorMode.setEnabled(isChecked);
         mThreshold.setEnabled(isChecked);
         mInterval.setEnabled(isChecked);

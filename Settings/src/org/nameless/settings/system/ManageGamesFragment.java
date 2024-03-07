@@ -12,7 +12,7 @@ import com.android.settings.R;
 import java.util.List;
 
 import org.nameless.app.GameModeManager;
-import org.nameless.custom.preference.SwitchPreference;
+import org.nameless.custom.preference.SwitchPreferenceCompat;
 import org.nameless.settings.fragment.PerAppSwitchConfigFragment;
 
 public class ManageGamesFragment extends PerAppSwitchConfigFragment {
@@ -46,7 +46,7 @@ public class ManageGamesFragment extends PerAppSwitchConfigFragment {
     }
 
     @Override
-    protected boolean onSetChecked(SwitchPreference pref, String packageName, int uid, boolean checked) {
+    protected boolean onSetChecked(SwitchPreferenceCompat pref, String packageName, int uid, boolean checked) {
         if (checked) {
             mGameModeManager.addGame(packageName);
         } else {

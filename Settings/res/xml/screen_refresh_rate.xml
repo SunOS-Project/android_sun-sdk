@@ -27,7 +27,7 @@
         android:fragment="org.nameless.settings.display.refreshrate.PerAppRefreshRateFragment"
         settings:controller="org.nameless.settings.display.refreshrate.PerAppRefreshRatePreferenceController"/>
 
-    <org.nameless.custom.preference.SwitchPreference
+    <org.nameless.custom.preference.SwitchPreferenceCompat
         android:key="extreme_refresh_rate"
         android:title="@string/extreme_refresh_rate_title"
         android:summary="@string/extreme_refresh_rate_summary"

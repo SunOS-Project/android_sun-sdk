@@ -16,7 +16,7 @@ import com.android.settings.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.nameless.custom.preference.SwitchPreference;
+import org.nameless.custom.preference.SwitchPreferenceCompat;
 import org.nameless.settings.fragment.PerAppSwitchConfigFragment;
 
 public class HeadsUpBlacklistSettingsFragment extends PerAppSwitchConfigFragment {
@@ -54,7 +54,7 @@ public class HeadsUpBlacklistSettingsFragment extends PerAppSwitchConfigFragment
     }
 
     @Override
-    protected boolean onSetChecked(SwitchPreference pref, String packageName, int uid, boolean checked) {
+    protected boolean onSetChecked(SwitchPreferenceCompat pref, String packageName, int uid, boolean checked) {
         return true;
     }
 

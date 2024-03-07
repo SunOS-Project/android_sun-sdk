@@ -24,7 +24,7 @@ import android.view.animation.ScaleAnimation
 import android.widget.ImageView
 import android.widget.RelativeLayout
 
-import com.android.systemui.R
+import com.android.systemui.res.R
 
 class EdgeLightView @JvmOverloads constructor(
     context: Context,
