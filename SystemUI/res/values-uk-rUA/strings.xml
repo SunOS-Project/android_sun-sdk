@@ -38,10 +38,10 @@
     <!-- Press or drag to add/remove QS tile -->
     <string name="press_or_drag_to_add_tiles">Press or drag tiles to add or remove</string>
     <!-- Screenrecord delete action -->
-    <string name="screenrecord_delete_label">Delete</string>
-    <string name="screenrecord_delete_description">Screen recording deleted</string>
+    <string name="screenrecord_delete_label">Видалити</string>
+    <string name="screenrecord_delete_description">Запис екрану видалено</string>
     <!-- Statusbar tuner -->
-    <string name="statusbar_items_title">Statusbar icons</string>
+    <string name="statusbar_items_title">Іконки рядку стану</string>
     <string name="status_bar_call_strength">Call strength</string>
     <string name="status_bar_data_saver">Data saver</string>
     <!-- Accessibility label for nfc icon (not shown on screen) [CHAR LIMIT=NONE] -->

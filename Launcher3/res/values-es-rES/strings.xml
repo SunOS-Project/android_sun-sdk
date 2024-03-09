@@ -5,50 +5,50 @@
 -->
 <resources>
     <!-- Launcher settings -->
-    <string name="settings_title">Settings</string>
-    <string name="home_homescreen_title">Home screen</string>
-    <string name="home_homescreen_summary">Customize your home screen</string>
-    <string name="home_drawer_title">App drawer</string>
-    <string name="home_drawer_summary">Customize your app drawer</string>
-    <string name="home_icon_title">Icons</string>
-    <string name="home_icon_summary">Customize your app icons</string>
-    <string name="home_recent_title">Recent</string>
-    <string name="home_recent_summary">Customize your recent overview</string>
-    <string name="home_misc_title">Miscellaneous</string>
-    <string name="home_misc_summary">Discover more miracle</string>
-    <string name="developer_options_title">Developer Options</string>
-    <string name="developer_options_summary">Enable hidden features as your own risk</string>
+    <string name="settings_title">Configuraciones</string>
+    <string name="home_homescreen_title">Pantalla de inicio</string>
+    <string name="home_homescreen_summary">Personaliza tu pantalla de inicio</string>
+    <string name="home_drawer_title">Lista de aplicaciones</string>
+    <string name="home_drawer_summary">Personaliza tu lista de aplicaciones</string>
+    <string name="home_icon_title">Iconos</string>
+    <string name="home_icon_summary">Personaliza los íconos de tus aplicaciones</string>
+    <string name="home_recent_title">Recientes</string>
+    <string name="home_recent_summary">Personaliza la vista de recientes</string>
+    <string name="home_misc_title">Misceláneos</string>
+    <string name="home_misc_summary">Descubre más opciones</string>
+    <string name="developer_options_title">Opciones para desarrolladores</string>
+    <string name="developer_options_summary">Habilita las características ocultas bajo tu responsabilidad</string>
     <!-- Folder titles -->
     <!-- Settings title to show Google Now at -1 screen on launcher. [CHAR LIMIT=50] -->
-    <string name="title_show_google_feed">Swipe to access Google feed</string>
-    <string name="pref_show_google_now_summary">From home screen, swipe right to open Google feed</string>
+    <string name="title_show_google_feed">Desliza para acceder al feed de Google</string>
+    <string name="pref_show_google_now_summary">Desde la pantalla de inicio, desliza hacia la derecha para abrir el feed de Google</string>
     <!-- Suggestions -->
-    <string name="suggestion_pref_screen_title">Suggestions</string>
-    <string name="suggestion_pref_screen_desc">For All Apps &amp; Home screen suggestions</string>
+    <string name="suggestion_pref_screen_title">Sugerencias</string>
+    <string name="suggestion_pref_screen_desc">Para todas las aplicaciones &amp; sugerencias de la pantalla de inicio</string>
     <!-- Edit workspace -->
-    <string name="settings_lock_layout_title">Lock layout</string>
-    <string name="settings_lock_layout_summary_on">Icons and widgets can\'t be added, removed and moved on the homescreen</string>
-    <string name="settings_lock_layout_summary_off">Icons and widgets can be added, removed and moved on the homescreen</string>
-    <string name="settings_edit_widgets_error">It\'s not possible to add widgets to the home screen</string>
+    <string name="settings_lock_layout_title">Bloquear el diseño de pantalla</string>
+    <string name="settings_lock_layout_summary_on">Los íconos y widgets no pueden ser añadidos, eliminados o movidos en la pantalla de inicio</string>
+    <string name="settings_lock_layout_summary_off">Los íconos y widgets pueden ser añadidos, eliminados o movidos en la pantalla de inicio</string>
+    <string name="settings_edit_widgets_error">No es posible añadir widgets a la pantalla de inicio</string>
     <!-- Hide labels -->
-    <string name="desktop_show_labels_title">Icon label</string>
-    <string name="desktop_show_labels_summary">Show icon labels on homescreen</string>
-    <string name="drawer_show_labels_title">Icon label</string>
-    <string name="drawer_show_labels_summary">Show icon labels in app drawer</string>
+    <string name="desktop_show_labels_title">Etiqueta del ícono</string>
+    <string name="desktop_show_labels_summary">Mostrar etiquetas de íconos en la pantalla de inicio</string>
+    <string name="drawer_show_labels_title">Etiqueta del ícono</string>
+    <string name="drawer_show_labels_summary">Mostrar las etiquetas de los íconos en la lista de aplicaciones</string>
     <!-- Hotseat searchbar -->
-    <string name="label_search">Search</string>
+    <string name="label_search">Buscar</string>
     <string name="label_lens">Google Lens</string>
-    <string name="label_voice_search">Voice search</string>
+    <string name="label_voice_search">Búsqueda por voz</string>
     <string name="dock_category">Dock</string>
-    <string name="dock_search_title">Google search bar</string>
-    <string name="dock_search_summary">Show search bar in the bottom dock</string>
+    <string name="dock_search_title">Barra de búsqueda de Google</string>
+    <string name="dock_search_summary">Muestra la barra de búsqueda junto al dock</string>
     <!-- Recents -->
-    <string name="actions_category_title">Quick actions</string>
-    <string name="recents_screenshot_title">Screenshot</string>
-    <string name="recents_clear_all_title">Clear all</string>
+    <string name="actions_category_title">Acciones instantáneas</string>
+    <string name="recents_screenshot_title">Captura de pantalla</string>
+    <string name="recents_clear_all_title">Limpiar todo</string>
     <string name="recents_lens_title">Lens</string>
     <!-- Smartspace -->
-    <string name="smartspace_pref_title">At a Glance</string>
+    <string name="smartspace_pref_title">De un vistazo</string>
     <string name="smartspace_pref_summary">Show smartspace at the top of home screen</string>
     <!-- Kill App recents action shortcut -->
     <string name="recent_task_option_kill_app">Force close</string>

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Face Unlock</string>
+    <string name="app_name">Розблокування обличчям</string>
     <!-- Enroll activity -->
-    <string name="face_enroll_title">Center your face in the camera</string>
-    <string name="face_enroll_description">Hold still, and make sure you\'re in a well lit environment</string>
+    <string name="face_enroll_title">Відцентруйте своє обличчя в камері</string>
+    <string name="face_enroll_description">Залишайтеся нерухомо та переконайтеся, що ви перебуваєте в добре освітленому місці</string>
     <!-- Try Again activity -->
-    <string name="face_try_again_title">Couldn\'t capture your face</string>
-    <string name="face_try_again_description">Tap below to try again. Next time, make sure you\'re in a well lit environment and nothing is obscuring your face</string>
-    <string name="btn_try_again">Try again</string>
+    <string name="face_try_again_title">Не вдалося зняти ваше обличчя</string>
+    <string name="face_try_again_description">Натисніть нижче, щоб повторити спробу. Наступного разу переконайтеся, що ви перебуваєте в добре освітленому місці і ніщо не закриває ваше обличчя</string>
+    <string name="btn_try_again">Спробуйте знову</string>
     <!-- Vendor Messages -->
-    <string name="attr_light_dark">Face needs more light</string>
-    <string name="attr_light_high">Face has too much light</string>
-    <string name="attr_light_shadow">Face has too many shadows</string>
-    <string name="unlock_failed_face_blur">Face is too blurry</string>
-    <string name="unlock_failed_face_large">Face is too close</string>
-    <string name="unlock_failed_face_multi">Too many faces detected</string>
-    <string name="unlock_failed_face_not_complete">Only partial face detected</string>
-    <string name="unlock_failed_face_small">Face is too far away</string>
+    <string name="attr_light_dark">Обличчю потрібно більше світла</string>
+    <string name="attr_light_high">На обличчі занадто багато світла</string>
+    <string name="attr_light_shadow">На обличчі забагато тіней</string>
+    <string name="unlock_failed_face_blur">Обличчя занадто розмите</string>
+    <string name="unlock_failed_face_large">Обличчя занадто близько</string>
+    <string name="unlock_failed_face_multi">Виявлено забагато облич</string>
+    <string name="unlock_failed_face_not_complete">Обличчя виявлено лише частково</string>
+    <string name="unlock_failed_face_small">Обличчя занадто далеко</string>
 </resources>

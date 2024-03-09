@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2018 The LineageOS Project
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+          http://www.apache.org/licenses/LICENSE-2.0
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+    <!-- App Name -->
+    <string name="app_name">杜比音效</string>
+    <!-- Dolby Atmos -->
+    <string name="dolby_title">杜比全景声</string>
+    <string name="dolby_enable">使用杜比全景声</string>
+    <string name="dolby_profile_title">选择模式</string>
+    <string name="dolby_preset">均衡器预设</string>
+    <string name="dolby_low">较低</string>
+    <string name="dolby_medium">中等</string>
+    <string name="dolby_high">较高</string>
+    <string name="dolby_max">最大</string>
+    <string name="dolby_unknown">未知</string>
+    <string name="dolby_category_settings">设置</string>
+    <string name="dolby_bass_enhancer">低音增强器</string>
+    <string name="dolby_dialogue_enhancer">通话增强器</string>
+    <string name="dolby_virtualizer">环绕声效果</string>
+    <string name="dolby_volume_leveler">音量调节器</string>
+    <string name="dolby_connect_headphones">未连接耳机</string>
+    <string name="dolby_reset_profile">重置为默认</string>
+    <string name="dolby_reset_profile_toast">已将%1$s模式重置为默认设置</string>
+    <!-- Dolby Atmos: Sound Profiles -->
+    <string name="dolby_profile_dynamic">动态</string>
+    <string name="dolby_profile_movie">影院</string>
+    <string name="dolby_profile_music">音乐</string>
+    <string name="dolby_profile_game1">游戏1</string>
+    <string name="dolby_profile_game2">游戏2</string>
+    <string name="dolby_profile_voice">通话</string>
+    <!-- Dolby Atmos: Equalizer presets -->
+    <string name="dolby_preset_default">默认</string>
+    <string name="dolby_preset_rock">摇滚音乐</string>
+    <string name="dolby_preset_jazz">爵士音乐</string>
+    <string name="dolby_preset_pop">流行音乐</string>
+    <string name="dolby_preset_classical">古典音乐</string>
+    <string name="dolby_preset_hiphop">嘻哈音乐</string>
+    <string name="dolby_preset_blues">布鲁斯</string>
+    <string name="dolby_preset_electronic">电子音乐</string>
+    <string name="dolby_preset_metal">重金属音乐</string>
+</resources>

@@ -73,7 +73,7 @@
     <string name="dc_dimming_title">防闪烁模式</string>
     <string name="dc_dimming_summary">通过减少屏幕闪烁来缓解弱光条件下的眼睛疲劳</string>
     <!-- High touch sample mode -->
-    <string name="high_touch_sample_title">高触控采样率模式</string>
+    <string name="high_touch_sample_title">高触控采样率</string>
     <string name="high_touch_sample_summary">强制开启屏幕高触控采样率模式</string>
     <string name="high_touch_sample_warning">将全局启用高触控采样率，屏幕耗电量会因此增加。</string>
     <!-- Unlimit edge touch mode -->
@@ -201,7 +201,7 @@
     <string name="click_partial_screenshot_title">单击以局部截图</string>
     <string name="click_partial_screenshot_summary">短按音量减键和电源键以局部截图</string>
     <string name="three_finger_hold_screenshot_title">按住以局部截图</string>
-    <string name="three_finger_hold_screenshot_summary">三指按住屏幕 1 秒中以局部截图</string>
+    <string name="three_finger_hold_screenshot_summary">三指按住屏幕 1 秒钟以局部截图</string>
     <string name="three_finger_swipe_screenshot_title">滑动以截图</string>
     <string name="three_finger_swipe_screenshot_summary">三指同时向下滑动以全局截图</string>
     <!-- Wake on plug -->
@@ -218,7 +218,7 @@
     <string name="statusbar_brightness_control_summary">滑动状态栏以调节亮度</string>
     <!-- Disable tap gestures on statusbar in landscape -->
     <string name="statusbar_gestures_disable_landscape_title">横屏模式下禁用</string>
-    <string name="statusbar_gestures_disable_landscape_summary">Disable tap gestures on status bar when device is in landscape mode</string>
+    <string name="statusbar_gestures_disable_landscape_summary">横屏模式下禁用状态栏手势</string>
     <!-- Power button torch -->
     <string name="power_button_torch_title">按电源按钮开关闪光灯</string>
     <string name="power_button_torch_summary">息屏时长按电源键以开关闪光灯</string>
@@ -450,7 +450,7 @@
     <string name="qs_brightness_slider_bottom_title">移至底部</string>
     <string name="qs_brightness_slider_bottom_summary">在下拉面板底部显示亮度条</string>
     <!-- QS tiles layout -->
-    <string name="qs_tile_layout_title">下拉面板磁贴布局</string>
+    <string name="qs_tile_layout_title">磁贴布局</string>
     <string name="qs_tile_layout_summary">自定义下拉面板的磁贴布局</string>
     <string name="qs_tiles_layout_category">磁贴布局</string>
     <string name="qs_rows_portrait_title">行数(竖屏)</string>
@@ -513,7 +513,7 @@
     <string name="shake_sensors_block_always">禁用传感器</string>
     <!-- App force fullscreen -->
     <string name="app_force_fullscreen_title">应用全屏显示</string>
-    <string name="app_force_fullscreen_summary">为应用配置全屏显示</string>
+    <string name="app_force_fullscreen_summary">为每个应用配置独立的全屏显示设置</string>
     <string name="app_force_fullscreen_info">为选中的应用启用全屏显示</string>
     <string name="switch_fullscreen_display_warn_title">警告</string>
     <string name="switch_fullscreen_display_warn_content">切换全屏显示将会导致应用重启。确定切换吗？</string>
