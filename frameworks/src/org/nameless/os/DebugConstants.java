@@ -23,7 +23,6 @@ public class DebugConstants {
         CONSTANTS_MAP.put("DEBUG_AUDIO_SLIDER", "persist.sys.nameless.audio.slider.debug");
         CONSTANTS_MAP.put("DEBUG_BATTERY_FEATURE", "persist.sys.nameless.battery.feature.debug");
         CONSTANTS_MAP.put("DEBUG_DISPLAY_FEATURE", "persist.sys.nameless.display.feature.debug");
-        CONSTANTS_MAP.put("DEBUG_DISPLAY_IRIS", "persist.sys.nameless.display.iris.debug");
         CONSTANTS_MAP.put("DEBUG_DISPLAY_ROTATE", "persist.sys.nameless.display.rotate.debug");
         CONSTANTS_MAP.put("DEBUG_DISPLAY_RR", "persist.sys.nameless.display.rr.debug");
         CONSTANTS_MAP.put("DEBUG_DOZE", "persist.sys.nameless.doze.debug");
@@ -77,13 +76,6 @@ public class DebugConstants {
     // Key: DisplayFeatureController
     public static final boolean DEBUG_DISPLAY_FEATURE = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.display.feature.debug", false
-    );
-
-    // Enable this to debug IrisService
-    // CommandReceiver will also be enabled. See https://github.com/Nameless-AOSP/packages_apps_IrisService/blob/fourteen/src/org/nameless/iris/observer/CommandReceiver.kt
-    // Key: Iris
-    public static final boolean DEBUG_DISPLAY_IRIS = DEBUG_GLOBAL || SystemProperties.getBoolean(
-        "persist.sys.nameless.display.iris.debug", false
     );
 
     // Enable this to debug DisplayRotationController
