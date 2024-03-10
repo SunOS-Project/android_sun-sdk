@@ -41,10 +41,6 @@ public class DebugConstants {
         CONSTANTS_MAP.put("DEBUG_WMS_TOP_APP", "persist.sys.nameless.wm.top_app.debug");
     }
 
-    public static boolean shouldShowDebugManager() {
-        return Build.IS_ENG || SystemProperties.getBoolean("persist.sys.nameless.debug.manager", false);
-    }
-
     // Enable this to debug all nameless features
     private static final boolean DEBUG_GLOBAL = Build.IS_ENG || SystemProperties.getBoolean(
         "persist.sys.nameless.debug.global", false

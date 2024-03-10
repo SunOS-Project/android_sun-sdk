@@ -11,8 +11,6 @@ import com.android.settings.development.DevelopmentSettingsDashboardFragment;
 
 import com.android.settingslib.development.DeveloperOptionsPreferenceController;
 
-import org.nameless.os.DebugConstants;
-
 public class DebugFlagsPreferenceController extends DeveloperOptionsPreferenceController {
 
     private static final String PREF_KEY = "debug_flags_dashboard";
@@ -29,6 +27,6 @@ public class DebugFlagsPreferenceController extends DeveloperOptionsPreferenceCo
 
     @Override
     public boolean isAvailable() {
-        return DebugConstants.shouldShowDebugManager();
+        return true;
     }
 }
