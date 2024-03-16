@@ -105,6 +105,9 @@ class PopUpViewTransitionAnimationRunner {
             }
             if (change.getMode() != TRANSIT_CHANGE) {
                 if (change.getMode() == TRANSIT_TO_BACK) {
+                    if (DEBUG_POP_UP) {
+                        Slog.d(TAG, "createAnimationAdapters, fade out");
+                    }
                     adapters.add(new PopUpViewTransitionAnimationAdapter(
                             mAnimationSpec.createFadeOutAnimation(change), change));
                 }
@@ -113,14 +116,23 @@ class PopUpViewTransitionAnimationRunner {
                     Slog.d(TAG, "createAnimationAdapters, change.mPopUpView=" + change.mPopUpView);
                 }
                 if ((flags & FLAG_LAUNCH_POP_UP_VIEW_FROM_RECENTS) != 0) {
+                    if (DEBUG_POP_UP) {
+                        Slog.d(TAG, "createAnimationAdapters, launch from recents");
+                    }
                     adapters.add(new PopUpViewTransitionAnimationAdapter(
                             mAnimationSpec.createLaunchFromRecentsAnimation(change), change));
                 } else if ((flags & FLAG_EXIT_POP_UP_VIEW_BY_DRAG) != 0) {
+                    if (DEBUG_POP_UP) {
+                        Slog.d(TAG, "createAnimationAdapters, by drag");
+                    }
                     for (PopUpViewTransitionAnimationAdapter adapter :
                             mAnimationSpec.createChangeAnimationAdapters(info, t)) {
                         adapters.add(adapter);
                     }
                 } else {
+                    if (DEBUG_POP_UP) {
+                        Slog.d(TAG, "createAnimationAdapters, default");
+                    }
                     adapters.add(new PopUpViewTransitionAnimationAdapter(
                             mAnimationSpec.createAnimation(change), change));
                 }

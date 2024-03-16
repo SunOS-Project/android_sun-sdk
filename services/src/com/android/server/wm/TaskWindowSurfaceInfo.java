@@ -511,6 +511,9 @@ class TaskWindowSurfaceInfo {
         final StringBuilder sb = new StringBuilder(1024);
         sb.append("Task=");
         sb.append(mTask);
+        sb.append(" {mTask.windowingMode=");
+        sb.append(mTask.getConfiguration().windowConfiguration.getWindowingMode());
+        sb.append("}");
         sb.append(" {mFreezedWindowingMode=");
         sb.append(mFreezedWindowingMode);
         sb.append(" mMute=");

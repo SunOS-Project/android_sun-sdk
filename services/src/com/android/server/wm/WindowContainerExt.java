@@ -159,6 +159,9 @@ class WindowContainerExt {
             return;
         }
         if (mTransitionController.isCollecting()) {
+            if (DEBUG_POP_UP) {
+                Slog.d(TAG, "prepareTransition(), isCollecting, return");
+            }
             return;
         }
         mTransition = mTransitionController.createTransition(TRANSIT_CHANGE);
@@ -177,7 +180,7 @@ class WindowContainerExt {
         if (mTransition == null) {
             return;
         }
-         if (mWc.getWindowConfiguration().isPopUpWindowMode() ||
+        if (mWc.getWindowConfiguration().isPopUpWindowMode() ||
                 PopUpWindowController.getInstance().isTryExitWindowingMode() ||
                 mFreezerExt.hasFreezeTaskWindowSurfaceInfo()) {
             final TaskWindowSurfaceInfo info = mFreezerExt.getFreezeTaskWindowSurfaceInfo();

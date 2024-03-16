@@ -300,21 +300,9 @@ public class PopUpWindowController {
     }
 
     void removeChild(Task task) {
-        final boolean wasMini = task.getWindowConfiguration().isMiniExtWindowMode();
         if (tryExitPopUpView(task, true, true, true)) {
             if (DEBUG_POP_UP) {
                 Slog.d(TAG, "removeChild: exit PopUpView window");
-            }
-            if (wasMini && !TopActivityRecorder.getInstance().isTaskTopMini(task)) {
-                final Task lastTopTask =
-                        TopActivityRecorder.getInstance().getTopMiniWindowExceptTask(task);
-                if (lastTopTask != null) {
-                    if (DEBUG_POP_UP) {
-                        Slog.d(TAG, "Restore last top mini-window task: " + lastTopTask);
-                    }
-                    PopUpAppStarter.getInstance().startActivity(lastTopTask.mTaskId,
-                            PopUpAppStarter.getMiniWindowBundle());
-                }
             }
         }
     }
@@ -331,7 +319,8 @@ public class PopUpWindowController {
     }
 
     void ensureActivityConfiguration(ActivityRecord r) {
-        if (r.getRootTask() != null && r.shouldBeVisible() && r.getRootTask().getWindowConfiguration().isPinnedExtWindowMode()
+        if (r.getRootTask() != null && r.shouldBeVisible()
+                && r.getRootTask().getWindowConfiguration().isPinnedExtWindowMode()
                 && r.getRootTask().getTopNonFinishingActivity() == r) {
             mAtmService.mH.post(() -> {
                 synchronized (mAtmService.mGlobalLock) {
@@ -410,7 +399,8 @@ public class PopUpWindowController {
         }
         task.startPausing(true, false, fullTaskActivity, "PopUpWindowController.moveActivityTaskToBackInner");
         if (taskActivity != null && task.getDisplayContent() != null) {
-            if (taskActivity.getTask() != null && (taskActivity.getTask() == task || taskActivity.getTask().getParent() == task)) {
+            if (taskActivity.getTask() != null &&
+                    (taskActivity.getTask() == task || taskActivity.getTask().getParent() == task)) {
                 task.moveTaskToBack(taskActivity.getTask());
             }
             final ActivityRecord resumedActivity = task.mRootWindowContainer.getTopResumedActivity();
@@ -445,18 +435,6 @@ public class PopUpWindowController {
                                     task.mDisplayContent.assignWindowLayers(true);
                                     moveActivityTaskToBackInner(task, fullTask);
                                 }
-                                if (task.getWindowConfiguration().isMiniExtWindowMode()
-                                        && reason != MOVE_TO_BACK_NEW_MINI) {
-                                    final Task lastTopTask =
-                                            TopActivityRecorder.getInstance().getTopMiniWindowExceptTask(task);
-                                    if (lastTopTask != null) {
-                                        if (DEBUG_POP_UP) {
-                                            Slog.d(TAG, "Restore last top mini-window task: " + lastTopTask);
-                                        }
-                                        PopUpAppStarter.getInstance().startActivity(lastTopTask.mTaskId,
-                                                PopUpAppStarter.getMiniWindowBundle());
-                                    }
-                                }
                                 mHandler.postDelayed(()-> {
                                     tryExitPopUpView(task, true, reason != MOVE_TO_BACK_NEW_MINI, reason != MOVE_TO_BACK_NEW_PIN);
                                 }, EXIT_POP_UP_DELAY);
@@ -471,15 +449,9 @@ public class PopUpWindowController {
         if (!WindowConfiguration.isPopUpWindowMode(windowingMode)) {
             return false;
         }
-        final Task miniWinTask = windowingMode == WINDOWING_MODE_MINI_WINDOW_EXT ?
-                DimmerWindow.getInstance().getTask() : null;
         final Task pinnedWinTask = windowingMode == WINDOWING_MODE_PINNED_WINDOW_EXT ?
                 PinnedWindowOverlayController.getInstance().getTask() : null;
         setWindowingModePopUpView(candidateTask, windowingMode);
-        if (miniWinTask != null && miniWinTask != candidateTask.getRootTask()) {
-            miniWinTask.setAlwaysOnTop(false);
-            moveActivityTaskToBack(miniWinTask, MOVE_TO_BACK_NEW_MINI);
-        }
         if (pinnedWinTask != null && pinnedWinTask != candidateTask.getRootTask()) {
             pinnedWinTask.setAlwaysOnTop(false);
             moveActivityTaskToBack(pinnedWinTask, MOVE_TO_BACK_NEW_PIN);
@@ -491,15 +463,9 @@ public class PopUpWindowController {
         if (!WindowConfiguration.isPopUpWindowMode(windowingMode)) {
             return;
         }
-        final Task miniWinTask = windowingMode == WINDOWING_MODE_MINI_WINDOW_EXT ?
-                DimmerWindow.getInstance().getTask() : null;
         final Task pinnedWinTask = windowingMode == WINDOWING_MODE_PINNED_WINDOW_EXT ?
                 PinnedWindowOverlayController.getInstance().getTask() : null;
         setWindowingModePopUpView(rootTask, windowingMode);
-        if (miniWinTask != null && miniWinTask != rootTask.getRootTask()) {
-            miniWinTask.setAlwaysOnTop(false);
-            moveActivityTaskToBack(miniWinTask, MOVE_TO_BACK_NEW_MINI);
-        }
         if (pinnedWinTask != null && pinnedWinTask != rootTask.getRootTask()) {
             pinnedWinTask.setAlwaysOnTop(false);
             moveActivityTaskToBack(pinnedWinTask, MOVE_TO_BACK_NEW_PIN);
@@ -600,7 +566,8 @@ public class PopUpWindowController {
                     if (rootTask != null) {
                         if (DEBUG_POP_UP) {
                             Slog.d(TAG, "tryExitPopUpView task=" + task +
-                                    " skipAnim=" + skipAnim + " removeMini=" + removeMini +
+                                    " skipAnim=" + skipAnim +
+                                    " removeMini=" + removeMini +
                                     ", removePin=" + removePin +
                                     ", wasMiniWindow=" + wasMiniWindow);
                         }
@@ -623,7 +590,6 @@ public class PopUpWindowController {
                                 && wasMiniWindow) {
                             TopActivityRecorder.getInstance().removeMiniWindowTask(task);
                         }
-                        updateFocusedApp();
                         if (!skipAnim) {
                             rootTask.mWindowContainerExt.scheduleTransition();
                         }
@@ -658,8 +624,9 @@ public class PopUpWindowController {
                     Slog.e(TAG, "enterMiniWindowingMode: You can only enter mini-window from pinned-window. rootTask=" + rootTask);
                     return;
                 }
-                TopActivityRecorder.getInstance().moveTopPinnedToMini();
-                rootTask.mWindowContainerExt.prepareTransition();
+                if (!TopActivityRecorder.getInstance().moveTopPinnedToMini()) {
+                    rootTask.mWindowContainerExt.prepareTransition();
+                }
                 rootTask.setWindowingMode(WINDOWING_MODE_MINI_WINDOW_EXT);
                 mAtmService.setFocusedTask(rootTask.mTaskId);
                 rootTask.mWindowContainerExt.scheduleTransition();
@@ -704,9 +671,9 @@ public class PopUpWindowController {
 
     private void setWindowingModePopUpView(Task task, int windowingMode) {
         if (task != null) {
-            task.mWindowContainerExt.prepareTransition();
             if (!task.getWindowConfiguration().isPopUpWindowMode()) {
                 capturePopUpViewTaskSnapshot(task);
+                task.mWindowContainerExt.prepareTransition();
                 task.setWindowingMode(windowingMode);
             }
             final Task rootTask = task.getRootTask();

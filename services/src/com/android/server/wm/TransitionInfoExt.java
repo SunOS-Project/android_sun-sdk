@@ -5,9 +5,14 @@
 
 package com.android.server.wm;
 
+import static android.app.WindowConfiguration.WINDOWING_MODE_UNDEFINED;
+
+import static org.nameless.os.DebugConstants.DEBUG_POP_UP;
+
 import android.app.WindowConfiguration;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Slog;
 import android.view.DisplayInfo;
 import android.view.InsetsState;
 import android.view.WindowInsets;
@@ -21,8 +26,13 @@ public class TransitionInfoExt {
     private final PopUpViewInfo mPopUpViewInfo = new PopUpViewInfo();
 
     private float getPositionAndScaleFormInfo(TaskWindowSurfaceInfo info, Point out) {
+        if (DEBUG_POP_UP) {
+            Slog.d(TAG, "getPositionAndScaleFormInfo, info=" + info);
+        }
+        out.set(0, 0);
         final Task task = info.mTask;
-        final int windowingMode = info.mFreezedWindowingMode != 0 ? info.mFreezedWindowingMode
+        final int windowingMode = info.mFreezedWindowingMode != WINDOWING_MODE_UNDEFINED
+                ? info.mFreezedWindowingMode
                 : task.getConfiguration().windowConfiguration.getWindowingMode();
         if (WindowConfiguration.isPinnedExtWindowMode(windowingMode)) {
             final Rect bounds = new Rect();
@@ -77,6 +87,9 @@ public class TransitionInfoExt {
         if (info.mTask != null) {
             info.mTask.getBounds(mPopUpViewInfo.mWindowCrop);
             mPopUpViewInfo.mStartDragBounds.set(info.mTask.mSurfaceFreezer.mFreezeBounds);
+        }
+        if (DEBUG_POP_UP) {
+            Slog.d(TAG, "setupPopUpViewInfo, info=" + mPopUpViewInfo);
         }
     }
 }

@@ -33,10 +33,8 @@ class PopUpViewTransitionAnimationSpec {
 
     private static final String TAG = "PopUpViewTransitionAnimationSpec";
 
-    static final long ANIMATION_DURATION_MODE_CHANGING = 250L;
-    static final long ANIMATION_DURATION_SWIPE_UP = 450L;
-    static final long ANIMATION_DURATION_SWIPE_UP_ALPHA = 500L;
-    static final long ANIMATION_DURATION_TO_BACK = 250L;
+    static final long ANIMATION_DURATION_MODE_CHANGING = 320L;
+    static final long ANIMATION_DURATION_TO_BACK = 150L;
 
     static final long CHANGE_ANIMATION_DURATION = 517L;
     static final long CHANGE_ANIMATION_FADE_DURATION = 80L;
@@ -48,7 +46,6 @@ class PopUpViewTransitionAnimationSpec {
 
     static final Interpolator INTERPOLATOR_TO_BACK = new PathInterpolator(0.17f, 0.0f, 0.83f, 1.0f);
     static final Interpolator INTERPOLATOR_MODE_CHANGING = new PathInterpolator(0.2f, 0.0f, 0.0f, 1.0f);
-    static final Interpolator INTERPOLATOR_SWIPE_UP = new PathInterpolator(0.05f, 0.7f, 0.1f, 1.0f);
 
     private final Interpolator mFastOutExtraSlowInInterpolator;
 
@@ -141,8 +138,8 @@ class PopUpViewTransitionAnimationSpec {
 
     private Animation[] createChangeBoundsChangeAnimations(TransitionInfo.Change change, Rect rect) {
         final Rect endAbsBounds = change.getEndAbsBounds();
-        final float width = change.mPopUpView.mStartDragBounds.width() / endAbsBounds.width();
-        final float height = change.mPopUpView.mStartDragBounds.height() / endAbsBounds.height();
+        final float width = (float) change.mPopUpView.mStartDragBounds.width() / endAbsBounds.width();
+        final float height = (float) change.mPopUpView.mStartDragBounds.height() / endAbsBounds.height();
         final float scaleWidth = 1.0f / width;
         final float scaleHeight = 1.0f / height;
         final AnimationSet animationSet = new AnimationSet(false);

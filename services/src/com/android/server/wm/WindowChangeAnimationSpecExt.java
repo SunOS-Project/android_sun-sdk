@@ -5,12 +5,17 @@
 
 package com.android.server.wm;
 
+import static android.app.WindowConfiguration.WINDOWING_MODE_UNDEFINED;
+
+import static org.nameless.os.DebugConstants.DEBUG_POP_UP;
+
 import android.app.WindowConfiguration;
 import android.content.res.Configuration;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.SystemClock;
+import android.util.Slog;
 import android.util.proto.ProtoOutputStream;
 import android.view.DisplayInfo;
 import android.view.InsetsState;
@@ -30,6 +35,8 @@ import java.io.PrintWriter;
 import java.util.function.Supplier;
 
 class WindowChangeAnimationSpecExt implements LocalAnimationAdapter.AnimationSpec {
+
+    private static final String TAG = "WindowChangeAnimationSpecExt";
 
     static final int ANIMATION_DURATION_MODE_CHANGING = 320;
 
@@ -69,8 +76,12 @@ class WindowChangeAnimationSpecExt implements LocalAnimationAdapter.AnimationSpe
     }
 
     private float getPositionAndScaleFormInfo(TaskWindowSurfaceInfo info, Point out) {
+        if (DEBUG_POP_UP) {
+            Slog.d(TAG, "getPositionAndScaleFormInfo, info=" + info);
+        }
         final Task task = info.mTask;
-        final int windowingMode = info.mFreezedWindowingMode != 0 ? info.mFreezedWindowingMode
+        final int windowingMode = info.mFreezedWindowingMode != WINDOWING_MODE_UNDEFINED
+                ? info.mFreezedWindowingMode
                 : task.getConfiguration().windowConfiguration.getWindowingMode();
         if (WindowConfiguration.isPinnedExtWindowMode(windowingMode)) {
             final Rect bounds = new Rect();

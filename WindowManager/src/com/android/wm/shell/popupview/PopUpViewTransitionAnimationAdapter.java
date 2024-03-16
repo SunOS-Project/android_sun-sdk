@@ -62,7 +62,7 @@ class PopUpViewTransitionAnimationAdapter {
     }
 
     void onAnimationUpdate(SurfaceControl.Transaction t, long currentPlayTime) {
-        long min = Math.min(currentPlayTime, mAnimation.getDuration());
+        final long min = Math.min(currentPlayTime, mAnimation.getDuration());
         mAnimation.getTransformation(min, mTransformation);
         onAnimationUpdateInner(t, min);
     }

@@ -67,10 +67,13 @@ public class TopActivityRecorder {
         @Override
         public TopAppInfo getTopAppInfo() {
             synchronized (mFocusLock) {
-                final TopAppInfo.Builder builder = new TopAppInfo.Builder();
                 final int n = mTopMiniWindowActivity.size();
                 final ActivityInfo info = n > 0 ? mTopMiniWindowActivity.get(n - 1)
                         : mTopFullscreenActivity;
+                if (info == null) {
+                    return null;
+                }
+                final TopAppInfo.Builder builder = new TopAppInfo.Builder();
                 builder.setComponentName(info.componentName);
                 final Task task = info.task;
                 if (task != null) {
@@ -87,6 +90,9 @@ public class TopActivityRecorder {
         @Override
         public TopAppInfo getTopFullscreenAppInfo() {
             synchronized (mFocusLock) {
+                if (mTopFullscreenActivity == null) {
+                    return null;
+                }
                 final TopAppInfo.Builder builder = new TopAppInfo.Builder();
                 builder.setComponentName(mTopFullscreenActivity.componentName);
                 final Task task = mTopFullscreenActivity.task;
@@ -295,23 +301,6 @@ public class TopActivityRecorder {
         }
     }
 
-    Task getTopPinnedWindowTaskLocked() {
-        if (mTopPinnedWindowActivity == null) {
-            return null;
-        }
-        return mTopPinnedWindowActivity.task;
-    }
-
-    int getTopPinnedWindowTaskId() {
-        synchronized (mFocusLock) {
-            final Task task = getTopPinnedWindowTaskLocked();
-            if (task == null) {
-                return INVALID_TASK_ID;
-            }
-            return task.mTaskId;
-        }
-    }
-
     String getTopMiniWindowPackage() {
         synchronized (mFocusLock) {
             final int n = mTopMiniWindowActivity.size();
@@ -319,23 +308,6 @@ public class TopActivityRecorder {
                 return "";
             }
             return mTopMiniWindowActivity.get(n - 1).packageName;
-        }
-    }
-
-    Task getTopMiniWindowExceptTask(Task task) {
-        synchronized (mFocusLock) {
-            final int n = mTopMiniWindowActivity.size();
-            if (n == 0) {
-                return null;
-            }
-            for (int i = n - 1; i >= 0; --i) {
-                if (mTopMiniWindowActivity.get(i).task == task) {
-                    continue;
-                }
-                return mTopMiniWindowActivity.get(i).task;
-            }
-            logE("getTopMiniWindowExceptTask, unable to find task: " + task);
-            return null;
         }
     }
 
@@ -353,16 +325,6 @@ public class TopActivityRecorder {
                 return false;
             }
             return mTopFullscreenActivity.isHome;
-        }
-    }
-
-    boolean isTaskTopMini(Task task) {
-        synchronized (mFocusLock) {
-            final int n = mTopMiniWindowActivity.size();
-            if (n == 0) {
-                return false;
-            }
-            return mTopMiniWindowActivity.get(n - 1).task == task;
         }
     }
 
@@ -411,22 +373,6 @@ public class TopActivityRecorder {
         }
     }
 
-    void removeTopMiniWindowActivity() {
-        synchronized (mFocusLock) {
-            final int n = mTopMiniWindowActivity.size();
-            if (n == 0) {
-                return;
-            }
-            final ActivityInfo ai = mTopMiniWindowActivity.remove(n - 1);
-            logD("removeTopMiniWindowActivity: " + ai);
-            if (n == 1) {
-                DimmerWindow.getInstance().setTask(null);
-            } else {
-                DimmerWindow.getInstance().setTask(mTopMiniWindowActivity.get(n - 2).task);
-            }
-        }
-    }
-
     void moveTopMiniToPinned(Task task) {
         synchronized (mFocusLock) {
             final int n = mTopMiniWindowActivity.size();
@@ -437,7 +383,7 @@ public class TopActivityRecorder {
             if (prevPinnedTask != null) {
                 prevPinnedTask.setAlwaysOnTop(false);
             }
-            mTopPinnedWindowActivity = mTopMiniWindowActivity.get(n - 1);
+            mTopPinnedWindowActivity = new ActivityInfo(mTopMiniWindowActivity.get(n - 1));
             logD("moveTopMiniToPinned: " + mTopPinnedWindowActivity);
             mTopMiniWindowActivity.clear();
             DimmerWindow.getInstance().setTask(null);
@@ -451,16 +397,14 @@ public class TopActivityRecorder {
         }
     }
 
-    void moveTopPinnedToMini() {
+    boolean moveTopPinnedToMini() {
         synchronized (mFocusLock) {
             if (mTopPinnedWindowActivity == null) {
-                return;
+                return false;
             }
             final Task prevMiniTask = getTopMiniWindowTaskLocked();
-            if (prevMiniTask != null) {
-                prevMiniTask.setAlwaysOnTop(false);
-            }
-            mTopMiniWindowActivity.add(mTopPinnedWindowActivity);
+            mTopMiniWindowActivity.clear();
+            mTopMiniWindowActivity.add(new ActivityInfo(mTopPinnedWindowActivity));
             logD("moveTopPinnedToMini: " + mTopPinnedWindowActivity);
             DimmerWindow.getInstance().setTask(mTopPinnedWindowActivity.task);
             mTopPinnedWindowActivity = null;
@@ -471,6 +415,7 @@ public class TopActivityRecorder {
                             PopUpWindowController.MOVE_TO_BACK_NEW_MINI);
                 }
             }, WindowChangeAnimationSpecExt.ANIMATION_DURATION_MODE_CHANGING);
+            return prevMiniTask != null;
         }
     }
 
@@ -542,6 +487,13 @@ public class TopActivityRecorder {
             this.packageName = r.packageName;
             this.task = task;
             this.isHome = r.isActivityTypeHome();
+        }
+
+        ActivityInfo(ActivityInfo other) {
+            this.componentName = other.componentName;
+            this.packageName = other.packageName;
+            this.task = other.task;
+            this.isHome = other.isHome;
         }
 
         @Override
