@@ -11,8 +11,6 @@ import static org.nameless.provider.SettingsExt.System.POP_UP_KEEP_MUTE_IN_MINI;
 import static org.nameless.provider.SettingsExt.System.POP_UP_NOTIFICATION_BLACKLIST;
 import static org.nameless.provider.SettingsExt.System.POP_UP_NOTIFICATION_JUMP_LANDSCAPE;
 import static org.nameless.provider.SettingsExt.System.POP_UP_NOTIFICATION_JUMP_PORTRAIT;
-import static org.nameless.provider.SettingsExt.System.POP_UP_SETTINGS_JUMP;
-import static org.nameless.provider.SettingsExt.System.POP_UP_SHARE_JUMP;
 import static org.nameless.provider.SettingsExt.System.POP_UP_SINGLE_TAP_ACTION;
 
 import android.content.Context;
@@ -84,30 +82,6 @@ public class PopUpSettingsHelper {
     public static String getNotificationJumpBlacklist(Context context, int userId) {
         return Settings.System.getStringForUser(context.getContentResolver(),
                 POP_UP_NOTIFICATION_BLACKLIST, userId);
-    }
-
-    public static boolean isSettingsJumpEnabled(Context context) {
-        return isSettingsJumpEnabled(context, UserHandle.USER_CURRENT);
-    }
-
-    public static boolean isSettingsJumpEnabled(Context context, int userId) {
-        final boolean defaultEnabled = context.getResources().getBoolean(
-                R.bool.config_popUpView_defaultSettingsJump);
-        return Settings.System.getIntForUser(context.getContentResolver(),
-                POP_UP_SETTINGS_JUMP, defaultEnabled ? 1 : 0,
-                userId) == 1;
-    }
-
-    public static boolean isShareJumpEnabled(Context context) {
-        return isShareJumpEnabled(context, UserHandle.USER_CURRENT);
-    }
-
-    public static boolean isShareJumpEnabled(Context context, int userId) {
-        final boolean defaultEnabled = context.getResources().getBoolean(
-                R.bool.config_popUpView_defaultShareJump);
-        return Settings.System.getIntForUser(context.getContentResolver(),
-                POP_UP_SHARE_JUMP, defaultEnabled ? 1 : 0,
-                userId) == 1;
     }
 
     public static boolean isHookMiFreeformEnabled(Context context) {

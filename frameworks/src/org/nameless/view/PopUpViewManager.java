@@ -17,9 +17,6 @@ public class PopUpViewManager {
     );
 
     /** TODO: Get rid of these dirty blacklist stuff. Maybe move them to local config file. */
-
-    private static final HashSet<String> SETTINGS_CALLER_BLACKLIST = new HashSet<>();
-    private static final HashSet<String> SHARE_BLACKLIST = new HashSet<>();
     private static final HashSet<String> SYSTEM_NOTIFICATION_BLACKLIST = new HashSet<>();
 
     public static final String ACTION_START_MINI_WINDOW = "org.nameless.intent.START_MINI_WINDOW";
@@ -39,26 +36,11 @@ public class PopUpViewManager {
     private PopUpViewManager() {}
 
     static {
-        SETTINGS_CALLER_BLACKLIST.add("com.android.launcher3");
-        SETTINGS_CALLER_BLACKLIST.add("com.android.permissioncontroller");
-
-        SHARE_BLACKLIST.add("com.google.android.gms");
-        SHARE_BLACKLIST.add("com.whatsapp");
-
         SYSTEM_NOTIFICATION_BLACKLIST.add("android");
         SYSTEM_NOTIFICATION_BLACKLIST.add("com.android.chrome");
         SYSTEM_NOTIFICATION_BLACKLIST.add("com.android.packageinstaller");
         SYSTEM_NOTIFICATION_BLACKLIST.add("com.google.android.gms");
         SYSTEM_NOTIFICATION_BLACKLIST.add("com.google.android.packageinstaller");
-    }
-
-    public static boolean inSettingsCallerBlacklist(String packageName) {
-        return SETTINGS_CALLER_BLACKLIST.contains(packageName) ||
-                (packageName != null && packageName.startsWith("com.google.android"));
-    }
-
-    public static boolean inShareBlacklist(String packageName) {
-        return SHARE_BLACKLIST.contains(packageName);
     }
 
     public static boolean inSystemNotificationBlacklist(String packageName) {

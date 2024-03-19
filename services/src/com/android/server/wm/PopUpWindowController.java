@@ -80,8 +80,6 @@ public class PopUpWindowController {
     static final int MOVE_TO_BACK_NEW_PIN = 3;
     static final int MOVE_TO_BACK_NON_USER = 4;
 
-    private static final HashSet<String> EXTRA_ACTION_SETTINGS = new HashSet<>();
-
     private static final long EXIT_POP_UP_DELAY = 200L;
 
     private static final VibrationEffect OVERVIEW_HAPTIC =
@@ -117,10 +115,6 @@ public class PopUpWindowController {
     private boolean mNextRecentIsPin;
 
     private WindowState mDimWinState = null;
-
-    static {
-        EXTRA_ACTION_SETTINGS.add(Intent.ACTION_POWER_USAGE_SUMMARY);
-    }
 
     private static class InstanceHolder {
         private static final PopUpWindowController INSTANCE = new PopUpWindowController();
@@ -870,12 +864,7 @@ public class PopUpWindowController {
 
         final String callerPackage = request.callingPackage;
         final ComponentName component = request.intent.getComponent();
-        String targetPackage = component != null ? component.getPackageName() : "";
-        if (targetPackage.isEmpty()) {
-            if (isSettingsAction(request.intent.getAction())) {
-                targetPackage = "com.android.settings";
-            }
-        }
+        final String targetPackage = component != null ? component.getPackageName() : "";
 
         final String currentTopFullscreenPackage = TopActivityRecorder.getInstance().getTopFullscreenPackage();
         final String currentTopMiniPackage = TopActivityRecorder.getInstance().getTopMiniWindowPackage();
@@ -926,56 +915,6 @@ public class PopUpWindowController {
             request.activityOptions.setLaunchWindowingMode(WINDOWING_MODE_MINI_WINDOW_EXT);
             return;
         }
-
-        if (currentTopFullscreenPackage.equals(targetPackage) ||
-                currentTopPinnedPackage.equals(targetPackage)) {
-            // Target package is in top fullscreen / pinned-window. Do nothing here.
-            return;
-        }
-
-        if ("com.android.settings".equals(targetPackage) &&
-                PopUpSettingsConfig.getInstance().shouldUsePopUpForSettings()) {
-            // We are jumping to Settings. Do more checks before actually set mini-window options.
-
-            // Skip for blacklist callers.
-            if (PopUpViewManager.inSettingsCallerBlacklist(callerPackage)) {
-                if (DEBUG_POP_UP) {
-                    Slog.d(TAG, "computeBeforeExecuteRequest, skip: in Settings caller blacklist");
-                }
-                return;
-            }
-
-            // Skip when it's launched from Launcher.
-            if (TopActivityRecorder.getInstance().isTopFullscreenActivityHome() &&
-                    currentTopFullscreenPackage.equals(callerPackage)) {
-                if (DEBUG_POP_UP) {
-                    Slog.d(TAG, "computeBeforeExecuteRequest, skip: from launcher");
-                }
-                return;
-            }
-
-            // All done. Here we go.
-            if (DEBUG_POP_UP) {
-                Slog.d(TAG, "computeBeforeExecuteRequest, configure: enter Settings");
-            }
-            if (request.activityOptions == null) {
-                request.activityOptions = new SafeActivityOptions(ActivityOptions.makeBasic());
-            }
-            request.activityOptions.setLaunchWindowingMode(WINDOWING_MODE_MINI_WINDOW_EXT);
-            request.intent.setFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
-                                    Intent.FLAG_ACTIVITY_NEW_TASK);
-            return;
-        }
-    }
-
-    private boolean isSettingsAction(String action) {
-        if (action == null) {
-            return false;
-        }
-        if (action.startsWith("android.settings.")) {
-            return true;
-        }
-        return EXTRA_ACTION_SETTINGS.contains(action);
     }
 
     private String reasonToString(int reason) {

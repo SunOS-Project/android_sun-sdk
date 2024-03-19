@@ -9,7 +9,6 @@ import static org.nameless.provider.SettingsExt.System.POP_UP_DOUBLE_TAP_ACTION;
 import static org.nameless.provider.SettingsExt.System.POP_UP_HOOK_MI_FREEFORM;
 import static org.nameless.provider.SettingsExt.System.POP_UP_KEEP_MUTE_IN_MINI;
 import static org.nameless.provider.SettingsExt.System.POP_UP_NOTIFICATION_BLACKLIST;
-import static org.nameless.provider.SettingsExt.System.POP_UP_SETTINGS_JUMP;
 import static org.nameless.provider.SettingsExt.System.POP_UP_SINGLE_TAP_ACTION;
 import static org.nameless.view.PopUpViewManager.TAP_ACTION_EXIT;
 import static org.nameless.view.PopUpViewManager.TAP_ACTION_NOTHING;
@@ -48,7 +47,6 @@ class PopUpSettingsConfig {
 
     private boolean mKeepMuteInMini = true;
     private boolean mHookMiFreeform = false;
-    private boolean mPopUpSettingsJump = true;
     private int mSingleTapAction = TAP_ACTION_PIN_WINDOW;
     private int mDoubleTapAction = TAP_ACTION_EXIT;
 
@@ -96,14 +94,6 @@ class PopUpSettingsConfig {
         return mHookMiFreeform;
     }
 
-    private void updateSettingsJump() {
-        mPopUpSettingsJump = PopUpSettingsHelper.isSettingsJumpEnabled(mContext);
-    }
-
-    boolean shouldUsePopUpForSettings() {
-        return mPopUpSettingsJump;
-    }
-
     private void updateNotificationBlacklist() {
         mUserNotificationBlacklist.clear();
         final String blacklist = PopUpSettingsHelper.getNotificationJumpBlacklist(mContext);
@@ -127,7 +117,6 @@ class PopUpSettingsConfig {
             updatePopUpSingleTapAction();
             updatePopUpDoubleTapAction();
             updateHookMiFreeform();
-            updateSettingsJump();
             updateNotificationBlacklist();
         });
     }
@@ -153,9 +142,6 @@ class PopUpSettingsConfig {
                     Settings.System.getUriFor(POP_UP_HOOK_MI_FREEFORM),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(
-                    Settings.System.getUriFor(POP_UP_SETTINGS_JUMP),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(
                     Settings.System.getUriFor(POP_UP_NOTIFICATION_BLACKLIST),
                     false, this, UserHandle.USER_ALL);
         }
@@ -174,9 +160,6 @@ class PopUpSettingsConfig {
                     break;
                 case POP_UP_HOOK_MI_FREEFORM:
                     updateHookMiFreeform();
-                    break;
-                case POP_UP_SETTINGS_JUMP:
-                    updateSettingsJump();
                     break;
                 case POP_UP_NOTIFICATION_BLACKLIST:
                     updateNotificationBlacklist();

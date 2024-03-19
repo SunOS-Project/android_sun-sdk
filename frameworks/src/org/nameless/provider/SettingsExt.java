@@ -581,18 +581,6 @@ public class SettingsExt {
         public static final String POP_UP_NOTIFICATION_BLACKLIST = "pop_up_notification_blacklist";
 
         /**
-         * Whether to use Pop-Up Window for Settings jump
-         * @hide
-         */
-        public static final String POP_UP_SETTINGS_JUMP = "pop_up_settings_jump";
-
-        /**
-         * Whether to use Pop-Up Window for share activity jump
-         * @hide
-         */
-        public static final String POP_UP_SHARE_JUMP = "pop_up_share_jump";
-
-        /**
          * Whether to disable notification sound & vibration while the screen is on
          * @hide
          */
