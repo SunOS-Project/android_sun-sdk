@@ -8,8 +8,8 @@
     <!-- All Apps Picker -->
     <string name="all_apps_picker_title">Больше приложений</string>
     <string name="manage_apps_title">Управление приложениями</string>
-    <string name="pinned_apps_title">Закрепленные приложения (нажмите и удерживайте, чтобы открепить)</string>
-    <string name="all_apps_title">Все приложения (нажмите и удерживайте, чтобы закрепить)</string>
+    <string name="pinned_apps_title">Закрепленные приложения</string>
+    <string name="all_apps_title">Все приложения</string>
     <string name="info_no_pinned_app">Нет закрепленных приложений</string>
     <string name="info_all_apps_pinned">Все приложения закреплены</string>
 </resources>

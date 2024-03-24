@@ -8,8 +8,8 @@
     <!-- All Apps Picker -->
     <string name="all_apps_picker_title">更多应用</string>
     <string name="manage_apps_title">管理应用</string>
-    <string name="pinned_apps_title">固定应用（长按以取消固定）</string>
-    <string name="all_apps_title">所有应用（长按以固定）</string>
+    <string name="pinned_apps_title">固定应用</string>
+    <string name="all_apps_title">所有应用</string>
     <string name="info_no_pinned_app">无固定应用</string>
     <string name="info_all_apps_pinned">所有应用均已固定</string>
 </resources>

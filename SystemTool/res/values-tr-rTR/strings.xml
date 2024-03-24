@@ -8,8 +8,8 @@
     <!-- All Apps Picker -->
     <string name="all_apps_picker_title">Daha Fazla Uygulama</string>
     <string name="manage_apps_title">Uygulamaları yönet</string>
-    <string name="pinned_apps_title">Sabitlenmiş Uygulamalar (Sabitlemeyi kaldırmak için uzun basın)</string>
-    <string name="all_apps_title">Tüm Uygulamalar (Sabitlemek için uzun basın)</string>
+    <string name="pinned_apps_title">Sabitlenmiş Uygulamalar</string>
+    <string name="all_apps_title">Tüm Uygulamalar</string>
     <string name="info_no_pinned_app">Sabitlenmiş Uygulama Yok</string>
     <string name="info_all_apps_pinned">Tüm Uygulamalar sabitlendi</string>
 </resources>

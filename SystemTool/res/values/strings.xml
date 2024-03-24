@@ -11,8 +11,10 @@
     <!-- All Apps Picker -->
     <string name="all_apps_picker_title">More Apps</string>
     <string name="manage_apps_title">Manage apps</string>
-    <string name="pinned_apps_title">Pinned Apps (Long press to unpin)</string>
-    <string name="all_apps_title">All Apps (Long press to pin)</string>
+    <string name="pinned_apps_title">Pinned Apps</string>
+    <string name="all_apps_title">All Apps</string>
+    <string name="edit_title">Edit</string>
+    <string name="finish_title">Finish</string>
     <string name="info_no_pinned_app">No Pinned Apps</string>
     <string name="info_all_apps_pinned">All Apps are pinned</string>
 
