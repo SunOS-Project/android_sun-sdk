@@ -19,7 +19,6 @@ import java.util.Set;
 
 import vendor.nameless.hardware.vibratorExt.V1_0.IVibratorExt;
 import vendor.nameless.hardware.vibratorExt.V1_0.LevelRange;
-import vendor.nameless.hardware.vibratorExt.V1_0.RichTapEffectInfo;
 import vendor.nameless.hardware.vibratorExt.V1_0.Type;
 
 /** @hide */
@@ -199,30 +198,6 @@ public class VibratorExtManager {
             Log.e(TAG, "Failed to get effect supported status", e);
         }
         return false;
-    }
-
-    public boolean isRichTapSupported() {
-        if (mService == null) {
-            return false;
-        }
-        try {
-            return mService.isRichTapSupported();
-        } catch (RemoteException e) {
-            Log.e(TAG, "Failed to get richtap supported status", e);
-        }
-        return false;
-    }
-
-    public RichTapEffectInfo getRichTapEffectInfo(int effectId) {
-        if (mService == null) {
-            return null;
-        }
-        try {
-            return mService.getRichTapEffectInfo(effectId);
-        } catch (RemoteException e) {
-            Log.e(TAG, "Failed to get richtap effect info", e);
-        }
-        return null;
     }
 
     private boolean isStrengthLevelRangeLegal(LevelRange range) {

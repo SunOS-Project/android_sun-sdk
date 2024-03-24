@@ -49,7 +49,6 @@ import java.util.HashSet;
 import org.nameless.content.IOnlineConfigurable;
 import org.nameless.content.OnlineConfigManager;
 import org.nameless.os.VibratorExtManager;
-import org.nameless.server.vibrator.RichTapVibrationEffect;
 
 import vendor.nameless.hardware.vibratorExt.V1_0.LevelRange;
 import vendor.nameless.hardware.vibratorExt.V1_0.Type;
@@ -313,9 +312,6 @@ public final class CustomVibrationSettings extends IOnlineConfigurable.Stub {
             final int strengthLevel = loadSystemSetting(
                     mVibratorExtManager.vibrationTypeToSettings(type), range.defaultLevel);
             mVibratorExtManager.setStrengthLevel(type, strengthLevel);
-            if (type == Type.HAPTIC) {
-                RichTapVibrationEffect.setStrengthLevel(strengthLevel, range);
-            }
         }
     }
 
