@@ -798,6 +798,12 @@ public class SettingsExt {
         public static final String SYSTEM_TOOL_MINI_WINDOW_APPS = "system_tool_mini_window_apps";
 
         /**
+         * System Tool: Whether to show more circles for pinned apps
+         * @hide
+         */
+        public static final String SYSTEM_TOOL_MORE_CIRCLES = "system_tool_more_circles";
+
+        /**
          * Game mode: Game app list
          * @hide
          */
