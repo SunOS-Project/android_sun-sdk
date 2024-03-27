@@ -190,6 +190,7 @@ class PinnedWindowOverlayController {
                     Slog.d(TAG, "onSingleTapUp: event=" + event);
                 }
                 enterMiniWindowingMode();
+                setTask(null);
                 return true;
             }
 
@@ -199,6 +200,7 @@ class PinnedWindowOverlayController {
                     Slog.d(TAG, "onDoubleTap: event=" + event);
                 }
                 exitPinnedWindowingMode();
+                setTask(null);
                 return true;
             }
         });
@@ -209,6 +211,9 @@ class PinnedWindowOverlayController {
     }
 
     void setTask(Task task) {
+        if (mTask == task) {
+            return;
+        }
         if (DEBUG_POP_UP) {
             Slog.d(TAG, "setTask: " + (task != null ? task : "null"));
         }
