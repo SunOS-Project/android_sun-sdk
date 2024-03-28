@@ -18,6 +18,8 @@ import android.view.Surface;
 
 import com.android.server.policy.WindowManagerPolicy.WindowState;
 
+import org.nameless.server.app.GameModeController;
+
 public class WindowModeGestureListener extends GestureListenerBase {
 
     private static final String TAG = "WindowModeGestureListener";
@@ -65,6 +67,9 @@ public class WindowModeGestureListener extends GestureListenerBase {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (!hasRegisterClient()) {
+                    return result;
+                }
+                if (GameModeController.getInstance().shouldDisablePopUpViewGesture()) {
                     return result;
                 }
                 mDownPosX = event.getRawX();

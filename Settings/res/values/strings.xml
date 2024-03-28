@@ -621,6 +621,7 @@
     <string name="game_mode_in_game_options">In-Game options</string>
     <string name="game_mode_disable_auto_brightness">Disable auto brightness</string>
     <string name="game_mode_disable_three_finger_gestures">Disable three-finger gestures</string>
+    <string name="game_mode_disable_pop_up_view_gesture">Disable Pop-Up View gesture</string>
     <string name="game_mode_disable_heads_up">Disable heads-up notification</string>
     <string name="game_mode_suppress_fullscreen_title">Block fullscreen events</string>
     <string name="game_mode_suppress_fullscreen_summary">Prevent fullscreen events like incoming call from appearing</string>

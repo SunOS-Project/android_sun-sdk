@@ -821,6 +821,12 @@ public class SettingsExt {
          */
         public static final String GAME_MODE_DISABLE_HEADS_UP = "game_mode_disable_heads_up";
 
+        /**
+         * Game mode: Whether to disable Pop-Up View gesture
+         * @hide
+         */
+        public static final String GAME_MODE_DISABLE_POP_UP_VIEW_GESTURE = "game_mode_disable_pop_up_view_gesture";
+
          /**
          * Game mode: Whether to lock gestures in game
          * @hide

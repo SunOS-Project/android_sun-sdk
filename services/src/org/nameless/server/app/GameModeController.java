@@ -13,6 +13,7 @@ import static org.nameless.provider.SettingsExt.System.GAME_MODE_APP_LIST;
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_DISABLE_AUTO_BRIGHTNESS;
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_DISABLE_HEADS_UP;
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_DISABLE_THREE_FINGER_GESTURES;
+import static org.nameless.provider.SettingsExt.System.GAME_MODE_DISABLE_POP_UP_VIEW_GESTURE;
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_LOCK_GESTURES;
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_LOCK_STATUS_BAR;
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_SILENT_NOTIFICATION;
@@ -93,6 +94,7 @@ public class GameModeController {
     private boolean mDisableAutoBrightness;
     private boolean mDisableHeadsUp;
     private boolean mDisableThreeFingerGestures;
+    private boolean mDisablePopUpViewGesture;
     private boolean mLockGestures;
     private boolean mLockStatusbar;
     private boolean mSilentNotification;
@@ -218,6 +220,9 @@ public class GameModeController {
                     Settings.System.getUriFor(GAME_MODE_DISABLE_THREE_FINGER_GESTURES),
                     false, this, UserHandle.USER_ALL);
             mSystemExService.getContentResolver().registerContentObserver(
+                    Settings.System.getUriFor(GAME_MODE_DISABLE_POP_UP_VIEW_GESTURE),
+                    false, this, UserHandle.USER_ALL);
+            mSystemExService.getContentResolver().registerContentObserver(
                     Settings.System.getUriFor(GAME_MODE_LOCK_GESTURES),
                     false, this, UserHandle.USER_ALL);
             mSystemExService.getContentResolver().registerContentObserver(
@@ -252,6 +257,12 @@ public class GameModeController {
                                 mSystemExService.getContentResolver(),
                                 GAME_MODE_DISABLE_THREE_FINGER_GESTURES,
                                 1, UserHandle.USER_CURRENT) == 1;
+                        break;
+                    case GAME_MODE_DISABLE_POP_UP_VIEW_GESTURE:
+                        mDisablePopUpViewGesture = Settings.System.getIntForUser(
+                                mSystemExService.getContentResolver(),
+                                GAME_MODE_DISABLE_POP_UP_VIEW_GESTURE,
+                                0, UserHandle.USER_CURRENT) == 1;
                         break;
                     case GAME_MODE_LOCK_GESTURES:
                         mLockGestures = Settings.System.getIntForUser(
@@ -387,6 +398,10 @@ public class GameModeController {
                     mSystemExService.getContentResolver(),
                     GAME_MODE_DISABLE_THREE_FINGER_GESTURES,
                     1, userId) == 1;
+            mDisablePopUpViewGesture = Settings.System.getIntForUser(
+                    mSystemExService.getContentResolver(),
+                    GAME_MODE_DISABLE_POP_UP_VIEW_GESTURE,
+                    0, userId) == 1;
             mLockGestures = Settings.System.getIntForUser(
                     mSystemExService.getContentResolver(),
                     GAME_MODE_LOCK_GESTURES,
@@ -469,6 +484,12 @@ public class GameModeController {
     public boolean shouldDisableThreeFingerGestures() {
         synchronized (mStateLock) {
             return mInGame && mDisableThreeFingerGestures;
+        }
+    }
+
+    public boolean shouldDisablePopUpViewGesture() {
+        synchronized (mStateLock) {
+            return mInGame && mDisablePopUpViewGesture;
         }
     }
 
