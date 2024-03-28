@@ -26,10 +26,10 @@ import androidx.preference.Preference.OnPreferenceChangeListener;
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
 
-import org.nameless.custom.colorpicker.ColorPickerPreference;
 import org.nameless.custom.preference.SystemSettingListPreference;
 import org.nameless.custom.preference.SystemSettingSwitchPreference;
 import org.nameless.settings.preference.SystemSettingMainSwitchPreference;
+import org.nameless.settings.preference.colorpicker.ColorPickerPreference;
 
 public class EdgeLightSettingsFragment extends SettingsPreferenceFragment implements
         OnCheckedChangeListener, OnPreferenceChangeListener {

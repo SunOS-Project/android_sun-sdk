@@ -539,4 +539,13 @@
     <string name="game_mode_lock_gestures_summary">在全屏游戏中需要划动两次以解锁手势</string>
     <string name="game_mode_lock_statusbar_title">锁定状态栏</string>
     <string name="game_mode_lock_statusbar_summary">若要启用状态栏，请从屏幕两侧滑动</string>
+    <!-- Color Picker -->
+    <string name="dialog_color_picker">取色器</string>
+    <string name="press_color_to_apply">单击下方的颜色以应用</string>
+    <string name="arrow_right">→</string>
+    <string name="arrow_down">↓</string>
+    <string name="hex">色值:</string>
+    <string name="hex_hint">#ff000000</string>
+    <string name="set">设置</string>
+    <string name="color_default">默认</string>
 </resources>
