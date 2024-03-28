@@ -227,7 +227,7 @@ class EdgeLightViewController @Inject constructor(
 
     private suspend fun getThemeColor(): Int {
         return Utils.getColorAttrDefaultColor(context,
-                com.android.internal.R.attr.colorAccentPrimary) ?: Utils.getColorAccentDefaultColor(context)
+                com.android.internal.R.attr.colorAccentPrimary)
     }
 
     // Theme color is returned for notification color mode
