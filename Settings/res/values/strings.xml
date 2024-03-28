@@ -642,4 +642,36 @@
     <string name="set">Set</string>
     <string name="color_default">Default</string>
 
+    <!-- Pop-Up View -->
+    <string name="pop_up_view_title">Pop-Up View</string>
+    <string name="pop_up_view_info">Run app in a floating mini window to do more quick actions</string>
+    <string name="pop_up_view_gesture_title">Gesture</string>
+    <string name="pop_up_view_global_gesture_title">Global Gesture</string>
+    <string name="pop_up_view_global_gesture_summary">Open any apps with Pop-Up View by swiping from bottom corner of the screen to middle</string>
+    <string name="pop_up_view_manage_apps_title">Manage pinned apps</string>
+    <string name="pop_up_view_manage_apps_summary">Customize apps to be shown in menu</string>
+    <string name="pop_up_view_more_circles_title">Display more apps</string>
+    <string name="pop_up_view_more_circles_summary">Add another quarter circle in gesture menu</string>
+    <string name="pop_up_view_global_gesture_warn">Digital assistant gesture will be disabled with Global Gesture enabled.</string>
+    <string name="pop_up_view_mini_window_title">Mini-Window</string>
+    <string name="pop_up_view_keep_mute_mini_title">Keep muted state</string>
+    <string name="pop_up_view_keep_mute_mini_summary_on">App will keep muted when switched from Pinned-Window mode to Mini-Window mode</string>
+    <string name="pop_up_view_keep_mute_mini_summary_off">App will unmute when switched from Pinned-Window mode to Mini-Window mode</string>
+    <string name="pop_up_view_non_window_area_title">Non-Window area</string>
+    <string name="pop_up_view_single_tap_non_window_title">Single tap action</string>
+    <string name="pop_up_view_double_tap_non_window_title">Double tap action</string>
+    <string name="pop_up_view_action_enter_pinned">Enter Pinned-Window</string>
+    <string name="pop_up_view_action_exit">Exit Pop-Up View</string>
+    <string name="pop_up_view_no_action">No action</string>
+    <string name="pop_up_view_light_weight_open_title">LightWeight open</string>
+    <string name="pop_up_view_light_weight_notificiation_portrait_title">Open notifications (Portrait)</string>
+    <string name="pop_up_view_light_weight_notificiation_portrait_summary">Use Pop-Up View to jump to notification apps in portrait mode</string>
+    <string name="pop_up_view_light_weight_notificiation_landscape_title">Open notifications (Landscape)</string>
+    <string name="pop_up_view_light_weight_notificiation_landscape_summary">Use Pop-Up View to jump to notification apps in landscape mode</string>
+    <string name="pop_up_view_light_weight_notificiation_blacklist_title">Notification blacklist apps</string>
+    <string name="pop_up_view_light_weight_notificiation_blacklist_summary">Disallow selected apps from opening notification in Pop-Up View</string>
+    <string name="pop_up_view_third_party_control_title">Third-Party control</string>
+    <string name="pop_up_view_hook_mi_freeform_title">Hook Mi-Freeform broadcast</string>
+    <string name="pop_up_view_hook_mi_freeform_summary">Some tool apps support to call Mi-Freeform for opening app in small window. Enable this will intercept broadcast sent to Mi-Freeform and use Pop-Up View to open app</string>
+
 </resources>

@@ -12,6 +12,8 @@ import static org.nameless.provider.SettingsExt.System.POP_UP_NOTIFICATION_BLACK
 import static org.nameless.provider.SettingsExt.System.POP_UP_NOTIFICATION_JUMP_LANDSCAPE;
 import static org.nameless.provider.SettingsExt.System.POP_UP_NOTIFICATION_JUMP_PORTRAIT;
 import static org.nameless.provider.SettingsExt.System.POP_UP_SINGLE_TAP_ACTION;
+import static org.nameless.provider.SettingsExt.System.SYSTEM_TOOL_MORE_CIRCLES;
+import static org.nameless.provider.SettingsExt.System.SYSTEM_TOOL_WINDOWING_MODE_GESTURE;
 
 import android.content.Context;
 import android.os.UserHandle;
@@ -23,6 +25,30 @@ import com.android.internal.R;
 public class PopUpSettingsHelper {
 
     private PopUpSettingsHelper() {}
+
+    public static boolean isGestureEnabled(Context context) {
+        return isGestureEnabled(context, UserHandle.USER_CURRENT);
+    }
+
+    public static boolean isGestureEnabled(Context context, int userId) {
+        final boolean defaultEnabled = context.getResources().getBoolean(
+                R.bool.config_popUpView_defaultGestureEnabled);
+        return Settings.System.getIntForUser(context.getContentResolver(),
+                SYSTEM_TOOL_WINDOWING_MODE_GESTURE, defaultEnabled ? 1 : 0,
+                userId) == 1;
+    }
+
+    public static boolean shouldShowMoreCircles(Context context) {
+        return shouldShowMoreCircles(context, UserHandle.USER_CURRENT);
+    }
+
+    public static boolean shouldShowMoreCircles(Context context, int userId) {
+        final boolean defaultEnabled = context.getResources().getBoolean(
+                R.bool.config_popUpView_defaultShowMoreCircles);
+        return Settings.System.getIntForUser(context.getContentResolver(),
+                SYSTEM_TOOL_MORE_CIRCLES, defaultEnabled ? 1 : 0,
+                userId) == 1;
+    }
 
     public static boolean isKeepMuteInMiniEnabled(Context context) {
         return isKeepMuteInMiniEnabled(context, UserHandle.USER_CURRENT);

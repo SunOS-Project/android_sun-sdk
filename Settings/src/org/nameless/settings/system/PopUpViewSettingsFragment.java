@@ -1,0 +1,104 @@
+/*
+ * Copyright (C) 2023-2024 The Nameless-AOSP Project
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+package org.nameless.settings.system;
+
+import android.app.settings.SettingsEnums;
+import android.os.Bundle;
+
+import androidx.preference.Preference;
+
+import com.android.internal.util.nameless.PopUpSettingsHelper;
+
+import com.android.settings.R;
+import com.android.settings.SettingsPreferenceFragment;
+
+import org.nameless.custom.preference.SystemSettingListPreference;
+import org.nameless.custom.preference.SystemSettingSwitchPreference;
+
+public class PopUpViewSettingsFragment extends SettingsPreferenceFragment implements
+        Preference.OnPreferenceChangeListener {
+
+    private static final String KEY_GESTURE = "system_tool_windowing_mode_gesture";
+    private static final String KEY_MORE_CIRCLES = "system_tool_more_circles";
+    private static final String KEY_KEEP_MUTE = "pop_up_keep_mute_in_mini";
+    private static final String KEY_SINGLE_TAP_ACTION = "pop_up_single_tap_action";
+    private static final String KEY_DOUBLE_TAP_ACTION = "pop_up_double_tap_action";
+    private static final String KEY_NOTIFICATION_PORTRAIT = "pop_up_notification_jump_portrait";
+    private static final String KEY_NOTIFICATION_LANDSCAPE = "pop_up_notification_jump_landscape";
+    private static final String KEY_NOTIFICATION_BLACKLIST = "pop_up_notification_blacklist";
+    private static final String KEY_HOOK_MI_FREEFORM = "pop_up_hook_mi_freeform";
+
+    private SystemSettingSwitchPreference mGlobalGesture;
+    private SystemSettingSwitchPreference mShowMoreCircles;
+    private SystemSettingSwitchPreference mKeepMuteInMini;
+    private SystemSettingListPreference mSingleTapAction;
+    private SystemSettingListPreference mDoubleTapAction;
+    private SystemSettingSwitchPreference mNotifPortrait;
+    private SystemSettingSwitchPreference mNotifLandscape;
+    private Preference mNotifBlacklist;
+    private SystemSettingSwitchPreference mHookMiFreeform;
+
+    @Override
+    public void onCreate(Bundle savedInstance) {
+        super.onCreate(savedInstance);
+        addPreferencesFromResource(R.xml.pop_up_view_settings);
+
+        mGlobalGesture = (SystemSettingSwitchPreference) findPreference(KEY_GESTURE);
+        mShowMoreCircles = (SystemSettingSwitchPreference) findPreference(KEY_MORE_CIRCLES);
+        mKeepMuteInMini = (SystemSettingSwitchPreference) findPreference(KEY_KEEP_MUTE);
+        mSingleTapAction = (SystemSettingListPreference) findPreference(KEY_SINGLE_TAP_ACTION);
+        mDoubleTapAction = (SystemSettingListPreference) findPreference(KEY_DOUBLE_TAP_ACTION);
+        mNotifPortrait = (SystemSettingSwitchPreference) findPreference(KEY_NOTIFICATION_PORTRAIT);
+        mNotifLandscape = (SystemSettingSwitchPreference) findPreference(KEY_NOTIFICATION_LANDSCAPE);
+        mNotifBlacklist = (Preference) findPreference(KEY_NOTIFICATION_BLACKLIST);
+        mHookMiFreeform = (SystemSettingSwitchPreference) findPreference(KEY_HOOK_MI_FREEFORM);
+
+        mGlobalGesture.setChecked(PopUpSettingsHelper.isGestureEnabled(getContext()));
+
+        mShowMoreCircles.setChecked(PopUpSettingsHelper.shouldShowMoreCircles(getContext()));
+
+        mKeepMuteInMini.setChecked(PopUpSettingsHelper.isKeepMuteInMiniEnabled(getContext()));
+
+        final int singleTapAction = PopUpSettingsHelper.getSingleTapAction(getContext());
+        mSingleTapAction.setValueIndex(singleTapAction);
+        mSingleTapAction.setSummary(mSingleTapAction.getEntries()[singleTapAction]);
+        mSingleTapAction.setOnPreferenceChangeListener(this);
+
+        final int doubleTapAction = PopUpSettingsHelper.getDoubleTapAction(getContext());
+        mDoubleTapAction.setValueIndex(doubleTapAction);
+        mDoubleTapAction.setSummary(mDoubleTapAction.getEntries()[doubleTapAction]);
+        mDoubleTapAction.setOnPreferenceChangeListener(this);
+
+        mNotifPortrait.setChecked(PopUpSettingsHelper.isNotificationJumpEnabled(getContext(), false));
+        mNotifPortrait.setOnPreferenceChangeListener(this);
+
+        mNotifLandscape.setChecked(PopUpSettingsHelper.isNotificationJumpEnabled(getContext(), true));
+        mNotifLandscape.setOnPreferenceChangeListener(this);
+
+        mNotifBlacklist.setEnabled(mNotifPortrait.isChecked() || mNotifLandscape.isChecked());
+
+        mHookMiFreeform.setChecked(PopUpSettingsHelper.isHookMiFreeformEnabled(getContext()));
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        if (preference == mSingleTapAction) {
+            mSingleTapAction.setSummary(mSingleTapAction.getEntries()[Integer.parseInt((String) newValue)]);
+        } else if (preference == mDoubleTapAction) {
+            mDoubleTapAction.setSummary(mDoubleTapAction.getEntries()[Integer.parseInt((String) newValue)]);
+        } else if (preference == mNotifPortrait) {
+            mNotifBlacklist.setEnabled((Boolean) newValue || mNotifLandscape.isChecked());
+        } else if (preference == mNotifLandscape) {
+            mNotifBlacklist.setEnabled(mNotifPortrait.isChecked() || (Boolean) newValue);
+        }
+        return true;
+    }
+
+    @Override
+    public int getMetricsCategory() {
+        return SettingsEnums.PAGE_UNKNOWN;
+    }
+}

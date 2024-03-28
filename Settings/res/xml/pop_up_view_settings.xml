@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) 2023-2024 The Nameless-AOSP Project
+    SPDX-License-Identifier: Apache-2.0
+-->
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:settings="http://schemas.android.com/apk/res/com.android.settings"
+    android:title="@string/pop_up_view_title">
+
+    <com.android.settingslib.widget.TopIntroPreference
+        android:key="pop_up_top_info"
+        android:title="@string/pop_up_view_info"/>
+
+    <com.android.settings.widget.VideoPreference
+        android:key="pop_up_guide_video"
+        settings:animation="@raw/pop_up_gesture_guide"
+        settings:preview="@drawable/pop_up_gesture_guide" />
+
+    <PreferenceCategory
+        android:title="@string/pop_up_view_gesture_title">
+
+        <org.nameless.custom.preference.SystemSettingSwitchPreference
+            android:key="system_tool_windowing_mode_gesture"
+            android:title="@string/pop_up_view_global_gesture_title"
+            android:summary="@string/pop_up_view_global_gesture_summary"/>
+
+        <Preference
+            android:key="pop_up_view_manage_apps"
+            android:title="@string/pop_up_view_manage_apps_title"
+            android:summary="@string/pop_up_view_manage_apps_summary">
+            <intent
+                android:targetPackage="org.nameless.systemtool"
+                android:targetClass="org.nameless.systemtool.windowmode.ManageAppsActivity" />
+        </Preference>
+
+        <org.nameless.custom.preference.SystemSettingSwitchPreference
+            android:key="system_tool_more_circles"
+            android:title="@string/pop_up_view_more_circles_title"
+            android:summary="@string/pop_up_view_more_circles_summary"/>
+
+        <com.android.settingslib.widget.FooterPreference
+            android:key="pop_up_global_gesture_warn"
+            android:title="@string/pop_up_view_global_gesture_warn"
+            android:selectable="false"
+            settings:searchable="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pop_up_view_mini_window_title">
+
+        <org.nameless.custom.preference.SystemSettingSwitchPreference
+            android:key="pop_up_keep_mute_in_mini"
+            android:title="@string/pop_up_view_keep_mute_mini_title"
+            android:summaryOn="@string/pop_up_view_keep_mute_mini_summary_on"
+            android:summaryOff="@string/pop_up_view_keep_mute_mini_summary_off"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pop_up_view_non_window_area_title">
+
+        <org.nameless.custom.preference.SystemSettingListPreference
+            android:key="pop_up_single_tap_action"
+            android:title="@string/pop_up_view_single_tap_non_window_title"
+            android:summary="%s"
+            android:entries="@array/pop_up_view_tap_action_entries"
+            android:entryValues="@array/pop_up_view_tap_action_values"/>
+
+        <org.nameless.custom.preference.SystemSettingListPreference
+            android:key="pop_up_double_tap_action"
+            android:title="@string/pop_up_view_double_tap_non_window_title"
+            android:summary="%s"
+            android:entries="@array/pop_up_view_tap_action_entries"
+            android:entryValues="@array/pop_up_view_tap_action_values"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pop_up_view_light_weight_open_title">
+
+        <org.nameless.custom.preference.SystemSettingSwitchPreference
+            android:key="pop_up_notification_jump_portrait"
+            android:title="@string/pop_up_view_light_weight_notificiation_portrait_title"
+            android:summary="@string/pop_up_view_light_weight_notificiation_portrait_summary"/>
+
+        <org.nameless.custom.preference.SystemSettingSwitchPreference
+            android:key="pop_up_notification_jump_landscape"
+            android:title="@string/pop_up_view_light_weight_notificiation_landscape_title"
+            android:summary="@string/pop_up_view_light_weight_notificiation_landscape_summary"/>
+
+        <Preference
+            android:key="pop_up_notification_blacklist"
+            android:title="@string/pop_up_view_light_weight_notificiation_blacklist_title"
+            android:summary="@string/pop_up_view_light_weight_notificiation_blacklist_summary"
+            android:fragment="org.nameless.settings.system.PopUpNotificationBlacklistFragment"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pop_up_view_third_party_control_title">
+
+        <org.nameless.custom.preference.SystemSettingSwitchPreference
+            android:key="pop_up_hook_mi_freeform"
+            android:title="@string/pop_up_view_hook_mi_freeform_title"
+            android:summary="@string/pop_up_view_hook_mi_freeform_summary"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

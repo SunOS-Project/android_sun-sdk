@@ -122,13 +122,13 @@
     <java-symbol type="dimen" name="config_doze_pickUpSensorValue" />
 
     <!-- Pop-Up View -->
+    <java-symbol type="bool" name="config_popUpView_defaultGestureEnabled" />
+    <java-symbol type="bool" name="config_popUpView_defaultShowMoreCircles" />
     <java-symbol type="bool" name="config_popUpView_defaultKeepMuteInMini" />
     <java-symbol type="integer" name="config_popUpView_defaultSingleTapAction" />
     <java-symbol type="integer" name="config_popUpView_defaultDoubleTapAction" />
     <java-symbol type="bool" name="config_popUpView_defaultNotificationPortJump" />
     <java-symbol type="bool" name="config_popUpView_defaultNotificationLandJump" />
-    <java-symbol type="bool" name="config_popUpView_defaultSettingsJump" />
-    <java-symbol type="bool" name="config_popUpView_defaultShareJump" />
     <java-symbol type="array" name="config_popUpView_forceUpdateDpiPackages" />
     <java-symbol type="dimen" name="mini_window_bar_width" />
     <java-symbol type="dimen" name="mini_window_bar_height" />

@@ -300,4 +300,16 @@
         <item>60</item>
     </string-array>
 
+    <!-- Pop-Up View -->
+    <string-array name="pop_up_view_tap_action_entries">
+        <item>@string/pop_up_view_action_enter_pinned</item>
+        <item>@string/pop_up_view_action_exit</item>
+        <item>@string/pop_up_view_no_action</item>
+    </string-array>
+    <string-array name="pop_up_view_tap_action_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
 </resources>
