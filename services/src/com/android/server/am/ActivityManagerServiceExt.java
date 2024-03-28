@@ -13,10 +13,6 @@ import static org.nameless.view.PopUpViewManager.ACTION_PIN_CURRENT_APP;
 import static org.nameless.view.PopUpViewManager.ACTION_START_MINI_WINDOW;
 import static org.nameless.view.PopUpViewManager.ACTION_START_PINNED_WINDOW;
 
-import android.content.Intent;
-
-import com.android.server.wm.PopUpBroadcastReceiver;
-
 import java.util.Set;
 
 class ActivityManagerServiceExt {
@@ -40,10 +36,5 @@ class ActivityManagerServiceExt {
 
     boolean allowBroadcastFromSystem(String action) {
         return SYSTEM_BROADCAST_WHITELIST.contains(action);
-    }
-
-    Intent hookIntentBeforeBroadcast(Intent intent) {
-        intent = PopUpBroadcastReceiver.getInstance().hookMiFreeformIntent(intent);
-        return intent;
     }
 }

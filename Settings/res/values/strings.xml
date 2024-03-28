@@ -670,8 +670,5 @@
     <string name="pop_up_view_light_weight_notificiation_landscape_summary">Use Pop-Up View to jump to notification apps in landscape mode</string>
     <string name="pop_up_view_light_weight_notificiation_blacklist_title">Notification blacklist apps</string>
     <string name="pop_up_view_light_weight_notificiation_blacklist_summary">Disallow selected apps from opening notification in Pop-Up View</string>
-    <string name="pop_up_view_third_party_control_title">Third-Party control</string>
-    <string name="pop_up_view_hook_mi_freeform_title">Hook Mi-Freeform broadcast</string>
-    <string name="pop_up_view_hook_mi_freeform_summary">Some tool apps support to call Mi-Freeform for opening app in small window. Enable this will intercept broadcast sent to Mi-Freeform and use Pop-Up View to open app</string>
 
 </resources>

@@ -6,7 +6,6 @@
 package com.android.internal.util.nameless;
 
 import static org.nameless.provider.SettingsExt.System.POP_UP_DOUBLE_TAP_ACTION;
-import static org.nameless.provider.SettingsExt.System.POP_UP_HOOK_MI_FREEFORM;
 import static org.nameless.provider.SettingsExt.System.POP_UP_KEEP_MUTE_IN_MINI;
 import static org.nameless.provider.SettingsExt.System.POP_UP_NOTIFICATION_BLACKLIST;
 import static org.nameless.provider.SettingsExt.System.POP_UP_NOTIFICATION_JUMP_LANDSCAPE;
@@ -108,15 +107,5 @@ public class PopUpSettingsHelper {
     public static String getNotificationJumpBlacklist(Context context, int userId) {
         return Settings.System.getStringForUser(context.getContentResolver(),
                 POP_UP_NOTIFICATION_BLACKLIST, userId);
-    }
-
-    public static boolean isHookMiFreeformEnabled(Context context) {
-        return isHookMiFreeformEnabled(context, UserHandle.USER_CURRENT);
-    }
-
-    public static boolean isHookMiFreeformEnabled(Context context, int userId) {
-        return Settings.System.getIntForUser(context.getContentResolver(),
-                POP_UP_HOOK_MI_FREEFORM, 0,
-                userId) == 1;
     }
 }

@@ -81,7 +81,6 @@ public class SystemSettingsExt {
         System.POP_UP_KEEP_MUTE_IN_MINI,
         System.POP_UP_SINGLE_TAP_ACTION,
         System.POP_UP_DOUBLE_TAP_ACTION,
-        System.POP_UP_HOOK_MI_FREEFORM,
         System.POP_UP_NOTIFICATION_JUMP_PORTRAIT,
         System.POP_UP_NOTIFICATION_JUMP_LANDSCAPE,
         System.POP_UP_NOTIFICATION_BLACKLIST,

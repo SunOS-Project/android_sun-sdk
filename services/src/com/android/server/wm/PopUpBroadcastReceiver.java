@@ -12,11 +12,9 @@ import static android.app.WindowConfiguration.WINDOWING_MODE_MINI_WINDOW_EXT;
 import static org.nameless.view.PopUpViewManager.ACTION_PIN_CURRENT_APP;
 import static org.nameless.view.PopUpViewManager.ACTION_START_MINI_WINDOW;
 import static org.nameless.view.PopUpViewManager.ACTION_START_PINNED_WINDOW;
-import static org.nameless.view.PopUpViewManager.EXTRA_PACKAGE_NAME;
 import static org.nameless.view.PopUpViewManager.EXTRA_ACTIVITY_NAME;
+import static org.nameless.view.PopUpViewManager.EXTRA_PACKAGE_NAME;
 import static org.nameless.view.PopUpViewManager.FEATURE_SUPPORTED;
-import static org.nameless.view.PopUpViewManager.MI_FREEFORM_API_INTENT;
-import static org.nameless.view.PopUpViewManager.MI_FREEFORM_PACKAGE_NAME;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -54,32 +52,6 @@ public class PopUpBroadcastReceiver extends BroadcastReceiver {
         }
 
         mBootCompleted = true;
-    }
-
-    public Intent hookMiFreeformIntent(Intent intent) {
-        if (!FEATURE_SUPPORTED) {
-            return intent;
-        }
-        if (!MI_FREEFORM_API_INTENT.equals(intent.getAction())) {
-            return intent;
-        }
-        if (!MI_FREEFORM_PACKAGE_NAME.equals(intent.getPackage())) {
-            return intent;
-        }
-        if (!PopUpSettingsConfig.getInstance().shouldHookMiFreeform()) {
-            return intent;
-        }
-        if (!mBootCompleted) {
-            return intent;
-        }
-
-        final String packageName = intent.getStringExtra(EXTRA_PACKAGE_NAME);
-        final String activityName = intent.getStringExtra(EXTRA_ACTIVITY_NAME);
-
-        intent = new Intent(ACTION_START_MINI_WINDOW);
-        intent.putExtra(EXTRA_PACKAGE_NAME, packageName);
-        intent.putExtra(EXTRA_ACTIVITY_NAME, activityName);
-        return intent;
     }
 
     @Override

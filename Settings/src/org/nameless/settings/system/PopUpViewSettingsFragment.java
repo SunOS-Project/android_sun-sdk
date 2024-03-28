@@ -29,7 +29,6 @@ public class PopUpViewSettingsFragment extends SettingsPreferenceFragment implem
     private static final String KEY_NOTIFICATION_PORTRAIT = "pop_up_notification_jump_portrait";
     private static final String KEY_NOTIFICATION_LANDSCAPE = "pop_up_notification_jump_landscape";
     private static final String KEY_NOTIFICATION_BLACKLIST = "pop_up_notification_blacklist";
-    private static final String KEY_HOOK_MI_FREEFORM = "pop_up_hook_mi_freeform";
 
     private SystemSettingSwitchPreference mGlobalGesture;
     private SystemSettingSwitchPreference mShowMoreCircles;
@@ -39,7 +38,6 @@ public class PopUpViewSettingsFragment extends SettingsPreferenceFragment implem
     private SystemSettingSwitchPreference mNotifPortrait;
     private SystemSettingSwitchPreference mNotifLandscape;
     private Preference mNotifBlacklist;
-    private SystemSettingSwitchPreference mHookMiFreeform;
 
     @Override
     public void onCreate(Bundle savedInstance) {
@@ -54,7 +52,6 @@ public class PopUpViewSettingsFragment extends SettingsPreferenceFragment implem
         mNotifPortrait = (SystemSettingSwitchPreference) findPreference(KEY_NOTIFICATION_PORTRAIT);
         mNotifLandscape = (SystemSettingSwitchPreference) findPreference(KEY_NOTIFICATION_LANDSCAPE);
         mNotifBlacklist = (Preference) findPreference(KEY_NOTIFICATION_BLACKLIST);
-        mHookMiFreeform = (SystemSettingSwitchPreference) findPreference(KEY_HOOK_MI_FREEFORM);
 
         mGlobalGesture.setChecked(PopUpSettingsHelper.isGestureEnabled(getContext()));
 
@@ -79,8 +76,6 @@ public class PopUpViewSettingsFragment extends SettingsPreferenceFragment implem
         mNotifLandscape.setOnPreferenceChangeListener(this);
 
         mNotifBlacklist.setEnabled(mNotifPortrait.isChecked() || mNotifLandscape.isChecked());
-
-        mHookMiFreeform.setChecked(PopUpSettingsHelper.isHookMiFreeformEnabled(getContext()));
     }
 
     @Override

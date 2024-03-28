@@ -557,12 +557,6 @@ public class SettingsExt {
         public static final String POP_UP_DOUBLE_TAP_ACTION = "pop_up_double_tap_action";
 
         /**
-         * Whether to hook Mi-Freeform broadcast
-         * @hide
-         */
-        public static final String POP_UP_HOOK_MI_FREEFORM = "pop_up_hook_mi_freeform";
-
-        /**
          * Whether to use Pop-Up Window for notification app jump in portrait mode
          * @hide
          */

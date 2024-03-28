@@ -98,14 +98,4 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/pop_up_view_third_party_control_title">
-
-        <org.nameless.custom.preference.SystemSettingSwitchPreference
-            android:key="pop_up_hook_mi_freeform"
-            android:title="@string/pop_up_view_hook_mi_freeform_title"
-            android:summary="@string/pop_up_view_hook_mi_freeform_summary"/>
-
-    </PreferenceCategory>
-
 </PreferenceScreen>

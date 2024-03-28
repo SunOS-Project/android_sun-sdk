@@ -26,9 +26,6 @@ public class PopUpViewManager {
     public static final String EXTRA_PACKAGE_NAME = "packageName";
     public static final String EXTRA_ACTIVITY_NAME = "activityName";
 
-    public static final String MI_FREEFORM_API_INTENT = "com.sunshine.freeform.start_freeform";
-    public static final String MI_FREEFORM_PACKAGE_NAME = "com.sunshine.freeform";
-
     public static final int TAP_ACTION_PIN_WINDOW = 0;
     public static final int TAP_ACTION_EXIT = 1;
     public static final int TAP_ACTION_NOTHING = 2;
