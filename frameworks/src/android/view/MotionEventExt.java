@@ -11,7 +11,7 @@ import static android.app.WindowConfiguration.WINDOWING_MODE_FREEFORM;
 class MotionEventExt {
 
     static final int GET_RAW_X = 0;
-    static final int GET_RAW_Y = 0;
+    static final int GET_RAW_Y = 1;
 
     float mDisplayOffsetX = 0.0f;
     float mDisplayOffsetY = 0.0f;
