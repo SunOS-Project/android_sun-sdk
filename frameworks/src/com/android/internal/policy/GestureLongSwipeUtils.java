@@ -8,7 +8,6 @@ package com.android.internal.policy;
 import static org.nameless.view.PopUpViewManager.FEATURE_SUPPORTED;
 
 import android.content.Context;
-import android.os.Handler;
 import android.os.UserHandle;
 import android.os.VibrationAttributes;
 import android.os.VibrationEffect;
@@ -54,48 +53,34 @@ public class GestureLongSwipeUtils {
     public static final float DEFAULT_LONG_SWIPE_THRESHOLD_PORT = LONG_SWIPE_THRESHOLD_PORT_VALUES[2];
     public static final float DEFAULT_LONG_SWIPE_THRESHOLD_LAND = LONG_SWIPE_THRESHOLD_LAND_VALUES[1];
 
-    public static void triggerAction(Context context, int action) {
+    public static Runnable getTriggerActionRunnable(Context context, int action) {
         if (shouldVibrateOnTriggered(context, action)) {
             final Vibrator vibrator = context.getSystemService(Vibrator.class);
             vibrator.vibrate(LONG_SWIPE_TRIGGERED_EFFECT, HARDWARE_FEEDBACK_VIBRATION_ATTRIBUTES);
         }
         switch (action) {
             case ACTION_KILL_FOREGROUND_APP:
-                CustomUtils.killForegroundApp(context);
-                break;
+                return () -> CustomUtils.killForegroundApp(context);
             case ACTION_SWITCH_TO_LAST_APP:
-                CustomUtils.switchToLastApp(context);
-                break;
+                return () -> CustomUtils.switchToLastApp(context);
             case ACTION_OPEN_NOTIFICATION_PANEL:
-                CustomUtils.toggleNotificationPanel();
-                break;
+                return () -> CustomUtils.toggleNotificationPanel();
             case ACTION_OPEN_QS_PANEL:
-                CustomUtils.toggleQSPanel();
-                break;
+                return () -> CustomUtils.toggleQSPanel();
             case ACTION_OPEN_VOLUME_PANEL:
-                CustomUtils.toggleVolumePanel(context);
-                break;
+                return () -> CustomUtils.toggleVolumePanel(context);
             case ACTION_SCREEN_OFF:
-                CustomUtils.turnScreenOff(context);
-                break;
+                return () -> CustomUtils.turnScreenOff(context);
             case ACTION_TAKE_SCREENSHOT_FULL:
-                new Handler().postDelayed(() -> {
-                    CustomUtils.takeScreenshot(true);
-                }, 500L);
-                break;
+                return () -> CustomUtils.takeScreenshot(true);
             case ACTION_TAKE_SCREENSHOT_PARTIAL:
-                new Handler().postDelayed(() -> {
-                    CustomUtils.takeScreenshot(true);
-                }, 500L);
-                break;
+                return () -> CustomUtils.takeScreenshot(false);
             case ACTION_TOGGLE_FLASHLIGHT:
-                CustomUtils.toggleCameraFlash();
-                break;
+                return () -> CustomUtils.toggleCameraFlash();
             case ACTION_PIN_APP_WINDOW:
-                new Handler().postDelayed(() -> {
-                    CustomUtils.pinCurrentAppIntoWindow(context);
-                }, 500L);
-                break;
+                return () -> CustomUtils.pinCurrentAppIntoWindow(context);
+            default:
+                return null;
         }
     }
 
