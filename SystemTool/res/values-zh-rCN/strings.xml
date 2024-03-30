@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2023 Nameless-AOSP
+     Copyright (C) 2023-2024 The Nameless-AOSP Project
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
@@ -8,8 +8,12 @@
     <!-- All Apps Picker -->
     <string name="all_apps_picker_title">更多应用</string>
     <string name="manage_apps_title">管理应用</string>
-    <string name="pinned_apps_title">固定应用</string>
-    <string name="all_apps_title">所有应用</string>
-    <string name="info_no_pinned_app">无固定应用</string>
-    <string name="info_all_apps_pinned">所有应用均已固定</string>
+    <string name="edit_title">编辑</string>
+    <string name="finish_title">完成</string>
+    <string name="pinned_apps_shortcuts_title">已添加</string>
+    <string name="info_no_pinned_apps_shortcuts">暂无已添加的应用或快捷方式</string>
+    <string name="all_apps_title">全部应用</string>
+    <string name="info_all_apps_pinned">所有应用均已添加</string>
+    <string name="all_shortcuts_title">全部快捷方式</string>
+    <string name="info_all_shortcuts_pinned">所有快捷方式均已添加</string>
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2023 Nameless-AOSP
+     Copyright (C) 2023-2024 The Nameless-AOSP Project
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
@@ -9,13 +9,15 @@
     <string name="app_name" translatable="false">SystemTool</string>
 
     <!-- All Apps Picker -->
-    <string name="all_apps_picker_title">More Apps</string>
+    <string name="all_apps_picker_title">More apps</string>
     <string name="manage_apps_title">Manage apps</string>
-    <string name="pinned_apps_title">Pinned Apps</string>
-    <string name="all_apps_title">All Apps</string>
     <string name="edit_title">Edit</string>
     <string name="finish_title">Finish</string>
-    <string name="info_no_pinned_app">No Pinned Apps</string>
-    <string name="info_all_apps_pinned">All Apps are pinned</string>
+    <string name="pinned_apps_shortcuts_title">Pinned apps &amp; shortcuts</string>
+    <string name="info_no_pinned_apps_shortcuts">No pinned apps or shortcuts</string>
+    <string name="all_apps_title">All apps</string>
+    <string name="info_all_apps_pinned">All apps are pinned</string>
+    <string name="all_shortcuts_title">All shortcuts</string>
+    <string name="info_all_shortcuts_pinned">All shortcuts are pinned</string>
 
 </resources>
