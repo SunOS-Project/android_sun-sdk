@@ -652,7 +652,7 @@
     <string name="pop_up_view_manage_apps_title">Manage pinned apps</string>
     <string name="pop_up_view_manage_apps_summary">Customize apps to be shown in menu</string>
     <string name="pop_up_view_more_circles_title">Display more apps</string>
-    <string name="pop_up_view_more_circles_summary">Add another quarter circle in gesture menu</string>
+    <string name="pop_up_view_more_circles_summary">Add more quarter circles in gesture menu</string>
     <string name="pop_up_view_global_gesture_warn">Digital assistant gesture will be disabled with Global Gesture enabled.</string>
     <string name="pop_up_view_mini_window_title">Mini-Window</string>
     <string name="pop_up_view_keep_mute_mini_title">Keep muted state</string>
