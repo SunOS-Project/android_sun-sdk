@@ -170,7 +170,7 @@ public class PhoneWindowManagerExt {
         }
     }
 
-    void onStartedWakingUp() {
+    public void onScreenUnlocked() {
         if (mPocketManager != null) {
             mPocketManager.onInteractiveChanged(true);
         }

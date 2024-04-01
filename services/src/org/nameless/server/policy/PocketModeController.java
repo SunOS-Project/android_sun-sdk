@@ -469,11 +469,6 @@ public class PocketModeController implements IBinder.DeathRecipient {
 
     private void update() {
         if (!mEnabled || mInteractive) {
-            if (mEnabled && isDeviceInPocket()) {
-                // if device is judged to be in pocket while switching
-                // to interactive state, we need to keep monitoring.
-                return;
-            }
             unregisterSensorListeners();
         } else {
             mHandler.removeMessages(PocketHandler.MSG_UNREGISTER_TIMEOUT);
@@ -496,7 +491,7 @@ public class PocketModeController implements IBinder.DeathRecipient {
     private void startListeningForVendorSensor() {
         logD("startListeningForVendorSensor");
         if (mVendorSensor == null) {
-            logE("Cannot detect Vendor pocket sensor, sensor is NULL");
+            logD("Cannot detect Vendor pocket sensor, sensor is NULL");
             return;
         }
         if (!mVendorSensorRegistered) {
@@ -521,7 +516,7 @@ public class PocketModeController implements IBinder.DeathRecipient {
         }
         logD("startListeningForProximity");
         if (mProximitySensor == null) {
-            logE("Cannot detect proximity sensor, sensor is NULL");
+            logD("Cannot detect proximity sensor, sensor is NULL");
             return;
         }
         if (!mProximityRegistered) {
@@ -549,7 +544,7 @@ public class PocketModeController implements IBinder.DeathRecipient {
             return;
         }
         if (mLightSensor == null) {
-            logE("Cannot detect light sensor, sensor is NULL");
+            logD("Cannot detect light sensor, sensor is NULL");
             return;
         }
         if (!mLightRegistered) {
@@ -654,7 +649,7 @@ public class PocketModeController implements IBinder.DeathRecipient {
             // working on it, waiting for proper system conditions.
             return;
         }
-        if (!mPending && (!mSystemBooted || !mSystemReady)) {
+        if (!mSystemBooted || !mSystemReady) {
             // we ain't ready, postpone till system is both booted AND ready.
             mPending = true;
             return;
