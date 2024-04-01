@@ -40,6 +40,9 @@ import com.android.internal.util.nameless.CustomUtils;
 
 import com.android.server.policy.WindowManagerPolicy.WindowState;
 
+import org.nameless.app.GameModeInfo;
+import org.nameless.app.GameModeManager;
+import org.nameless.app.IGameModeInfoListener;
 import org.nameless.audio.AlertSliderManager;
 import org.nameless.os.IPocketCallback;
 import org.nameless.os.PocketManager;
@@ -100,6 +103,14 @@ public class PhoneWindowManagerExt {
         }
     };
 
+    private final IGameModeInfoListener.Stub mGameModeInfoListener =
+            new IGameModeInfoListener.Stub() {
+        @Override
+        public void onGameModeInfoChanged(GameModeInfo info) {
+            mSystemGesture.onGameModeInfoChanged();
+        }
+    };
+
     private final IPocketCallback mPocketCallback = new IPocketCallback.Stub() {
         @Override
         public void onStateChanged(boolean isDeviceInPocket, int reason) {
@@ -131,7 +142,7 @@ public class PhoneWindowManagerExt {
     }
 
     void systemReady() {
-        mSystemGesture.configure();
+        mSystemGesture.systemReady();
         TouchGestureController.getInstance().systemReady();
     }
 
@@ -139,6 +150,10 @@ public class PhoneWindowManagerExt {
         final DisplayResolutionManager drm =
                 mPhoneWindowManager.mContext.getSystemService(DisplayResolutionManager.class);
         drm.registerDisplayResolutionListener(mDisplayResolutionListener);
+
+        final GameModeManager gmm =
+                mPhoneWindowManager.mContext.getSystemService(GameModeManager.class);
+        gmm.registerGameModeInfoListener(mGameModeInfoListener);
 
         mPocketManager = mPhoneWindowManager.mContext.getSystemService(PocketManager.class);
         mPocketManager.addCallback(mPocketCallback);

@@ -19,6 +19,8 @@ import android.view.ViewConfiguration;
 import com.android.internal.R;
 import com.android.internal.policy.SystemBarUtils;
 
+import com.android.server.policy.PhoneWindowManagerExt;
+
 import java.util.HashMap;
 
 import org.nameless.server.app.GameModeController;
@@ -45,10 +47,10 @@ class ThreeFingerGestureListener extends GestureListenerBase {
             switch (message.what) {
                 case MSG_TAKE_PARTIAL_SCREENSHOT:
                     mHandledPartial = true;
-                    mSystemGesture.getPhoneWindowManagerExt().takeScreenshotIfSetupCompleted(false);
+                    mPhoneWindowManagerExt.takeScreenshotIfSetupCompleted(false);
                     break;
                 case MSG_TAKE_FULL_SCREENSHOT:
-                    mSystemGesture.getPhoneWindowManagerExt().takeScreenshotIfSetupCompleted(true);
+                    mPhoneWindowManagerExt.takeScreenshotIfSetupCompleted(true);
                     break;
             }
         }
@@ -67,8 +69,9 @@ class ThreeFingerGestureListener extends GestureListenerBase {
 
     private boolean mHandledPartial = false;
 
-    ThreeFingerGestureListener(SystemGesture systemGesture, Context context, Looper looper) {
-        super(systemGesture, context);
+    ThreeFingerGestureListener(SystemGesture systemGesture,
+            PhoneWindowManagerExt ext, Context context, Looper looper) {
+        super(systemGesture, ext, context);
         mHandler = new H(looper);
     }
 
@@ -102,10 +105,10 @@ class ThreeFingerGestureListener extends GestureListenerBase {
 
     @Override
     public boolean interceptMotionBeforeQueueing(MotionEvent event) {
-        if (!mSystemGesture.getPhoneWindowManagerExt().isThreeFingerGestureOn()) {
+        if (!mPhoneWindowManagerExt.isThreeFingerGestureOn()) {
             return false;
         }
-        if (GameModeController.getInstance().shouldDisableThreeFingerGestures()) {
+        if (mDisabledByGame) {
             return false;
         }
 
@@ -156,7 +159,7 @@ class ThreeFingerGestureListener extends GestureListenerBase {
                     }
                 }
                 if (mGestureState == GestureState.TRIGGERED &&
-                        mSystemGesture.getPhoneWindowManagerExt().isThreeFingerSwipeOn()) {
+                        mPhoneWindowManagerExt.isThreeFingerSwipeOn()) {
                     logD("Three finger screen shot detect now");
                     mHandler.sendEmptyMessage(MSG_TAKE_FULL_SCREENSHOT);
                 }
@@ -213,7 +216,7 @@ class ThreeFingerGestureListener extends GestureListenerBase {
                 mPointersDown.put(pointerId, location);
                 if (mGestureState == GestureState.IDLE && event.getPointerCount() == 3) {
                     if (checkThreePointersDistance(event)) {
-                        final boolean holdGestureOn = mSystemGesture.getPhoneWindowManagerExt().isThreeFingerHoldOn();
+                        final boolean holdGestureOn = mPhoneWindowManagerExt.isThreeFingerHoldOn();
                         if (holdGestureOn) {
                             mHandler.sendEmptyMessageDelayed(MSG_TAKE_PARTIAL_SCREENSHOT,
                                     PARTIAL_SCREENSHOT_HOLD_DURATION);

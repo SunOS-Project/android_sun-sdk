@@ -36,6 +36,7 @@ import com.android.server.policy.PhoneWindowManagerExt;
 
 import java.util.ArrayList;
 
+import org.nameless.server.app.GameModeController;
 import org.nameless.server.display.DisplayFeatureController;
 import org.nameless.server.policy.gesture.GestureListenerBase.GestureState;
 import org.nameless.view.ISystemGestureListener;
@@ -56,9 +57,14 @@ public class SystemGesture {
     private final Handler mHandler;
     private final ServiceThread mServiceThread;
 
+    private final WindowModeGestureListener mWindowModeGestureListener;
+    private final ThreeFingerGestureListener mThreeFingerGestureListener;
+
     private PointF mLastDownPos;
 
     private GestureListenerBase mTargetGestureListener;
+
+    private DisplayFeatureController mDisplayFeatureController;
 
     private boolean mTouching;
 
@@ -71,22 +77,35 @@ public class SystemGesture {
         mServiceThread.start();
         mHandler = new H(mServiceThread.getLooper());
 
-        mGestureListeners.add(new WindowModeGestureListener(this, mContext));
-        mGestureListeners.add(new ThreeFingerGestureListener(this, mContext, mServiceThread.getLooper()));
+        mWindowModeGestureListener = new WindowModeGestureListener(
+                this, ext, mContext);
+        mGestureListeners.add(mWindowModeGestureListener);
+
+        mThreeFingerGestureListener = new ThreeFingerGestureListener(
+                this, ext, mContext, mServiceThread.getLooper());
+        mGestureListeners.add(mThreeFingerGestureListener);
     }
 
     Display getDisplay() {
         return mDisplay;
     }
 
-    PhoneWindowManagerExt getPhoneWindowManagerExt() {
-        return mPhoneWindowManagerExt;
-    }
-
     public void configure() {
         for (GestureListenerBase listener : mGestureListeners) {
             listener.configure();
         }
+    }
+
+    public void systemReady() {
+        mDisplayFeatureController = DisplayFeatureController.getInstance();
+        configure();
+    }
+
+    public void onGameModeInfoChanged() {
+        mWindowModeGestureListener.setDisabledByGame(
+                GameModeController.getInstance().shouldDisablePopUpViewGesture());
+        mThreeFingerGestureListener.setDisabledByGame(
+                GameModeController.getInstance().shouldDisableThreeFingerGestures());
     }
 
     public int interceptMotionBeforeQueueing(MotionEvent event) {
@@ -127,7 +146,7 @@ public class SystemGesture {
                 return SYSTEM_GESTURE_NONE;
             case MotionEvent.ACTION_UP:
                 mTouching = false;
-                DisplayFeatureController.getInstance().maybeUpdateGameState();
+                mDisplayFeatureController.maybeUpdateGameState();
                 if (mTargetGestureListener == null) {
                     return SYSTEM_GESTURE_NONE;
                 }
@@ -162,7 +181,7 @@ public class SystemGesture {
                 return SYSTEM_GESTURE_NONE;
             case MotionEvent.ACTION_CANCEL:
                 mTouching = false;
-                DisplayFeatureController.getInstance().maybeUpdateGameState();
+                mDisplayFeatureController.maybeUpdateGameState();
                 return SYSTEM_GESTURE_NONE;
             default:
                 return SYSTEM_GESTURE_NONE;

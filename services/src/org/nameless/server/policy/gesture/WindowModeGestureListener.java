@@ -16,9 +16,8 @@ import android.util.Slog;
 import android.view.MotionEvent;
 import android.view.Surface;
 
+import com.android.server.policy.PhoneWindowManagerExt;
 import com.android.server.policy.WindowManagerPolicy.WindowState;
-
-import org.nameless.server.app.GameModeController;
 
 public class WindowModeGestureListener extends GestureListenerBase {
 
@@ -31,8 +30,9 @@ public class WindowModeGestureListener extends GestureListenerBase {
     private float mSquaredSlop;
     private float mValDisFromCorner;
 
-    public WindowModeGestureListener(SystemGesture systemGesture, Context context) {
-        super(systemGesture, context);
+    public WindowModeGestureListener(SystemGesture systemGesture,
+            PhoneWindowManagerExt ext, Context context) {
+        super(systemGesture, ext, context);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class WindowModeGestureListener extends GestureListenerBase {
     protected boolean hasRegisterClient() {
         if (mSystemGestureClient != null) {
             final WindowState windowState =
-                    mSystemGesture.getPhoneWindowManagerExt().getWindowState();
+                    mPhoneWindowManagerExt.getWindowState();
             return windowState == null || windowState.getBaseType() != TYPE_NOTIFICATION_SHADE;
         }
         return false;
@@ -69,7 +69,7 @@ public class WindowModeGestureListener extends GestureListenerBase {
                 if (!hasRegisterClient()) {
                     return result;
                 }
-                if (GameModeController.getInstance().shouldDisablePopUpViewGesture()) {
+                if (mDisabledByGame) {
                     return result;
                 }
                 mDownPosX = event.getRawX();

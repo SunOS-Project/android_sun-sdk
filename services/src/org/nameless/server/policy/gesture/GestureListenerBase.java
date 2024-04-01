@@ -18,6 +18,8 @@ import android.view.MotionEvent;
 
 import com.android.internal.R;
 
+import com.android.server.policy.PhoneWindowManagerExt;
+
 public abstract class GestureListenerBase implements IGestureListener {
 
     protected final String TAG = "GestureListenerBase";
@@ -26,6 +28,7 @@ public abstract class GestureListenerBase implements IGestureListener {
 
     protected final Context mContext;
     protected final Display mDisplay;
+    protected final PhoneWindowManagerExt mPhoneWindowManagerExt;
     protected final SystemGesture mSystemGesture;
 
     protected SystemGestureClient mSystemGestureClient;
@@ -33,6 +36,8 @@ public abstract class GestureListenerBase implements IGestureListener {
     protected GestureState mGestureState = GestureState.IDLE;
     protected boolean mGesturePreTriggerConsumed = false;
     protected long mMotionDownTime = 0L;
+
+    protected boolean mDisabledByGame = false;
 
     protected int mDeviceHeight;
     protected int mDeviceWidth;
@@ -56,8 +61,13 @@ public abstract class GestureListenerBase implements IGestureListener {
         return false;
     }
 
-    GestureListenerBase(SystemGesture systemGesture, Context context) {
+    protected void setDisabledByGame(boolean disabled) {
+        mDisabledByGame = disabled;
+    }
+
+    GestureListenerBase(SystemGesture systemGesture, PhoneWindowManagerExt ext, Context context) {
         mSystemGesture = systemGesture;
+        mPhoneWindowManagerExt = ext;
         mContext = context;
         mDisplay = systemGesture.getDisplay();
         mGestureTouchSlop = getDefaultGestureTouchSlop();
