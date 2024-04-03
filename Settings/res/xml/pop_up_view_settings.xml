@@ -28,11 +28,7 @@
         <Preference
             android:key="pop_up_view_manage_apps"
             android:title="@string/pop_up_view_manage_apps_title"
-            android:summary="@string/pop_up_view_manage_apps_summary">
-            <intent
-                android:targetPackage="org.nameless.systemtool"
-                android:targetClass="org.nameless.systemtool.windowmode.ManageAppsActivity" />
-        </Preference>
+            android:summary="@string/pop_up_view_manage_apps_summary"/>
 
         <org.nameless.custom.preference.SystemSettingSwitchPreference
             android:key="system_tool_more_circles"
