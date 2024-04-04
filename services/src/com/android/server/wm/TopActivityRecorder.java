@@ -423,6 +423,22 @@ public class TopActivityRecorder {
         }
     }
 
+    void moveTopMiniToFull() {
+        synchronized (mFocusLock) {
+            logD("moveTopMiniToFull");
+            final int n = mTopMiniWindowActivity.size();
+            if (n > 0) {
+                final ComponentName oldComponent = getTopFullscreenComponentLocked();
+                mTopFullscreenActivity = new ActivityInfo(mTopMiniWindowActivity.get(n - 1));
+                logD("Top fullscreen window activity changed to " + mTopFullscreenActivity);
+                mHandler.post(() -> notifyFullscreenComponentChanged(
+                        oldComponent, getTopFullscreenComponentLocked()));
+            }
+            mTopMiniWindowActivity.clear();
+            DimmerWindow.getInstance().setTask(null);
+        }
+    }
+
     void clearMiniWindow() {
         synchronized (mFocusLock) {
             logD("clearMiniWindow");

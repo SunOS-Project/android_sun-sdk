@@ -636,7 +636,7 @@ class WindowPositioner implements IBinder.DeathRecipient {
             if (!rootTask.getWindowConfiguration().isMiniExtWindowMode()) {
                 Slog.e(TAG, "exitMiniWindowingMode: You can only exit from mini-window.");
             }
-            TopActivityRecorder.getInstance().clearMiniWindow();
+            TopActivityRecorder.getInstance().moveTopMiniToFull();
             PopUpWindowController.getInstance().setTryExitWindowingModeByDrag(true);
             PopUpWindowController.getInstance().tryExitPopUpView(rootTask, false, false, false);
             PopUpWindowController.getInstance().setTryExitWindowingModeByDrag(false);
