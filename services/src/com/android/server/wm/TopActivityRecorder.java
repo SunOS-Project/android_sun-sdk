@@ -83,7 +83,9 @@ public class TopActivityRecorder {
                     builder.setTaskId(INVALID_TASK_ID);
                     builder.setWindowingMode(WindowConfiguration.WINDOWING_MODE_UNDEFINED);
                 }
-                return builder.build();
+                final TopAppInfo ret = builder.build();
+                logD("getTopAppInfo, ret=" + ret);
+                return ret;
             }
         }
 
@@ -103,7 +105,9 @@ public class TopActivityRecorder {
                     builder.setTaskId(INVALID_TASK_ID);
                     builder.setWindowingMode(WindowConfiguration.WINDOWING_MODE_UNDEFINED);
                 }
-                return builder.build();
+                final TopAppInfo ret = builder.build();
+                logD("getTopFullscreenAppInfo, ret=" + ret);
+                return ret;
             }
         }
 
