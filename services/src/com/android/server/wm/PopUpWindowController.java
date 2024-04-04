@@ -644,7 +644,7 @@ public class PopUpWindowController {
                     Slog.e(TAG, "exitPinnedWindowingMode: You can only exit from pinned-window. rootTask=" + rootTask);
                     return;
                 }
-                TopActivityRecorder.getInstance().clearPinnedWindow();
+                TopActivityRecorder.getInstance().moveTopPinnedToFull();
                 mTryExitWindowingMode = true;
                 tryExitPopUpView(rootTask, false, false, true);
                 mTryExitWindowingMode = false;

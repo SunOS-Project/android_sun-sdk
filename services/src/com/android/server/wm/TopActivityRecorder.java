@@ -439,6 +439,21 @@ public class TopActivityRecorder {
         }
     }
 
+    void moveTopPinnedToFull() {
+        synchronized (mFocusLock) {
+            logD("moveTopPinnedToFull");
+            if (mTopPinnedWindowActivity != null) {
+                final ComponentName oldComponent = getTopFullscreenComponentLocked();
+                mTopFullscreenActivity = new ActivityInfo(mTopPinnedWindowActivity);
+                logD("Top fullscreen window activity changed to " + mTopFullscreenActivity);
+                mHandler.post(() -> notifyFullscreenComponentChanged(
+                        oldComponent, getTopFullscreenComponentLocked()));
+            }
+            mTopPinnedWindowActivity = null;
+            PinnedWindowOverlayController.getInstance().setTask(null);
+        }
+    }
+
     void clearMiniWindow() {
         synchronized (mFocusLock) {
             logD("clearMiniWindow");
