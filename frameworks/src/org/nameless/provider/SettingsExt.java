@@ -5,6 +5,8 @@
 
 package org.nameless.provider;
 
+import android.provider.Settings;
+
 /** @hide */
 public class SettingsExt {
 
@@ -850,6 +852,10 @@ public class SettingsExt {
          * @hide
          */
         public static final String GAME_MODE_SUPPRESS_FULLSCREEN_INTENT = "game_mode_suppress_fullscreen_intent";
+
+        public static String hookGetString(String packageName, String settingsName) {
+            return null;
+        }
     }
 
     public static class Secure {
@@ -918,6 +924,10 @@ public class SettingsExt {
          * @hide
          */
         public static final String WINDOW_IGNORE_SECURE = "window_ignore_secure";
+
+        public static String hookGetString(String packageName, String settingsName) {
+            return null;
+        }
     }
 
     public static class Global {
@@ -972,5 +982,12 @@ public class SettingsExt {
          * @hide
          */
         public static final String WAKE_WHEN_PLUGGED_OR_UNPLUGGED = "wake_when_plugged_or_unplugged";
+
+        public static String hookGetString(String packageName, String settingsName) {
+            if (Settings.Global.DEVELOPMENT_ENABLE_FREEFORM_WINDOWS_SUPPORT.equals(settingsName)) {
+                return "1";
+            }
+            return null;
+        }
     }
 }
