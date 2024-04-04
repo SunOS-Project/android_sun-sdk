@@ -79,27 +79,6 @@
         <item>com.oplus.camera</item>
         <item>org.lineageos.aperture</item>
     </string-array>
-    <!-- List of system apps that hidden from app-clone page list
-         but still can be auto cloned by system -->
-    <string-array name="config_hiddenCloneableSystemAppList" translatable="false">
-        <item>com.android.settings</item>
-        <item>com.android.settings.intelligence</item>
-        <item>com.android.vending</item>
-        <item>com.google.android.apps.safetyhub</item>
-        <item>com.google.android.apps.turbo</item>
-        <item>com.google.android.as</item>
-        <item>com.google.android.as.oss</item>
-        <item>com.google.android.inputmethod.latin</item>
-        <item>com.google.android.gms</item>
-        <item>com.google.android.googlequicksearchbox</item>
-        <item>com.google.android.marvin.talkback</item>
-        <item>com.google.android.partnersetup</item>
-        <item>com.google.android.settings.intelligence</item>
-        <item>com.google.android.soundpicker</item>
-        <item>com.google.android.tts</item>
-        <item>com.google.android.webview</item>
-        <item>com.google.ar.core</item>
-    </string-array>
     <!-- List of user apps that disallow from being cloned -->
     <string-array name="config_nonCloneableUserAppList" translatable="false">
     </string-array>

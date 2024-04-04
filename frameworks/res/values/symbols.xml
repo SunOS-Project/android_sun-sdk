@@ -81,9 +81,6 @@
 
     <!-- List of system apps that disallowed from being cloned -->
     <java-symbol type="array" name="config_nonCloneableSystemAppList" />
-    <!-- List of system apps that hidden from app-clone page list
-         but still can be auto cloned by system -->
-    <java-symbol type="array" name="config_hiddenCloneableSystemAppList" />
     <!-- List of user apps that disallow from being cloned -->
     <java-symbol type="array" name="config_nonCloneableUserAppList" />
 

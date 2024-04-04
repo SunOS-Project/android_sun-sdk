@@ -16,8 +16,6 @@ import java.util.List;
 
 public class ApplicationUtils {
 
-    private static List<String> sNonCloneableSystemApps = null;
-    private static List<String> sHiddenCloneableSystemApps = null;
     private static List<String> sNonCloneableUserApps = null;
 
     public static boolean isAppCloneable(Context context, String packageName) {
@@ -27,19 +25,14 @@ public class ApplicationUtils {
                 return false;
             }
             final boolean isSystemApp = pi.applicationInfo.isSystemApp();
-            if (sNonCloneableSystemApps == null || sHiddenCloneableSystemApps == null || sNonCloneableUserApps == null) {
-                sNonCloneableSystemApps = Arrays.asList(
-                        context.getResources().getStringArray(R.array.config_nonCloneableSystemAppList));
-                sHiddenCloneableSystemApps = Arrays.asList(
-                        context.getResources().getStringArray(R.array.config_hiddenCloneableSystemAppList));
+            if (sNonCloneableUserApps == null) {
                 sNonCloneableUserApps = Arrays.asList(
                         context.getResources().getStringArray(R.array.config_nonCloneableUserAppList));
             }
             if (!isSystemApp && !sNonCloneableUserApps.contains(packageName)) {
                 return true;
             }
-            return isSystemApp && !sNonCloneableSystemApps.contains(packageName)
-                    && !sHiddenCloneableSystemApps.contains(packageName);
+            return false;
         } catch (NameNotFoundException ignored) {
             return false;
         }
