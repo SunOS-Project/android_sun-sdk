@@ -138,6 +138,9 @@ class WindowContainerExt {
         if (!tmpBounds.equals(newBounds)) {
             parent.onRequestedOverrideConfigurationChanged(overrideConfig);
         }
+        if (mWc.getWindowConfiguration().isPinnedExtWindowMode()) {
+            TopActivityRecorder.getInstance().updateTopPinnedWindowActivity(mWc.asActivityRecord());
+        }
         return true;
     }
 
