@@ -14,6 +14,8 @@ import static org.nameless.view.PopUpViewManager.ACTION_START_MINI_WINDOW;
 import static org.nameless.view.PopUpViewManager.ACTION_START_PINNED_WINDOW;
 import static org.nameless.view.PopUpViewManager.EXTRA_ACTIVITY_NAME;
 import static org.nameless.view.PopUpViewManager.EXTRA_PACKAGE_NAME;
+import static org.nameless.view.PopUpViewManager.EXTRA_SHORTCUT_ID;
+import static org.nameless.view.PopUpViewManager.EXTRA_SHORTCUT_USER_ID;
 import static org.nameless.view.PopUpViewManager.FEATURE_SUPPORTED;
 
 import android.content.BroadcastReceiver;
@@ -85,6 +87,8 @@ public class PopUpBroadcastReceiver extends BroadcastReceiver {
         }
 
         final String activityName = intent.getStringExtra(EXTRA_ACTIVITY_NAME);
+        final String shortcutId = intent.getStringExtra(EXTRA_SHORTCUT_ID);
+        final int shortcutUserId = intent.getIntExtra(EXTRA_SHORTCUT_USER_ID, Integer.MIN_VALUE);
 
         Bundle bundle = null;
         switch (action) {
@@ -96,7 +100,13 @@ public class PopUpBroadcastReceiver extends BroadcastReceiver {
                 break;
         }
         if (bundle != null) {
-            PopUpAppStarter.getInstance().startActivity(packageName, activityName, bundle);
+            PopUpAppStarter.getInstance().startActivity(
+                packageName,
+                activityName,
+                shortcutId,
+                shortcutUserId,
+                bundle
+            );
         }
     }
 }

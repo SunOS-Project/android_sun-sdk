@@ -25,6 +25,8 @@ public class PopUpViewManager {
 
     public static final String EXTRA_PACKAGE_NAME = "packageName";
     public static final String EXTRA_ACTIVITY_NAME = "activityName";
+    public static final String EXTRA_SHORTCUT_ID = "shortcutId";
+    public static final String EXTRA_SHORTCUT_USER_ID = "shortcutUserId";
 
     public static final int TAP_ACTION_PIN_WINDOW = 0;
     public static final int TAP_ACTION_EXIT = 1;

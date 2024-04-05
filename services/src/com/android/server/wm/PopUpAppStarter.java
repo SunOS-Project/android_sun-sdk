@@ -16,6 +16,7 @@ import android.app.ActivityTaskManager;
 import android.app.IActivityTaskManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.LauncherApps;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.UserHandle;
@@ -36,15 +37,23 @@ class PopUpAppStarter {
 
     private Context mContext;
     private IActivityTaskManager mActivityTaskManager;
+    private LauncherApps mLauncherApps;
     private PackageManager mPackageManager;
 
     void init(Context context) {
         mContext = context;
         mActivityTaskManager = ActivityTaskManager.getService();
+        mLauncherApps = context.getSystemService(LauncherApps.class);
         mPackageManager = context.getPackageManager();
     }
 
-    void startActivity(String packageName, String activityName, Bundle bundle) {
+    void startActivity(String packageName, String activityName,
+            String shortcutId, int shortcutUserId, Bundle bundle) {
+        if (!TextUtils.isEmpty(shortcutId) && shortcutUserId != Integer.MIN_VALUE) {
+            startShortcut(packageName, shortcutId, shortcutUserId, bundle);
+            return;
+        }
+
         final Intent intent;
         if (TextUtils.isEmpty(activityName)) {
             intent = mPackageManager.getLaunchIntentForPackage(packageName);
@@ -62,7 +71,7 @@ class PopUpAppStarter {
         try {
             mContext.startActivityAsUser(intent, bundle, UserHandle.CURRENT);
         } catch (Exception e) {
-            Slog.e(TAG, "Failed to start " + packageName + "/" + activityName);
+            Slog.e(TAG, "Failed to start " + packageName + "/" + activityName, e);
         }
     }
 
@@ -70,7 +79,17 @@ class PopUpAppStarter {
         try {
             mActivityTaskManager.startActivityFromRecents(taskId, bundle);
         } catch (Exception e) {
-            Slog.e(TAG, "Failed to start activity from taskId: " + taskId);
+            Slog.e(TAG, "Failed to start activity from taskId: " + taskId, e);
+        }
+    }
+
+    private void startShortcut(String packageName, String shortcutId,
+            int shortcutUserId, Bundle bundle) {
+        try {
+            mLauncherApps.startShortcut(
+                packageName, shortcutId, null, bundle, new UserHandle(shortcutUserId));
+        } catch (Exception e) {
+            Slog.e(TAG, "Failed to start shortcut " + packageName + "/" + shortcutId, e);
         }
     }
 
