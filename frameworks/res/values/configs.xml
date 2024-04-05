@@ -116,6 +116,7 @@
     <string-array name="config_launcherSwitcherComponents" translatable="false">
         <item>com.google.android.apps.nexuslauncher/com.android.quickstep.RecentsActivity</item>
         <item>com.android.launcher3/com.android.quickstep.RecentsActivity</item>
+        <item>app.lawnchair/com.android.quickstep.RecentsActivity</item>
     </string-array>
 
 </resources>
