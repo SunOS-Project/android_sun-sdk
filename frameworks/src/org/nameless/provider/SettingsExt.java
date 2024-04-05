@@ -984,6 +984,9 @@ public class SettingsExt {
         public static final String WAKE_WHEN_PLUGGED_OR_UNPLUGGED = "wake_when_plugged_or_unplugged";
 
         public static String hookGetString(String packageName, String settingsName) {
+            if ("com.android.settings".equals(packageName)) {
+                return null;
+            }
             if (Settings.Global.DEVELOPMENT_ENABLE_FREEFORM_WINDOWS_SUPPORT.equals(settingsName)) {
                 return "1";
             }
