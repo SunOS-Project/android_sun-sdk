@@ -49,6 +49,8 @@ public class CustomUtils {
 
     private static final String PACKAGE_SYSTEMUI = "com.android.systemui";
 
+    public static final String INTENT_RESET_CLONE_USER_ID = "org.nameless.intent.RESET_CLONE_USER_ID";
+
     private CustomUtils() {}
 
     public static boolean isPackageInstalled(Context context, String pkg) {

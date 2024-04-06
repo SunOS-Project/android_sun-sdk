@@ -7,6 +7,8 @@ package com.android.server.am;
 
 import static android.content.Intent.ACTION_SCREEN_CAMERA_GESTURE;
 
+import static com.android.internal.util.nameless.CustomUtils.INTENT_RESET_CLONE_USER_ID;
+
 import static org.nameless.content.OnlineConfigManager.ACTION_UPDATE_CONFIG;
 import static org.nameless.server.policy.DozeController.DOZE_INTENT;
 import static org.nameless.view.PopUpViewManager.ACTION_PIN_CURRENT_APP;
@@ -27,7 +29,8 @@ class ActivityManagerServiceExt {
         ACTION_START_MINI_WINDOW,
         ACTION_START_PINNED_WINDOW,
         ACTION_UPDATE_CONFIG,
-        DOZE_INTENT
+        DOZE_INTENT,
+        INTENT_RESET_CLONE_USER_ID
     );
 
     static ActivityManagerServiceExt getInstance() {

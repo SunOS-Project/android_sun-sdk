@@ -298,6 +298,8 @@ public class NamelessSystemExService extends SystemService {
         if (!hasUserApp) {
             mUserManagerInternal.removeUserEvenWhenDisallowed(userId);
             CustomUtils.forceStopDefaultLauncher(getContext());
+            getContext().sendBroadcastAsUser(new Intent(
+                    CustomUtils.INTENT_RESET_CLONE_USER_ID), UserHandle.SYSTEM);
         }
     }
 
