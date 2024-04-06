@@ -12,6 +12,7 @@ import static android.content.Intent.ACTION_SHUTDOWN;
 import static android.content.Intent.ACTION_USER_PRESENT;
 import static android.os.PowerManager.ACTION_POWER_SAVE_MODE_CHANGED;
 import static android.os.Process.THREAD_PRIORITY_DEFAULT;
+import static android.os.UserManager.USER_TYPE_PROFILE_CLONE;
 
 import android.app.KeyguardManager;
 import android.app.PendingIntent;
@@ -21,6 +22,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.LauncherApps;
+import android.content.pm.UserInfo;
 import android.os.BatteryManager;
 import android.os.BatteryManagerInternal;
 import android.os.Handler;
@@ -32,6 +34,7 @@ import com.android.internal.util.nameless.DeviceConfigUtils;
 import com.android.server.LocalServices;
 import com.android.server.ServiceThread;
 import com.android.server.SystemService;
+import com.android.server.pm.UserManagerInternal;
 import com.android.server.policy.PhoneWindowManagerExt;
 import com.android.server.wm.TopActivityRecorder;
 
@@ -70,6 +73,7 @@ public class NamelessSystemExService extends SystemService {
     private ServiceThread mWorker;
 
     private BatteryManagerInternal mBatteryManagerInternal;
+    private UserManagerInternal mUserManagerInternal;
 
     private PackageRemovedListener mPackageRemovedListener;
     private PowerStateListener mPowerStateListener;
@@ -93,6 +97,7 @@ public class NamelessSystemExService extends SystemService {
     public void onBootPhase(int phase) {
         if (phase == PHASE_SYSTEM_SERVICES_READY) {
             mBatteryManagerInternal = LocalServices.getService(BatteryManagerInternal.class);
+            mUserManagerInternal = LocalServices.getService(UserManagerInternal.class);
             mPackageRemovedListener = new PackageRemovedListener();
             mPowerStateListener = new PowerStateListener();
             mRebootListener = new RebootListener();
@@ -276,6 +281,11 @@ public class NamelessSystemExService extends SystemService {
 
         @Override
         public void onPackageRemoved(String packageName, UserHandle user) {
+            final UserInfo userInfo = mUserManagerInternal.getUserInfo(user.getIdentifier());
+            if (userInfo != null && USER_TYPE_PROFILE_CLONE.equals(userInfo.userType)) {
+                return;
+            }
+
             NamelessSystemExService.this.onPackageRemoved(packageName);
         }
 
