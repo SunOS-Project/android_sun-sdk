@@ -21,14 +21,18 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManagerInternal;
 import android.content.pm.LauncherApps;
 import android.content.pm.UserInfo;
 import android.os.BatteryManager;
 import android.os.BatteryManagerInternal;
+import android.os.Binder;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.UserHandle;
 
+import com.android.internal.util.nameless.CustomUtils;
 import com.android.internal.util.nameless.DeviceConfigUtils;
 
 import com.android.server.LocalServices;
@@ -37,6 +41,8 @@ import com.android.server.SystemService;
 import com.android.server.pm.UserManagerInternal;
 import com.android.server.policy.PhoneWindowManagerExt;
 import com.android.server.wm.TopActivityRecorder;
+
+import java.util.List;
 
 import org.nameless.display.DisplayFeatureManager;
 import org.nameless.os.BatteryFeatureManager;
@@ -73,6 +79,7 @@ public class NamelessSystemExService extends SystemService {
     private ServiceThread mWorker;
 
     private BatteryManagerInternal mBatteryManagerInternal;
+    private PackageManagerInternal mPackageManagerInternal;
     private UserManagerInternal mUserManagerInternal;
 
     private PackageRemovedListener mPackageRemovedListener;
@@ -97,6 +104,7 @@ public class NamelessSystemExService extends SystemService {
     public void onBootPhase(int phase) {
         if (phase == PHASE_SYSTEM_SERVICES_READY) {
             mBatteryManagerInternal = LocalServices.getService(BatteryManagerInternal.class);
+            mPackageManagerInternal = LocalServices.getService(PackageManagerInternal.class);
             mUserManagerInternal = LocalServices.getService(UserManagerInternal.class);
             mPackageRemovedListener = new PackageRemovedListener();
             mPowerStateListener = new PowerStateListener();
@@ -123,7 +131,13 @@ public class NamelessSystemExService extends SystemService {
         }
 
         if (phase == PHASE_BOOT_COMPLETED) {
-            mHandler.post(() -> DeviceConfigUtils.setDefaultProperties(null, null));
+            mHandler.post(() -> {
+                DeviceConfigUtils.setDefaultProperties(null, null);
+                final int clonedUserId = getCloneUserId();
+                if (clonedUserId != -1) {
+                    maybeCleanClonedUser(clonedUserId);
+                }
+            });
             if (mBatteryFeatureSupported) {
                 BatteryFeatureController.getInstance().onBootCompleted();
             }
@@ -261,6 +275,32 @@ public class NamelessSystemExService extends SystemService {
         return PendingIntent.getBroadcast(getContext(), 0, new Intent(ACTION_REBOOT), PendingIntent.FLAG_IMMUTABLE);
     }
 
+    private int getCloneUserId() {
+        for (UserInfo userInfo : mUserManagerInternal.getUsers(false)) {
+            if (USER_TYPE_PROFILE_CLONE.equals(userInfo.userType)) {
+                return userInfo.id;
+            }
+        }
+        return -1;
+    }
+
+    private void maybeCleanClonedUser(int userId) {
+        final List<ApplicationInfo> packages = mPackageManagerInternal.getInstalledApplicationsCrossUser(
+                0, userId, Binder.getCallingUid());
+        boolean hasUserApp = false;
+        for (ApplicationInfo info : packages) {
+            if ((info.flags &
+                    (ApplicationInfo.FLAG_SYSTEM | ApplicationInfo.FLAG_UPDATED_SYSTEM_APP)) == 0) {
+                hasUserApp = true;
+                break;
+            }
+        }
+        if (!hasUserApp) {
+            mUserManagerInternal.removeUserEvenWhenDisallowed(userId);
+            CustomUtils.forceStopDefaultLauncher(getContext());
+        }
+    }
+
     private final class PackageRemovedListener extends LauncherApps.Callback {
 
         private final LauncherApps mLauncherApps;
@@ -283,6 +323,7 @@ public class NamelessSystemExService extends SystemService {
         public void onPackageRemoved(String packageName, UserHandle user) {
             final UserInfo userInfo = mUserManagerInternal.getUserInfo(user.getIdentifier());
             if (userInfo != null && USER_TYPE_PROFILE_CLONE.equals(userInfo.userType)) {
+                maybeCleanClonedUser(user.getIdentifier());
                 return;
             }
 
