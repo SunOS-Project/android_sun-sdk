@@ -6,16 +6,10 @@
 package org.nameless.server;
 
 import static android.content.Intent.ACTION_BATTERY_CHANGED;
-import static android.content.Intent.ACTION_PACKAGE_ADDED;
-import static android.content.Intent.ACTION_PACKAGE_CHANGED;
-import static android.content.Intent.ACTION_PACKAGE_FULLY_REMOVED;
-import static android.content.Intent.ACTION_PACKAGE_REMOVED;
-import static android.content.Intent.ACTION_PACKAGE_REPLACED;
 import static android.content.Intent.ACTION_SCREEN_OFF;
 import static android.content.Intent.ACTION_SCREEN_ON;
 import static android.content.Intent.ACTION_SHUTDOWN;
 import static android.content.Intent.ACTION_USER_PRESENT;
-import static android.content.Intent.EXTRA_REPLACING;
 import static android.os.PowerManager.ACTION_POWER_SAVE_MODE_CHANGED;
 import static android.os.Process.THREAD_PRIORITY_DEFAULT;
 
@@ -26,12 +20,12 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.net.Uri;
+import android.content.pm.LauncherApps;
 import android.os.BatteryManager;
 import android.os.BatteryManagerInternal;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.os.UserHandle;
 
 import com.android.internal.util.nameless.DeviceConfigUtils;
 
@@ -262,37 +256,41 @@ public class NamelessSystemExService extends SystemService {
         return PendingIntent.getBroadcast(getContext(), 0, new Intent(ACTION_REBOOT), PendingIntent.FLAG_IMMUTABLE);
     }
 
-    private final class PackageRemovedListener extends BroadcastReceiver {
+    private final class PackageRemovedListener extends LauncherApps.Callback {
 
-        private static final String EXTRA_UID = "EXTRA_UID";
+        private final LauncherApps mLauncherApps;
+
+        public PackageRemovedListener() {
+            mLauncherApps = getContext().getSystemService(LauncherApps.class);
+        }
 
         @Override
-        public void onReceive(Context context, Intent intent) {
-            final String packageName = getPackageName(intent);
-            if (packageName == null) {
-                return;
-            }
-            switch (intent.getAction()) {
-                case ACTION_PACKAGE_FULLY_REMOVED:
-                case ACTION_PACKAGE_REMOVED:
-                    if (!intent.getBooleanExtra(EXTRA_REPLACING, false)) {
-                        onPackageRemoved(packageName);
-                    }
-                    break;
-            }
+        public void onPackageAdded(String packageName, UserHandle user) {
+            // Do nothing
+        }
+
+        @Override
+        public void onPackageChanged(String packageName, UserHandle user) {
+            // Do nothing
+        }
+
+        @Override
+        public void onPackageRemoved(String packageName, UserHandle user) {
+            NamelessSystemExService.this.onPackageRemoved(packageName);
+        }
+
+        @Override
+        public void onPackagesAvailable(String[] packageNames, UserHandle user, boolean replacing) {
+            // Do nothing
+        }
+
+        @Override
+        public void onPackagesUnavailable(String[] packageNames, UserHandle user, boolean replacing) {
+            // Do nothing
         }
 
         public void register() {
-            final IntentFilter filter = new IntentFilter();
-            filter.addAction(ACTION_PACKAGE_FULLY_REMOVED);
-            filter.addAction(ACTION_PACKAGE_REMOVED);
-            filter.addDataScheme("package");
-            getContext().registerReceiverForAllUsers(this, filter, null, mHandler);
-        }
-
-        private static String getPackageName(Intent intent) {
-            final Uri uri = intent.getData();
-            return uri != null ? uri.getSchemeSpecificPart() : null;
+            mLauncherApps.registerCallback(this, mHandler);
         }
     }
 
