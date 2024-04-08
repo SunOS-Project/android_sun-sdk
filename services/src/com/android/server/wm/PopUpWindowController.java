@@ -855,6 +855,13 @@ public class PopUpWindowController {
                     + ", intent=" + request.intent);
         }
 
+        if ((request.intent.getFlags() & Intent.FLAG_ACTIVITY_CLEAR_TASK) != 0) {
+            if (DEBUG_POP_UP) {
+                Slog.d(TAG, "computeBeforeExecuteRequest, skip: original intent requires clear task");
+            }
+            return;
+        }
+
         final String callerPackage = request.callingPackage;
         final ComponentName component = request.intent.getComponent();
         final String targetPackage = component != null ? component.getPackageName() : "";
@@ -897,7 +904,7 @@ public class PopUpWindowController {
             return;
         }
 
-        if (currentTopMiniPackage.equals(callerPackage) && !targetPackage.equals(callerPackage)) {
+        if (currentTopMiniPackage.equals(callerPackage)) {
             // Caller app is in top mini-window. Let's start other packages in mini-window as well.
             if (DEBUG_POP_UP) {
                 Slog.d(TAG, "computeBeforeExecuteRequest, configure: starting outside activity from mini-window");
