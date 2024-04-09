@@ -22,6 +22,11 @@ import static org.nameless.audio.AlertSliderManager.STATE_TOP;
 import static org.nameless.audio.AlertSliderManager.STATE_UNKNOWN;
 import static org.nameless.os.DebugConstants.DEBUG_AUDIO_SLIDER;
 
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.ALERT_SLIDER_BOTTOM;
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.ALERT_SLIDER_MIDDLE;
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.DOUBLE_CLICK;
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.HEAVY_CLICK;
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.ContentObserver;
@@ -35,7 +40,7 @@ import android.os.UEventObserver;
 import android.os.UEventObserver.UEvent;
 import android.os.UserHandle;
 import android.os.VibrationAttributes;
-import android.os.VibrationEffect;
+import android.os.VibrationExtInfo;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -126,8 +131,6 @@ public class AlertSliderController {
     private boolean mVibrateOnBluetooth;
 
     private boolean mInTmpRingerMode = false;
-
-    private VibrationEffect mPendingEffect = null;
 
     public AlertSliderController(AudioService audioService, Context context, Vibrator vibrator) {
         mService = audioService;
@@ -276,15 +279,17 @@ public class AlertSliderController {
             return;
         }
         mService.setRingerModeInternal(ringerMode, CALLING_PACKAGE);
-        if (vibrate) {
-            final VibrationEffect effect = AlertSliderManager.getRingerModeFeedback(true, ringerMode);
-            mPendingEffect = effect;
+        if (vibrate && state != STATE_TOP) {
             if (mHandler.hasMessages(MSG_DO_VIBRATE)) {
                 mHandler.removeMessages(MSG_DO_VIBRATE);
             }
-            if (effect != null) {
-                mHandler.sendEmptyMessageDelayed(MSG_DO_VIBRATE, VIBRATE_DELAY_MS);
-            }
+            mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_DO_VIBRATE,
+                    new VibrationExtInfo.Builder()
+                        .setEffectId(state == STATE_BOTTOM ? ALERT_SLIDER_BOTTOM : ALERT_SLIDER_MIDDLE)
+                        .setFallbackEffectId(state == STATE_BOTTOM ? HEAVY_CLICK : DOUBLE_CLICK)
+                        .setVibrationAttributes(HARDWARE_FEEDBACK_VIBRATION_ATTRIBUTES)
+                        .build()
+                    ), VIBRATE_DELAY_MS);
         }
         mState = state;
     }
@@ -390,9 +395,8 @@ public class AlertSliderController {
         public void handleMessage(Message message) {
             switch (message.what) {
                 case MSG_DO_VIBRATE:
-                    if (mPendingEffect != null) {
-                        mVibrator.vibrate(mPendingEffect, HARDWARE_FEEDBACK_VIBRATION_ATTRIBUTES);
-                    }
+                    final VibrationExtInfo info = (VibrationExtInfo) message.obj;
+                    mVibrator.vibrateExt(info);
                     break;
             }
         }

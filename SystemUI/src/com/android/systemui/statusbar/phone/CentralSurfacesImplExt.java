@@ -9,13 +9,18 @@ import static com.android.settingslib.display.BrightnessUtils.GAMMA_SPACE_MAX;
 import static com.android.settingslib.display.BrightnessUtils.convertGammaToLinearFloat;
 
 import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_SLIDER;
-import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_SLIDER_EDGE;
+
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.HEAVY_CLICK;
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.SLIDER_EDGE;
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.SLIDER_STEP;
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.UNIFIED_SUCCESS;
 
 import android.content.Context;
 import android.hardware.display.DisplayManager;
 import android.os.PowerManager;
 import android.os.VibrationAttributes;
 import android.os.VibrationEffect;
+import android.os.VibrationExtInfo;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
@@ -38,8 +43,6 @@ class CentralSurfacesImplExt {
             VibrationAttributes.createForUsage(VibrationAttributes.USAGE_HARDWARE_FEEDBACK);
     private static final VibrationEffect EFFECT_HEAVY_CLICK =
             VibrationEffect.createPredefined(VibrationEffect.EFFECT_HEAVY_CLICK);
-    private static final VibrationEffect EFFECT_TICK =
-            VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK);
 
     private static class InstanceHolder {
         private static CentralSurfacesImplExt INSTANCE = new CentralSurfacesImplExt();
@@ -105,7 +108,12 @@ class CentralSurfacesImplExt {
     }
 
     private void onLongPressBrightnessChange() {
-        mVibratorHelper.vibrate(EFFECT_HEAVY_CLICK, HARDWARE_FEEDBACK_VIBRATION_ATTRIBUTES);
+        mVibratorHelper.vibrateExt(new VibrationExtInfo.Builder()
+                .setEffectId(UNIFIED_SUCCESS)
+                .setFallbackEffectId(HEAVY_CLICK)
+                .setVibrationAttributes(HARDWARE_FEEDBACK_VIBRATION_ATTRIBUTES)
+                .build()
+        );
         mInBrightnessControl = true;
         adjustBrightness(mInitialTouchX);
         mLinger = BRIGHTNESS_CONTROL_LINGER_THRESHOLD + 1;
@@ -127,9 +135,19 @@ class CentralSurfacesImplExt {
         if (mCurrentBrightness != val) {
             if (mCurrentBrightness != -1) {
                 if (val == mMinimumBacklight || val == mMaximumBacklight) {
-                    mVibratorHelper.vibrate(EFFECT_HEAVY_CLICK, VIBRATION_ATTRIBUTES_SLIDER_EDGE);
+                    mVibratorHelper.vibrateExt(new VibrationExtInfo.Builder()
+                            .setEffectId(SLIDER_EDGE)
+                            .setVibrationAttributes(VIBRATION_ATTRIBUTES_SLIDER)
+                            .build()
+                    );
                 } else {
-                    mVibratorHelper.vibrate(EFFECT_TICK, VIBRATION_ATTRIBUTES_SLIDER);
+                    mVibratorHelper.vibrateExt(new VibrationExtInfo.Builder()
+                            .setEffectId(SLIDER_STEP)
+                            .setAmplitude((float) (val - mMinimumBacklight)
+                                        / (mMaximumBacklight - mMinimumBacklight))
+                            .setVibrationAttributes(VIBRATION_ATTRIBUTES_SLIDER)
+                            .build()
+                    );
                 }
             }
             mCurrentBrightness = val;

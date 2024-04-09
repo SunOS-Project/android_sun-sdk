@@ -7,12 +7,15 @@ package com.android.systemui.screenshot;
 
 import static org.nameless.provider.SettingsExt.System.SCREENSHOT_SOUND;
 
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.HEAVY_CLICK;
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.SCREENSHOT;
+
 import android.content.Context;
 import android.database.ContentObserver;
 import android.os.Handler;
 import android.os.UserHandle;
 import android.os.VibrationAttributes;
-import android.os.VibrationEffect;
+import android.os.VibrationExtInfo;
 
 import com.android.systemui.settings.UserTracker;
 import com.android.systemui.statusbar.VibratorHelper;
@@ -34,8 +37,6 @@ class ScreenshotControllerExt {
 
     private static final VibrationAttributes HARDWARE_FEEDBACK_VIBRATION_ATTRIBUTES =
             VibrationAttributes.createForUsage(VibrationAttributes.USAGE_HARDWARE_FEEDBACK);
-    private static final VibrationEffect SCREENSHOT_FEEDBACK_EFFECT =
-            VibrationEffect.createPredefined(VibrationEffect.EFFECT_HEAVY_CLICK);
 
     private ContentObserver mSettingsObserver;
     private ForegroundActivityListener mForegroundActivityListener;
@@ -79,7 +80,11 @@ class ScreenshotControllerExt {
     }
 
     boolean interceptPlayCameraSound() {
-        mVibratorHelper.vibrate(SCREENSHOT_FEEDBACK_EFFECT, HARDWARE_FEEDBACK_VIBRATION_ATTRIBUTES);
+        mVibratorHelper.vibrateExt(new VibrationExtInfo.Builder()
+                .setEffectId(SCREENSHOT)
+                .setFallbackEffectId(HEAVY_CLICK)
+                .setVibrationAttributes(HARDWARE_FEEDBACK_VIBRATION_ATTRIBUTES)
+                .build());
         if (!mScreenshotSound) {
             return true;
         }

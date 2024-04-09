@@ -22,9 +22,10 @@ import static android.window.TransitionInfo.FLAG_SCHEDULE_POP_UP_VIEW;
 import static com.android.server.wm.RecentsAnimationController.REORDER_MOVE_TO_ORIGINAL_POSITION;
 import static com.android.server.wm.Transition.ChangeInfo.FLAG_CHANGE_SHOULD_SKIP_TRANSITIONS;
 
-import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_MISC_SCENES;
 import static org.nameless.os.DebugConstants.DEBUG_POP_UP;
 import static org.nameless.view.PopUpViewManager.FEATURE_SUPPORTED;
+
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.TICK;
 
 import android.app.ActivityOptions;
 import android.app.WindowConfiguration;
@@ -38,7 +39,7 @@ import android.os.Handler;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.UserHandle;
-import android.os.VibrationEffect;
+import android.os.VibrationExtInfo;
 import android.os.Vibrator;
 import android.util.ArraySet;
 import android.util.Slog;
@@ -81,9 +82,6 @@ public class PopUpWindowController {
     static final int MOVE_TO_BACK_NON_USER = 4;
 
     private static final long EXIT_POP_UP_DELAY = 200L;
-
-    private static final VibrationEffect OVERVIEW_HAPTIC =
-            VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK);
 
     private static final int ID_DISPLAY_CUTOUT_LEFT = InsetsSource.createId(null, 0, Type.displayCutout());
     private static final int ID_DISPLAY_CUTOUT_TOP = InsetsSource.createId(null, 1, Type.displayCutout());
@@ -685,7 +683,9 @@ public class PopUpWindowController {
 
     void triggerVibrate() {
         mHandler.post(() -> {
-            mVibrator.vibrate(OVERVIEW_HAPTIC, VIBRATION_ATTRIBUTES_MISC_SCENES);
+            mVibrator.vibrateExt(new VibrationExtInfo.Builder()
+                .setEffectId(TICK)
+                .build());
         });
     }
 

@@ -7,10 +7,15 @@ package com.android.internal.policy;
 
 import static org.nameless.view.PopUpViewManager.FEATURE_SUPPORTED;
 
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.BACK_GESTURE;
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.HEAVY_CLICK;
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.TICK;
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.UNIFIED_SUCCESS;
+
 import android.content.Context;
 import android.os.UserHandle;
 import android.os.VibrationAttributes;
-import android.os.VibrationEffect;
+import android.os.VibrationExtInfo;
 import android.os.Vibrator;
 import android.provider.Settings;
 
@@ -25,10 +30,6 @@ public class GestureLongSwipeUtils {
 
     private static final VibrationAttributes HARDWARE_FEEDBACK_VIBRATION_ATTRIBUTES =
             VibrationAttributes.createForUsage(VibrationAttributes.USAGE_HARDWARE_FEEDBACK);
-    private static final VibrationEffect LONG_SWIPE_REACHED_EFFECT =
-            VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK);
-    private static final VibrationEffect LONG_SWIPE_TRIGGERED_EFFECT =
-            VibrationEffect.createPredefined(VibrationEffect.EFFECT_HEAVY_CLICK);
 
     public static final int ACTION_EMPTY = 0;
     public static final int ACTION_KILL_FOREGROUND_APP = 1;
@@ -56,7 +57,11 @@ public class GestureLongSwipeUtils {
     public static Runnable getTriggerActionRunnable(Context context, int action) {
         if (shouldVibrateOnTriggered(context, action)) {
             final Vibrator vibrator = context.getSystemService(Vibrator.class);
-            vibrator.vibrate(LONG_SWIPE_TRIGGERED_EFFECT, HARDWARE_FEEDBACK_VIBRATION_ATTRIBUTES);
+            vibrator.vibrateExt(new VibrationExtInfo.Builder()
+                    .setEffectId(UNIFIED_SUCCESS)
+                    .setFallbackEffectId(HEAVY_CLICK)
+                    .setVibrationAttributes(HARDWARE_FEEDBACK_VIBRATION_ATTRIBUTES)
+                    .build());
         }
         switch (action) {
             case ACTION_KILL_FOREGROUND_APP:
@@ -86,7 +91,11 @@ public class GestureLongSwipeUtils {
 
     public static void playReachedVibration(Context context) {
         final Vibrator vibrator = context.getSystemService(Vibrator.class);
-        vibrator.vibrate(LONG_SWIPE_REACHED_EFFECT, HARDWARE_FEEDBACK_VIBRATION_ATTRIBUTES);
+        vibrator.vibrateExt(new VibrationExtInfo.Builder()
+                .setEffectId(BACK_GESTURE)
+                .setFallbackEffectId(TICK)
+                .setVibrationAttributes(HARDWARE_FEEDBACK_VIBRATION_ATTRIBUTES)
+                .build());
     }
 
     private static boolean shouldVibrateOnTriggered(Context context, int action) {

@@ -21,6 +21,8 @@ package org.nameless.settings.preference.colorpicker;
 
 import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_MISC_SCENES;
 
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.CLICK;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -31,7 +33,7 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.VibrationEffect;
+import android.os.VibrationExtInfo;
 import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.View;
@@ -427,6 +429,9 @@ public class ColorPickerPreference extends Preference implements
     }
 
     private void doHapticFeedback() {
-        mVibrator.vibrate(VibrationEffect.get(VibrationEffect.EFFECT_CLICK), VIBRATION_ATTRIBUTES_MISC_SCENES);
+        mVibrator.vibrateExt(new VibrationExtInfo.Builder()
+                .setEffectId(CLICK)
+                .setVibrationAttributes(VIBRATION_ATTRIBUTES_MISC_SCENES)
+                .build());
     }
 }

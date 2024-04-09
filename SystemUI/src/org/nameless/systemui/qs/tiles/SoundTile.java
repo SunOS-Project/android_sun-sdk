@@ -15,6 +15,11 @@
  */
 package org.nameless.systemui.qs.tiles;
 
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.ALERT_SLIDER_BOTTOM;
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.ALERT_SLIDER_MIDDLE;
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.DOUBLE_CLICK;
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.HEAVY_CLICK;
+
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -24,7 +29,7 @@ import android.media.AudioManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.VibrationAttributes;
-import android.os.VibrationEffect;
+import android.os.VibrationExtInfo;
 import android.os.Vibrator;
 import android.provider.Settings.Global;
 import android.service.quicksettings.Tile;
@@ -152,9 +157,12 @@ public class SoundTile extends QSTileImpl<BooleanState> {
             default:
                 break;
         }
-        final VibrationEffect effect = AlertSliderManager.getRingerModeFeedback(mContext, newState);
-        if (effect != null) {
-            mVibrator.vibrate(effect, VIBRATION_ATTRIBUTE);
+        if (newState != AudioManager.RINGER_MODE_SILENT) {
+            mVibrator.vibrateExt(new VibrationExtInfo.Builder()
+                    .setEffectId(newState == AudioManager.RINGER_MODE_NORMAL ? ALERT_SLIDER_BOTTOM : ALERT_SLIDER_MIDDLE)
+                    .setFallbackEffectId(newState == AudioManager.RINGER_MODE_NORMAL ? HEAVY_CLICK : DOUBLE_CLICK)
+                    .setVibrationAttributes(VIBRATION_ATTRIBUTE)
+                    .build());
         }
     }
 

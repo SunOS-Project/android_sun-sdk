@@ -14,14 +14,10 @@ public class CustomVibrationAttributes {
 
     public static final VibrationAttributes VIBRATION_ATTRIBUTES_BACK_GESTURE_DRAG =
             VibrationAttributes.createForUsage(VibrationAttributes.USAGE_CUSTOM_BACK_GESTURE_DRAG);
-    public static final VibrationAttributes VIBRATION_ATTRIBUTES_ERROR_UNIFIED =
-            VibrationAttributes.createForUsage(VibrationAttributes.USAGE_CUSTOM_ERROR_UNIFIED);
     public static final VibrationAttributes VIBRATION_ATTRIBUTES_FACE_UNLOCK =
             VibrationAttributes.createForUsage(VibrationAttributes.USAGE_CUSTOM_FACE_UNLOCK);
     public static final VibrationAttributes VIBRATION_ATTRIBUTES_FINGERPRINT_UNLOCK =
             VibrationAttributes.createForUsage(VibrationAttributes.USAGE_CUSTOM_FINGERPRINT_UNLOCK);
-    public static final VibrationAttributes VIBRATION_ATTRIBUTES_KEYBOARD_PRESS =
-            VibrationAttributes.createForUsage(VibrationAttributes.USAGE_CUSTOM_KEYBOARD_PRESS);
     public static final VibrationAttributes VIBRATION_ATTRIBUTES_MISC_SCENES =
             VibrationAttributes.createForUsage(VibrationAttributes.USAGE_CUSTOM_MISC_SCENES);
     public static final VibrationAttributes VIBRATION_ATTRIBUTES_OFF_SCREEN_GESTURE =
@@ -34,8 +30,6 @@ public class CustomVibrationAttributes {
             VibrationAttributes.createForUsage(VibrationAttributes.USAGE_CUSTOM_QS_TILE);
     public static final VibrationAttributes VIBRATION_ATTRIBUTES_SLIDER =
             VibrationAttributes.createForUsage(VibrationAttributes.USAGE_CUSTOM_SLIDER);
-    public static final VibrationAttributes VIBRATION_ATTRIBUTES_SLIDER_EDGE =
-            VibrationAttributes.createForUsage(VibrationAttributes.USAGE_CUSTOM_SLIDER_EDGE);
     public static final VibrationAttributes VIBRATION_ATTRIBUTES_SWITCH =
             VibrationAttributes.createForUsage(VibrationAttributes.USAGE_CUSTOM_SWITCH);
 }

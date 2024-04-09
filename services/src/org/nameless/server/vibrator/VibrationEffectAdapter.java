@@ -10,31 +10,18 @@ import static android.os.VibrationAttributes.USAGE_NOTIFICATION;
 import static android.os.VibrationAttributes.USAGE_RINGTONE;
 import static android.os.VibrationEffect.EFFECT_CLICK;
 
-import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_BACK_GESTURE_DRAG;
-import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_ERROR_UNIFIED;
-import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_FACE_UNLOCK;
-import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_FINGERPRINT_UNLOCK;
-import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_KEYBOARD_PRESS;
 import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_PREVIEW_ALARM_CALL;
 import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_PREVIEW_NOTIFICATION;
-import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_SLIDER;
-import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_SLIDER_EDGE;
-import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_SWITCH;
 import static org.nameless.os.DebugConstants.DEBUG_VIBRATION_ADAPTER;
 import static org.nameless.os.VibrationPatternManager.RTP_END_DURATION_RINGTONE;
 import static org.nameless.os.VibrationPatternManager.RTP_RINGTONE_INTERVAL;
 import static org.nameless.os.VibrationPatternManager.RTP_START_DURATION_RINGTONE;
 
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.COMPAT_TICK;
 import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.DURATION_ALARM_CALL;
 import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.DURATION_NOTIFICATION;
 import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.DURATION_STRENGTH_LEVEL1;
 import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.DURATION_STRENGTH_LEVEL10;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.HEAVY_CLICK;
 import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.KEYBOARD_PRESS;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.POP;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.TICK;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.WEAKER_TICK;
 
 import android.os.CombinedVibration;
 import android.os.VibrationAttributes;
@@ -57,7 +44,7 @@ public class VibrationEffectAdapter {
 
     private static final String TAG = "VibrationEffectAdapter";
 
-    static final int VERSION = 1;
+    static final int VERSION = 2;
 
     static final String SYSTEM_CONFIG_FILE = "/system_ext/etc/vibration_effect_map.xml";
     static final String LOCAL_CONFIG_FILE = "/data/nameless_configs/vibration_effect_map.xml";
@@ -92,7 +79,8 @@ public class VibrationEffectAdapter {
     // Calculator apps that will convert to keyboard press effect if enabled
     private static final HashSet<String> calculatorEnhanceSet;
 
-    private static final boolean sVibratorExtSupported;
+    private static final VibratorExtManager sVibratorExtManager = VibratorExtManager.getInstance();
+    private static final boolean sVibratorExtSupported = sVibratorExtManager.isSupported();
 
     private static String sCachedIMEPackageName = "";
     private static long sCachedIMEDuration = -1;
@@ -101,19 +89,9 @@ public class VibrationEffectAdapter {
     private static final Object sLock = new Object();
 
     static {
-        sVibratorExtSupported = VibratorExtManager.getInstance().isSupported();
-
         attributeToEffect = new HashMap<>();
-        attributeToEffect.put(VIBRATION_ATTRIBUTES_BACK_GESTURE_DRAG, TICK);
-        attributeToEffect.put(VIBRATION_ATTRIBUTES_ERROR_UNIFIED, COMPAT_TICK);
-        attributeToEffect.put(VIBRATION_ATTRIBUTES_FACE_UNLOCK, HEAVY_CLICK);
-        attributeToEffect.put(VIBRATION_ATTRIBUTES_FINGERPRINT_UNLOCK, HEAVY_CLICK);
-        attributeToEffect.put(VIBRATION_ATTRIBUTES_KEYBOARD_PRESS, KEYBOARD_PRESS);
         attributeToEffect.put(VIBRATION_ATTRIBUTES_PREVIEW_ALARM_CALL, DURATION_ALARM_CALL);
         attributeToEffect.put(VIBRATION_ATTRIBUTES_PREVIEW_NOTIFICATION, DURATION_NOTIFICATION);
-        attributeToEffect.put(VIBRATION_ATTRIBUTES_SLIDER, WEAKER_TICK);
-        attributeToEffect.put(VIBRATION_ATTRIBUTES_SLIDER_EDGE, HEAVY_CLICK);
-        attributeToEffect.put(VIBRATION_ATTRIBUTES_SWITCH, POP);
 
         usageToEffect = new HashMap<>();
         usageToEffect.put(USAGE_ALARM, DURATION_ALARM_CALL);
@@ -165,6 +143,10 @@ public class VibrationEffectAdapter {
 
     static void initEffectMap(String path) {
         synchronized (sLock) {
+            if (!sVibratorExtSupported) {
+                return;
+            }
+
             durationToEffectMap.clear();
             inputmethodEnhanceMap.clear();
             ringtoneDurationMap.clear();
@@ -201,6 +183,9 @@ public class VibrationEffectAdapter {
                                 packageName = parser.getAttributeValue(null, KEY_PACKAGE_NAME);
                                 duration = Long.parseLong(parser.getAttributeValue(null, KEY_DURATION));
                                 effectId = Integer.parseInt(parser.getAttributeValue(null, KEY_EFFECT_ID));
+                                if (!sVibratorExtManager.isEffectSupported(effectId)) {
+                                    break;
+                                }
                                 if (!durationToEffectMap.containsKey(packageName)) {
                                     durationToEffectMap.put(packageName, new HashMap<>());
                                 }

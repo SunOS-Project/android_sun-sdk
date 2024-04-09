@@ -14,7 +14,6 @@ import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_MIS
 import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_OFF_SCREEN_GESTURE;
 import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_QS_TILE;
 import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_SLIDER;
-import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_SLIDER_EDGE;
 import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_SWITCH;
 import static org.nameless.provider.SettingsExt.System.CUSTOM_HAPTIC_ON_BACK_GESTURE;
 import static org.nameless.provider.SettingsExt.System.CUSTOM_HAPTIC_ON_FACE;
@@ -66,12 +65,10 @@ public final class CustomVibrationSettings extends IOnlineConfigurable.Stub {
     private static final int SETTINGS_SWITCH                 = 1 << 7;
 
     private static final HashMap<VibrationAttributes, Integer> AttributeToSettings;
-    private static final HashSet<VibrationAttributes> VibratorExtSpecificAttibutes;
 
     private static final HashMap<Integer, Pair<String, String>> STRENGTH_SETTINGS_DATE_MAP;
 
     private final VibratorExtManager mVibratorExtManager = VibratorExtManager.getInstance();
-    private final boolean mVibratorExtSupported = mVibratorExtManager.isSupported();
 
     private Context mContext;
     private SettingsContentObserver mSettingObserver;
@@ -98,13 +95,7 @@ public final class CustomVibrationSettings extends IOnlineConfigurable.Stub {
         AttributeToSettings.put(VIBRATION_ATTRIBUTES_OFF_SCREEN_GESTURE, SETTINGS_OFF_SCREEN_GESTURE);
         AttributeToSettings.put(VIBRATION_ATTRIBUTES_QS_TILE, SETTINGS_QS_TILE);
         AttributeToSettings.put(VIBRATION_ATTRIBUTES_SLIDER, SETTINGS_SLIDER);
-        AttributeToSettings.put(VIBRATION_ATTRIBUTES_SLIDER_EDGE, SETTINGS_SLIDER);
         AttributeToSettings.put(VIBRATION_ATTRIBUTES_SWITCH, SETTINGS_SWITCH);
-
-        VibratorExtSpecificAttibutes = new HashSet<>();
-        VibratorExtSpecificAttibutes.add(VIBRATION_ATTRIBUTES_MISC_SCENES);
-        VibratorExtSpecificAttibutes.add(VIBRATION_ATTRIBUTES_SLIDER);
-        VibratorExtSpecificAttibutes.add(VIBRATION_ATTRIBUTES_SLIDER_EDGE);
 
         STRENGTH_SETTINGS_DATE_MAP = new HashMap<>();
         STRENGTH_SETTINGS_DATE_MAP.put(Type.ALARM_CALL, new Pair(
@@ -339,9 +330,6 @@ public final class CustomVibrationSettings extends IOnlineConfigurable.Stub {
     public boolean shouldVibrate(VibrationAttributes attribute) {
         if (AttributeToSettings.containsKey(attribute)) {
             if ((mSettings & AttributeToSettings.get(attribute)) == 0) {
-                return false;
-            }
-            if (!mVibratorExtSupported && VibratorExtSpecificAttibutes.contains(attribute)) {
                 return false;
             }
         }

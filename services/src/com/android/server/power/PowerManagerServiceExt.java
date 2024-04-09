@@ -7,9 +7,11 @@ package com.android.server.power;
 
 import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_MISC_SCENES;
 
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.SCREEN_ON;
+
 import android.content.Context;
 import android.os.PowerManager;
-import android.os.VibrationEffect;
+import android.os.VibrationExtInfo;
 import android.os.Vibrator;
 
 class PowerManagerServiceExt {
@@ -21,9 +23,6 @@ class PowerManagerServiceExt {
     static PowerManagerServiceExt getInstance() {
         return InstanceHolder.INSTANCE;
     }
-
-    private static final VibrationEffect EFFECT_CLICK =
-            VibrationEffect.get(VibrationEffect.EFFECT_CLICK);
 
     private Context mContext;
     private Vibrator mVibrator;
@@ -41,7 +40,10 @@ class PowerManagerServiceExt {
                 (reason == PowerManager.WAKE_REASON_WAKE_KEY ||
                 reason == PowerManager.WAKE_REASON_TAP ||
                 reason == PowerManager.WAKE_REASON_GESTURE)) {
-            mVibrator.vibrate(EFFECT_CLICK, VIBRATION_ATTRIBUTES_MISC_SCENES);
+            mVibrator.vibrateExt(new VibrationExtInfo.Builder()
+                .setEffectId(SCREEN_ON)
+                .setVibrationAttributes(VIBRATION_ATTRIBUTES_MISC_SCENES)
+                .build());
         }
     }
 }

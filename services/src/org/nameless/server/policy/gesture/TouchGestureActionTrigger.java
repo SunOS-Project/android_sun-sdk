@@ -7,6 +7,9 @@ package org.nameless.server.policy.gesture;
 
 import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_OFF_SCREEN_GESTURE;
 
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.HEAVY_CLICK;
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.OFF_SCREEN_GESTURE;
+
 import android.Manifest;
 import android.content.ComponentName;
 import android.content.Context;
@@ -15,7 +18,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.UserHandle;
-import android.os.VibrationEffect;
+import android.os.VibrationExtInfo;
 import android.os.Vibrator;
 import android.util.Slog;
 import android.view.KeyEvent;
@@ -106,9 +109,6 @@ class TouchGestureActionTrigger {
                 "com.phonepe.app.ui.activity.Navigator_MainActivity"));
     }
 
-    private static final VibrationEffect EFFECT_HEAVY_CLICK =
-            VibrationEffect.get(VibrationEffect.EFFECT_HEAVY_CLICK);
-
     private final Context mContext;
     private final PackageManager mPackageManager;
     private final Vibrator mVibrator;
@@ -131,7 +131,11 @@ class TouchGestureActionTrigger {
             return;
         }
         if (action != ACTION_SHOW_AMBIENT_DISPLAY) {
-            mVibrator.vibrate(EFFECT_HEAVY_CLICK, VIBRATION_ATTRIBUTES_OFF_SCREEN_GESTURE);
+            mVibrator.vibrateExt(new VibrationExtInfo.Builder()
+                .setEffectId(OFF_SCREEN_GESTURE)
+                .setFallbackEffectId(HEAVY_CLICK)
+                .setVibrationAttributes(VIBRATION_ATTRIBUTES_OFF_SCREEN_GESTURE)
+                .build());
         }
     }
 

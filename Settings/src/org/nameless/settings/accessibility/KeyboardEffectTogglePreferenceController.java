@@ -5,10 +5,11 @@
 
 package org.nameless.settings.accessibility;
 
-import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_KEYBOARD_PRESS;
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.KEYBOARD_PRESS;
 
 import android.content.Context;
 import android.os.VibrationEffect;
+import android.os.VibrationExtInfo;
 import android.provider.Settings;
 
 import androidx.preference.Preference;
@@ -35,7 +36,9 @@ public class KeyboardEffectTogglePreferenceController extends TogglePreferenceCo
             @Override
             public void playVibrationPreview() {
                 if (readValue(0) == 1) {
-                    mVibrator.vibrate(PREVIEW_VIBRATION_EFFECT, VIBRATION_ATTRIBUTES_KEYBOARD_PRESS);
+                    mVibrator.vibrateExt(new VibrationExtInfo.Builder()
+                            .setEffectId(KEYBOARD_PRESS)
+                            .build());
                 } else {
                     mVibrator.vibrate(PREVIEW_VIBRATION_EFFECT);
                 }
