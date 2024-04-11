@@ -7,6 +7,7 @@ package com.android.server.power;
 
 import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_MISC_SCENES;
 
+import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.SCREEN_OFF;
 import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.SCREEN_ON;
 
 import android.content.Context;
@@ -33,6 +34,15 @@ class PowerManagerServiceExt {
 
     void systemReady() {
         mVibrator = mContext.getSystemService(Vibrator.class);
+    }
+
+    void onDoze() {
+        if (mVibrator != null) {
+            mVibrator.vibrateExt(new VibrationExtInfo.Builder()
+                .setEffectId(SCREEN_OFF)
+                .setVibrationAttributes(VIBRATION_ATTRIBUTES_MISC_SCENES)
+                .build());
+        }
     }
 
     void onWakefulnessAwake(int reason) {
