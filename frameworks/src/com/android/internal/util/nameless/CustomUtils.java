@@ -18,6 +18,7 @@ import android.app.IActivityManager;
 import android.app.role.RoleManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -147,6 +148,20 @@ public class CustomUtils {
             }
         }
         return null;
+    }
+
+    public static boolean isSystemApp(Context context, String pkgName) {
+        if (pkgName == null) {
+            return false;
+        }
+        try {
+            final PackageManager pm = context.getPackageManager();
+            final PackageInfo pi = pm.getPackageInfo(pkgName, 0);
+            final int flags = pi.applicationInfo.flags;
+            return (flags & (ApplicationInfo.FLAG_SYSTEM | ApplicationInfo.FLAG_UPDATED_SYSTEM_APP)) != 0;
+        } catch (NameNotFoundException e) {
+            return false;
+        }
     }
 
     public static void killForegroundApp(Context context) {
