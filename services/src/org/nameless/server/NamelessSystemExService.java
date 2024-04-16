@@ -39,7 +39,6 @@ import com.android.server.LocalServices;
 import com.android.server.ServiceThread;
 import com.android.server.SystemService;
 import com.android.server.pm.UserManagerInternal;
-import com.android.server.policy.PhoneWindowManagerExt;
 import com.android.server.wm.TopActivityRecorder;
 
 import java.util.List;
@@ -223,7 +222,6 @@ public class NamelessSystemExService extends SystemService {
     }
 
     private void onScreenUnlocked() {
-        PhoneWindowManagerExt.getInstance().onScreenUnlocked();
         onTopFullscreenPackageChanged(mTopFullscreenPackage);
     }
 
