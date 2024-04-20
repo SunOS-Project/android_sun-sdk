@@ -178,8 +178,6 @@
     <!-- Units -->
     <string name="unit_second">秒</string>
     <string name="unit_ms">毫秒</string>
-    <!-- Battery temperature -->
-    <string name="battery_temperature">电池温度</string>
     <!-- Battery stats reset -->
     <string name="battery_stats_reset">重置电池数据？</string>
     <string name="battery_stats_message">电池用量数据将会被重置！</string>
@@ -529,6 +527,7 @@
     <string name="game_mode_in_game_options">游戏内选项</string>
     <string name="game_mode_disable_auto_brightness">禁用自动亮度</string>
     <string name="game_mode_disable_three_finger_gestures">禁用三指手势</string>
+    <string name="game_mode_disable_pop_up_view_gesture">禁用小窗呼出手势</string>
     <string name="game_mode_disable_heads_up">禁用浮动通知</string>
     <string name="game_mode_suppress_fullscreen_title">屏蔽全屏事件</string>
     <string name="game_mode_suppress_fullscreen_summary">防止在游戏中出现来电等全屏事件</string>
@@ -548,4 +547,57 @@
     <string name="hex_hint">#ff000000</string>
     <string name="set">设置</string>
     <string name="color_default">默认</string>
+    <!-- Pop-Up View -->
+    <string name="pop_up_view_title">应用小窗</string>
+    <string name="pop_up_view_info">在悬浮窗口内打开应用以执行更多快捷操作</string>
+    <string name="pop_up_view_gesture_title">手势</string>
+    <string name="pop_up_view_global_gesture_title">全局呼出手势</string>
+    <string name="pop_up_view_global_gesture_summary">从屏幕底部角落向中心滑动以呼出小窗菜单</string>
+    <string name="pop_up_view_manage_apps_title">管理小窗应用</string>
+    <string name="pop_up_view_manage_apps_summary">自定义小窗菜单中显示的应用</string>
+    <string name="pop_up_view_more_circles_title">显示更多应用</string>
+    <string name="pop_up_view_more_circles_summary">允许显示多个应用菜单圆弧</string>
+    <string name="pop_up_view_global_gesture_warn">启用全局呼出手势后，数字助理手势将会被禁用</string>
+    <string name="pop_up_view_mini_window_title">迷你小窗</string>
+    <string name="pop_up_view_keep_mute_mini_title">保持静音状态</string>
+    <string name="pop_up_view_keep_mute_mini_summary_on">从悬浮小窗模式切换至迷你小窗模式后，应用将保持静音</string>
+    <string name="pop_up_view_keep_mute_mini_summary_off">从悬浮小窗模式切换至迷你小窗模式后，应用将取消静音</string>
+    <string name="pop_up_view_non_window_area_title">非窗口区域</string>
+    <string name="pop_up_view_single_tap_non_window_title">单击操作</string>
+    <string name="pop_up_view_double_tap_non_window_title">双击操作</string>
+    <string name="pop_up_view_action_enter_pinned">进入悬浮小窗</string>
+    <string name="pop_up_view_action_exit">退出应用小窗</string>
+    <string name="pop_up_view_no_action">无操作</string>
+    <string name="pop_up_view_light_weight_open_title">轻量打开</string>
+    <string name="pop_up_view_light_weight_notificiation_portrait_title">打开通知（竖屏）</string>
+    <string name="pop_up_view_light_weight_notificiation_portrait_summary">竖屏下使用小窗跳转通知应用</string>
+    <string name="pop_up_view_light_weight_notificiation_landscape_title">打开通知（横屏）</string>
+    <string name="pop_up_view_light_weight_notificiation_landscape_summary">横屏下使用小窗跳转通知应用</string>
+    <string name="pop_up_view_light_weight_notificiation_blacklist_title">通知跳转黑名单</string>
+    <string name="pop_up_view_light_weight_notificiation_blacklist_summary">禁止选中的应用通知使用小窗跳转</string>
+    <!-- Battery Info -->
+    <string name="battery_info_summary">查看有关设备电池的更多信息</string>
+    <!-- Battery Info: Technology -->
+    <string name="battery_technology">电池技术</string>
+    <!-- Battery Info: Health -->
+    <string name="battery_health">电池健康度</string>
+    <string name="battery_health_good">良好</string>
+    <string name="battery_health_overheat">过热</string>
+    <string name="battery_health_dead">损坏</string>
+    <string name="battery_health_over_voltage">电压过大</string>
+    <string name="battery_health_unspecified_failure">未明确的故障</string>
+    <string name="battery_health_cold">过冷</string>
+    <string name="battery_health_unknown">未知</string>
+    <!-- Battery Info: Temperature -->
+    <string name="battery_temperature">电池温度</string>
+    <!-- Battery Info: Voltage -->
+    <string name="battery_voltage">电压</string>
+    <!-- Battery Info: Charge Counter -->
+    <string name="battery_charge_counter_summary">%1$d mAh</string>
+    <!-- Battery Info: Design Capacity -->
+    <string name="battery_design_capacity">电池设计容量</string>
+    <string name="battery_design_capacity_summary">%1$d mAh</string>
+    <!-- Battery Info: Maximum Capacity -->
+    <string name="battery_maximum_capacity">电池最大容量</string>
+    <string name="battery_maximum_capacity_summary">%1$d mAh (%2$d%%)</string>
 </resources>
