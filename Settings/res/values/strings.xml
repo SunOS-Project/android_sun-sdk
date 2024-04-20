@@ -666,6 +666,9 @@
     <string name="pop_up_view_light_weight_notificiation_blacklist_title">Notification blacklist apps</string>
     <string name="pop_up_view_light_weight_notificiation_blacklist_summary">Disallow selected apps from opening notification in Pop-Up View</string>
 
+    <!-- Battery Info -->
+    <string name="battery_info_summary">View details about device battery</string>
+
     <!-- Battery Info: Technology -->
     <string name="battery_technology">Technology</string>
     <string name="battery_technology_not_available" translatable="false">@string/battery_cycle_count_not_available</string>
