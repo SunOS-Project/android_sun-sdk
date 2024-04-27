@@ -153,6 +153,12 @@ public class SettingsExt {
         public static final String UNLIMIT_EDGE_TOUCH_MODE = "unlimit_edge_touch_mode";
 
         /**
+         * Whether to enable LTPO
+         * @hide
+         */
+        public static final String LTPO_ENABLED = "ltpo_enabled";
+
+        /**
          * Iris - video color boost
          * @hide
          */

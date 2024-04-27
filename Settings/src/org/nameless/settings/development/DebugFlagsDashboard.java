@@ -6,11 +6,16 @@
 package org.nameless.settings.development;
 
 import static org.nameless.os.DebugConstants.CONSTANTS_MAP;
+import static org.nameless.provider.SettingsExt.System.LTPO_ENABLED;
+
+import static vendor.nameless.hardware.displayfeature.V1_0.Feature.LTPO;
 
 import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.SystemProperties;
+import android.os.UserHandle;
+import android.provider.Settings;
 
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
@@ -22,6 +27,7 @@ import com.android.settings.SettingsPreferenceFragment;
 
 import org.nameless.content.OnlineConfigManager;
 import org.nameless.custom.preference.SwitchPreferenceCompat;
+import org.nameless.display.DisplayFeatureManager;
 
 public class DebugFlagsDashboard extends SettingsPreferenceFragment {
 
@@ -50,6 +56,22 @@ public class DebugFlagsDashboard extends SettingsPreferenceFragment {
             }
         });
         screen.addPreference(onlineConfigPref);
+
+        if (DisplayFeatureManager.getInstance().hasFeature(LTPO)) {
+            final SwitchPreferenceCompat ltpoSwitch = new SwitchPreferenceCompat(prefContext);
+            ltpoSwitch.setTitle("LTPO");
+            ltpoSwitch.setChecked(Settings.System.getIntForUser(prefContext.getContentResolver(),
+                    LTPO_ENABLED, 0, UserHandle.USER_SYSTEM) == 1);
+            ltpoSwitch.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    Settings.System.putIntForUser(prefContext.getContentResolver(),
+                            LTPO_ENABLED, (Boolean) newValue ? 1 : 0, UserHandle.USER_SYSTEM);
+                    return true;
+                }
+            });
+            screen.addPreference(ltpoSwitch);
+        }
 
         for (String key : CONSTANTS_MAP.keySet()) {
             final SwitchPreferenceCompat pref = new SwitchPreferenceCompat(prefContext);

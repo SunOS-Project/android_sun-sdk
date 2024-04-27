@@ -10,11 +10,13 @@ import static android.os.Process.THREAD_PRIORITY_DEFAULT;
 import static org.nameless.os.DebugConstants.DEBUG_DISPLAY_FEATURE;
 import static org.nameless.provider.SettingsExt.System.DC_DIMMING_STATE;
 import static org.nameless.provider.SettingsExt.System.HIGH_TOUCH_SAMPLE_MODE;
+import static org.nameless.provider.SettingsExt.System.LTPO_ENABLED;
 import static org.nameless.provider.SettingsExt.System.UNLIMIT_EDGE_TOUCH_MODE;
 
 import static vendor.nameless.hardware.displayfeature.V1_0.Feature.DC_DIMMING;
 import static vendor.nameless.hardware.displayfeature.V1_0.Feature.EDGE_TOUCH;
 import static vendor.nameless.hardware.displayfeature.V1_0.Feature.HIGH_SAMPLE_TOUCH;
+import static vendor.nameless.hardware.displayfeature.V1_0.Feature.LTPO;
 
 import android.database.ContentObserver;
 import android.net.Uri;
@@ -43,6 +45,7 @@ public class DisplayFeatureController {
     private DcDimmingController mDcDimmingController;
     private EdgeTouchController mEdgeTouchController;
     private HighTouchSampleController mHighTouchSampleController;
+    private LtpoController mLtpoController;
 
     private SettingsObserver mSettingsObserver;
 
@@ -78,6 +81,11 @@ public class DisplayFeatureController {
                         Settings.System.getUriFor(HIGH_TOUCH_SAMPLE_MODE),
                         false, this, UserHandle.USER_ALL);
             }
+            if (mLtpoController != null) {
+                mSystemExService.getContentResolver().registerContentObserver(
+                        Settings.System.getUriFor(LTPO_ENABLED),
+                        false, this, UserHandle.USER_ALL);
+            }
         }
 
         @Override
@@ -91,6 +99,9 @@ public class DisplayFeatureController {
                     break;
                 case HIGH_TOUCH_SAMPLE_MODE:
                     mHighTouchSampleController.updateSettings();
+                    break;
+                case LTPO_ENABLED:
+                    mLtpoController.updateSettings();
                     break;
             }
         }
@@ -135,6 +146,14 @@ public class DisplayFeatureController {
                 logD("HighTouchSampleController is not supported");
             }
 
+            if (mDisplayFeatureManager.hasFeature(LTPO)) {
+                mLtpoController = new LtpoController(
+                        mSystemExService.getContentResolver(), mDisplayFeatureManager);
+            } else {
+                mLtpoController = null;
+                logD("LtpoController is not supported");
+            }
+
             mSettingsObserver = new SettingsObserver(mHandler);
             mSettingsObserver.observe();
         });
@@ -153,6 +172,9 @@ public class DisplayFeatureController {
             if (mHighTouchSampleController != null) {
                 mHighTouchSampleController.onBootCompleted();
             }
+            if (mLtpoController != null) {
+                mLtpoController.onBootCompleted();
+            }
         });
     }
 
@@ -169,6 +191,9 @@ public class DisplayFeatureController {
             if (mHighTouchSampleController != null) {
                 mHighTouchSampleController.onGameStateChanged(inGame);
             }
+            if (mLtpoController != null) {
+                mLtpoController.onGameStateChanged(inGame);
+            }
         });
     }
 
@@ -183,8 +208,19 @@ public class DisplayFeatureController {
                 if (mHighTouchSampleController != null) {
                     mHighTouchSampleController.onGameStateChanged(inGame);
                 }
+                if (mLtpoController != null) {
+                    mLtpoController.onGameStateChanged(inGame);
+                }
             });
         }
+    }
+
+    public void onScreenOn() {
+        mHandler.post(() -> {
+            if (mLtpoController != null) {
+                mLtpoController.onScreenOn();
+            }
+        });
     }
 
     private static void logD(String msg) {

@@ -217,6 +217,9 @@ public class NamelessSystemExService extends SystemService {
     }
 
     private void onScreenOn() {
+        if (mDisplayFeatureSupported) {
+            DisplayFeatureController.getInstance().onScreenOn();
+        }
         DisplayRefreshRateController.getInstance().onScreenOn();
         DozeController.getInstance().onScreenOn();
     }
