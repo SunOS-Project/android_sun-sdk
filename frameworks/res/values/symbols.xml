@@ -86,6 +86,10 @@
 
     <!-- System gesture -->
     <java-symbol type="dimen" name="bottom_gesture_touch_slop" />
+    <java-symbol type="dimen" name="game_mode_gesture_touch_slop" />
+    <java-symbol type="dimen" name="game_mode_gesture_valid_distance" />
+    <java-symbol type="dimen" name="game_mode_gesture_portrait_area_bottom" />
+    <java-symbol type="dimen" name="game_mode_gesture_landscape_area_bottom" />
     <java-symbol type="dimen" name="screenshot_gesture_valid_distance" />
     <java-symbol type="dimen" name="windowing_mode_gesture_valid_distance" />
 

@@ -156,7 +156,7 @@ public abstract class GestureListenerBase implements IGestureListener {
         return mGestureTouchSlop;
     }
 
-    private int getDefaultGestureTouchSlop() {
+    protected int getDefaultGestureTouchSlop() {
         return mContext.getResources().getDimensionPixelSize(R.dimen.bottom_gesture_touch_slop);
     }
 

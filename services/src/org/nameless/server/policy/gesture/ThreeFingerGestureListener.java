@@ -79,7 +79,7 @@ class ThreeFingerGestureListener extends GestureListenerBase {
     protected void onConfigureChanged() {
         super.onConfigureChanged();
         mStatusBarHeight = SystemBarUtils.getStatusBarHeight(mContext);
-        mValidDistance = mContext.getResources().getDimensionPixelSize(R.dimen.screenshot_gesture_valid_distance);
+        mValidDistance = (float) ResourceUtils.getThreeFingerGestureValidDistance(mContext.getResources());
         mTouchSlop = ViewConfiguration.get(mContext).getScaledTouchSlop();
     }
 

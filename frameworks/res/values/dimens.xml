@@ -19,6 +19,10 @@
 
     <!-- System gesture -->
     <dimen name="bottom_gesture_touch_slop">2dp</dimen>
+    <dimen name="game_mode_gesture_touch_slop">10dp</dimen>
+    <dimen name="game_mode_gesture_valid_distance">24dp</dimen>
+    <dimen name="game_mode_gesture_portrait_area_bottom">286dp</dimen>
+    <dimen name="game_mode_gesture_landscape_area_bottom">99dp</dimen>
     <dimen name="screenshot_gesture_valid_distance">33.33dp</dimen>
     <dimen name="windowing_mode_gesture_valid_distance">52px</dimen>
 

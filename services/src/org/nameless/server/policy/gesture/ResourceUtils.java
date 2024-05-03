@@ -13,6 +13,22 @@ import com.android.internal.R;
 
 public class ResourceUtils {
 
+    public static int getGameModeGestureValidDistance(Resources res) {
+        return res.getDimensionPixelSize(R.dimen.game_mode_gesture_valid_distance);
+    }
+
+    public static int getGameModePortraitAreaBottom(Resources res) {
+        return res.getDimensionPixelSize(R.dimen.game_mode_gesture_portrait_area_bottom);
+    }
+
+    public static int getGameModeLandscapeAreaBottom(Resources res) {
+        return res.getDimensionPixelSize(R.dimen.game_mode_gesture_landscape_area_bottom);
+    }
+
+    public static int getThreeFingerGestureValidDistance(Resources res) {
+        return res.getDimensionPixelSize(R.dimen.screenshot_gesture_valid_distance);
+    }
+
     public static int getWindowModeGestureValidDistance(Resources res) {
         return pxFromDp(res.getDimensionPixelSize(
                 R.dimen.windowing_mode_gesture_valid_distance), res.getDisplayMetrics());

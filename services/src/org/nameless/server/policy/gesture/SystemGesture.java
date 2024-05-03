@@ -57,6 +57,7 @@ public class SystemGesture {
     private final Handler mHandler;
     private final ServiceThread mServiceThread;
 
+    private final GameModeGestureListener mGameModeGestureListener;
     private final WindowModeGestureListener mWindowModeGestureListener;
     private final ThreeFingerGestureListener mThreeFingerGestureListener;
 
@@ -76,6 +77,10 @@ public class SystemGesture {
         mServiceThread = new ServiceThread(TAG, THREAD_PRIORITY_DEFAULT, false);
         mServiceThread.start();
         mHandler = new H(mServiceThread.getLooper());
+
+        mGameModeGestureListener = new GameModeGestureListener(
+                this, ext, mContext);
+        mGestureListeners.add(mGameModeGestureListener);
 
         mWindowModeGestureListener = new WindowModeGestureListener(
                 this, ext, mContext);
