@@ -139,6 +139,8 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.GAME_MODE_LOCK_STATUS_BAR, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.GAME_MODE_SILENT_NOTIFICATION, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.GAME_MODE_SUPPRESS_FULLSCREEN_INTENT, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.DATA_DISABLED_ICON, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.SHOW_FOURG_ICON, BOOLEAN_VALIDATOR);
     }
 
     private static class AppVolumeDataValidator implements Validator {

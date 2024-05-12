@@ -127,5 +127,7 @@ public class SystemSettingsExt {
         System.GAME_MODE_LOCK_STATUS_BAR,
         System.GAME_MODE_SILENT_NOTIFICATION,
         System.GAME_MODE_SUPPRESS_FULLSCREEN_INTENT,
+        System.DATA_DISABLED_ICON,
+        System.SHOW_FOURG_ICON,
     };
 }

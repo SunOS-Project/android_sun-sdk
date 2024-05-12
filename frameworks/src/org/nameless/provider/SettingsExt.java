@@ -859,6 +859,18 @@ public class SettingsExt {
          */
         public static final String GAME_MODE_SUPPRESS_FULLSCREEN_INTENT = "game_mode_suppress_fullscreen_intent";
 
+        /**
+         * Whether to display cross sign for a data disabled connection
+         * @hide
+         */
+        public static final String DATA_DISABLED_ICON = "data_disabled_icon";
+
+        /**
+         * Whether to display 4G icon instead LTE
+         * @hide
+         */
+        public static final String SHOW_FOURG_ICON = "show_fourg_icon";
+
         public static String hookGetString(String packageName, String settingsName) {
             return null;
         }
