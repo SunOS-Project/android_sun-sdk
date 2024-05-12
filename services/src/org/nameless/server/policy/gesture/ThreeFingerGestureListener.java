@@ -240,6 +240,14 @@ class ThreeFingerGestureListener extends GestureListenerBase {
                 }
                 mPointersUp.put(pointerId, location);
                 return true;
+            case MotionEvent.ACTION_CANCEL:
+                if (mHandler.hasMessages(MSG_TAKE_PARTIAL_SCREENSHOT)) {
+                    mHandler.removeMessages(MSG_TAKE_PARTIAL_SCREENSHOT);
+                }
+                mPointersDown.clear();
+                mPointersUp.clear();
+                mGestureState = GestureState.IDLE;
+                return false;
         }
         return false;
     }

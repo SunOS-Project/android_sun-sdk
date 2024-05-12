@@ -187,6 +187,9 @@ public class SystemGesture {
             case MotionEvent.ACTION_CANCEL:
                 mTouching = false;
                 mDisplayFeatureController.maybeUpdateGameState();
+                if (mTargetGestureListener != null) {
+                    mTargetGestureListener.interceptMotionBeforeQueueing(event);
+                }
                 return SYSTEM_GESTURE_NONE;
             default:
                 return SYSTEM_GESTURE_NONE;
