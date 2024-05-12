@@ -215,10 +215,10 @@
     <string name="double_tap_to_sleep_statusbar_summary">Double-tap on the status bar to sleep device</string>
     <!-- Statusbar brightness control -->
     <string name="statusbar_brightness_control_title">Brightness control</string>
-    <string name="statusbar_brightness_control_summary">Adjust brightness by hold and sliding across the status bar</string>
-    <!-- Disable tap gestures on statusbar in landscape -->
+    <string name="statusbar_brightness_control_summary">Adjust brightness by holding and sliding across the status bar</string>
+    <!-- Disable gestures on statusbar in landscape -->
     <string name="statusbar_gestures_disable_landscape_title">Disable in landscape</string>
-    <string name="statusbar_gestures_disable_landscape_summary">Disable tap gestures on status bar when device is in landscape mode</string>
+    <string name="statusbar_gestures_disable_landscape_summary">Disable gestures on status bar when device is in landscape mode</string>
     <!-- Power button torch -->
     <string name="power_button_torch_title">Power button toggles torch</string>
     <string name="power_button_torch_summary">Long press power button to toggle torch when screen off</string>

@@ -211,10 +211,12 @@
     <!-- Double tap sleep statusbar -->
     <string name="double_tap_to_sleep_statusbar_title">双击息屏</string>
     <string name="double_tap_to_sleep_statusbar_summary">双击状态栏以关闭屏幕</string>
+    <!-- Statusbar gesture -->
+    <string name="statusbar_gesture_category_title">状态栏手势</string>
     <!-- Statusbar brightness control -->
     <string name="statusbar_brightness_control_title">亮度控制</string>
     <string name="statusbar_brightness_control_summary">滑动状态栏以调节亮度</string>
-    <!-- Disable tap gestures on statusbar in landscape -->
+    <!-- Disable gestures on statusbar in landscape -->
     <string name="statusbar_gestures_disable_landscape_title">横屏模式下禁用</string>
     <string name="statusbar_gestures_disable_landscape_summary">横屏模式下禁用状态栏手势</string>
     <!-- Power button torch -->

@@ -216,7 +216,7 @@
     <!-- Statusbar brightness control -->
     <string name="statusbar_brightness_control_title">Control de brillo</string>
     <string name="statusbar_brightness_control_summary">Ajustar el brillo deslizando la barra de estado</string>
-    <!-- Disable tap gestures on statusbar in landscape -->
+    <!-- Disable gestures on statusbar in landscape -->
     <string name="statusbar_gestures_disable_landscape_title">Deshabilitar en paisaje</string>
     <string name="statusbar_gestures_disable_landscape_summary">Deshabilitar gestos de la barra de estado cuando el dispositivo esté en modo horizontal</string>
     <!-- Power button torch -->
