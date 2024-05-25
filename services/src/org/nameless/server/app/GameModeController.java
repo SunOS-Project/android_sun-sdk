@@ -7,13 +7,15 @@ package org.nameless.server.app;
 
 import static android.os.Process.THREAD_PRIORITY_DEFAULT;
 
+import static org.nameless.app.GameModeManager.IN_GAME_CALL_NO_ACTION;
 import static org.nameless.content.ContextExt.GAME_MODE_SERVICE;
 import static org.nameless.os.DebugConstants.DEBUG_GAME;
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_APP_LIST;
+import static org.nameless.provider.SettingsExt.System.GAME_MODE_CALL_ACTION;
+import static org.nameless.provider.SettingsExt.System.GAME_MODE_DANMAKU_NOTIFICATION;
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_DISABLE_AUTO_BRIGHTNESS;
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_DISABLE_HEADS_UP;
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_DISABLE_THREE_FINGER_GESTURES;
-import static org.nameless.provider.SettingsExt.System.GAME_MODE_DISABLE_POP_UP_VIEW_GESTURE;
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_LOCK_GESTURES;
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_LOCK_STATUS_BAR;
 import static org.nameless.provider.SettingsExt.System.GAME_MODE_SILENT_NOTIFICATION;
@@ -91,14 +93,15 @@ public class GameModeController {
     private SettingsObserver mSettingsObserver;
 
     private boolean mInGame;
+    private boolean mDanmakuNotification;
     private boolean mDisableAutoBrightness;
     private boolean mDisableHeadsUp;
     private boolean mDisableThreeFingerGestures;
-    private boolean mDisablePopUpViewGesture;
     private boolean mLockGestures;
     private boolean mLockStatusbar;
     private boolean mSilentNotification;
     private boolean mSuppressFullscreenIntent;
+    private int mCallAction;
 
     private long mLastGestureSwipeTime = -1L;
     private long mLastGestureUnlockedTime = -1L;
@@ -211,6 +214,12 @@ public class GameModeController {
 
         void observe() {
             mSystemExService.getContentResolver().registerContentObserver(
+                    Settings.System.getUriFor(GAME_MODE_CALL_ACTION),
+                    false, this, UserHandle.USER_ALL);
+            mSystemExService.getContentResolver().registerContentObserver(
+                    Settings.System.getUriFor(GAME_MODE_DANMAKU_NOTIFICATION),
+                    false, this, UserHandle.USER_ALL);
+            mSystemExService.getContentResolver().registerContentObserver(
                     Settings.System.getUriFor(GAME_MODE_DISABLE_AUTO_BRIGHTNESS),
                     false, this, UserHandle.USER_ALL);
             mSystemExService.getContentResolver().registerContentObserver(
@@ -218,9 +227,6 @@ public class GameModeController {
                     false, this, UserHandle.USER_ALL);
             mSystemExService.getContentResolver().registerContentObserver(
                     Settings.System.getUriFor(GAME_MODE_DISABLE_THREE_FINGER_GESTURES),
-                    false, this, UserHandle.USER_ALL);
-            mSystemExService.getContentResolver().registerContentObserver(
-                    Settings.System.getUriFor(GAME_MODE_DISABLE_POP_UP_VIEW_GESTURE),
                     false, this, UserHandle.USER_ALL);
             mSystemExService.getContentResolver().registerContentObserver(
                     Settings.System.getUriFor(GAME_MODE_LOCK_GESTURES),
@@ -240,6 +246,18 @@ public class GameModeController {
         public void onChange(boolean selfChange, Uri uri) {
             synchronized (mStateLock) {
                 switch (uri.getLastPathSegment()) {
+                    case GAME_MODE_CALL_ACTION:
+                        mCallAction = Settings.System.getIntForUser(
+                                mSystemExService.getContentResolver(),
+                                GAME_MODE_CALL_ACTION,
+                                IN_GAME_CALL_NO_ACTION, UserHandle.USER_CURRENT);
+                        break;
+                    case GAME_MODE_DANMAKU_NOTIFICATION:
+                        mDanmakuNotification = Settings.System.getIntForUser(
+                                mSystemExService.getContentResolver(),
+                                GAME_MODE_DANMAKU_NOTIFICATION,
+                                1, UserHandle.USER_CURRENT) == 1;
+                        break;
                     case GAME_MODE_DISABLE_AUTO_BRIGHTNESS:
                         mDisableAutoBrightness = Settings.System.getIntForUser(
                                 mSystemExService.getContentResolver(),
@@ -257,12 +275,6 @@ public class GameModeController {
                                 mSystemExService.getContentResolver(),
                                 GAME_MODE_DISABLE_THREE_FINGER_GESTURES,
                                 1, UserHandle.USER_CURRENT) == 1;
-                        break;
-                    case GAME_MODE_DISABLE_POP_UP_VIEW_GESTURE:
-                        mDisablePopUpViewGesture = Settings.System.getIntForUser(
-                                mSystemExService.getContentResolver(),
-                                GAME_MODE_DISABLE_POP_UP_VIEW_GESTURE,
-                                0, UserHandle.USER_CURRENT) == 1;
                         break;
                     case GAME_MODE_LOCK_GESTURES:
                         mLockGestures = Settings.System.getIntForUser(
@@ -293,6 +305,7 @@ public class GameModeController {
                                 0, UserHandle.USER_CURRENT) == 1;
                         break;
                 }
+                notifyGameStateChanged();
             }
         }
     }
@@ -386,6 +399,14 @@ public class GameModeController {
 
     private void updateSettings(int userId) {
         synchronized (mStateLock) {
+            mCallAction = Settings.System.getIntForUser(
+                    mSystemExService.getContentResolver(),
+                    GAME_MODE_CALL_ACTION,
+                    IN_GAME_CALL_NO_ACTION, userId);
+            mDanmakuNotification = Settings.System.getIntForUser(
+                    mSystemExService.getContentResolver(),
+                    GAME_MODE_DANMAKU_NOTIFICATION,
+                    1, userId) == 1;
             mDisableAutoBrightness = Settings.System.getIntForUser(
                     mSystemExService.getContentResolver(),
                     GAME_MODE_DISABLE_AUTO_BRIGHTNESS,
@@ -398,10 +419,6 @@ public class GameModeController {
                     mSystemExService.getContentResolver(),
                     GAME_MODE_DISABLE_THREE_FINGER_GESTURES,
                     1, userId) == 1;
-            mDisablePopUpViewGesture = Settings.System.getIntForUser(
-                    mSystemExService.getContentResolver(),
-                    GAME_MODE_DISABLE_POP_UP_VIEW_GESTURE,
-                    0, userId) == 1;
             mLockGestures = Settings.System.getIntForUser(
                     mSystemExService.getContentResolver(),
                     GAME_MODE_LOCK_GESTURES,
@@ -426,8 +443,14 @@ public class GameModeController {
     public GameModeInfo buildGameModeInfoLocked() {
         return new GameModeInfo.Builder()
                 .setInGame(mInGame)
+                .setCallAction(mCallAction)
+                .setDanmakuNotificationEnabled(mDanmakuNotification)
                 .setDisableAutoBrightness(mDisableAutoBrightness)
                 .setDisableHeadsUp(mDisableHeadsUp)
+                .setDisableThreeFingerGesture(mDisableThreeFingerGestures)
+                .setLockGesture(mLockGestures)
+                .setLockStatusbar(mLockStatusbar)
+                .setMuteNotification(mSilentNotification)
                 .setSuppressFullscreenIntent(mSuppressFullscreenIntent)
                 .build();
     }
@@ -437,11 +460,13 @@ public class GameModeController {
         if (DEBUG_GAME) {
             Slog.d(TAG, "notifyGameStateChanged, info: " + info);
         }
-        for (GameModeInfoListener listener : mListeners) {
-            try {
-                listener.mListener.onGameModeInfoChanged(info);
-            } catch (RemoteException | RuntimeException e) {
-                Slog.e(TAG, "Failed to notify game state changed");
+        synchronized (mListenerLock) {
+            for (GameModeInfoListener listener : mListeners) {
+                try {
+                    listener.mListener.onGameModeInfoChanged(info);
+                } catch (RemoteException | RuntimeException e) {
+                    Slog.e(TAG, "Failed to notify game state changed");
+                }
             }
         }
     }
@@ -484,12 +509,6 @@ public class GameModeController {
     public boolean shouldDisableThreeFingerGestures() {
         synchronized (mStateLock) {
             return mInGame && mDisableThreeFingerGestures;
-        }
-    }
-
-    public boolean shouldDisablePopUpViewGesture() {
-        synchronized (mStateLock) {
-            return mInGame && mDisablePopUpViewGesture;
         }
     }
 

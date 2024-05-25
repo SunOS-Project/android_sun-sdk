@@ -18,6 +18,10 @@ public class GameModeManager {
 
     private static final String TAG = "GameModeManager";
 
+    public static final int IN_GAME_CALL_NO_ACTION = 0;
+    public static final int IN_GAME_CALL_AUTO_ACCEPT = 1;
+    public static final int IN_GAME_CALL_AUTO_REJECT = 2;
+
     private final IGameModeManagerService mService;
 
     public GameModeManager(Context context, IGameModeManagerService service) {
@@ -93,6 +97,19 @@ public class GameModeManager {
             return mService.unregisterGameModeInfoListener(listener);
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
+        }
+    }
+
+    public static String callActionToString(int action) {
+        switch (action) {
+            case IN_GAME_CALL_NO_ACTION:
+                return "NO_ACTION";
+            case IN_GAME_CALL_AUTO_ACCEPT:
+                return "AUTO_ACCEPT";
+            case IN_GAME_CALL_AUTO_REJECT:
+                return "AUTO_REJECT";
+            default:
+                return "UNKNOWN";
         }
     }
 }

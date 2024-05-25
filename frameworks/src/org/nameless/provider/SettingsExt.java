@@ -829,12 +829,6 @@ public class SettingsExt {
          */
         public static final String GAME_MODE_DISABLE_HEADS_UP = "game_mode_disable_heads_up";
 
-        /**
-         * Game mode: Whether to disable Pop-Up View gesture
-         * @hide
-         */
-        public static final String GAME_MODE_DISABLE_POP_UP_VIEW_GESTURE = "game_mode_disable_pop_up_view_gesture";
-
          /**
          * Game mode: Whether to lock gestures in game
          * @hide
@@ -858,6 +852,19 @@ public class SettingsExt {
          * @hide
          */
         public static final String GAME_MODE_SUPPRESS_FULLSCREEN_INTENT = "game_mode_suppress_fullscreen_intent";
+
+        /**
+         * Game mode: Whether to enable Danmaku notification
+         * @hide
+         */
+        public static final String GAME_MODE_DANMAKU_NOTIFICATION = "game_mode_danmaku_notification";
+
+        /**
+         * Game mode: Automatic action for in-game calls
+         * 0 - Do nothing    1 - Auto accept    2 - Auto reject
+         * @hide
+         */
+        public static final String GAME_MODE_CALL_ACTION = "game_mode_call_action";
 
         /**
          * Whether to display cross sign for a data disabled connection

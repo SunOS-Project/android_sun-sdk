@@ -39,11 +39,6 @@
             android:defaultValue="false" />
 
         <org.nameless.custom.preference.SystemSettingSwitchPreference
-            android:key="game_mode_disable_pop_up_view_gesture"
-            android:title="@string/game_mode_disable_pop_up_view_gesture"
-            android:defaultValue="false" />
-
-        <org.nameless.custom.preference.SystemSettingSwitchPreference
             android:key="game_mode_suppress_fullscreen_intent"
             android:title="@string/game_mode_suppress_fullscreen_title"
             android:summary="@string/game_mode_suppress_fullscreen_summary"
@@ -54,6 +49,19 @@
             android:title="@string/game_mode_silent_notification_title"
             android:summary="@string/game_mode_silent_notification_summary"
             android:defaultValue="false" />
+
+        <org.nameless.custom.preference.SystemSettingSwitchPreference
+            android:key="game_mode_danmaku_notification"
+            android:title="@string/game_mode_danmaku_notification_title"
+            android:summary="@string/game_mode_danmaku_notification_summary"
+            android:defaultValue="true" />
+
+        <org.nameless.custom.preference.SystemSettingListPreference
+            android:key="game_mode_call_action"
+            android:title="@string/game_mode_call_action_title"
+            android:entries="@array/game_mode_call_action_entries"
+            android:entryValues="@array/game_mode_call_action_values"
+            android:defaultValue="0" />
     </PreferenceCategory>
 
     <PreferenceCategory

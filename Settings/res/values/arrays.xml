@@ -312,4 +312,16 @@
         <item>2</item>
     </string-array>
 
+    <!-- Game mode call action -->
+    <string-array name="game_mode_call_action_entries">
+        <item>@string/game_mode_call_action_do_nothing</item>
+        <item>@string/game_mode_call_action_auto_accept</item>
+        <item>@string/game_mode_call_action_auto_reject</item>
+    </string-array>
+    <string-array name="game_mode_call_action_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
 </resources>

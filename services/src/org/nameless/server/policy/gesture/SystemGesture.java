@@ -108,7 +108,7 @@ public class SystemGesture {
 
     public void onGameModeInfoChanged() {
         mWindowModeGestureListener.setDisabledByGame(
-                GameModeController.getInstance().shouldDisablePopUpViewGesture());
+                GameModeController.getInstance().isInGame());
         mThreeFingerGestureListener.setDisabledByGame(
                 GameModeController.getInstance().shouldDisableThreeFingerGestures());
     }
