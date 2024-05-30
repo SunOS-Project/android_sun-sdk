@@ -14,19 +14,23 @@ import android.app.WindowConfiguration;
 import android.content.res.Configuration;
 import android.util.Slog;
 
+import com.android.internal.policy.ThreeFingerGestureHelper;
+
 /** @hide */
 class ViewRootImplExt {
 
     private static final String TAG = "ViewRootImplExt";
     private static final String PKG_GMS = "com.google.android.gms";
 
-    private ViewRootImpl mImpl;
+    private final ViewRootImpl mImpl;
+    private final ThreeFingerGestureHelper mThreeFingerGestureHelper;
 
     private int mLastWindowingMode = WINDOWING_MODE_UNDEFINED;
     private float[] mPopUpViewOffsets = new float[4];
 
     ViewRootImplExt(ViewRootImpl impl) {
         mImpl = impl;
+        mThreeFingerGestureHelper = new ThreeFingerGestureHelper(mImpl.mContext);
     }
 
     void handleAppVisibility(boolean visible) {
@@ -78,5 +82,14 @@ class ViewRootImplExt {
             event.mEventExt.setRawDisplayOffset(0.0f, 0.0f);
             event.mEventExt.setRawDisplayScale(1.0f, 1.0f);
         }
+    }
+
+    boolean processPointerEvent(MotionEvent event) {
+        if (mThreeFingerGestureHelper.checkThreeFingerGesture(event)) {
+            event.setAction(MotionEvent.ACTION_CANCEL);
+            mImpl.getView().dispatchPointerEvent(event);
+            return true;
+        }
+        return false;
     }
 }

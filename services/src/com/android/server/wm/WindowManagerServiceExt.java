@@ -14,6 +14,7 @@ import android.provider.Settings;
 import com.android.server.DisplayThread;
 
 import org.nameless.provider.SettingsExt;
+import org.nameless.server.policy.gesture.ThreeFingerGestureController;
 import org.nameless.server.wm.DisplayResolutionController;
 import org.nameless.view.DisplayResolutionManager;
 
@@ -39,6 +40,7 @@ class WindowManagerServiceExt {
         TopActivityRecorder.getInstance().initWms(wms);
         PopUpWindowController.getInstance().init(wms.mContext, wms);
         DisplayResolutionController.getInstance().init(wms.mContext, wms);
+        ThreeFingerGestureController.getInstance().init(wms.mContext, wms);
     }
 
     void systemReady() {

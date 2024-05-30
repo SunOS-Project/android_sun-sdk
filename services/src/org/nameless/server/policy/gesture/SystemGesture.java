@@ -35,7 +35,7 @@ import com.android.server.policy.PhoneWindowManagerExt;
 
 import java.util.ArrayList;
 
-import org.nameless.server.app.GameModeController;
+import org.nameless.app.GameModeInfo;
 import org.nameless.server.display.DisplayFeatureController;
 import org.nameless.server.policy.gesture.GestureListenerBase.GestureState;
 import org.nameless.view.ISystemGestureListener;
@@ -100,9 +100,8 @@ public class SystemGesture {
         configure();
     }
 
-    public void onGameModeInfoChanged() {
-        mWindowModeGestureListener.setDisabledByGame(
-                GameModeController.getInstance().isInGame());
+    public void onGameModeInfoChanged(GameModeInfo info) {
+        mWindowModeGestureListener.setDisabledByGame(info.isInGame());
     }
 
     public int interceptMotionBeforeQueueing(MotionEvent event) {

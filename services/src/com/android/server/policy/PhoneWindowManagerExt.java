@@ -49,6 +49,7 @@ import org.nameless.os.PocketManager;
 import org.nameless.provider.SettingsExt;
 import org.nameless.server.policy.PocketLock;
 import org.nameless.server.policy.gesture.SystemGesture;
+import org.nameless.server.policy.gesture.ThreeFingerGestureController;
 import org.nameless.server.policy.gesture.TouchGestureController;
 import org.nameless.view.DisplayResolutionManager;
 import org.nameless.view.IDisplayResolutionListener;
@@ -107,7 +108,8 @@ public class PhoneWindowManagerExt {
             new IGameModeInfoListener.Stub() {
         @Override
         public void onGameModeInfoChanged(GameModeInfo info) {
-            mSystemGesture.onGameModeInfoChanged();
+            mSystemGesture.onGameModeInfoChanged(info);
+            ThreeFingerGestureController.getInstance().onGameModeInfoChanged(info);
         }
     };
 
@@ -157,6 +159,8 @@ public class PhoneWindowManagerExt {
 
         mPocketManager = mPhoneWindowManager.mContext.getSystemService(PocketManager.class);
         mPocketManager.addCallback(mPocketCallback);
+
+        ThreeFingerGestureController.getInstance().onBootCompleted();
     }
 
     void onConfigureChanged() {
@@ -235,6 +239,7 @@ public class PhoneWindowManagerExt {
         mVolBtnMusicControls = Settings.System.getIntForUser(resolver,
                 SettingsExt.System.VOLBTN_MUSIC_CONTROLS, 0,
                 UserHandle.USER_CURRENT) == 1;
+        ThreeFingerGestureController.getInstance().updateListenerState();
         TouchGestureController.getInstance().updateSettings();
     }
 
