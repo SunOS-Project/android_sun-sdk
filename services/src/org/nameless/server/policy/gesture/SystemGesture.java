@@ -7,7 +7,6 @@ package org.nameless.server.policy.gesture;
 
 import static android.os.Process.THREAD_PRIORITY_DEFAULT;
 
-import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_CANCEL;
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_DOWN;
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_MOVE;
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_MOVE_TRIGGERED;
@@ -59,7 +58,6 @@ public class SystemGesture {
 
     private final GameModeGestureListener mGameModeGestureListener;
     private final WindowModeGestureListener mWindowModeGestureListener;
-    private final ThreeFingerGestureListener mThreeFingerGestureListener;
 
     private PointF mLastDownPos;
 
@@ -85,10 +83,6 @@ public class SystemGesture {
         mWindowModeGestureListener = new WindowModeGestureListener(
                 this, ext, mContext);
         mGestureListeners.add(mWindowModeGestureListener);
-
-        mThreeFingerGestureListener = new ThreeFingerGestureListener(
-                this, ext, mContext, mServiceThread.getLooper());
-        mGestureListeners.add(mThreeFingerGestureListener);
     }
 
     Display getDisplay() {
@@ -109,8 +103,6 @@ public class SystemGesture {
     public void onGameModeInfoChanged() {
         mWindowModeGestureListener.setDisabledByGame(
                 GameModeController.getInstance().isInGame());
-        mThreeFingerGestureListener.setDisabledByGame(
-                GameModeController.getInstance().shouldDisableThreeFingerGestures());
     }
 
     public int interceptMotionBeforeQueueing(MotionEvent event) {
@@ -124,7 +116,7 @@ public class SystemGesture {
                 mTouching = true;
                 for (GestureListenerBase listener : mGestureListeners) {
                     if (listener.interceptMotionBeforeQueueing(event)) {
-                        intercept = listener.shouldInterceptGesture();
+                        intercept = true;
                         mTargetGestureListener = listener;
                         mLastDownPos = new PointF(event.getRawX(), event.getRawY());
                         if (intercept) {
@@ -139,12 +131,6 @@ public class SystemGesture {
                     return SYSTEM_GESTURE_NONE;
                 }
                 if (mTargetGestureListener.interceptMotionBeforeQueueing(event)) {
-                    if (mTargetGestureListener.dispatchCancelIfNeeded()) {
-                        return SYSTEM_GESTURE_CANCEL;
-                    }
-                    if (!mTargetGestureListener.shouldInterceptGesture()) {
-                        return SYSTEM_GESTURE_NONE;
-                    }
                     return mTargetGestureListener.mGestureState == GestureState.TRIGGERED
                             ? SYSTEM_GESTURE_MOVE_TRIGGERED : SYSTEM_GESTURE_MOVE;
                 }
@@ -157,39 +143,22 @@ public class SystemGesture {
                 }
                 final int ret;
                 if (mTargetGestureListener.interceptMotionBeforeQueueing(event)) {
-                    if (!mTargetGestureListener.shouldInterceptGesture()) {
-                        ret = SYSTEM_GESTURE_NONE;
-                    } else {
-                        ret = mTargetGestureListener.mGestureState == GestureState.TRIGGERED
-                                ? SYSTEM_GESTURE_UP_TRIGGERED : SYSTEM_GESTURE_UP;
-                    }
+                    ret = mTargetGestureListener.mGestureState == GestureState.TRIGGERED
+                            ? SYSTEM_GESTURE_UP_TRIGGERED : SYSTEM_GESTURE_UP;
                     mTargetGestureListener.mGestureState = GestureState.IDLE;
                 } else {
                     ret = SYSTEM_GESTURE_NONE;
                 }
                 mTargetGestureListener = null;
                 return ret;
-            case MotionEvent.ACTION_POINTER_DOWN:
-                if (mTargetGestureListener == null) {
-                    return SYSTEM_GESTURE_NONE;
-                }
-                if (mTargetGestureListener.interceptMotionBeforeQueueing(event)) {
-                    if (mTargetGestureListener.dispatchCancelIfNeeded()) {
-                        return SYSTEM_GESTURE_CANCEL;
-                    }
-                }
-                return SYSTEM_GESTURE_NONE;
-            case MotionEvent.ACTION_POINTER_UP:
-                if (mTargetGestureListener != null) {
-                    mTargetGestureListener.interceptMotionBeforeQueueing(event);
-                }
-                return SYSTEM_GESTURE_NONE;
             case MotionEvent.ACTION_CANCEL:
                 mTouching = false;
                 mDisplayFeatureController.maybeUpdateGameState();
                 if (mTargetGestureListener != null) {
                     mTargetGestureListener.interceptMotionBeforeQueueing(event);
+                    mTargetGestureListener.mGestureState = GestureState.IDLE;
                 }
+                mTargetGestureListener = null;
                 return SYSTEM_GESTURE_NONE;
             default:
                 return SYSTEM_GESTURE_NONE;

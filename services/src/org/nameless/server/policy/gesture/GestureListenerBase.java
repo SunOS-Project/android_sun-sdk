@@ -55,12 +55,6 @@ public abstract class GestureListenerBase implements IGestureListener {
 
     protected abstract boolean isSupportGestureType(int gesture);
 
-    protected abstract boolean shouldInterceptGesture();
-
-    protected boolean dispatchCancelIfNeeded() {
-        return false;
-    }
-
     protected void setDisabledByGame(boolean disabled) {
         mDisabledByGame = disabled;
     }

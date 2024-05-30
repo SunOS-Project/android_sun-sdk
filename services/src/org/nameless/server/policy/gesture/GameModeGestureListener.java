@@ -57,11 +57,6 @@ public class GameModeGestureListener extends GestureListenerBase {
     }
 
     @Override
-    protected boolean shouldInterceptGesture() {
-        return true;
-    }
-
-    @Override
     public boolean interceptMotionBeforeQueueing(MotionEvent event) {
         boolean result = false;
         switch (event.getActionMasked()) {
