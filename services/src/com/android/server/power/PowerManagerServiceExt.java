@@ -36,8 +36,8 @@ class PowerManagerServiceExt {
         mVibrator = mContext.getSystemService(Vibrator.class);
     }
 
-    void onDoze() {
-        if (mVibrator != null) {
+    void onDoze(int reason) {
+        if (mVibrator != null && reason != PowerManager.GO_TO_SLEEP_REASON_TIMEOUT) {
             mVibrator.vibrateExt(new VibrationExtInfo.Builder()
                 .setEffectId(SCREEN_OFF)
                 .setVibrationAttributes(VIBRATION_ATTRIBUTES_MISC_SCENES)
@@ -45,7 +45,7 @@ class PowerManagerServiceExt {
         }
     }
 
-    void onWakefulnessAwake(int reason) {
+    void onWakeUp(int reason) {
         if (mVibrator != null &&
                 (reason == PowerManager.WAKE_REASON_WAKE_KEY ||
                 reason == PowerManager.WAKE_REASON_TAP ||
