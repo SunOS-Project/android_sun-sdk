@@ -26,18 +26,20 @@ import android.view.Gravity;
 import android.net.ConnectivityManager;
 import android.net.TrafficStats;
 import android.os.Handler;
-import android.os.UserHandle;
 import android.os.Message;
 import android.os.SystemClock;
+import android.os.UserHandle;
 import android.provider.Settings;
 import android.text.Spanned;
 import android.text.SpannableString;
-import android.text.style.RelativeSizeSpan;
 import android.text.TextUtils;
+import android.text.style.RelativeSizeSpan;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.android.internal.util.nameless.ScreenStateListener;
 
 import com.android.systemui.Dependency;
 import com.android.systemui.plugins.DarkIconDispatcher;
@@ -72,6 +74,7 @@ public class NetworkTraffic extends TextView implements StatusIconDisplayable {
     private final Context mContext;
     private final Resources mResources;
 
+    private ScreenStateListener mScreenStateListener;
     private SettingsObserver mObserver;
 
     private long totalRxBytes;
@@ -85,8 +88,10 @@ public class NetworkTraffic extends TextView implements StatusIconDisplayable {
     private int mTintColor;
 
     private int mVisibleState = -1;
-    private boolean mAttached = false;
+
+    private boolean mRegistered = false;
     private boolean mIsEnabled = false;
+    private boolean mScreenOn = true;
     private boolean mSystemIconVisible = true;
 
     private final Configuration mLastConfig = new Configuration();
@@ -281,24 +286,35 @@ public class NetworkTraffic extends TextView implements StatusIconDisplayable {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (!mAttached) {
-            mAttached = true;
-            final IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-            mContext.registerReceiver(mIntentReceiver, filter, null, getHandler());
-            mObserver = new SettingsObserver(getHandler());
-            mObserver.register();
-        }
+        mScreenStateListener = new ScreenStateListener(mContext, getHandler()) {
+            @Override
+            public void onScreenOff() {
+                mScreenOn = false;
+                registerListeners(false);
+                update();
+            }
+
+            @Override
+            public void onScreenOn() {
+                mScreenOn = true;
+                registerListeners(true);
+                update();
+            }
+
+            @Override
+            public void onScreenUnlocked() {}
+        };
+        mScreenStateListener.setListening(true);
+        mObserver = new SettingsObserver(getHandler());
+        registerListeners(true);
         update();
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (mAttached) {
-            mObserver.unregister();
-            mContext.unregisterReceiver(mIntentReceiver);
-            mAttached = false;
-        }
+        mScreenStateListener.setListening(false);
+        registerListeners(false);
     }
 
     @Override
@@ -338,7 +354,7 @@ public class NetworkTraffic extends TextView implements StatusIconDisplayable {
 
     @Override
     public void setVisibleState(int state, boolean animate) {
-        if (state == mVisibleState || !mIsEnabled || !mAttached) {
+        if (state == mVisibleState || !mIsEnabled || !mRegistered) {
             return;
         }
         mVisibleState = state;
@@ -372,12 +388,26 @@ public class NetworkTraffic extends TextView implements StatusIconDisplayable {
         return mConnectivityManager.getActiveNetworkInfo() != null;
     }
 
+    private void registerListeners(boolean enable) {
+        if (enable && !mRegistered && mScreenOn) {
+            mRegistered = true;
+            final IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+            mContext.registerReceiver(mIntentReceiver, filter, null, getHandler());
+            mObserver.register();
+        } else if (!enable && mRegistered) {
+            mRegistered = false;
+            mObserver.unregister();
+            mContext.unregisterReceiver(mIntentReceiver);
+            mTrafficHandler.removeCallbacksAndMessages(null);
+        }
+    }
+
     private void update() {
         setText("");
         setVisibility(View.GONE);
         setSpacingAndFonts();
         updateTrafficDrawable();
-        if (mIsEnabled && mAttached && !isDisabled()) {
+        if (!isDisabled()) {
             totalRxBytes = TrafficStats.getTotalRxBytes();
             lastUpdateTime = SystemClock.elapsedRealtime();
             mTrafficHandler.sendEmptyMessage(MSG_UPDATE_ALL);
@@ -415,7 +445,7 @@ public class NetworkTraffic extends TextView implements StatusIconDisplayable {
     }
 
     private boolean isDisabled() {
-        return !mIsEnabled || !mSystemIconVisible;
+        return !mIsEnabled || !mSystemIconVisible || !mScreenOn || !mRegistered;
     }
 
     private static RelativeSizeSpan getSpeedRelativeSizeSpan() {
