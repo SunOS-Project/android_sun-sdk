@@ -54,6 +54,7 @@ public class VibrationPatternManager {
         NAME_ID_LIST_NOTIFICATION.add(R.string.vibrationPattern_notification_mm_dz);
         NAME_ID_LIST_NOTIFICATION.add(R.string.vibrationPattern_notification_da_mm_da);
         NAME_ID_LIST_NOTIFICATION.add(R.string.vibrationPattern_notification_da_da_da_mm);
+        NAME_ID_LIST_NOTIFICATION.add(R.string.vibrationPattern_notification_dz);
         if (RAMP_DOWN_SUPPORTED) {
             NAME_ID_LIST_NOTIFICATION.add(R.string.vibrationPattern_notification_bell);
             NAME_ID_LIST_NOTIFICATION.add(R.string.vibrationPattern_notification_kick);
@@ -66,6 +67,7 @@ public class VibrationPatternManager {
         TIMINGS_LIST_NOTIFICATION.add(new long[] {0, 250, 80, 80});
         TIMINGS_LIST_NOTIFICATION.add(new long[] {0, 50, 80, 150, 180, 50});
         TIMINGS_LIST_NOTIFICATION.add(new long[] {0, 50, 60, 50, 60, 50, 180, 150});
+        TIMINGS_LIST_NOTIFICATION.add(new long[] {0, 150});
         if (RAMP_DOWN_SUPPORTED) {
             TIMINGS_LIST_NOTIFICATION.add(new long[] {0, 1000 + RAMP_DOWN_DURATION_OFFSET});
             TIMINGS_LIST_NOTIFICATION.add(new long[] {0, 100, 150, 100, 50, 700 + RAMP_DOWN_DURATION_OFFSET});

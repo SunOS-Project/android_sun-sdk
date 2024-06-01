@@ -10,6 +10,7 @@
     <string name="vibrationPattern_notification_mm_dz" translatable="false">mm-dz</string>
     <string name="vibrationPattern_notification_da_mm_da" translatable="false">da-mm-da</string>
     <string name="vibrationPattern_notification_da_da_da_mm" translatable="false">da-da-da-mm</string>
+    <string name="vibrationPattern_notification_dz" translatable="false">dz</string>
     <string name="vibrationPattern_notification_bell">Bell</string>
     <string name="vibrationPattern_notification_kick">Kick</string>
     <string name="vibrationPattern_notification_strings">Strings</string>

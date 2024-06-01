@@ -18,6 +18,7 @@
     <java-symbol type="string" name="vibrationPattern_notification_mm_dz" />
     <java-symbol type="string" name="vibrationPattern_notification_da_mm_da" />
     <java-symbol type="string" name="vibrationPattern_notification_da_da_da_mm" />
+    <java-symbol type="string" name="vibrationPattern_notification_dz" />
     <java-symbol type="string" name="vibrationPattern_notification_bell" />
     <java-symbol type="string" name="vibrationPattern_notification_kick" />
     <java-symbol type="string" name="vibrationPattern_notification_strings" />
