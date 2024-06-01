@@ -72,16 +72,6 @@ public class ContextExt {
 
     /**
      * Use with {@link #getSystemService} to retrieve a
-     * {@link org.nameless.os.PocketManager} for accessing and listening to device pocket state.
-     *
-     * @hide
-     * @see #getSystemService
-     * @see org.nameless.os.PocketManager
-     */
-    public static final String POCKET_SERVICE = "pocket";
-
-    /**
-     * Use with {@link #getSystemService} to retrieve a
      * {@link org.nameless.display.RefreshRateManager} for managing display refresh rate.
      *
      * @hide

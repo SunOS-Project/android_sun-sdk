@@ -6,15 +6,11 @@
 package org.nameless.server;
 
 import static android.content.Intent.ACTION_BATTERY_CHANGED;
-import static android.content.Intent.ACTION_SCREEN_OFF;
-import static android.content.Intent.ACTION_SCREEN_ON;
 import static android.content.Intent.ACTION_SHUTDOWN;
-import static android.content.Intent.ACTION_USER_PRESENT;
 import static android.os.PowerManager.ACTION_POWER_SAVE_MODE_CHANGED;
 import static android.os.Process.THREAD_PRIORITY_DEFAULT;
 import static android.os.UserManager.USER_TYPE_PROFILE_CLONE;
 
-import android.app.KeyguardManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -34,6 +30,7 @@ import android.os.UserHandle;
 
 import com.android.internal.util.nameless.CustomUtils;
 import com.android.internal.util.nameless.DeviceConfigUtils;
+import com.android.internal.util.nameless.ScreenStateListener;
 
 import com.android.server.LocalServices;
 import com.android.server.ServiceThread;
@@ -108,7 +105,22 @@ public class NamelessSystemExService extends SystemService {
             mPackageRemovedListener = new PackageRemovedListener();
             mPowerStateListener = new PowerStateListener();
             mRebootListener = new RebootListener();
-            mScreenStateListener = new ScreenStateListener();
+            mScreenStateListener = new ScreenStateListener(getContext(), mHandler) {
+                @Override
+                public void onScreenOff() {
+                    NamelessSystemExService.this.onScreenOff();
+                }
+
+                @Override
+                public void onScreenOn() {
+                    NamelessSystemExService.this.onScreenOn();
+                }
+
+                @Override
+                public void onScreenUnlocked() {
+                    NamelessSystemExService.this.onScreenUnlocked();
+                }
+            };
             mShutdownListener = new ShutdownListener();
             AppPropsController.getInstance().onSystemServicesReady();
             if (mBatteryFeatureSupported) {
@@ -151,7 +163,7 @@ public class NamelessSystemExService extends SystemService {
             mPackageRemovedListener.register();
             mRebootListener.register();
             mPowerStateListener.register();
-            mScreenStateListener.register();
+            mScreenStateListener.setListening(true);
             mShutdownListener.register();
             return;
         }
@@ -212,8 +224,9 @@ public class NamelessSystemExService extends SystemService {
     private void onScreenOff() {
         DisplayRefreshRateController.getInstance().onScreenOff();
         DisplayRotationController.getInstance().onScreenOff();
-        GameModeController.getInstance().onScreenOff();
         DozeController.getInstance().onScreenOff();
+        GameModeController.getInstance().onScreenOff();
+        PocketModeController.getInstance().onScreenOff();
     }
 
     private void onScreenOn() {
@@ -222,10 +235,12 @@ public class NamelessSystemExService extends SystemService {
         }
         DisplayRefreshRateController.getInstance().onScreenOn();
         DozeController.getInstance().onScreenOn();
+        PocketModeController.getInstance().onScreenOn();
     }
 
     private void onScreenUnlocked() {
         onTopFullscreenPackageChanged(mTopFullscreenPackage);
+        PocketModeController.getInstance().onScreenUnlocked();
     }
 
     public void onTopFullscreenPackageChanged(String packageName) {
@@ -422,48 +437,6 @@ public class NamelessSystemExService extends SystemService {
 
         public void register() {
             final IntentFilter filter = new IntentFilter(ACTION_REBOOT);
-            getContext().registerReceiverForAllUsers(this, filter, null, mHandler);
-        }
-    }
-
-    private final class ScreenStateListener extends BroadcastReceiver {
-
-        private final KeyguardManager mKeyguardManager;
-        private final PowerManager mPowerManager;
-
-        private boolean mHandledUnlock = false;
-
-        public ScreenStateListener() {
-            mKeyguardManager = getContext().getSystemService(KeyguardManager.class);
-            mPowerManager = getContext().getSystemService(PowerManager.class);
-        }
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()) {
-                case ACTION_SCREEN_OFF:
-                    mHandledUnlock = false;
-                    onScreenOff();
-                    break;
-                case ACTION_SCREEN_ON:
-                    if (!mHandledUnlock && !mKeyguardManager.isKeyguardLocked()) {
-                        onScreenUnlocked();
-                    } else {
-                        onScreenOn();
-                    }
-                    break;
-                case ACTION_USER_PRESENT:
-                    mHandledUnlock = true;
-                    onScreenUnlocked();
-                    break;
-            }
-        }
-
-        public void register() {
-            final IntentFilter filter = new IntentFilter();
-            filter.addAction(ACTION_SCREEN_OFF);
-            filter.addAction(ACTION_SCREEN_ON);
-            filter.addAction(ACTION_USER_PRESENT);
             getContext().registerReceiverForAllUsers(this, filter, null, mHandler);
         }
     }

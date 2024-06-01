@@ -25,9 +25,7 @@ import org.nameless.display.IRefreshRateManagerService;
 import org.nameless.display.RefreshRateManager;
 import org.nameless.hardware.ISensorBlockService;
 import org.nameless.hardware.SensorBlockManager;
-import org.nameless.os.IPocketService;
 import org.nameless.os.IRotateManagerService;
-import org.nameless.os.PocketManager;
 import org.nameless.os.RotateManager;
 import org.nameless.view.AppFocusManager;
 import org.nameless.view.DisplayResolutionManager;
@@ -92,15 +90,6 @@ class SystemServiceRegistryExt {
                 IBinder binder = ServiceManager.getService(ContextExt.ONLINE_CONFIG_MANAGER_SERVICE);
                 IOnlineConfigManagerService service = IOnlineConfigManagerService.Stub.asInterface(binder);
                 return new OnlineConfigManager(ctx.getOuterContext(), service);
-            }});
-
-        registerService(ContextExt.POCKET_SERVICE, PocketManager.class,
-                new CachedServiceFetcher<PocketManager>() {
-            @Override
-            public PocketManager createService(ContextImpl ctx) {
-                IBinder binder = ServiceManager.getService(ContextExt.POCKET_SERVICE);
-                IPocketService service = IPocketService.Stub.asInterface(binder);
-                return new PocketManager(ctx.getOuterContext(), service);
             }});
 
         registerService(ContextExt.REFRESH_RATE_MANAGER_SERVICE, RefreshRateManager.class,

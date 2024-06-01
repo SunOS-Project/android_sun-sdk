@@ -44,10 +44,8 @@ import org.nameless.app.GameModeInfo;
 import org.nameless.app.GameModeManager;
 import org.nameless.app.IGameModeInfoListener;
 import org.nameless.audio.AlertSliderManager;
-import org.nameless.os.IPocketCallback;
-import org.nameless.os.PocketManager;
 import org.nameless.provider.SettingsExt;
-import org.nameless.server.policy.PocketLock;
+import org.nameless.server.policy.PocketModeController;
 import org.nameless.server.policy.gesture.SystemGesture;
 import org.nameless.server.policy.gesture.ThreeFingerGestureController;
 import org.nameless.server.policy.gesture.TouchGestureController;
@@ -72,8 +70,6 @@ public class PhoneWindowManagerExt {
     private GameModeManager mGameModeManager;
     private Handler mHandler;
     private PhoneWindowManager mPhoneWindowManager;
-    private PocketLock mPocketLock;
-    private PocketManager mPocketManager;
     private SystemGesture mSystemGesture;
 
     private WindowState mWindowState = null;
@@ -83,8 +79,6 @@ public class PhoneWindowManagerExt {
     private boolean mPowerTorchGesture;
     private boolean mThreeFingerHoldScreenshot;
     private boolean mThreeFingerSwipeScreenshot;
-    private boolean mPocketLockShowing;
-    private boolean mIsDeviceInPocket;
     private boolean mUserSetupCompleted;
     private boolean mVolBtnMusicControls;
     private boolean mVolBtnLongPress;
@@ -117,25 +111,6 @@ public class PhoneWindowManagerExt {
         }
     };
 
-    private final IPocketCallback mPocketCallback = new IPocketCallback.Stub() {
-        @Override
-        public void onStateChanged(boolean isDeviceInPocket, int reason) {
-            final boolean wasDeviceInPocket = mIsDeviceInPocket;
-            if (DEBUG_PHONE_WINDOW_MANAGER) {
-                Slog.d(TAG, "onPocketStateChanged, isDeviceInPocket=" + isDeviceInPocket
-                        + ", wasDeviceInPocket=" + wasDeviceInPocket);
-            }
-            if (reason == PocketManager.REASON_SENSOR) {
-                mIsDeviceInPocket = isDeviceInPocket;
-            } else {
-                mIsDeviceInPocket = false;
-            }
-            if (wasDeviceInPocket != mIsDeviceInPocket) {
-                handleDevicePocketStateChanged();
-            }
-        }
-    };
-
     void init(PhoneWindowManager pw, Handler handler) {
         mPhoneWindowManager = pw;
         mHandler = handler;
@@ -143,7 +118,6 @@ public class PhoneWindowManagerExt {
         mSystemGesture = new SystemGesture(pw.mContext, this);
         mHasAlertSlider = AlertSliderManager.hasAlertSlider(pw.mContext);
         mAudioManager = pw.mContext.getSystemService(AudioManager.class);
-        mPocketLock = new PocketLock(pw.mContext);
         TouchGestureController.getInstance().init(pw.mContext);
     }
 
@@ -159,9 +133,6 @@ public class PhoneWindowManagerExt {
 
         mGameModeManager = mPhoneWindowManager.mContext.getSystemService(GameModeManager.class);
         mGameModeManager.registerGameModeInfoListener(mGameModeInfoListener);
-
-        mPocketManager = mPhoneWindowManager.mContext.getSystemService(PocketManager.class);
-        mPocketManager.addCallback(mPocketCallback);
 
         ThreeFingerGestureController.getInstance().onBootCompleted();
     }
@@ -183,18 +154,6 @@ public class PhoneWindowManagerExt {
                 mPhoneWindowManager.dispatchMediaKeyWithWakeLockToAudioService(
                         KeyEvent.changeAction(event, KeyEvent.ACTION_UP));
                 break;
-        }
-    }
-
-    void onStartedGoingToSleep() {
-        if (mPocketManager != null) {
-            mPocketManager.onInteractiveChanged(false);
-        }
-    }
-
-    void onStartedWakingUp() {
-        if (mPocketManager != null) {
-            mPocketManager.onInteractiveChanged(true);
         }
     }
 
@@ -259,7 +218,7 @@ public class PhoneWindowManagerExt {
     }
 
     int getResolvedLongPressOnPowerBehavior() {
-        if (mPocketLockShowing) {
+        if (PocketModeController.getInstance().isPocketLockShowing()) {
             return LONG_PRESS_POWER_HIDE_POCKET_LOCK;
         }
         return -1;
@@ -278,17 +237,13 @@ public class PhoneWindowManagerExt {
                         mPhoneWindowManager.mContext.getOpPackageName(),
                         HapticFeedbackConstants.LONG_PRESS, true,
                         "Power - Long-Press - Hide Pocket Lock");
-                hidePocketLock(true);
-                mPocketManager.setListeningExternal(false);
+                PocketModeController.getInstance().unregisterAll();
                 break;
         }
     }
 
     boolean handleTorchPress(boolean fromNonInteractive) {
         if (!isPowerTorchGestureOn()) {
-            return false;
-        }
-        if (mPocketLockShowing) {
             return false;
         }
         if (!fromNonInteractive && !isTorchTurnedOn()) {
@@ -360,21 +315,6 @@ public class PhoneWindowManagerExt {
         if (TouchGestureController.getInstance().handleKeyEvent(scanCode, down)) {
             return true;
         }
-        if (mIsDeviceInPocket && (!interactive || mPocketLockShowing)) {
-            if (keyCode != KeyEvent.KEYCODE_POWER &&
-                    keyCode != KeyEvent.KEYCODE_VOLUME_UP &&
-                    keyCode != KeyEvent.KEYCODE_VOLUME_DOWN &&
-                    keyCode != KeyEvent.KEYCODE_MEDIA_PLAY &&
-                    keyCode != KeyEvent.KEYCODE_MEDIA_PAUSE &&
-                    keyCode != KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE &&
-                    keyCode != KeyEvent.KEYCODE_HEADSETHOOK &&
-                    keyCode != KeyEvent.KEYCODE_MEDIA_STOP &&
-                    keyCode != KeyEvent.KEYCODE_MEDIA_NEXT &&
-                    keyCode != KeyEvent.KEYCODE_MEDIA_PREVIOUS &&
-                    keyCode != KeyEvent.KEYCODE_VOLUME_MUTE) {
-                return true;
-            }
-        }
         return false;
     }
 
@@ -433,81 +373,12 @@ public class PhoneWindowManagerExt {
         return mThreeFingerSwipeScreenshot;
     }
 
-    boolean isDeviceInPocket() {
-        return mIsDeviceInPocket;
-    }
-
     boolean isVolumeButtonMusicControl() {
         return mVolBtnMusicControls;
     }
 
     public boolean isTouching() {
         return mSystemGesture.isTouching();
-    }
-
-    private void handleDevicePocketStateChanged() {
-        final boolean interactive = mPhoneWindowManager.mPowerManager.isInteractive();
-        if (DEBUG_PHONE_WINDOW_MANAGER) {
-            Slog.d(TAG, "handleDevicePocketStateChanged, interactive=" + interactive
-                    + ", mIsDeviceInPocket=" + mIsDeviceInPocket);
-        }
-        if (mIsDeviceInPocket) {
-            showPocketLock(interactive);
-        } else {
-            hidePocketLock(interactive);
-        }
-    }
-
-    private void showPocketLock(boolean animate) {
-        if (!mPhoneWindowManager.mSystemReady ||
-                !mPhoneWindowManager.mSystemBooted ||
-                !mPhoneWindowManager.isKeyguardDrawnLw() ||
-                mPocketLock == null ||
-                mPocketLockShowing) {
-            if (DEBUG_PHONE_WINDOW_MANAGER) {
-                Slog.d(TAG, "showPocketLock, skip due to unready or showing");
-            }
-            return;
-        }
-
-        if (mPhoneWindowManager.mPowerManager.isInteractive() &&
-                !mPhoneWindowManager.isKeyguardShowingAndNotOccluded()) {
-            if (DEBUG_PHONE_WINDOW_MANAGER) {
-                Slog.d(TAG, "showPocketLock, skip due to not keyguard");
-            }
-            return;
-        }
-
-        if (DEBUG_PHONE_WINDOW_MANAGER) {
-            Slog.d(TAG, "showPocketLock, animate=" + animate);
-        }
-
-        mPocketLock.show(animate);
-        mPocketLockShowing = true;
-
-        mPocketManager.setPocketLockVisible(true);
-    }
-
-    private void hidePocketLock(boolean animate) {
-        if (!mPhoneWindowManager.mSystemReady ||
-                !mPhoneWindowManager.mSystemBooted ||
-                !mPhoneWindowManager.isKeyguardDrawnLw() ||
-                mPocketLock == null ||
-                !mPocketLockShowing) {
-            if (DEBUG_PHONE_WINDOW_MANAGER) {
-                Slog.d(TAG, "hidePocketLock, skip due to unready or not showing");
-            }
-            return;
-        }
-
-        if (DEBUG_PHONE_WINDOW_MANAGER) {
-            Slog.d(TAG, "hidePocketLock, animate=" + animate);
-        }
-
-        mPocketLock.hide(animate);
-        mPocketLockShowing = false;
-
-        mPocketManager.setPocketLockVisible(false);
     }
 
     private void scheduleLongPressKeyEvent(KeyEvent origEvent, int keyCode) {
