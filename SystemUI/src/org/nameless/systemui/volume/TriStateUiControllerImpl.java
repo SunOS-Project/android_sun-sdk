@@ -262,10 +262,6 @@ public class TriStateUiControllerImpl implements ConfigurationListener, TriState
         updateTheme();
     }
 
-    public void show() {
-        mHandler.obtainMessage(MSG_DIALOG_SHOW, 0, 0).sendToTarget();
-    }
-
     private void registerRotationWatcher(boolean enable) {
         try {
             if (enable) {
@@ -441,9 +437,6 @@ public class TriStateUiControllerImpl implements ConfigurationListener, TriState
 
     private void updateRingerModeChanged() {
         mHandler.obtainMessage(MSG_STATE_CHANGE, 0, 0).sendToTarget();
-        if (mTriStateMode != TRI_STATE_MODE_UNKNOWN) {
-            show();
-        }
     }
 
     private void handleShow() {
@@ -480,6 +473,7 @@ public class TriStateUiControllerImpl implements ConfigurationListener, TriState
             if (mListener != null) {
                 mListener.onTriStateUserActivity();
             }
+            mHandler.obtainMessage(MSG_DIALOG_SHOW, 0, 0).sendToTarget();
         }
     }
 
