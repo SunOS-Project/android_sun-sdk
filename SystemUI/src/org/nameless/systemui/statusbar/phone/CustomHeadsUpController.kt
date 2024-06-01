@@ -35,7 +35,6 @@ import java.util.concurrent.Executor
 
 import javax.inject.Inject
 
-import org.nameless.app.GameModeInfo
 import org.nameless.app.GameModeManager
 import org.nameless.app.IGameModeInfoListener
 import org.nameless.provider.SettingsExt.System.DISABLE_LANDSCAPE_HEADS_UP
@@ -104,14 +103,18 @@ class CustomHeadsUpController @Inject constructor(
             }
         })
 
-        context.getSystemService(GameModeManager::class.java)!!.registerGameModeInfoListener(
-            object : IGameModeInfoListener.Stub() {
-                override fun onGameModeInfoChanged(info: GameModeInfo) {
-                    disabledByGame = info.isDanmakuNotificationEnabled()
-                            || info.shouldDisableHeadsUp()
+        context.getSystemService(GameModeManager::class.java)?.let {
+            it.registerGameModeInfoListener(
+                object : IGameModeInfoListener.Stub() {
+                    override fun onGameModeInfoChanged() {
+                        it.gameModeInfo?.let { info ->
+                            disabledByGame = info.isDanmakuNotificationEnabled()
+                                    || info.shouldDisableHeadsUp()
+                        }
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 
     private fun updateSettings() {

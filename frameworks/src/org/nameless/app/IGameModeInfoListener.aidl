@@ -5,10 +5,8 @@
 
 package org.nameless.app;
 
-import org.nameless.app.GameModeInfo;
-
 /** @hide */
-interface IGameModeInfoListener {
+oneway interface IGameModeInfoListener {
 
-    void onGameModeInfoChanged(in GameModeInfo info);
+    void onGameModeInfoChanged();
 }

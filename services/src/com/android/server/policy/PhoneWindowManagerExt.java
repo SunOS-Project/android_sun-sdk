@@ -69,6 +69,7 @@ public class PhoneWindowManagerExt {
 
     private AssistUtils mAssistUtils;
     private AudioManager mAudioManager;
+    private GameModeManager mGameModeManager;
     private Handler mHandler;
     private PhoneWindowManager mPhoneWindowManager;
     private PocketLock mPocketLock;
@@ -107,9 +108,12 @@ public class PhoneWindowManagerExt {
     private final IGameModeInfoListener.Stub mGameModeInfoListener =
             new IGameModeInfoListener.Stub() {
         @Override
-        public void onGameModeInfoChanged(GameModeInfo info) {
-            mSystemGesture.onGameModeInfoChanged(info);
-            ThreeFingerGestureController.getInstance().onGameModeInfoChanged(info);
+        public void onGameModeInfoChanged() {
+            final GameModeInfo info = mGameModeManager.getGameModeInfo();
+            if (info != null) {
+                mSystemGesture.onGameModeInfoChanged(info);
+                ThreeFingerGestureController.getInstance().onGameModeInfoChanged(info);
+            }
         }
     };
 
@@ -153,9 +157,8 @@ public class PhoneWindowManagerExt {
                 mPhoneWindowManager.mContext.getSystemService(DisplayResolutionManager.class);
         drm.registerDisplayResolutionListener(mDisplayResolutionListener);
 
-        final GameModeManager gmm =
-                mPhoneWindowManager.mContext.getSystemService(GameModeManager.class);
-        gmm.registerGameModeInfoListener(mGameModeInfoListener);
+        mGameModeManager = mPhoneWindowManager.mContext.getSystemService(GameModeManager.class);
+        mGameModeManager.registerGameModeInfoListener(mGameModeInfoListener);
 
         mPocketManager = mPhoneWindowManager.mContext.getSystemService(PocketManager.class);
         mPocketManager.addCallback(mPocketCallback);

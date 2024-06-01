@@ -440,7 +440,7 @@ public class GameModeController {
         }
     }
 
-    public GameModeInfo buildGameModeInfoLocked() {
+    private GameModeInfo buildGameModeInfoLocked() {
         return new GameModeInfo.Builder()
                 .setInGame(mInGame)
                 .setCallAction(mCallAction)
@@ -456,14 +456,13 @@ public class GameModeController {
     }
 
     private void notifyGameStateChanged() {
-        final GameModeInfo info = buildGameModeInfoLocked();
         if (DEBUG_GAME) {
-            Slog.d(TAG, "notifyGameStateChanged, info: " + info);
+            Slog.d(TAG, "notifyGameStateChanged, info: " + buildGameModeInfoLocked());
         }
         synchronized (mListenerLock) {
             for (GameModeInfoListener listener : mListeners) {
                 try {
-                    listener.mListener.onGameModeInfoChanged(info);
+                    listener.mListener.onGameModeInfoChanged();
                 } catch (RemoteException | RuntimeException e) {
                     Slog.e(TAG, "Failed to notify game state changed");
                 }
