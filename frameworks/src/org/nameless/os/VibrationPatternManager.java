@@ -97,7 +97,13 @@ public class VibrationPatternManager {
         }
 
         TIMINGS_LIST_RINGTONE = new ArrayList<>();
-        TIMINGS_LIST_RINGTONE.add(new long[] {0, 250, 120, 50, 200, 250, 120, 50, 200});
+        TIMINGS_LIST_RINGTONE.add(new long[] {0,
+            250, 120, 50, 200,
+            250, 120, 50, 200,
+            250, 120, 50, 200,
+            250, 120, 50, 200,
+            250, 120, 50, 1000,
+        });
         TIMINGS_LIST_RINGTONE.add(new long[] {0, 1000, 1000});
         TIMINGS_LIST_RINGTONE.add(new long[] {0, 300, 400, 300, 400, 300, 1000});
         TIMINGS_LIST_RINGTONE.add(new long[] {0, 30, 80, 30, 80, 50, 180, 600, 1000});
