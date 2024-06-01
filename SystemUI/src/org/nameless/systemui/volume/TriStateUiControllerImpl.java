@@ -18,7 +18,6 @@
 
 package org.nameless.systemui.volume;
 
-import static android.hardware.SensorManager.SENSOR_DELAY_NORMAL;
 import static android.view.Surface.ROTATION_0;
 import static android.view.Surface.ROTATION_90;
 import static android.view.Surface.ROTATION_180;
@@ -40,14 +39,15 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.RemoteException;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.OrientationEventListener;
+import android.view.IRotationWatcher;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
+import android.view.WindowManagerGlobal;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -133,14 +133,14 @@ public class TriStateUiControllerImpl implements ConfigurationListener, TriState
     private final H mHandler = new H(this);
 
     private final AudioManager mAudioManager;
-    private final OrientationEventListener mOrientationListener;
+    private final IRotationWatcher.Stub mRotationWatcher;
 
     private int mDensity;
     private Dialog mDialog;
     private int mDialogPosition;
     private ViewGroup mDialogView;
     private UserActivityListener mListener;
-    private int mOrientationType = 0;
+    private int mRotation = ROTATION_0;
     private boolean mShowing = false;
     private int mBackgroundColor = 0;
     private int mThemeMode = 0;
@@ -193,24 +193,27 @@ public class TriStateUiControllerImpl implements ConfigurationListener, TriState
         mConfigurationController = configurationController;
         mVolumeDialogController = volumeDialogController;
         mAudioManager = context.getSystemService(AudioManager.class);
-        mOrientationListener = new OrientationEventListener(mContext, SENSOR_DELAY_NORMAL) {
+        mRotationWatcher = new IRotationWatcher.Stub() {
             @Override
-            public void onOrientationChanged(int orientation) {
-                checkOrientationType();
+            public void onRotationChanged(int rotation) {
+                if (rotation != mRotation) {
+                    mRotation = rotation;
+                    updateTriStateLayout();
+                }
             }
         };
 
         mContext.registerReceiver(mRingerStateReceiver, new IntentFilter(AudioManager.RINGER_MODE_CHANGED_ACTION));
     }
 
-    private void checkOrientationType() {
-        final Display display = DisplayManagerGlobal.getInstance().getRealDisplay(0);
+    private void checkRotation() {
+        final Display display = DisplayManagerGlobal.getInstance().getRealDisplay(Display.DEFAULT_DISPLAY);
         if (display == null) {
             return;
         }
         final int rotation = display.getRotation();
-        if (rotation != mOrientationType) {
-            mOrientationType = rotation;
+        if (rotation != mRotation) {
+            mRotation = rotation;
             updateTriStateLayout();
         }
     }
@@ -263,14 +266,16 @@ public class TriStateUiControllerImpl implements ConfigurationListener, TriState
         mHandler.obtainMessage(MSG_DIALOG_SHOW, 0, 0).sendToTarget();
     }
 
-    private void registerOrientationListener(boolean enable) {
-        if (mOrientationListener.canDetectOrientation() && enable) {
-            Log.v(TAG, "Can detect orientation");
-            mOrientationListener.enable();
-            return;
-        }
-        Log.v(TAG, "Cannot detect orientation");
-        mOrientationListener.disable();
+    private void registerRotationWatcher(boolean enable) {
+        try {
+            if (enable) {
+                WindowManagerGlobal.getWindowManagerService()
+                        .watchRotation(mRotationWatcher, Display.DEFAULT_DISPLAY);
+            } else {
+                WindowManagerGlobal.getWindowManagerService()
+                        .removeRotationWatcher(mRotationWatcher);
+            }
+        } catch (RemoteException e) {}
     }
 
     private void updateTriStateLayout() {
@@ -304,7 +309,7 @@ public class TriStateUiControllerImpl implements ConfigurationListener, TriState
 
         final int triStatePos = res.getInteger(com.android.internal.R.integer.config_alertSliderLocation);
         final boolean isTsKeyRight = triStatePos == TRI_STATE_UI_POSITION_RIGHT;
-        switch (mOrientationType) {
+        switch (mRotation) {
             case ROTATION_90:
                 if (isTsKeyRight) {
                     gravity = Gravity.TOP | Gravity.LEFT;
@@ -447,8 +452,8 @@ public class TriStateUiControllerImpl implements ConfigurationListener, TriState
         handleResetTimeout();
         if (!mShowing) {
             updateTheme();
-            registerOrientationListener(true);
-            checkOrientationType();
+            registerRotationWatcher(true);
+            checkRotation();
             mShowing = true;
             mDialog.show();
             if (mListener != null) {
@@ -461,7 +466,7 @@ public class TriStateUiControllerImpl implements ConfigurationListener, TriState
         mHandler.removeMessages(MSG_DIALOG_SHOW);
         mHandler.removeMessages(MSG_DIALOG_DISMISS);
         if (mShowing) {
-            registerOrientationListener(false);
+            registerRotationWatcher(false);
             mShowing = false;
             mDialog.dismiss();
         }
