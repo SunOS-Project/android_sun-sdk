@@ -1018,4 +1018,8 @@ public class SettingsExt {
             return null;
         }
     }
+
+    public static boolean interceptSetStringsForPrefix(String packageName) {
+        return "com.google.android.gms".equals(packageName);
+    }
 }
