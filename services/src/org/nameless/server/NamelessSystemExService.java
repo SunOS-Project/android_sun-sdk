@@ -229,11 +229,13 @@ public class NamelessSystemExService extends SystemService {
     }
 
     public void onTopFullscreenPackageChanged(String packageName) {
-        mTopFullscreenPackage = packageName;
-        DisplayRefreshRateController.getInstance().onTopFullscreenPackageChanged(packageName);
-        DisplayRotationController.getInstance().onTopFullscreenPackageChanged(packageName);
-        GameModeController.getInstance().onTopFullscreenPackageChanged(packageName);
-        SensorBlockController.getInstance().onTopFullscreenPackageChanged(packageName);
+        mHandler.post(() -> {
+            mTopFullscreenPackage = packageName;
+            DisplayRefreshRateController.getInstance().onTopFullscreenPackageChanged(packageName);
+            DisplayRotationController.getInstance().onTopFullscreenPackageChanged(packageName);
+            GameModeController.getInstance().onTopFullscreenPackageChanged(packageName);
+            SensorBlockController.getInstance().onTopFullscreenPackageChanged(packageName);
+        });
     }
 
     private void onBatteryStateChanged() {
