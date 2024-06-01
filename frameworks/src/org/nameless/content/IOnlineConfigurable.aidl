@@ -21,5 +21,5 @@ interface IOnlineConfigurable {
     String getLocalConfigPath();
 
     /** Called when local config is downloaded and verified that can be updated */
-    void onConfigUpdated();
+    oneway void onConfigUpdated();
 }
