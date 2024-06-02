@@ -193,6 +193,7 @@ public class TriStateUiControllerImpl implements ConfigurationListener, TriState
         mConfigurationController = configurationController;
         mVolumeDialogController = volumeDialogController;
         mAudioManager = context.getSystemService(AudioManager.class);
+        mTriStateMode = mAudioManager.getRingerModeInternal();
         mRotationWatcher = new IRotationWatcher.Stub() {
             @Override
             public void onRotationChanged(int rotation) {
