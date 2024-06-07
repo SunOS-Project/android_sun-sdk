@@ -20,4 +20,31 @@
     <string name="all_shortcuts_title">All shortcuts</string>
     <string name="info_all_shortcuts_pinned">All shortcuts are pinned</string>
 
+    <!-- Game mode -->
+    <string name="game_mode_on_info">Game Mode On</string>
+    <string name="game_tile_secondary_label_active">On</string>
+    <string name="game_tile_secondary_label_inactive">Off</string>
+    <string name="game_tile_secondary_label_follow_system">Follow System</string>
+    <string name="game_tile_secondary_label_disabled">Disabled</string>
+    <string name="game_tile_call_action_title">Call Action</string>
+    <string name="game_tile_call_action_default">No Action</string>
+    <string name="game_tile_call_action_accept">Auto Accept</string>
+    <string name="game_tile_call_action_reject">Auto Rejct</string>
+    <string name="game_tile_heads_up_title">Heads Up</string>
+    <string name="game_tile_three_finger_gesture_title">Three-finger Gesture</string>
+    <string name="game_tile_danmaku_notification_title">Danmaku Notification</string>
+    <string name="game_tile_keep_awake_title">Keep Screen On</string>
+    <string name="game_tile_mute_notification_title">Mute Notification</string>
+    <string name="game_tile_prevent_mistouch_title">Prevent Mistouch</string>
+    <string name="game_tile_prevent_mistouch_lock_gesture">Lock Gestures</string>
+    <string name="game_tile_prevent_mistouch_lock_statusbar">Lock Status Bar</string>
+    <string name="game_tile_prevent_mistouch_lock_all">Lock All</string>
+    <string name="game_tile_screenrecord_title">Screen Record</string>
+    <string name="game_tile_screenrecord_start">Start</string>
+    <string name="game_tile_screenrecord_stop">Stop</string>
+    <string name="game_tile_screenshot_title">Screenshot</string>
+    <string name="game_tile_screenshot_long_click">Long click to partial screenshot</string>
+    <string name="game_call_accepted_toast">Accepted call from %1$s</string>
+    <string name="game_call_rejected_toast">Rejected call from %1$s</string>
+
 </resources>

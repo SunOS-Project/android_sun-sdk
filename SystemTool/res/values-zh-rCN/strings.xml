@@ -16,4 +16,30 @@
     <string name="info_all_apps_pinned">所有应用均已添加</string>
     <string name="all_shortcuts_title">全部快捷方式</string>
     <string name="info_all_shortcuts_pinned">所有快捷方式均已添加</string>
+    <!-- Game mode -->
+    <string name="game_mode_on_info">游戏模式已启动</string>
+    <string name="game_tile_secondary_label_active">已开启</string>
+    <string name="game_tile_secondary_label_inactive">已关闭</string>
+    <string name="game_tile_secondary_label_follow_system">跟随系统设置</string>
+    <string name="game_tile_secondary_label_disabled">已禁用</string>
+    <string name="game_tile_call_action_title">来电选项</string>
+    <string name="game_tile_call_action_default">无操作</string>
+    <string name="game_tile_call_action_accept">自动接听</string>
+    <string name="game_tile_call_action_reject">自动挂断</string>
+    <string name="game_tile_heads_up_title">浮动通知</string>
+    <string name="game_tile_three_finger_gesture_title">三指手势</string>
+    <string name="game_tile_danmaku_notification_title">弹幕通知</string>
+    <string name="game_tile_keep_awake_title">保持亮屏</string>
+    <string name="game_tile_mute_notification_title">静音通知</string>
+    <string name="game_tile_prevent_mistouch_title">防误触选项</string>
+    <string name="game_tile_prevent_mistouch_lock_gesture">锁定手势</string>
+    <string name="game_tile_prevent_mistouch_lock_statusbar">锁定状态栏</string>
+    <string name="game_tile_prevent_mistouch_lock_all">锁定全部</string>
+    <string name="game_tile_screenrecord_title">屏幕录制</string>
+    <string name="game_tile_screenrecord_start">开始</string>
+    <string name="game_tile_screenrecord_stop">停止</string>
+    <string name="game_tile_screenshot_title">屏幕截图</string>
+    <string name="game_tile_screenshot_long_click">长按可局部截图</string>
+    <string name="game_call_accepted_toast">已接听来自 %1$s 的来电</string>
+    <string name="game_call_rejected_toast">已挂断来自 %1$s 的来电</string>
 </resources>
