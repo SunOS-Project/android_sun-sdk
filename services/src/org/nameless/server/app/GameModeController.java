@@ -5,6 +5,7 @@
 
 package org.nameless.server.app;
 
+import static android.app.ActivityTaskManager.INVALID_TASK_ID;
 import static android.os.Process.THREAD_PRIORITY_DEFAULT;
 
 import static org.nameless.app.GameModeManager.IN_GAME_CALL_NO_ACTION;
@@ -93,6 +94,8 @@ public class GameModeController {
     private SettingsObserver mSettingsObserver;
 
     private boolean mInGame;
+    private String mGamePackage;
+    private int mGameTaskId;
     private boolean mDanmakuNotification;
     private boolean mDisableAutoBrightness;
     private boolean mDisableHeadsUp;
@@ -117,7 +120,8 @@ public class GameModeController {
                     return false;
                 }
                 saveGameListIntoSettingsLocked();
-                updateGameModeState(mSystemExService.getTopFullscreenPackage());
+                updateGameModeState(mSystemExService.getTopFullscreenPackage(),
+                        mSystemExService.getTopFullscreenTaskId());
                 return true;
             }
         }
@@ -132,7 +136,8 @@ public class GameModeController {
                     return false;
                 }
                 saveGameListIntoSettingsLocked();
-                updateGameModeState(mSystemExService.getTopFullscreenPackage());
+                updateGameModeState(mSystemExService.getTopFullscreenPackage(),
+                        mSystemExService.getTopFullscreenTaskId());
                 return true;
             }
         }
@@ -343,7 +348,8 @@ public class GameModeController {
             updateSettings(newUserId);
             synchronized (mPackageLock) {
                 initGameAppsListLocked(newUserId);
-                updateGameModeState(mSystemExService.getTopFullscreenPackage());
+                updateGameModeState(mSystemExService.getTopFullscreenPackage(),
+                        mSystemExService.getTopFullscreenTaskId());
             }
         });
     }
@@ -360,7 +366,8 @@ public class GameModeController {
                     }
                     mGamePackages.remove(packageName);
                     saveGameListIntoSettingsLocked();
-                    updateGameModeState(mSystemExService.getTopFullscreenPackage());
+                    updateGameModeState(mSystemExService.getTopFullscreenPackage(),
+                            mSystemExService.getTopFullscreenTaskId());
                 }
             }
         });
@@ -369,28 +376,31 @@ public class GameModeController {
     public void onScreenOff() {
         mHandler.post(() -> {
             synchronized (mPackageLock) {
-                updateGameModeState("");
+                updateGameModeState("", INVALID_TASK_ID);
             }
         });
     }
 
-    public void onTopFullscreenPackageChanged(String packageName) {
+    public void onTopFullscreenPackageChanged(String packageName, int taskId) {
         mHandler.post(() -> {
             synchronized (mPackageLock) {
-                updateGameModeState(packageName);
+                updateGameModeState(packageName, taskId);
             }
         });
     }
 
-    private void updateGameModeState(String packageName) {
+    private void updateGameModeState(String packageName, int taskId) {
         synchronized (mStateLock) {
             final boolean isGame = mGamePackages.contains(packageName);
-            if (isGame == mInGame) {
+            if (isGame == mInGame && !mInGame) {
                 return;
             }
             mInGame = isGame;
+            mGamePackage = mInGame ? packageName : "";
+            mGameTaskId = mInGame ? taskId : INVALID_TASK_ID;
             if (DEBUG_GAME) {
-                Slog.d(TAG, "updateGameModeState, inGame=" + mInGame);
+                Slog.d(TAG, "updateGameModeState, inGame=" + mInGame +
+                        ", package=" + mGamePackage + ", taskId=" + mGameTaskId);
             }
             DisplayFeatureController.getInstance().onGameStateChanged(mInGame);
             notifyGameStateChanged();
@@ -443,6 +453,8 @@ public class GameModeController {
     private GameModeInfo buildGameModeInfoLocked() {
         return new GameModeInfo.Builder()
                 .setInGame(mInGame)
+                .setGamePackage(mGamePackage)
+                .setGameTaskId(mGameTaskId)
                 .setCallAction(mCallAction)
                 .setDanmakuNotificationEnabled(mDanmakuNotification)
                 .setDisableAutoBrightness(mDisableAutoBrightness)

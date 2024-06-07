@@ -5,6 +5,8 @@
 
 package org.nameless.app;
 
+import static android.app.ActivityTaskManager.INVALID_TASK_ID;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -27,6 +29,8 @@ public class GameModeInfo implements Parcelable {
     };
 
     private boolean mInGame;
+    private String mGamePackage;
+    private int mGameTaskId;
     private boolean mDanmakuNotification;
     private boolean mDisableAutoBrightness;
     private boolean mDisableHeadsUp;
@@ -39,6 +43,8 @@ public class GameModeInfo implements Parcelable {
 
     private GameModeInfo() {
         mInGame = false;
+        mGamePackage = "";
+        mGameTaskId = INVALID_TASK_ID;
         mDanmakuNotification = false;
         mDisableAutoBrightness = false;
         mDisableHeadsUp = false;
@@ -52,6 +58,8 @@ public class GameModeInfo implements Parcelable {
 
     private GameModeInfo(Parcel in) {
         mInGame = in.readBoolean();
+        mGamePackage = in.readString();
+        mGameTaskId = in.readInt();
         mDanmakuNotification = in.readBoolean();
         mDisableAutoBrightness = in.readBoolean();
         mDisableHeadsUp = in.readBoolean();
@@ -65,6 +73,14 @@ public class GameModeInfo implements Parcelable {
 
     public boolean isInGame() {
         return mInGame;
+    }
+
+    public String getGamePackage() {
+        return mGamePackage;
+    }
+
+    public int getGameTaskId() {
+        return mGameTaskId;
     }
 
     public boolean isDanmakuNotificationEnabled() {
@@ -108,6 +124,8 @@ public class GameModeInfo implements Parcelable {
 
     public static class Builder {
         private boolean mInGame;
+        private String mGamePackage;
+        private int mGameTaskId;
         private boolean mDanmakuNotification;
         private boolean mDisableAutoBrightness;
         private boolean mDisableHeadsUp;
@@ -120,6 +138,8 @@ public class GameModeInfo implements Parcelable {
 
         public Builder() {
             mInGame = false;
+            mGamePackage = "";
+            mGameTaskId = INVALID_TASK_ID;
             mDanmakuNotification = false;
             mDisableAutoBrightness = false;
             mDisableHeadsUp = false;
@@ -133,6 +153,8 @@ public class GameModeInfo implements Parcelable {
 
         public Builder(GameModeInfo info) {
             mInGame = info.mInGame;
+            mGamePackage = info.mGamePackage;
+            mGameTaskId = info.mGameTaskId;
             mDanmakuNotification = info.mDanmakuNotification;
             mDisableAutoBrightness = info.mDisableAutoBrightness;
             mDisableHeadsUp = info.mDisableHeadsUp;
@@ -147,6 +169,8 @@ public class GameModeInfo implements Parcelable {
         public GameModeInfo build() {
             GameModeInfo info = new GameModeInfo();
             info.mInGame = mInGame;
+            info.mGamePackage = mGamePackage;
+            info.mGameTaskId = mGameTaskId;
             info.mDanmakuNotification = mDanmakuNotification;
             info.mDisableAutoBrightness = mDisableAutoBrightness;
             info.mDisableHeadsUp = mDisableHeadsUp;
@@ -161,6 +185,16 @@ public class GameModeInfo implements Parcelable {
 
         public Builder setInGame(boolean inGame) {
             mInGame = inGame;
+            return this;
+        }
+
+        public Builder setGamePackage(String packageName) {
+            mGamePackage = packageName;
+            return this;
+        }
+
+        public Builder setGameTaskId(int taskId) {
+            mGameTaskId = taskId;
             return this;
         }
 
@@ -218,6 +252,8 @@ public class GameModeInfo implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeBoolean(mInGame);
+        dest.writeString(mGamePackage);
+        dest.writeInt(mGameTaskId);
         dest.writeBoolean(mDanmakuNotification);
         dest.writeBoolean(mDisableAutoBrightness);
         dest.writeBoolean(mDisableHeadsUp);
@@ -232,6 +268,8 @@ public class GameModeInfo implements Parcelable {
     @Override
     public String toString() {
         return "{mInGame=" + mInGame
+                + ", mGamePackage=" + mGamePackage
+                + ", mGameTaskId=" + mGameTaskId
                 + ", mDanmakuNotification=" + mDanmakuNotification
                 + ", mDisableAutoBrightness=" + mDisableAutoBrightness
                 + ", mDisableHeadsUp=" + mDisableHeadsUp

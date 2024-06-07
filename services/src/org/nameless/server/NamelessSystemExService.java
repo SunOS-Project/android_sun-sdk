@@ -5,6 +5,7 @@
 
 package org.nameless.server;
 
+import static android.app.ActivityTaskManager.INVALID_TASK_ID;
 import static android.content.Intent.ACTION_BATTERY_CHANGED;
 import static android.content.Intent.ACTION_SHUTDOWN;
 import static android.os.PowerManager.ACTION_POWER_SAVE_MODE_CHANGED;
@@ -85,6 +86,7 @@ public class NamelessSystemExService extends SystemService {
     private ShutdownListener mShutdownListener;
 
     private String mTopFullscreenPackage = "";
+    private int mTopFullscreenTaskId = INVALID_TASK_ID;
 
     private int mBatterLevel;
     private boolean mPlugged;
@@ -239,16 +241,17 @@ public class NamelessSystemExService extends SystemService {
     }
 
     private void onScreenUnlocked() {
-        onTopFullscreenPackageChanged(mTopFullscreenPackage);
+        onTopFullscreenPackageChanged(mTopFullscreenPackage, mTopFullscreenTaskId);
         PocketModeController.getInstance().onScreenUnlocked();
     }
 
-    public void onTopFullscreenPackageChanged(String packageName) {
+    public void onTopFullscreenPackageChanged(String packageName, int taskId) {
         mHandler.post(() -> {
             mTopFullscreenPackage = packageName;
+            mTopFullscreenTaskId = taskId;
             DisplayRefreshRateController.getInstance().onTopFullscreenPackageChanged(packageName);
             DisplayRotationController.getInstance().onTopFullscreenPackageChanged(packageName);
-            GameModeController.getInstance().onTopFullscreenPackageChanged(packageName);
+            GameModeController.getInstance().onTopFullscreenPackageChanged(packageName, taskId);
             SensorBlockController.getInstance().onTopFullscreenPackageChanged(packageName);
         });
     }
@@ -275,6 +278,10 @@ public class NamelessSystemExService extends SystemService {
 
     public String getTopFullscreenPackage() {
         return mTopFullscreenPackage;
+    }
+
+    public int getTopFullscreenTaskId() {
+        return mTopFullscreenTaskId;
     }
 
     public int getBatteryLevel() {

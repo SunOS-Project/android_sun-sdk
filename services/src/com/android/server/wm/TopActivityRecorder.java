@@ -286,14 +286,18 @@ public class TopActivityRecorder {
 
     int getTopFullscreenTaskId() {
         synchronized (mFocusLock) {
-            if (mTopFullscreenActivity == null) {
-                return INVALID_TASK_ID;
-            }
-            if (mTopFullscreenActivity.task == null) {
-                return INVALID_TASK_ID;
-            }
-            return mTopFullscreenActivity.task.mTaskId;
+            return getTopFullscreenTaskIdLocked();
         }
+    }
+
+    int getTopFullscreenTaskIdLocked() {
+        if (mTopFullscreenActivity == null) {
+            return INVALID_TASK_ID;
+        }
+        if (mTopFullscreenActivity.task == null) {
+            return INVALID_TASK_ID;
+        }
+        return mTopFullscreenActivity.task.mTaskId;
     }
 
     String getTopPinnedWindowPackage() {
@@ -496,7 +500,8 @@ public class TopActivityRecorder {
                 !newActivityName.equals(oldComponent.getClassName());
         synchronized (mObserverLock) {
             if (packageChanged) {
-                mSystemExService.onTopFullscreenPackageChanged(newPackageName);
+                mSystemExService.onTopFullscreenPackageChanged(
+                        newPackageName, getTopFullscreenTaskIdLocked());
             }
             for (AppFocusObserver observer : mObservers) {
                 if (!packageChanged && !observer.mObserveActivity) {
