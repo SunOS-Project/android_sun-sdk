@@ -26,6 +26,8 @@ import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.KEYBOARD_PRESS;
 import android.os.CombinedVibration;
 import android.os.VibrationAttributes;
 import android.os.VibrationEffect;
+import android.util.ArrayMap;
+import android.util.ArraySet;
 import android.util.Log;
 import android.util.Pair;
 import android.util.Xml;
@@ -34,8 +36,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.HashSet;
 
 import org.nameless.os.VibratorExtManager;
 import org.xmlpull.v1.XmlPullParser;
@@ -62,22 +62,22 @@ public class VibrationEffectAdapter {
     private static final String KEY_RINGTONE_DURATION = "ringtoneDuration";
 
     // Convert all vibration with specific attribution to required effect
-    private static final HashMap<VibrationAttributes, Integer> attributeToEffect;
+    private static final ArrayMap<VibrationAttributes, Integer> attributeToEffect;
 
     // Convert all vibration with specific usage to required effect
-    private static final HashMap<Integer, Integer> usageToEffect;
+    private static final ArrayMap<Integer, Integer> usageToEffect;
 
     // Convert specific duration vibration to prebaked vibration effect with specific id
-    private static final HashMap<String, HashMap<Long, Integer>> durationToEffectMap;
+    private static final ArrayMap<String, ArrayMap<Long, Integer>> durationToEffectMap;
 
     // Inputmethod apps that need to calculate level according to vibration duration
-    private static final HashMap<String, Long> inputmethodEnhanceMap;
+    private static final ArrayMap<String, Long> inputmethodEnhanceMap;
 
     // Duration for each ringtone effects
-    private static final HashMap<Integer, Long> ringtoneDurationMap;
+    private static final ArrayMap<Integer, Long> ringtoneDurationMap;
 
     // Calculator apps that will convert to keyboard press effect if enabled
-    private static final HashSet<String> calculatorEnhanceSet;
+    private static final ArraySet<String> calculatorEnhanceSet;
 
     private static final VibratorExtManager sVibratorExtManager = VibratorExtManager.getInstance();
     private static final boolean sVibratorExtSupported = sVibratorExtManager.isSupported();
@@ -89,19 +89,19 @@ public class VibrationEffectAdapter {
     private static final Object sLock = new Object();
 
     static {
-        attributeToEffect = new HashMap<>();
+        attributeToEffect = new ArrayMap<>();
         attributeToEffect.put(VIBRATION_ATTRIBUTES_PREVIEW_ALARM_CALL, DURATION_ALARM_CALL);
         attributeToEffect.put(VIBRATION_ATTRIBUTES_PREVIEW_NOTIFICATION, DURATION_NOTIFICATION);
 
-        usageToEffect = new HashMap<>();
+        usageToEffect = new ArrayMap<>();
         usageToEffect.put(USAGE_ALARM, DURATION_ALARM_CALL);
         usageToEffect.put(USAGE_NOTIFICATION, DURATION_NOTIFICATION);
         usageToEffect.put(USAGE_RINGTONE, DURATION_ALARM_CALL);
 
-        durationToEffectMap = new HashMap<>();
-        inputmethodEnhanceMap = new HashMap<>();
-        ringtoneDurationMap = new HashMap<>();
-        calculatorEnhanceSet = new HashSet<>();
+        durationToEffectMap = new ArrayMap<>();
+        inputmethodEnhanceMap = new ArrayMap<>();
+        ringtoneDurationMap = new ArrayMap<>();
+        calculatorEnhanceSet = new ArraySet<>();
     }
 
     private static Pair<Integer, Long> getConfigInfo(String path) {
@@ -187,7 +187,7 @@ public class VibrationEffectAdapter {
                                     break;
                                 }
                                 if (!durationToEffectMap.containsKey(packageName)) {
-                                    durationToEffectMap.put(packageName, new HashMap<>());
+                                    durationToEffectMap.put(packageName, new ArrayMap<>());
                                 }
                                 durationToEffectMap.get(packageName).put(duration, effectId);
                                 if (DEBUG_VIBRATION_ADAPTER) {

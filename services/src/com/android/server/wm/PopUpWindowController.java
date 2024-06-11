@@ -60,7 +60,6 @@ import com.android.server.wm.Transition.ChangeInfo;
 import com.google.android.collect.Sets;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import org.nameless.view.DisplayResolutionManager;
 import org.nameless.view.IDisplayResolutionListener;

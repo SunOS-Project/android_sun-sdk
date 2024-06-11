@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.UserHandle;
 import android.os.VibrationExtInfo;
 import android.os.Vibrator;
+import android.util.ArrayMap;
 import android.util.Slog;
 import android.view.KeyEvent;
 
@@ -29,7 +30,6 @@ import com.android.server.policy.PhoneWindowManagerExt;
 
 import org.nameless.server.policy.DozeController;
 
-import java.util.HashMap;
 import java.util.List;
 
 class TouchGestureActionTrigger {
@@ -73,10 +73,10 @@ class TouchGestureActionTrigger {
     static final int ACTION_SPECIFIC_START = ACTION_SHOW_AMBIENT_DISPLAY;
     static final int ACTION_SPECIFIC_END = ACTION_PLAY_PAUSE_SONG;
 
-    private static final HashMap<Integer, ComponentName> ACTION_COMPONENT_NAME_MAP;
+    private static final ArrayMap<Integer, ComponentName> ACTION_COMPONENT_NAME_MAP;
 
     static {
-        ACTION_COMPONENT_NAME_MAP = new HashMap<>();
+        ACTION_COMPONENT_NAME_MAP = new ArrayMap<>();
         ACTION_COMPONENT_NAME_MAP.put(ACTION_WECHAT_PAY, new ComponentName(
                 "com.tencent.mm",
                 "com.tencent.mm.plugin.offline.ui.WalletOfflineCoinPurseUI"));

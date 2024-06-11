@@ -30,6 +30,7 @@ import android.os.ServiceManager;
 import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.provider.Settings;
+import android.util.ArraySet;
 import android.util.DisplayMetrics;
 import android.util.Slog;
 import android.view.Display;
@@ -41,7 +42,6 @@ import com.android.server.ServiceThread;
 import com.android.server.wm.WindowManagerService;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.nameless.server.NamelessSystemExService;
@@ -345,7 +345,7 @@ public class DisplayResolutionController {
     }
 
     private static Set<Point> getAllSupportedResolution(Display display) {
-        final Set<Point> resolutions = new HashSet<>();
+        final Set<Point> resolutions = new ArraySet<>();
         for (Display.Mode mode : display.getSupportedModes()) {
             resolutions.add(new Point(mode.getPhysicalWidth(), mode.getPhysicalHeight()));
         }

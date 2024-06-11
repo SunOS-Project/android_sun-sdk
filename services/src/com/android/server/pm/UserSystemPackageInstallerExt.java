@@ -7,17 +7,18 @@ package com.android.server.pm;
 
 import static android.os.UserManager.USER_TYPE_PROFILE_CLONE;
 
+import android.util.ArraySet;
+
 import com.android.internal.R;
 
 import com.android.server.pm.pkg.AndroidPackage;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 class UserSystemPackageInstallerExt {
 
-    private final HashSet<String> mNonCloneableSystemApps = new HashSet<>();
+    private final ArraySet<String> mNonCloneableSystemApps = new ArraySet<>();
 
     private static class InstanceHolder {
         private static final UserSystemPackageInstallerExt INSTANCE = new UserSystemPackageInstallerExt();

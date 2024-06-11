@@ -23,12 +23,11 @@ import android.os.Message;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.ArrayMap;
+import android.util.ArraySet;
 import android.util.Slog;
 
 import com.android.server.ServiceThread;
-
-import java.util.HashMap;
-import java.util.HashSet;
 
 import org.nameless.hardware.ISensorBlockService;
 import org.nameless.server.NamelessSystemExService;
@@ -47,8 +46,8 @@ public final class SensorBlockController {
 
     private static final int MSG_UNBLOCK_SHAKE_SENSOR = 1;
 
-    private final HashMap<String, Integer> mShakeSensorsConfig = new HashMap<>();
-    private final HashSet<String> mShakeSensorsBlockingPackages = new HashSet<>();
+    private final ArrayMap<String, Integer> mShakeSensorsConfig = new ArrayMap<>();
+    private final ArraySet<String> mShakeSensorsBlockingPackages = new ArraySet<>();
 
     private final Handler mHandler;
     private final ServiceThread mServiceThread;

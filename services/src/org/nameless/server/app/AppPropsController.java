@@ -14,6 +14,7 @@ import android.app.NotificationManager;
 import android.os.Build;
 import android.os.SystemProperties;
 import android.util.ArrayMap;
+import android.util.ArraySet;
 import android.util.Pair;
 import android.util.Slog;
 import android.util.Xml;
@@ -25,8 +26,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 import org.nameless.app.IAppPropsManagerService;
@@ -58,18 +57,18 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
     private static final String KEY_GMS = "GMS";
 
     // Key: model (OnePlus 69)             Val: prop keys, prop vals (BRAND, ONEPLUS)
-    private final HashMap<String, ArrayMap<String, String>> mPropsToChange = new HashMap<>();
+    private final ArrayMap<String, ArrayMap<String, String>> mPropsToChange = new ArrayMap<>();
     // Key: packageName (com.google.gms)   Val: prop keys (FINGERPRINT)
-    private final HashMap<String, HashSet<String>> mPropsToKeep = new HashMap<>();
+    private final ArrayMap<String, ArraySet<String>> mPropsToKeep = new ArrayMap<>();
     // Key: model (OnePlus 69)             Val: packageName (com.google.gms, ...)
-    private final HashMap<String, HashSet<String>> mPackagesToChange = new HashMap<>();
-    private final HashMap<String, HashSet<String>> mGamePackagesToChange = new HashMap<>();
+    private final ArrayMap<String, ArraySet<String>> mPackagesToChange = new ArrayMap<>();
+    private final ArrayMap<String, ArraySet<String>> mGamePackagesToChange = new ArrayMap<>();
     // Packages in this set will only get generic props spoofed.
-    private final HashSet<String> mPackagesToKeep = new HashSet<>();
+    private final ArraySet<String> mPackagesToKeep = new ArraySet<>();
     // Packages in this set will be considered to be spoofed.
-    private final HashSet<String> mExtraPackagesToChange = new HashSet<>();
+    private final ArraySet<String> mExtraPackagesToChange = new ArraySet<>();
     // Packages in this set will be considered as Google Camera package.
-    private final HashSet<String> mCustomGoogleCameraPackages = new HashSet<>();
+    private final ArraySet<String> mCustomGoogleCameraPackages = new ArraySet<>();
 
     private final Object mLock = new Object();
 
@@ -221,7 +220,7 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
                             for (String prop : props) {
                                 final String trimedProp = prop.trim();
                                 if (!mPropsToKeep.containsKey(packageName)) {
-                                    mPropsToKeep.put(packageName, new HashSet<>());
+                                    mPropsToKeep.put(packageName, new ArraySet<>());
                                 }
                                 mPropsToKeep.get(packageName).add(trimedProp);
                                 logD("Added propsToKeep, packageName=" + packageName + ", prop=" + trimedProp);
@@ -236,12 +235,12 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
                                 final String trimedPkg = pkg.trim();
                                 if (isGame) {
                                     if (!mGamePackagesToChange.containsKey(name)) {
-                                        mGamePackagesToChange.put(name, new HashSet<>());
+                                        mGamePackagesToChange.put(name, new ArraySet<>());
                                     }
                                     mGamePackagesToChange.get(name).add(trimedPkg);
                                 } else {
                                     if (!mPackagesToChange.containsKey(name)) {
-                                        mPackagesToChange.put(name, new HashSet<>());
+                                        mPackagesToChange.put(name, new ArraySet<>());
                                     }
                                     mPackagesToChange.get(name).add(trimedPkg);
                                 }

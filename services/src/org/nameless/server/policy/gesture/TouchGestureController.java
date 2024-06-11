@@ -28,11 +28,10 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.UserHandle;
 import android.provider.Settings;
+import android.util.ArrayMap;
 import android.util.Slog;
 
 import org.nameless.hardware.TouchGestureManager;
-
-import java.util.HashMap;
 
 public class TouchGestureController {
 
@@ -46,7 +45,7 @@ public class TouchGestureController {
 
     private static final String TAG = "TouchGestureController";
 
-    private final HashMap<Integer, Integer> mGestureActionMap = new HashMap<>();
+    private final ArrayMap<Integer, Integer> mGestureActionMap = new ArrayMap<>();
 
     private final ContentObserver mObserver;
     private final Handler mHandler;

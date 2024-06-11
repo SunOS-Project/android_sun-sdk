@@ -9,20 +9,19 @@ import static org.nameless.os.DebugConstants.DEBUG_PMS;
 
 import android.content.ComponentName;
 import android.os.UserHandle;
+import android.util.ArraySet;
 import android.util.Slog;
 
 import com.android.internal.R;
 
 import com.android.server.pm.parsing.pkg.AndroidPackageUtils;
 
-import java.util.HashSet;
-
 class PackageManagerServiceExt {
 
     private static final String TAG = "PackageManagerServiceExt";
 
-    private final HashSet<ComponentName> mDisabledComponentsList = new HashSet<>();
-    private final HashSet<ComponentName> mForceEnabledComponentsList = new HashSet<>();
+    private final ArraySet<ComponentName> mDisabledComponentsList = new ArraySet<>();
+    private final ArraySet<ComponentName> mForceEnabledComponentsList = new ArraySet<>();
 
     private PackageManagerService mPackageManagerService;
 

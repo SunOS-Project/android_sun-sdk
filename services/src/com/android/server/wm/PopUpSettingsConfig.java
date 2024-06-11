@@ -21,10 +21,9 @@ import android.os.Handler;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.ArraySet;
 
 import com.android.internal.util.nameless.PopUpSettingsHelper;
-
-import java.util.HashSet;
 
 import org.nameless.view.PopUpViewManager;
 
@@ -38,7 +37,7 @@ class PopUpSettingsConfig {
         return InstanceHolder.INSTANCE;
     }
 
-    private final HashSet<String> mUserNotificationBlacklist = new HashSet<>();
+    private final ArraySet<String> mUserNotificationBlacklist = new ArraySet<>();
 
     private Context mContext;
     private Handler mHandler;

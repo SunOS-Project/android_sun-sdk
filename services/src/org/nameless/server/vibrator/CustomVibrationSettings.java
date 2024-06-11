@@ -39,11 +39,10 @@ import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.os.VibrationAttributes;
 import android.provider.Settings;
+import android.util.ArrayMap;
 import android.util.Pair;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 
 import org.nameless.content.IOnlineConfigurable;
 import org.nameless.content.OnlineConfigManager;
@@ -64,9 +63,9 @@ public final class CustomVibrationSettings extends IOnlineConfigurable.Stub {
     private static final int SETTINGS_SLIDER                 = 1 << 6;
     private static final int SETTINGS_SWITCH                 = 1 << 7;
 
-    private static final HashMap<VibrationAttributes, Integer> AttributeToSettings;
+    private static final ArrayMap<VibrationAttributes, Integer> AttributeToSettings;
 
-    private static final HashMap<Integer, Pair<String, String>> STRENGTH_SETTINGS_DATE_MAP;
+    private static final ArrayMap<Integer, Pair<String, String>> STRENGTH_SETTINGS_DATE_MAP;
 
     private final VibratorExtManager mVibratorExtManager = VibratorExtManager.getInstance();
 
@@ -87,7 +86,7 @@ public final class CustomVibrationSettings extends IOnlineConfigurable.Stub {
     }
 
     static {
-        AttributeToSettings = new HashMap<>();
+        AttributeToSettings = new ArrayMap<>();
         AttributeToSettings.put(VIBRATION_ATTRIBUTES_BACK_GESTURE_DRAG, SETTINGS_BACK_GESTURE_DRAG);
         AttributeToSettings.put(VIBRATION_ATTRIBUTES_FACE_UNLOCK, SETTINGS_FACE);
         AttributeToSettings.put(VIBRATION_ATTRIBUTES_FINGERPRINT_UNLOCK, SETTINGS_FINGERPRINT);
@@ -97,7 +96,7 @@ public final class CustomVibrationSettings extends IOnlineConfigurable.Stub {
         AttributeToSettings.put(VIBRATION_ATTRIBUTES_SLIDER, SETTINGS_SLIDER);
         AttributeToSettings.put(VIBRATION_ATTRIBUTES_SWITCH, SETTINGS_SWITCH);
 
-        STRENGTH_SETTINGS_DATE_MAP = new HashMap<>();
+        STRENGTH_SETTINGS_DATE_MAP = new ArrayMap<>();
         STRENGTH_SETTINGS_DATE_MAP.put(Type.ALARM_CALL, new Pair(
             "persist.sys.nameless.vibrator.alarm_call.date",
             VIBRATOR_EXT_ALARM_CALL_STRENGTH_LEVEL

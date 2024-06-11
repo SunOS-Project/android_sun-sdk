@@ -23,6 +23,7 @@ import android.os.RemoteException;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.ArrayMap;
 import android.util.Slog;
 import android.view.Surface;
 
@@ -31,7 +32,6 @@ import com.android.internal.view.RotationPolicy;
 import com.android.server.ServiceThread;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.nameless.display.DisplayFeatureManager;
 import org.nameless.os.IRotateConfigListener;
@@ -73,7 +73,7 @@ public class DisplayRotationController {
     }
 
     private final ArrayList<RotateConfigListener> mListeners = new ArrayList<>();
-    private final HashMap<String, Integer> mAppRotateConfigMap = new HashMap<>();
+    private final ArrayMap<String, Integer> mAppRotateConfigMap = new ArrayMap<>();
 
     private boolean mRotateLockedSystem = false;
     private int mRotateConfig = ROTATE_FOLLOW_SYSTEM;

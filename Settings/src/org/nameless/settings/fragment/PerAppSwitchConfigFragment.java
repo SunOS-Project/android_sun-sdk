@@ -6,20 +6,20 @@
 package org.nameless.settings.fragment;
 
 import android.content.Context;
+import android.util.ArrayMap;
 
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.LinkedHashMap;
 
 import org.nameless.custom.preference.SwitchPreferenceCompat;
 import org.nameless.settings.widget.AppSwitchPreference;
 
 public abstract class PerAppSwitchConfigFragment extends BasePerAppConfigFragment {
 
-    private final LinkedHashMap<String, Boolean> mPkgCheckState = new LinkedHashMap<>();
+    private final ArrayMap<String, Boolean> mPkgCheckState = new ArrayMap<>();
 
     @Override
     protected Preference createAppPreference(Context prefContext, AppData appData) {

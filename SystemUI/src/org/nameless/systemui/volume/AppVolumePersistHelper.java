@@ -14,16 +14,15 @@ import android.media.AudioManager;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.ArrayMap;
 import android.util.Log;
-
-import java.util.HashMap;
 
 public class AppVolumePersistHelper {
 
     private static final String TAG = "AppVolumePersistHelper";
     private static final boolean DEBUG = false;
 
-    private final HashMap<AppInfo, Integer> mAppVolumeMap = new HashMap<>();
+    private final ArrayMap<AppInfo, Integer> mAppVolumeMap = new ArrayMap<>();
 
     private final ContentResolver mResolver;
 

@@ -32,6 +32,7 @@ import android.os.UserHandle;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.ArraySet;
 import android.util.Slog;
 import android.view.WindowInsets.Type;
 import android.widget.Toast;
@@ -43,7 +44,6 @@ import com.android.server.UiThread;
 import com.android.server.wm.TopActivityRecorder;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import org.nameless.app.GameModeInfo;
 import org.nameless.app.IGameModeInfoListener;
@@ -86,7 +86,7 @@ public class GameModeController {
 
     private final Handler mUiHandler = new Handler(UiThread.getHandler().getLooper());
 
-    private final HashSet<String> mGamePackages = new HashSet<>();
+    private final ArraySet<String> mGamePackages = new ArraySet<>();
 
     private final ArrayList<GameModeInfoListener> mListeners = new ArrayList<>();
 

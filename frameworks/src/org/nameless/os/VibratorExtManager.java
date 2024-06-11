@@ -10,10 +10,10 @@ import static org.nameless.provider.SettingsExt.System.VIBRATOR_EXT_HAPTIC_STREN
 import static org.nameless.provider.SettingsExt.System.VIBRATOR_EXT_NOTIFICAITON_STRENGTH_LEVEL;
 
 import android.os.RemoteException;
+import android.util.ArrayMap;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -35,7 +35,7 @@ public class VibratorExtManager {
     );
 
     private final ArrayList<Integer> mValidVibrationTypes;
-    private final HashMap<Integer, LevelRange> mLevelRanges;
+    private final ArrayMap<Integer, LevelRange> mLevelRanges;
 
     private static class InstanceHolder {
         private static final VibratorExtManager INSTANCE = new VibratorExtManager();
@@ -55,7 +55,7 @@ public class VibratorExtManager {
         }
         mService = service;
         mValidVibrationTypes = new ArrayList<>();
-        mLevelRanges = new HashMap<>();
+        mLevelRanges = new ArrayMap<>();
 
         if (mService != null) {
             for (int type : sAllVibrationTypes) {

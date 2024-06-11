@@ -11,12 +11,11 @@ import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.RAMP_DOWN;
 import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.RINGTONE_WALTZ;
 
 import android.os.VibrationEffect;
+import android.util.ArrayMap;
 
 import com.android.internal.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Set;
 
 /** @hide */
@@ -26,14 +25,14 @@ public class VibrationPatternManager {
 
     private static final ArrayList<Integer> NAME_ID_LIST_NOTIFICATION;
     private static final ArrayList<long[]> TIMINGS_LIST_NOTIFICATION;
-    private static final LinkedHashMap<Integer, Pattern> PATTERN_MAP_NOTIFICATION;
+    private static final ArrayMap<Integer, Pattern> PATTERN_MAP_NOTIFICATION;
 
     private static final ArrayList<Integer> NAME_ID_LIST_RINGTONE;
     private static final ArrayList<long[]> TIMINGS_LIST_RINGTONE;
     private static final ArrayList<Integer> RTP_ID_LIST_RINGTONE;
-    private static final LinkedHashMap<Integer, Pattern> PATTERN_MAP_RINGTONE;
+    private static final ArrayMap<Integer, Pattern> PATTERN_MAP_RINGTONE;
 
-    private static final HashMap<Integer, int[]> TIMINGS_CUSTOM_AMPLITUDE;
+    private static final ArrayMap<Integer, int[]> TIMINGS_CUSTOM_AMPLITUDE;
 
     private static final int RTP_START_INDEX_RINGTONE;
 
@@ -47,7 +46,7 @@ public class VibrationPatternManager {
     private static final long RAMP_DOWN_DURATION_OFFSET = 1L;
 
     static {
-        TIMINGS_CUSTOM_AMPLITUDE = new HashMap<>();
+        TIMINGS_CUSTOM_AMPLITUDE = new ArrayMap<>();
 
         NAME_ID_LIST_NOTIFICATION = new ArrayList<>();
         NAME_ID_LIST_NOTIFICATION.add(R.string.vibrationPattern_notification_dz_dz);
@@ -75,7 +74,7 @@ public class VibrationPatternManager {
             TIMINGS_LIST_NOTIFICATION.add(new long[] {0, 50, 30, 700 + RAMP_DOWN_DURATION_OFFSET});
         }
 
-        PATTERN_MAP_NOTIFICATION = new LinkedHashMap<>();
+        PATTERN_MAP_NOTIFICATION = new ArrayMap<>();
         for (int i = 0; i < NAME_ID_LIST_NOTIFICATION.size(); ++i) {
             final int id = NAME_ID_LIST_NOTIFICATION.get(i);
             if (TIMINGS_CUSTOM_AMPLITUDE.containsKey(id)) {
@@ -120,7 +119,7 @@ public class VibrationPatternManager {
         TIMINGS_CUSTOM_AMPLITUDE.put(R.string.vibrationPattern_ringtone_drums, new int[] {
                 0, 80, 0, 100, 0, 220, 0, 255, 0, 80, 0, 100, 0, 220, 0, 255, 0});
 
-        PATTERN_MAP_RINGTONE = new LinkedHashMap<>();
+        PATTERN_MAP_RINGTONE = new ArrayMap<>();
         for (int i = 0; i < NAME_ID_LIST_RINGTONE.size(); ++i) {
             final int id = NAME_ID_LIST_RINGTONE.get(i);
             if (TIMINGS_CUSTOM_AMPLITUDE.containsKey(id)) {

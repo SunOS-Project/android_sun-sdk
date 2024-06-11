@@ -6,8 +6,7 @@
 package org.nameless.view;
 
 import android.os.SystemProperties;
-
-import java.util.HashSet;
+import android.util.ArraySet;
 
 /** @hide */
 public class PopUpViewManager {
@@ -17,7 +16,7 @@ public class PopUpViewManager {
     );
 
     /** TODO: Get rid of these dirty blacklist stuff. Maybe move them to local config file. */
-    private static final HashSet<String> SYSTEM_NOTIFICATION_BLACKLIST = new HashSet<>();
+    private static final ArraySet<String> SYSTEM_NOTIFICATION_BLACKLIST = new ArraySet<>();
 
     public static final String ACTION_START_MINI_WINDOW = "org.nameless.intent.START_MINI_WINDOW";
     public static final String ACTION_START_PINNED_WINDOW = "org.nameless.intent.START_PINNED_WINDOW";

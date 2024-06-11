@@ -19,6 +19,7 @@ import android.os.RemoteException;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.ArrayMap;
 import android.util.Slog;
 
 import com.android.internal.util.nameless.DisplayRefreshRateHelper;
@@ -26,7 +27,6 @@ import com.android.internal.util.nameless.DisplayRefreshRateHelper;
 import com.android.server.ServiceThread;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.nameless.display.IRefreshRateListener;
 import org.nameless.display.IRefreshRateManagerService;
@@ -64,7 +64,7 @@ public final class DisplayRefreshRateController {
     }
 
     private final ArrayList<RefreshRateListener> mListeners = new ArrayList<>();
-    private final HashMap<String, Integer> mAppRefreshRateConfigMap = new HashMap<>();
+    private final ArrayMap<String, Integer> mAppRefreshRateConfigMap = new ArrayMap<>();
 
     private int mRequestedRefreshRate = -1;
     private int mRequestedMemcRefreshRate = -1;
