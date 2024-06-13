@@ -25,8 +25,6 @@ public class AlertSliderManager {
 
     private static final String OPLUS_ALERT_SLIDER_STATE_NODE = "/proc/tristatekey/tri_state";
 
-    private static final boolean USE_LEGACY_MODE = !FileUtils.isFileReadable(OPLUS_ALERT_SLIDER_STATE_NODE);
-
     private static final int OPLUS_ALERT_SLIDER_KEY = 133;
 
     public static final int STATE_UNKNOWN = -1;
@@ -61,14 +59,7 @@ public class AlertSliderManager {
                 com.android.internal.R.bool.config_hasAlertSlider);
     }
 
-    public static boolean isLegacyMode() {
-        return USE_LEGACY_MODE;
-    }
-
     public static boolean maybeNotifyUpdate(Context context, int keyCode, boolean down) {
-        if (isLegacyMode()) {
-            return false;
-        }
         if (keyCode != OPLUS_ALERT_SLIDER_KEY) {
             return false;
         }

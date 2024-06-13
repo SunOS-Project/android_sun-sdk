@@ -35,15 +35,11 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.SystemProperties;
-import android.os.UEventObserver;
-import android.os.UEventObserver.UEvent;
 import android.os.UserHandle;
 import android.os.VibrationAttributes;
 import android.os.VibrationExtInfo;
 import android.os.Vibrator;
 import android.provider.Settings;
-import android.text.TextUtils;
 import android.util.Slog;
 
 import com.android.server.ServiceThread;
@@ -57,15 +53,6 @@ public class AlertSliderController {
     private static final String TAG = "AlertSliderController";
 
     private static final String CALLING_PACKAGE = "android";
-
-    private static final String EVENT_SWITCH_STATE = "SWITCH_STATE";
-    private static final String EVENT_STATE = "STATE";
-
-    private static final String NONE_KEY = "USB=0";
-    private static final String VIBRATION_KEY = "HOST=0";
-    private static final String SILENT_KEY = "null)=0";
-
-    private static final String[] OBSERVE_KEYS = {"tri-state-key", "tri_state_key"};
 
     private static final int NO_CHANGE_VOLUME = 0;
     private static final int MUTE_VOLUME = 1;
@@ -92,31 +79,6 @@ public class AlertSliderController {
     private final ServiceThread mServiceThread;
 
     private final SettingsObserver mSettingsObserver;
-
-    private final UEventObserver mAlertSliderEventObserver = new UEventObserver() {
-        @Override
-        public void onUEvent(UEvent event) {
-            synchronized (sLock) {
-                final String switchState = event.get(EVENT_SWITCH_STATE);
-                if (!TextUtils.isEmpty(switchState)) {
-                    setStateInternal(Integer.parseInt(switchState), true);
-                    return;
-                }
-    
-                final String state = event.get(EVENT_STATE);
-                final boolean none = state.contains(NONE_KEY);
-                final boolean vibration = state.contains(VIBRATION_KEY);
-                final boolean silent = state.contains(SILENT_KEY);
-                if (!none && !vibration && silent) {
-                    setStateInternal(STATE_TOP, true);
-                } else if (!none && vibration && !silent) {
-                    setStateInternal(STATE_MIDDLE, true);
-                } else if (none && !vibration && !silent) {
-                    setStateInternal(STATE_BOTTOM, true);
-                }
-            }
-        }
-    };
 
     private boolean mSystemReady = false;
 
@@ -185,8 +147,7 @@ public class AlertSliderController {
             Slog.d(TAG, "onSystemReady, ringerMode: " + ringerMode + ", sliderState: " + sliderState);
         }
 
-        if (!AlertSliderManager.isLegacyMode() &&
-                (sliderState == STATE_UNKNOWN || ringerMode == sliderState)) {
+        if (sliderState == STATE_UNKNOWN || ringerMode == sliderState) {
             /* There are two conditions that we need to update state on boot:
              *
              * 1. First boot, persisted slider state is unknown. We need to correct ringer mode to current file state.
@@ -202,12 +163,6 @@ public class AlertSliderController {
 
         mHandler.post(() -> mSettingsObserver.observe());
 
-        if (AlertSliderManager.isLegacyMode()) {
-            for (String key : OBSERVE_KEYS) {
-                mAlertSliderEventObserver.startObserving(key);
-            }
-        }
-
         mSystemReady = true;
     }
 
@@ -217,11 +172,9 @@ public class AlertSliderController {
         }
 
         void observe() {
-            if (!AlertSliderManager.isLegacyMode()) {
-                mResolver.registerContentObserver(Settings.Global.getUriFor(
-                        SettingsExt.Global.ALERT_SLIDER_STATE),
-                        false, this, UserHandle.USER_ALL);
-            }
+            mResolver.registerContentObserver(Settings.Global.getUriFor(
+                    SettingsExt.Global.ALERT_SLIDER_STATE),
+                    false, this, UserHandle.USER_ALL);
             mResolver.registerContentObserver(Settings.Global.getUriFor(
                     SettingsExt.Global.ALERT_SLIDER_MUTE_MEDIA),
                     false, this, UserHandle.USER_ALL);
