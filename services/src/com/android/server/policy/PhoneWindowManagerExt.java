@@ -236,7 +236,7 @@ public class PhoneWindowManagerExt {
                         Process.myUid(),
                         mPhoneWindowManager.mContext.getOpPackageName(),
                         HapticFeedbackConstants.LONG_PRESS, true,
-                        "Power - Long-Press - Hide Pocket Lock");
+                        "Power - Long-Press - Hide Pocket Lock", false);
                 PocketModeController.getInstance().unregisterAll();
                 break;
         }
@@ -253,7 +253,7 @@ public class PhoneWindowManagerExt {
                 Process.myUid(),
                 mPhoneWindowManager.mContext.getOpPackageName(),
                 HapticFeedbackConstants.LONG_PRESS, true,
-                "Power - Long Press - Torch");
+                "Power - Long Press - Torch", false);
         CustomUtils.toggleCameraFlash();
         return true;
     }

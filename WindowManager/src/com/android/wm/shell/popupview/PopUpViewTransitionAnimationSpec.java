@@ -24,7 +24,7 @@ import android.view.animation.TranslateAnimation;
 import android.window.TransitionInfo;
 
 import com.android.wm.shell.popupview.PopUpViewTransitionAnimationAdapter;
-import com.android.wm.shell.util.TransitionUtil;
+import com.android.wm.shell.shared.TransitionUtil;
 
 import java.util.ArrayList;
 import java.util.List;

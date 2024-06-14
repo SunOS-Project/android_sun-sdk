@@ -128,6 +128,9 @@ public class TriStateUiControllerImpl implements ConfigurationListener, TriState
 
         @Override
         public void onShowCsdWarning(int csdWarning, int durationMs) { }
+
+        @Override
+	    public void onVolumeChangedFromKey() { }
     };
 
     private final H mHandler = new H(this);
