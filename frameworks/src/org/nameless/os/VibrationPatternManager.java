@@ -16,6 +16,7 @@ import android.util.ArrayMap;
 import com.android.internal.R;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Set;
 
 /** @hide */
@@ -25,12 +26,12 @@ public class VibrationPatternManager {
 
     private static final ArrayList<Integer> NAME_ID_LIST_NOTIFICATION;
     private static final ArrayList<long[]> TIMINGS_LIST_NOTIFICATION;
-    private static final ArrayMap<Integer, Pattern> PATTERN_MAP_NOTIFICATION;
+    private static final LinkedHashMap<Integer, Pattern> PATTERN_MAP_NOTIFICATION;
 
     private static final ArrayList<Integer> NAME_ID_LIST_RINGTONE;
     private static final ArrayList<long[]> TIMINGS_LIST_RINGTONE;
     private static final ArrayList<Integer> RTP_ID_LIST_RINGTONE;
-    private static final ArrayMap<Integer, Pattern> PATTERN_MAP_RINGTONE;
+    private static final LinkedHashMap<Integer, Pattern> PATTERN_MAP_RINGTONE;
 
     private static final ArrayMap<Integer, int[]> TIMINGS_CUSTOM_AMPLITUDE;
 
@@ -74,7 +75,7 @@ public class VibrationPatternManager {
             TIMINGS_LIST_NOTIFICATION.add(new long[] {0, 50, 30, 700 + RAMP_DOWN_DURATION_OFFSET});
         }
 
-        PATTERN_MAP_NOTIFICATION = new ArrayMap<>();
+        PATTERN_MAP_NOTIFICATION = new LinkedHashMap<>();
         for (int i = 0; i < NAME_ID_LIST_NOTIFICATION.size(); ++i) {
             final int id = NAME_ID_LIST_NOTIFICATION.get(i);
             if (TIMINGS_CUSTOM_AMPLITUDE.containsKey(id)) {
@@ -119,7 +120,7 @@ public class VibrationPatternManager {
         TIMINGS_CUSTOM_AMPLITUDE.put(R.string.vibrationPattern_ringtone_drums, new int[] {
                 0, 80, 0, 100, 0, 220, 0, 255, 0, 80, 0, 100, 0, 220, 0, 255, 0});
 
-        PATTERN_MAP_RINGTONE = new ArrayMap<>();
+        PATTERN_MAP_RINGTONE = new LinkedHashMap<>();
         for (int i = 0; i < NAME_ID_LIST_RINGTONE.size(); ++i) {
             final int id = NAME_ID_LIST_RINGTONE.get(i);
             if (TIMINGS_CUSTOM_AMPLITUDE.containsKey(id)) {
