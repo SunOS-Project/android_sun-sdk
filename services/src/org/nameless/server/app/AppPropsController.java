@@ -315,7 +315,6 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
                 spoofMap.putAll(gmsMap);
             }
         } else if (packageName.startsWith("com.google.") ||
-                packageName.startsWith("com.samsung.") ||
                 mExtraPackagesToChange.contains(packageName)) {
             String spoofModel = KEY_DEFAULT;
             for (String model : mPackagesToChange.keySet()) {
