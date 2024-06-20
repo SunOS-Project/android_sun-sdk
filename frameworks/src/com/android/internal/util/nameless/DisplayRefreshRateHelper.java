@@ -60,16 +60,24 @@ public class DisplayRefreshRateHelper {
         final int refreshRate = mContext.getResources().getInteger(
                 R.integer.config_defaultRefreshRate);
         final float defaultRefreshRate = refreshRate != 0 ? (float) refreshRate : DEFAULT_REFRESH_RATE;
-        return (int) Settings.System.getFloatForUser(mContext.getContentResolver(),
+        final int ret = (int) Settings.System.getFloatForUser(mContext.getContentResolver(),
                 MIN_REFRESH_RATE, defaultRefreshRate, UserHandle.USER_SYSTEM);
+        if (ret == Integer.MAX_VALUE && mRefreshRateList.size() != 0) {
+            return mRefreshRateList.get(mRefreshRateList.size() - 1);
+        }
+        return ret;
     }
 
     public int getPeakRefreshRate() {
         final int refreshRate = mContext.getResources().getInteger(
                 R.integer.config_defaultPeakRefreshRate);
         final float defaultPeakRefreshRate = refreshRate != 0 ? (float) refreshRate : DEFAULT_REFRESH_RATE;
-        return (int) Settings.System.getFloatForUser(mContext.getContentResolver(),
+        final int ret = (int) Settings.System.getFloatForUser(mContext.getContentResolver(),
                 PEAK_REFRESH_RATE, defaultPeakRefreshRate, UserHandle.USER_SYSTEM);
+        if (ret == Integer.MAX_VALUE && mRefreshRateList.size() != 0) {
+            return mRefreshRateList.get(mRefreshRateList.size() - 1);
+        }
+        return ret;
     }
 
     public ArrayList<Integer> getRefreshRate() {
