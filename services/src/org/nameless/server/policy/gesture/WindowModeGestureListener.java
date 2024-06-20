@@ -40,7 +40,8 @@ public class WindowModeGestureListener extends GestureListenerBase {
         super.onConfigureChanged();
         final float slop = getGestureTouchSlop();
         mSquaredSlop = slop * slop;
-        mValDisFromCorner = (float) ResourceUtils.getWindowModeGestureValidDistance(mContext.getResources());
+        mValDisFromCorner = ResourceUtils.getWindowModeGestureValidDistance(
+                mContext.getResources(), Math.min(mDeviceHeight, mDeviceWidth));
         if (DEBUG_PHONE_WINDOW_MANAGER) {
             Slog.d(TAG, "onConfigureChanged, mValDisFromCorner=" + mValDisFromCorner);
         }

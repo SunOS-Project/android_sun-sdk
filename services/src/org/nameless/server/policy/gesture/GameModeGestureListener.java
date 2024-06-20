@@ -41,11 +41,14 @@ public class GameModeGestureListener extends GestureListenerBase {
         super.onConfigureChanged();
         final float slop = getGestureTouchSlop();
         mSquaredSlop = slop * slop;
-        mGestureValidDistance = (float) ResourceUtils.getGameModeGestureValidDistance(mContext.getResources());
-        mGesturePortAreaBottom = (float) ResourceUtils.getGameModePortraitAreaBottom(mContext.getResources());
-        mGestureLandAreaBottom = (float) ResourceUtils.getGameModeLandscapeAreaBottom(mContext.getResources());
+        mGestureValidDistance = ResourceUtils.getGameModeGestureValidDistance(
+                mContext.getResources(), Math.min(mDeviceHeight, mDeviceWidth));
+        mGesturePortAreaBottom = ResourceUtils.getGameModePortraitAreaBottom(
+                mContext.getResources(), Math.min(mDeviceHeight, mDeviceWidth));
+        mGestureLandAreaBottom = ResourceUtils.getGameModeLandscapeAreaBottom(
+                mContext.getResources(), Math.min(mDeviceHeight, mDeviceWidth));
         if (DEBUG_PHONE_WINDOW_MANAGER) {
-            Slog.d(TAG, ", mGestureValidDistance = " + mGestureValidDistance
+            Slog.d(TAG, "mGestureValidDistance = " + mGestureValidDistance
                     + ", mGesturePortAreaBottom = " + mGesturePortAreaBottom
                     + ", mGestureLandAreaBottom = " + mGestureLandAreaBottom);
         }
