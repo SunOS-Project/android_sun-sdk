@@ -28,7 +28,6 @@ public class AppPropsManager {
 
     private final IAppPropsManagerService mService;
 
-    private static volatile boolean sIsGms = false;
     private static volatile boolean sIsFinsky = false;
 
     public AppPropsManager(Context context, IAppPropsManagerService service) {
@@ -58,12 +57,12 @@ public class AppPropsManager {
             return;
         }
         final String processNameLowerCase = processName.toLowerCase();
-        sIsGms = "com.google.android.gms".equals(packageName) &&
+        final boolean isGms = "com.google.android.gms".equals(packageName) &&
                 (processNameLowerCase.contains("unstable") ||
                 processNameLowerCase.contains("pixelmigrate") ||
                 processNameLowerCase.contains("instrumentation"));
         sIsFinsky = packageName.equals("com.android.vending");
-        final Map<String, String> spoofMap = manager.getAppSpoofMap(packageName, processName, sIsGms);
+        final Map<String, String> spoofMap = manager.getAppSpoofMap(packageName, processName, isGms);
         if (spoofMap == null) {
             return;
         }
@@ -118,12 +117,13 @@ public class AppPropsManager {
 
     private static boolean isCallerSafetyNet() {
         return Arrays.stream(Thread.currentThread().getStackTrace())
-                .anyMatch(elem -> elem.getClassName().contains("DroidGuard"));
+                .anyMatch(elem -> elem.getClassName().toLowerCase()
+                    .contains("droidguard"));
     }
 
     public static void onEngineGetCertificateChain() {
         // Check stack for SafetyNet
-        if (sIsGms && isCallerSafetyNet()) {
+        if (isCallerSafetyNet()) {
             throw new UnsupportedOperationException();
         }
 
