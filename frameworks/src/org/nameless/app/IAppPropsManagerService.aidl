@@ -5,10 +5,12 @@
 
 package org.nameless.app;
 
+import android.content.ComponentName;
+
 import java.util.Map;
 
 /** @hide */
 interface IAppPropsManagerService {
 
-    Map<String, String> getAppSpoofMap(in String packageName, in String processName, boolean isGms);
+    Map<String, String> getAppSpoofMap(in ComponentName componentName);
 }

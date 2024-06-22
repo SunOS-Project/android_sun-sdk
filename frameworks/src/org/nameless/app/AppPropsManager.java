@@ -9,6 +9,7 @@ import static org.nameless.os.DebugConstants.DEBUG_APP_PROPS;
 
 import android.annotation.SystemService;
 import android.app.Application;
+import android.content.ComponentName;
 import android.content.Context;
 import android.os.Build;
 import android.os.RemoteException;
@@ -35,12 +36,12 @@ public class AppPropsManager {
     }
 
     /** @hide */
-    public Map<String, String> getAppSpoofMap(String packageName, String processName, boolean isGms) {
+    public Map<String, String> getAppSpoofMap(ComponentName componentName) {
         if (mService == null) {
             return null;
         }
         try {
-            return mService.getAppSpoofMap(packageName, processName, isGms);
+            return mService.getAppSpoofMap(componentName);
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -56,13 +57,9 @@ public class AppPropsManager {
         if (packageName == null || processName == null) {
             return;
         }
-        final String processNameLowerCase = processName.toLowerCase();
-        final boolean isGms = "com.google.android.gms".equals(packageName) &&
-                (processNameLowerCase.contains("unstable") ||
-                processNameLowerCase.contains("pixelmigrate") ||
-                processNameLowerCase.contains("instrumentation"));
+        final ComponentName component = new ComponentName(packageName, processName);
         sIsFinsky = packageName.equals("com.android.vending");
-        final Map<String, String> spoofMap = manager.getAppSpoofMap(packageName, processName, isGms);
+        final Map<String, String> spoofMap = manager.getAppSpoofMap(component);
         if (spoofMap == null) {
             return;
         }
@@ -119,6 +116,15 @@ public class AppPropsManager {
         return Arrays.stream(Thread.currentThread().getStackTrace())
                 .anyMatch(elem -> elem.getClassName().toLowerCase()
                     .contains("droidguard"));
+    }
+
+    public static boolean isComponentGms(ComponentName component) {
+        final String packageName = component.getPackageName();
+        final String processNameLowerCase = component.getClassName().toLowerCase();
+        return "com.google.android.gms".equals(packageName) &&
+                (processNameLowerCase.contains("unstable") ||
+                processNameLowerCase.contains("pixelmigrate") ||
+                processNameLowerCase.contains("instrumentation"));
     }
 
     public static void onEngineGetCertificateChain() {

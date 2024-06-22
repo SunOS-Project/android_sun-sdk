@@ -11,6 +11,7 @@ import static org.nameless.os.DebugConstants.DEBUG_APP_PROPS;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.ComponentName;
 import android.os.Build;
 import android.os.SystemProperties;
 import android.util.ArrayMap;
@@ -28,6 +29,7 @@ import java.io.FileReader;
 import java.io.InputStream;
 import java.util.Map;
 
+import org.nameless.app.AppPropsManager;
 import org.nameless.app.IAppPropsManagerService;
 import org.nameless.content.IOnlineConfigurable;
 import org.nameless.content.OnlineConfigManager;
@@ -74,10 +76,10 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
 
     private final class AppPropsManagerService extends IAppPropsManagerService.Stub {
         @Override
-        public Map<String, String> getAppSpoofMap(String packageName, String processName, boolean isGms) {
+        public Map<String, String> getAppSpoofMap(ComponentName componentName) {
             synchronized (mLock) {
-                logD("getAppSpoofMap, packageName=" + packageName + ", processName=" + processName + ", isGms=" + isGms);
-                return getAppSpoofMapLocked(packageName, processName, isGms);
+                logD("getAppSpoofMap, component=" + componentName);
+                return getAppSpoofMapLocked(componentName);
             }
         }
     }
@@ -284,12 +286,14 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
         }
     }
 
-    private Map<String, String> getAppSpoofMapLocked(String packageName, String processName, boolean isGms) {
-        Map<String, String> spoofMap = new ArrayMap<>();
-
+    private Map<String, String> getAppSpoofMapLocked(ComponentName component) {
         if (!mInitialized) {
-            return spoofMap;
+            return null;
         }
+
+        final String packageName = component.getPackageName();
+
+        Map<String, String> spoofMap = new ArrayMap<>();
 
         Map<String, String> genericMap = mPropsToChange.getOrDefault(KEY_GENERIC, null);
         if (genericMap != null) {
@@ -309,7 +313,7 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
             spoofMap.put("[PROP_LONG]TIME", String.valueOf(System.currentTimeMillis()));
         }
 
-        if (isGms) {
+        if (AppPropsManager.isComponentGms(component)) {
             Map<String, String> gmsMap = mPropsToChange.getOrDefault(KEY_GMS, null);
             if (gmsMap != null) {
                 spoofMap.putAll(gmsMap);
