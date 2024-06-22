@@ -13,6 +13,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.os.Build;
 import android.os.RemoteException;
+import android.util.ArrayMap;
 import android.util.Slog;
 
 import java.lang.reflect.Field;
@@ -29,6 +30,8 @@ public class AppPropsManager {
 
     private final IAppPropsManagerService mService;
 
+    private final ArrayMap<ComponentName, Map<String, String>> mCachedMap = new ArrayMap<>();
+
     private static volatile boolean sIsFinsky = false;
 
     public AppPropsManager(Context context, IAppPropsManagerService service) {
@@ -40,10 +43,17 @@ public class AppPropsManager {
         if (mService == null) {
             return null;
         }
+        if (mCachedMap.containsKey(componentName)) {
+            return mCachedMap.get(componentName);
+        }
         try {
-            return mService.getAppSpoofMap(componentName);
+            final Map<String, String> ret = mService.getAppSpoofMap(componentName);
+            if (ret != null) {
+                mCachedMap.put(componentName, ret);
+            }
+            return ret;
         } catch (RemoteException e) {
-            throw e.rethrowFromSystemServer();
+            return null;
         }
     }
 
