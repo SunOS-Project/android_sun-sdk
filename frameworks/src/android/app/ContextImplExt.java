@@ -5,6 +5,8 @@
 
 package android.app;
 
+import static org.nameless.os.DebugConstants.DEBUG_OP_LM;
+
 import java.util.Set;
 
 import org.nameless.content.ContextExt;
@@ -22,6 +24,9 @@ class ContextImplExt {
 
     static boolean interceptGetSystemService(String serviceName, String packageName) {
         if (ContextExt.LINEARMOTOR_VIBRATOR_SERVICE.equals(serviceName)) {
+            if (DEBUG_OP_LM) {
+                return false;
+            }
             return !LINEAR_MOTOR_VIBRATOR_WHITELIST.contains(packageName);
         }
         return false;

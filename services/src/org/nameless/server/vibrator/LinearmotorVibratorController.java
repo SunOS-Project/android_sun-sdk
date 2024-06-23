@@ -6,6 +6,7 @@
 package org.nameless.server.vibrator;
 
 import static org.nameless.content.ContextExt.LINEARMOTOR_VIBRATOR_SERVICE;
+import static org.nameless.os.DebugConstants.DEBUG_OP_LM;
 
 import android.os.Binder;
 import android.os.VibrationEffect;
@@ -20,7 +21,6 @@ import org.nameless.server.NamelessSystemExService;
 public class LinearmotorVibratorController {
 
     private static final String TAG = "LinearmotorVibratorController";
-    private static final boolean DEBUG = false;
 
     private static final VibrationEffect EFFECT_CLICK =
             VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK);
@@ -63,7 +63,7 @@ public class LinearmotorVibratorController {
     }
 
     private static void logD(String msg) {
-        if (DEBUG) {
+        if (DEBUG_OP_LM) {
             Slog.d(TAG, msg);
         }
     }

@@ -29,6 +29,7 @@ public class DebugConstants {
         CONSTANTS_MAP.put("DEBUG_GAME", "persist.sys.nameless.game.debug");
         CONSTANTS_MAP.put("DEBUG_LAUNCHER", "persist.sys.nameless.launcher.debug");
         CONSTANTS_MAP.put("DEBUG_NR_MODE", "persist.sys.nameless.radio.nrmode.debug");
+        CONSTANTS_MAP.put("DEBUG_OP_LM", "persist.sys.nameless.vibrator.oplm.debug");
         CONSTANTS_MAP.put("DEBUG_PHONE_WINDOW_MANAGER", "persist.sys.nameless.policy.debug");
         CONSTANTS_MAP.put("DEBUG_PMS", "persist.sys.nameless.pm.debug");
         CONSTANTS_MAP.put("DEBUG_POCKET", "persist.sys.nameless.pocket.debug");
@@ -114,6 +115,13 @@ public class DebugConstants {
     // Key: NrModeSwitcher, OplusRadioWrapper, SimCardListenerService
     public static final boolean DEBUG_NR_MODE = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.radio.nrmode.debug", false
+    );
+
+    // Enable this to allow third-party apps access LinearMotorVibrator
+    // TODO: Remove once we map all oplus effect ids to our HAL's
+    // Don't follow DEBUG_GLOBAL as it brings functional change
+    public static final boolean DEBUG_OP_LM = SystemProperties.getBoolean(
+        "persist.sys.nameless.vibrator.oplm.debug", false
     );
 
     // Enable this to debug PhoneWindowManagerExt
