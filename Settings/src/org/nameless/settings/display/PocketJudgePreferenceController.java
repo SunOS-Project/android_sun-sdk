@@ -23,8 +23,6 @@ import android.provider.Settings;
 
 import com.android.settings.core.TogglePreferenceController;
 
-import org.nameless.os.PocketManager;
-
 public class PocketJudgePreferenceController extends TogglePreferenceController {
 
     private final Context mContext;
@@ -48,7 +46,9 @@ public class PocketJudgePreferenceController extends TogglePreferenceController 
 
     @Override
     public int getAvailabilityStatus() {
-        return PocketManager.isSupported(mContext) ? AVAILABLE : UNSUPPORTED_ON_DEVICE;
+        return mContext.getResources().getBoolean(
+                com.android.internal.R.bool.config_pocketModeSupported)
+                ? AVAILABLE : UNSUPPORTED_ON_DEVICE;
     }
 
     @Override

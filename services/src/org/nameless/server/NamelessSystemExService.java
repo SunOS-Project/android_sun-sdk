@@ -43,7 +43,6 @@ import java.util.List;
 
 import org.nameless.display.DisplayFeatureManager;
 import org.nameless.os.BatteryFeatureManager;
-import org.nameless.os.PocketManager;
 import org.nameless.server.app.AppPropsController;
 import org.nameless.server.app.GameModeController;
 import org.nameless.server.battery.BatteryFeatureController;
@@ -95,7 +94,8 @@ public class NamelessSystemExService extends SystemService {
     public NamelessSystemExService(Context context) {
         super(context);
         mResolver = context.getContentResolver();
-        mPocketModeSupported = PocketManager.isSupported(context);
+        mPocketModeSupported = context.getResources().getBoolean(
+                com.android.internal.R.bool.config_pocketModeSupported);
     }
 
     @Override
