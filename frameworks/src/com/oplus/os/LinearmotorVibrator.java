@@ -7,6 +7,7 @@ package com.oplus.os;
 
 import android.annotation.SystemService;
 import android.content.Context;
+import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Slog;
 
@@ -31,6 +32,14 @@ public class LinearmotorVibrator {
         }
         try {
             mService.vibrate(effect);
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    public void cancelVibrate(WaveformEffect effect, IBinder token) {
+        try {
+            mService.cancelVibrate();
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }

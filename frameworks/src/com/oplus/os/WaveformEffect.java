@@ -12,6 +12,13 @@ import android.util.Slog;
 /** @hide */
 public class WaveformEffect implements Parcelable {
 
+    public static final int EFFECT_INVALID = -1;
+
+    public static final int STRENGTH_DEFAULT = -1;
+    public static final int STRENGTH_LIGHT = 0;
+    public static final int STRENGTH_MEDIUM = 1;
+    public static final int STRENGTH_STRONG = 2;
+
     public static final Parcelable.Creator<WaveformEffect> CREATOR =
             new Parcelable.Creator<WaveformEffect>() {
         @Override
@@ -25,55 +32,94 @@ public class WaveformEffect implements Parcelable {
         }
     };
 
-    private int mEffectType;
+    private boolean mAsynchronous;
     private boolean mEffectLoop;
+    private int mEffectStrength;
+    private int mEffectType;
     private boolean mStrengthSettingEnabled;
+    private int mUsageHint;
 
     private WaveformEffect() {
-        mEffectType = -1;
+        mAsynchronous = false;
         mEffectLoop = false;
+        mEffectStrength = STRENGTH_DEFAULT;
+        mEffectType = EFFECT_INVALID;
         mStrengthSettingEnabled = false;
+        mUsageHint = 0;
     }
 
-    public int getEffectType() {
-        return mEffectType;
+    private WaveformEffect(Parcel in) {
+        mAsynchronous = in.readBoolean();
+        mEffectLoop = in.readBoolean();
+        mEffectStrength = in.readInt();
+        mEffectType = in.readInt();
+        mStrengthSettingEnabled = in.readBoolean();
+        mUsageHint = in.readInt();
+    }
+
+    public boolean getAsynchronous() {
+        return mAsynchronous;
     }
 
     public boolean getEffectLoop() {
         return mEffectLoop;
     }
 
+    public int getEffectStrength() {
+        return mEffectStrength;
+    }
+
+    public int getEffectType() {
+        return mEffectType;
+    }
+
     public boolean getStrengthSettingEnabled() {
         return mStrengthSettingEnabled;
     }
 
+    public int getUsageHint() {
+        return mUsageHint;
+    }
+
     public static class Builder {
-        private int mEffectType;
+        private boolean mAsynchronous;
         private boolean mEffectLoop;
+        private int mEffectStrength;
+        private int mEffectType;
         private boolean mStrengthSettingEnabled;
+        private int mUsageHint;
 
         public Builder() {
-            mEffectType = -1;
+            mAsynchronous = false;
             mEffectLoop = false;
+            mEffectStrength = STRENGTH_DEFAULT;
+            mEffectType = EFFECT_INVALID;
             mStrengthSettingEnabled = false;
+            mUsageHint = 0;
         }
 
         public Builder(WaveformEffect effect) {
-            mEffectType = -1;
-            mEffectLoop = false;
-            mStrengthSettingEnabled = false;
+            mAsynchronous = effect.getAsynchronous();
+            mEffectLoop = effect.getEffectLoop();
+            mEffectStrength = effect.getEffectStrength();
+            mEffectType = effect.getEffectType();
+            mStrengthSettingEnabled = effect.getStrengthSettingEnabled();
+            mUsageHint = effect.getUsageHint();
         }
 
         public WaveformEffect build() {
             WaveformEffect effect = new WaveformEffect();
-            effect.mEffectType = mEffectType;
+            effect.mAsynchronous = mAsynchronous;
             effect.mEffectLoop = mEffectLoop;
+            effect.mEffectStrength = mEffectStrength;
+            effect.mEffectType = mEffectType;
             effect.mStrengthSettingEnabled = mStrengthSettingEnabled;
+            effect.mUsageHint = mUsageHint;
             return effect;
         }
 
-        public Builder setEffectType(int type) {
-            mEffectType = type;
+        public Builder setAsynchronous(boolean async) {
+            mAsynchronous = async;
             return this;
         }
 
@@ -82,8 +128,23 @@ public class WaveformEffect implements Parcelable {
             return this;
         }
 
+        public Builder setEffectStrength(int strength) {
+            mEffectStrength = strength;
+            return this;
+        }
+
+        public Builder setEffectType(int type) {
+            mEffectType = type;
+            return this;
+        }
+
         public Builder setStrengthSettingEnabled(boolean enabled) {
             mStrengthSettingEnabled = enabled;
+            return this;
+        }
+
+        public Builder setUsageHint(int usageHint) {
+            mUsageHint = usageHint;
             return this;
         }
     }
@@ -95,22 +156,22 @@ public class WaveformEffect implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(mEffectType);
+        dest.writeBoolean(mAsynchronous);
         dest.writeBoolean(mEffectLoop);
+        dest.writeInt(mEffectStrength);
+        dest.writeInt(mEffectType);
         dest.writeBoolean(mStrengthSettingEnabled);
-    }
-
-    private WaveformEffect(Parcel in) {
-        mEffectType = in.readInt();
-        mEffectLoop = in.readBoolean();
-        mStrengthSettingEnabled = in.readBoolean();
+        dest.writeInt(mUsageHint);
     }
 
     @Override
     public String toString() {
-        return "{mEffectType=" + mEffectType
+        return "{mAsynchronous=" + mAsynchronous
                 + ", mEffectLoop=" + mEffectLoop
+                + ", mEffectStrength=" + mEffectStrength
+                + ", mEffectType=" + mEffectType
                 + ", mStrengthSettingEnabled=" + mStrengthSettingEnabled
+                + ", mUsageHint=" + mUsageHint
                 + "}";
     }
 }

@@ -11,4 +11,5 @@ import com.oplus.os.WaveformEffect;
 interface ILinearmotorVibratorService {
 
     void vibrate(in WaveformEffect effect);
+    void cancelVibrate();
 }

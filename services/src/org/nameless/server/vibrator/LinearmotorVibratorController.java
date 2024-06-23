@@ -42,10 +42,23 @@ public class LinearmotorVibratorController {
             if (mVibrator == null) {
                 return;
             }
+            logD("vibrate, WaveformEffect: " + effect);
             final long ident = Binder.clearCallingIdentity();
             try {
-                logD("WaveformEffect: " + effect);
                 mVibrator.vibrate(EFFECT_CLICK); // TODO: Use different effect for each WaveformEffect id.
+            } finally {
+                Binder.restoreCallingIdentity(ident);
+            }
+        }
+
+        @Override
+        public void cancelVibrate() {
+            if (mVibrator == null) {
+                return;
+            }
+            final long ident = Binder.clearCallingIdentity();
+            try {
+                mVibrator.cancel();
             } finally {
                 Binder.restoreCallingIdentity(ident);
             }
