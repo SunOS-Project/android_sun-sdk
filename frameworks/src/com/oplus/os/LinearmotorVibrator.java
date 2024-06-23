@@ -5,6 +5,8 @@
 
 package com.oplus.os;
 
+import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.annotation.SystemService;
 import android.content.Context;
 import android.os.IBinder;
@@ -13,7 +15,6 @@ import android.util.Slog;
 
 import org.nameless.content.ContextExt;
 
-/** @hide */
 @SystemService(ContextExt.LINEARMOTOR_VIBRATOR_SERVICE)
 public class LinearmotorVibrator {
 
@@ -21,11 +22,12 @@ public class LinearmotorVibrator {
 
     private final ILinearmotorVibratorService mService;
 
+    /** @hide */
     public LinearmotorVibrator(Context context, ILinearmotorVibratorService service) {
         mService = service;
     }
 
-    public void vibrate(WaveformEffect effect) {
+    public void vibrate(@Nullable WaveformEffect effect) {
         if (effect == null) {
             Slog.w(TAG, "Ignore vibrate in favor of invalid params.");
             return;
@@ -37,7 +39,7 @@ public class LinearmotorVibrator {
         }
     }
 
-    public void cancelVibrate(WaveformEffect effect, IBinder token) {
+    public void cancelVibrate(@Nullable WaveformEffect effect, @NonNull IBinder token) {
         try {
             mService.cancelVibrate();
         } catch (RemoteException e) {

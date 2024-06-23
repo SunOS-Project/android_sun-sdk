@@ -5,11 +5,11 @@
 
 package com.oplus.os;
 
+import android.annotation.NonNull;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Slog;
 
-/** @hide */
 public class WaveformEffect implements Parcelable {
 
     public static final int EFFECT_INVALID = -1;
@@ -19,6 +19,7 @@ public class WaveformEffect implements Parcelable {
     public static final int STRENGTH_MEDIUM = 1;
     public static final int STRENGTH_STRONG = 2;
 
+    /** @hide */
     public static final Parcelable.Creator<WaveformEffect> CREATOR =
             new Parcelable.Creator<WaveformEffect>() {
         @Override
@@ -107,7 +108,7 @@ public class WaveformEffect implements Parcelable {
             mUsageHint = effect.getUsageHint();
         }
 
-        public WaveformEffect build() {
+        public @NonNull WaveformEffect build() {
             WaveformEffect effect = new WaveformEffect();
             effect.mAsynchronous = mAsynchronous;
             effect.mEffectLoop = mEffectLoop;
@@ -118,32 +119,32 @@ public class WaveformEffect implements Parcelable {
             return effect;
         }
 
-        public Builder setAsynchronous(boolean async) {
+        public @NonNull Builder setAsynchronous(boolean async) {
             mAsynchronous = async;
             return this;
         }
 
-        public Builder setEffectLoop(boolean loop) {
+        public @NonNull Builder setEffectLoop(boolean loop) {
             mEffectLoop = loop;
             return this;
         }
 
-        public Builder setEffectStrength(int strength) {
+        public @NonNull Builder setEffectStrength(int strength) {
             mEffectStrength = strength;
             return this;
         }
 
-        public Builder setEffectType(int type) {
+        public @NonNull Builder setEffectType(int type) {
             mEffectType = type;
             return this;
         }
 
-        public Builder setStrengthSettingEnabled(boolean enabled) {
+        public @NonNull Builder setStrengthSettingEnabled(boolean enabled) {
             mStrengthSettingEnabled = enabled;
             return this;
         }
 
-        public Builder setUsageHint(int usageHint) {
+        public @NonNull Builder setUsageHint(int usageHint) {
             mUsageHint = usageHint;
             return this;
         }

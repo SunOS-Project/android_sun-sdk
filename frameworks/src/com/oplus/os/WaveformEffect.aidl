@@ -5,5 +5,4 @@
 
 package com.oplus.os;
 
-/** @hide */
 parcelable WaveformEffect;
