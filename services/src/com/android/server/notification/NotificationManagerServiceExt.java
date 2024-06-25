@@ -68,7 +68,7 @@ class NotificationManagerServiceExt {
         if (GameModeController.getInstance().shouldSilentNotification()) {
             return true;
         }
-        return mService.mScreenOn && mSilentNotificationScreenOn;
+        return mService.getScreenOn() && mSilentNotificationScreenOn;
     }
 
     void setNeedUpdateVibration() {
