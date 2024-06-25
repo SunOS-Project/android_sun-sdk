@@ -30,7 +30,8 @@ class ActivityManagerServiceExt {
         ACTION_START_PINNED_WINDOW,
         ACTION_UPDATE_CONFIG,
         DOZE_INTENT,
-        INTENT_RESET_CLONE_USER_ID
+        INTENT_RESET_CLONE_USER_ID,
+        "com.dolby.intent.action.DAP_PARAMS_UPDATE"
     );
 
     static ActivityManagerServiceExt getInstance() {
