@@ -175,17 +175,19 @@ public class TouchGestureController {
     }
 
     public boolean handleKeyEvent(int scanCode, boolean down) {
-        final int action = mGestureActionMap.getOrDefault(scanCode, -1);
-        if (!down) {
-            if (DEBUG_TOUCH_GESTURE) {
-                Slog.d(TAG, "handleKeyEvent, scanCode=" + scanCode + ", action=" + actionToString(action));
+        synchronized (mGestureActionMap) {
+            final int action = mGestureActionMap.getOrDefault(scanCode, -1);
+            if (!down) {
+                if (DEBUG_TOUCH_GESTURE) {
+                    Slog.d(TAG, "handleKeyEvent, scanCode=" + scanCode + ", action=" + actionToString(action));
+                }
+                if (action > ACTION_NONE) {
+                    mHandler.post(() -> mActionTrigger.trigger(action));
+                    return true;
+                }
             }
-            if (action > ACTION_NONE) {
-                mHandler.post(() -> mActionTrigger.trigger(action));
-                return true;
-            }
+            return action != -1;
         }
-        return action != -1;
     }
 
     public void updateSettings() {
@@ -221,8 +223,10 @@ public class TouchGestureController {
         if (DEBUG_TOUCH_GESTURE) {
             Slog.d(TAG, "updateSingleTap, singleTapEnabled=" + singleTapEnabled);
         }
-        mGestureActionMap.put(TouchGestureManager.KEY_CODE_SINGLE_TAP,
-                singleTapEnabled ? ACTION_SHOW_AMBIENT_DISPLAY : ACTION_NONE);
+        synchronized (mGestureActionMap) {
+            mGestureActionMap.put(TouchGestureManager.KEY_CODE_SINGLE_TAP,
+                    singleTapEnabled ? ACTION_SHOW_AMBIENT_DISPLAY : ACTION_NONE);
+        } 
     }
 
     private void updateMusicControl() {
@@ -231,12 +235,14 @@ public class TouchGestureController {
         if (DEBUG_TOUCH_GESTURE) {
             Slog.d(TAG, "updateMusicControl, musicControlEnabled=" + musicControlEnabled);
         }
-        mGestureActionMap.put(TouchGestureManager.KEY_CODE_LEFT_ARROW,
-                musicControlEnabled ? ACTION_LAST_SONG : ACTION_NONE);
-        mGestureActionMap.put(TouchGestureManager.KEY_CODE_RIGHT_ARROW,
-                musicControlEnabled ? ACTION_NEXT_SONG : ACTION_NONE);
-        mGestureActionMap.put(TouchGestureManager.KEY_CODE_TWO_FINGERS_DOWN,
-                musicControlEnabled ? ACTION_PLAY_PAUSE_SONG : ACTION_NONE);
+        synchronized (mGestureActionMap) {
+            mGestureActionMap.put(TouchGestureManager.KEY_CODE_LEFT_ARROW,
+                    musicControlEnabled ? ACTION_LAST_SONG : ACTION_NONE);
+            mGestureActionMap.put(TouchGestureManager.KEY_CODE_RIGHT_ARROW,
+                    musicControlEnabled ? ACTION_NEXT_SONG : ACTION_NONE);
+            mGestureActionMap.put(TouchGestureManager.KEY_CODE_TWO_FINGERS_DOWN,
+                    musicControlEnabled ? ACTION_PLAY_PAUSE_SONG : ACTION_NONE);
+        }
     }
 
     private void updateDrawM() {
@@ -245,13 +251,17 @@ public class TouchGestureController {
         if (DEBUG_TOUCH_GESTURE) {
             Slog.d(TAG, "updateDrawM, action=" + actionToString(action));
         }
-        mGestureActionMap.put(TouchGestureManager.KEY_CODE_M, action);
+        synchronized (mGestureActionMap) {
+            mGestureActionMap.put(TouchGestureManager.KEY_CODE_M, action);
+        }
     }
 
     private void updateDrawO() {
         final int action = Settings.System.getIntForUser(mResolver,
                 TOUCH_GESTURE_O, ACTION_NONE, UserHandle.USER_CURRENT);
-        mGestureActionMap.put(TouchGestureManager.KEY_CODE_O, action);
+        synchronized (mGestureActionMap) {
+            mGestureActionMap.put(TouchGestureManager.KEY_CODE_O, action);
+        }
     }
 
     private void updateDrawS() {
@@ -260,7 +270,9 @@ public class TouchGestureController {
         if (DEBUG_TOUCH_GESTURE) {
             Slog.d(TAG, "updateDrawS, action=" + actionToString(action));
         }
-        mGestureActionMap.put(TouchGestureManager.KEY_CODE_S, action);
+        synchronized (mGestureActionMap) {
+            mGestureActionMap.put(TouchGestureManager.KEY_CODE_S, action);
+        }
     }
 
     private void updateDrawV() {
@@ -269,7 +281,9 @@ public class TouchGestureController {
         if (DEBUG_TOUCH_GESTURE) {
             Slog.d(TAG, "updateDrawV, action=" + actionToString(action));
         }
-        mGestureActionMap.put(TouchGestureManager.KEY_CODE_V, action);
+        synchronized (mGestureActionMap) {
+            mGestureActionMap.put(TouchGestureManager.KEY_CODE_V, action);
+        }
     }
 
     private void updateDrawW() {
@@ -278,6 +292,8 @@ public class TouchGestureController {
         if (DEBUG_TOUCH_GESTURE) {
             Slog.d(TAG, "updateDrawW, action=" + actionToString(action));
         }
-        mGestureActionMap.put(TouchGestureManager.KEY_CODE_W, action);
+        synchronized (mGestureActionMap) {
+            mGestureActionMap.put(TouchGestureManager.KEY_CODE_W, action);
+        }
     }
 }
