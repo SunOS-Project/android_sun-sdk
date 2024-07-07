@@ -11,8 +11,7 @@ import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_DOWN;
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_MOVE;
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_MOVE_TRIGGERED;
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_NONE;
-import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_UP;
-import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_UP_TRIGGERED;
+import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_RESET;
 
 import static org.nameless.os.DebugConstants.DEBUG_PHONE_WINDOW_MANAGER;
 import static org.nameless.server.policy.gesture.GestureListenerBase.motionEventToString;
@@ -416,10 +415,8 @@ public class PhoneWindowManagerExt {
                 return "SYSTEM_GESTURE_MOVE_TRIGGERED";
             case SYSTEM_GESTURE_NONE:
                 return "SYSTEM_GESTURE_NONE";
-            case SYSTEM_GESTURE_UP:
-                return "SYSTEM_GESTURE_UP";
-            case SYSTEM_GESTURE_UP_TRIGGERED:
-                return "SYSTEM_GESTURE_UP_TRIGGERED";
+            case SYSTEM_GESTURE_RESET:
+                return "SYSTEM_GESTURE_RESET";
             default:
                 return "UNKNOWN";
         }

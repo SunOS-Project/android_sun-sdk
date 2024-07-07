@@ -25,8 +25,6 @@ public class WindowModeGestureListener extends GestureListenerBase {
 
     private static final float ANGLE_THRESHOLD = 20.0f;
 
-    private float mDownPosX = 0.0f;
-    private float mDownPosY = 0.0f;
     private float mSquaredSlop;
     private float mValDisFromCorner;
 
@@ -48,6 +46,72 @@ public class WindowModeGestureListener extends GestureListenerBase {
     }
 
     @Override
+    public boolean onActionDown(MotionEvent event) {
+        if (!hasRegisterClient()) {
+            return false;
+        }
+        if (mDisabledByGame) {
+            return false;
+        }
+        mDownPosX = event.getRawX();
+        mDownPosY = event.getRawY();
+        mDownTime = System.currentTimeMillis();
+        if (canTriggerWindowModeAction(event)) {
+            mGesturePreTriggerConsumed = notifyGesturePreTriggerBefore(event);
+        } else {
+            mGesturePreTriggerConsumed = false;
+        }
+        if (mGesturePreTriggerConsumed) {
+            mGestureState = GestureState.PENDING_CHECK;
+        }
+        if (DEBUG_PHONE_WINDOW_MANAGER) {
+            Slog.d(TAG, "onActionDown, mGesturePreTriggerConsumed="
+                    + mGesturePreTriggerConsumed + ", mGestureState=" + mGestureState);
+        }
+        if (mGestureState != GestureState.PENDING_CHECK) {
+            return false;
+        }
+        notifyGesturePreTrigger(event);
+        return true;
+    }
+
+    @Override
+    public boolean onActionMove(MotionEvent event) {
+        if (mGestureState == GestureState.PENDING_CHECK) {
+            checkWindowModeGesture(event);
+        }
+        if (mGestureState == GestureState.TRIGGERED) {
+            notifyGestureTriggered(event);
+        }
+        if (DEBUG_PHONE_WINDOW_MANAGER) {
+            Slog.d(TAG, "onActionMove, mGestureState=" + mGestureState);
+        }
+        return true;
+    }
+
+    @Override
+    public void onActionUp(MotionEvent event) {
+        if (mGestureState == GestureState.TRIGGERED) {
+            notifyGestureTriggered(event);
+        } else {
+            notifyGestureCanceled();
+        }
+        if (DEBUG_PHONE_WINDOW_MANAGER) {
+            Slog.d(TAG, "onActionUp, mGestureState=" + mGestureState);
+        }
+        super.onActionUp(event);
+    }
+
+    @Override
+    public void onActionCancel(MotionEvent event) {
+        notifyGestureCanceled();
+        if (DEBUG_PHONE_WINDOW_MANAGER) {
+            Slog.d(TAG, "onActionCancel");
+        }
+        super.onActionCancel(event);
+    }
+
+    @Override
     protected boolean hasRegisterClient() {
         if (mSystemGestureClient != null) {
             final WindowState windowState =
@@ -57,65 +121,8 @@ public class WindowModeGestureListener extends GestureListenerBase {
         return false;
     }
 
-    @Override
-    public boolean interceptMotionBeforeQueueing(MotionEvent event) {
-        boolean result = false;
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                if (!hasRegisterClient()) {
-                    return result;
-                }
-                if (mDisabledByGame) {
-                    return result;
-                }
-                mDownPosX = event.getRawX();
-                mDownPosY = event.getRawY();
-                mMotionDownTime = System.currentTimeMillis();
-                if (canTriggerWindowModeAction(event)) {
-                    mGesturePreTriggerConsumed = notifyGesturePreTriggerBefore(event);
-                } else {
-                    mGesturePreTriggerConsumed = false;
-                }
-                if (mGesturePreTriggerConsumed) {
-                    mGestureState = GestureState.PENDING_CHECK;
-                }
-                if (DEBUG_PHONE_WINDOW_MANAGER) {
-                    Slog.d(TAG, "interceptMotionBeforeQueueing, mGesturePreTriggerConsumed="
-                            + mGesturePreTriggerConsumed + ", mGestureState=" + mGestureState);
-                }
-                if (mGestureState != GestureState.TRIGGERED && mGestureState != GestureState.PENDING_CHECK) {
-                    return result;
-                }
-                notifyGesturePreTrigger(event);
-                return true;
-            case MotionEvent.ACTION_CANCEL:
-            case MotionEvent.ACTION_UP:
-                if (mGestureState == GestureState.PENDING_CHECK ||
-                        mGestureState == GestureState.TRIGGERED ||
-                        mGestureState == GestureState.CANCELED) {
-                    if (mGestureState == GestureState.TRIGGERED && event.getAction() == MotionEvent.ACTION_UP) {
-                        notifyGestureTriggered(event);
-                    } else if (mGestureState == GestureState.CANCELED || mGestureState == GestureState.PENDING_CHECK) {
-                        notifyGestureCanceled();
-                    }
-                }
-                mGesturePreTriggerConsumed = false;
-                return true;
-            case MotionEvent.ACTION_MOVE:
-                if (mGestureState == GestureState.PENDING_CHECK) {
-                    checkWindowModeGesture(event);
-                }
-                if (mGestureState == GestureState.TRIGGERED) {
-                    notifyGestureTriggered(event);
-                }
-                return mGestureState != GestureState.IDLE;
-            default:
-                return result;
-        }
-    }
-
     private void checkWindowModeGesture(MotionEvent event) {
-        if (System.currentTimeMillis() - mMotionDownTime > GESTURE_TRIGGER_TIME_OUT) {
+        if (System.currentTimeMillis() - mDownTime > GESTURE_TRIGGER_TIME_OUT) {
             if (DEBUG_PHONE_WINDOW_MANAGER) {
                 Slog.d(TAG, "Window mode gesture time out");
             }

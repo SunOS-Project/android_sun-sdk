@@ -24,8 +24,6 @@ public class GameModeGestureListener extends GestureListenerBase {
 
     private static final float ANGLE_THRESHOLD = 64.0f;
 
-    private float mDownPosX = 0.0f;
-    private float mDownPosY = 0.0f;
     private float mGesturePortAreaBottom;
     private float mGestureLandAreaBottom;
     private float mGestureValidDistance;
@@ -60,70 +58,79 @@ public class GameModeGestureListener extends GestureListenerBase {
     }
 
     @Override
-    public boolean interceptMotionBeforeQueueing(MotionEvent event) {
-        boolean result = false;
-        switch (event.getActionMasked()) {
-            case MotionEvent.ACTION_DOWN:
-                if (!hasRegisterClient()) {
-                    return false;
-                }
-                mDownPosX = event.getRawX();
-                mDownPosY = event.getRawY();
-                mMotionDownTime = System.currentTimeMillis();
-                if (isInGameModeGestureArea(event)) {
-                    mGesturePreTriggerConsumed = notifyGesturePreTriggerBefore(event);
-                } else {
-                    mGesturePreTriggerConsumed = false;
-                }
-                if (mGesturePreTriggerConsumed) {
-                    mGestureState = GestureListenerBase.GestureState.PENDING_CHECK;
-                }
-                if (DEBUG_PHONE_WINDOW_MANAGER) {
-                    Slog.d(TAG, "interceptMotionBeforeQueueing, mGesturePreTriggerConsumed="
-                            + mGesturePreTriggerConsumed + ", mGestureState=" + mGestureState);
-                }
-                if (mGestureState != GestureListenerBase.GestureState.TRIGGERED && mGestureState != GestureListenerBase.GestureState.PENDING_CHECK) {
-                    return result;
-                }
-                notifyGesturePreTrigger(event);
-                return true;
-            case MotionEvent.ACTION_CANCEL:
-            case MotionEvent.ACTION_UP:
-                if (mGestureState == GestureState.PENDING_CHECK ||
-                        mGestureState == GestureState.TRIGGERED ||
-                        mGestureState == GestureState.CANCELED) {
-                    if (mGestureState == GestureState.TRIGGERED && event.getAction() == MotionEvent.ACTION_UP) {
-                        notifyGestureTriggered(event);
-                    } else if (mGestureState == GestureState.CANCELED || mGestureState == GestureState.PENDING_CHECK) {
-                        notifyGestureCanceled();
-                    }
-                }
-                mGesturePreTriggerConsumed = false;
-                return true;
-            case MotionEvent.ACTION_MOVE:
-                if (mGestureState == GestureListenerBase.GestureState.PENDING_CHECK) {
-                    checkGameModeGesture(event);
-                }
-                if (mGestureState == GestureListenerBase.GestureState.TRIGGERED) {
-                    notifyGestureTriggered(event);
-                }
-                return mGestureState != GestureState.IDLE;
-            default:
-                return result;
+    public boolean onActionDown(MotionEvent event) {
+        if (!hasRegisterClient()) {
+            return false;
         }
+        mDownPosX = event.getRawX();
+        mDownPosY = event.getRawY();
+        mDownTime = System.currentTimeMillis();
+        if (isInGameModeGestureArea(event)) {
+            mGesturePreTriggerConsumed = notifyGesturePreTriggerBefore(event);
+        } else {
+            mGesturePreTriggerConsumed = false;
+        }
+        if (mGesturePreTriggerConsumed) {
+            mGestureState = GestureState.PENDING_CHECK;
+        }
+        if (DEBUG_PHONE_WINDOW_MANAGER) {
+            Slog.d(TAG, "onActionDown, mGesturePreTriggerConsumed="
+                    + mGesturePreTriggerConsumed + ", mGestureState=" + mGestureState);
+        }
+        if (mGestureState != GestureState.PENDING_CHECK) {
+            return false;
+        }
+        notifyGesturePreTrigger(event);
+        return true;
+    }
+
+    @Override
+    public boolean onActionMove(MotionEvent event) {
+        if (mGestureState == GestureState.PENDING_CHECK) {
+            checkGameModeGesture(event);
+        }
+        if (mGestureState == GestureState.TRIGGERED) {
+            notifyGestureTriggered(event);
+        }
+        if (DEBUG_PHONE_WINDOW_MANAGER) {
+            Slog.d(TAG, "onActionMove, mGestureState=" + mGestureState);
+        }
+        return true;
+    }
+
+    @Override
+    public void onActionUp(MotionEvent event) {
+        if (mGestureState == GestureState.TRIGGERED) {
+            notifyGestureTriggered(event);
+        } else {
+            notifyGestureCanceled();
+        }
+        if (DEBUG_PHONE_WINDOW_MANAGER) {
+            Slog.d(TAG, "onActionUp, mGestureState=" + mGestureState);
+        }
+        super.onActionUp(event);
+    }
+
+    @Override
+    public void onActionCancel(MotionEvent event) {
+        notifyGestureCanceled();
+        if (DEBUG_PHONE_WINDOW_MANAGER) {
+            Slog.d(TAG, "onActionCancel");
+        }
+        super.onActionCancel(event);
     }
 
     private void checkGameModeGesture(MotionEvent event) {
-        if (System.currentTimeMillis() - mMotionDownTime > GESTURE_TRIGGER_TIME_OUT) {
+        if (System.currentTimeMillis() - mDownTime > GESTURE_TRIGGER_TIME_OUT) {
             if (DEBUG_PHONE_WINDOW_MANAGER) {
                 Slog.d(TAG, "Game mode gesture time out");
             }
-            mGestureState = GestureListenerBase.GestureState.CANCELED;
+            mGestureState = GestureState.CANCELED;
         } else if (squaredHypot(event.getRawX() - mDownPosX, event.getRawY() - mDownPosY) > mSquaredSlop) {
             if (isValidGestureAngle(Math.abs(mDownPosX - event.getRawX()), Math.abs(mDownPosY - event.getRawY()))) {
-                mGestureState = GestureListenerBase.GestureState.TRIGGERED;
+                mGestureState = GestureState.TRIGGERED;
             } else {
-                mGestureState = GestureListenerBase.GestureState.CANCELED;
+                mGestureState = GestureState.CANCELED;
             }
         }
     }

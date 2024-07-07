@@ -20,7 +20,7 @@ import com.android.internal.R;
 
 import com.android.server.policy.PhoneWindowManagerExt;
 
-public abstract class GestureListenerBase implements IGestureListener {
+public abstract class GestureListenerBase {
 
     protected final String TAG = "GestureListenerBase";
 
@@ -34,10 +34,12 @@ public abstract class GestureListenerBase implements IGestureListener {
     protected SystemGestureClient mSystemGestureClient;
 
     protected GestureState mGestureState = GestureState.IDLE;
-    protected boolean mGesturePreTriggerConsumed = false;
-    protected long mMotionDownTime = 0L;
+    protected boolean mGesturePreTriggerConsumed;
+    protected float mDownPosX;
+    protected float mDownPosY;
+    protected long mDownTime;
 
-    protected boolean mDisabledByGame = false;
+    protected boolean mDisabledByGame;
 
     protected int mDeviceHeight;
     protected int mDeviceWidth;
@@ -71,12 +73,32 @@ public abstract class GestureListenerBase implements IGestureListener {
         updateConfigureInfo();
     }
 
-    @Override
-    public boolean interceptMotionBeforeQueueing(MotionEvent event) {
+    protected void reset() {
+        mGesturePreTriggerConsumed = false;
+        mGestureState = GestureState.IDLE;
+        mDownPosX = 0f;
+        mDownPosY = 0f;
+        mDownTime = 0L;
+    }
+
+    public boolean onActionDown(MotionEvent event) {
         return false;
     }
 
+    public boolean onActionMove(MotionEvent event) {
+        return false;
+    }
+
+    public void onActionUp(MotionEvent event) {
+        reset();
+    }
+
+    public void onActionCancel(MotionEvent event) {
+        reset();
+    }
+
     protected void onConfigureChanged() {
+        reset();
     }
 
     protected boolean hasRegisterClient() {

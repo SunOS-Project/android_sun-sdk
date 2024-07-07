@@ -11,25 +11,17 @@ import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_DOWN;
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_MOVE;
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_MOVE_TRIGGERED;
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_NONE;
-import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_UP;
-import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_UP_TRIGGERED;
+import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_RESET;
 
-import android.app.Instrumentation;
 import android.content.Context;
-import android.graphics.PointF;
 import android.os.Binder;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
-import android.os.Message;
 import android.os.RemoteException;
-import android.os.SystemClock;
 import android.util.Slog;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 
-import com.android.server.ServiceThread;
 import com.android.server.policy.PhoneWindowManager;
 import com.android.server.policy.PhoneWindowManagerExt;
 
@@ -44,8 +36,6 @@ public class SystemGesture {
 
     private static final String TAG = "SystemGesture";
 
-    private static final int MSG_DISPATCH_MOVE = 1;
-
     private final Context mContext;
     private final Display mDisplay;
     private final PhoneWindowManagerExt mPhoneWindowManagerExt;
@@ -53,13 +43,8 @@ public class SystemGesture {
     private final ArrayList<GestureListenerBase> mGestureListeners = new ArrayList<>();
     private final ArrayList<SystemGestureClient> mSystemGestureClients = new ArrayList<>();
 
-    private final Handler mHandler;
-    private final ServiceThread mServiceThread;
-
     private final GameModeGestureListener mGameModeGestureListener;
     private final WindowModeGestureListener mWindowModeGestureListener;
-
-    private PointF mLastDownPos;
 
     private GestureListenerBase mTargetGestureListener;
 
@@ -71,10 +56,6 @@ public class SystemGesture {
         mPhoneWindowManagerExt = ext;
         mContext = context;
         mDisplay = context.getSystemService(WindowManager.class).getDefaultDisplay();
-
-        mServiceThread = new ServiceThread(TAG, THREAD_PRIORITY_DEFAULT, false);
-        mServiceThread.start();
-        mHandler = new H(mServiceThread.getLooper());
 
         mGameModeGestureListener = new GameModeGestureListener(
                 this, ext, mContext);
@@ -105,60 +86,45 @@ public class SystemGesture {
     }
 
     public int interceptMotionBeforeQueueing(MotionEvent event) {
-        if (mHandler.hasMessages(MSG_DISPATCH_MOVE)) {
-            mHandler.removeMessages(MSG_DISPATCH_MOVE);
-        }
-
-        boolean intercept = false;
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
-                mTouching = true;
+                setTouching(true);
                 for (GestureListenerBase listener : mGestureListeners) {
-                    if (listener.interceptMotionBeforeQueueing(event)) {
-                        intercept = true;
+                    if (listener.onActionDown(event)) {
                         mTargetGestureListener = listener;
-                        mLastDownPos = new PointF(event.getRawX(), event.getRawY());
-                        if (intercept) {
-                            mHandler.sendEmptyMessageDelayed(MSG_DISPATCH_MOVE, 300L);
-                        }
-                        break;
+                        return SYSTEM_GESTURE_DOWN;
                     }
                 }
-                return intercept ? SYSTEM_GESTURE_DOWN : SYSTEM_GESTURE_NONE;
+                return SYSTEM_GESTURE_NONE;
             case MotionEvent.ACTION_MOVE:
                 if (mTargetGestureListener == null) {
                     return SYSTEM_GESTURE_NONE;
                 }
-                if (mTargetGestureListener.interceptMotionBeforeQueueing(event)) {
-                    return mTargetGestureListener.mGestureState == GestureState.TRIGGERED
-                            ? SYSTEM_GESTURE_MOVE_TRIGGERED : SYSTEM_GESTURE_MOVE;
+                if (mTargetGestureListener.onActionMove(event)) {
+                    if (mTargetGestureListener.mGestureState == GestureState.TRIGGERED) {
+                        return SYSTEM_GESTURE_MOVE_TRIGGERED;
+                    }
+                    if (mTargetGestureListener.mGestureState == GestureState.PENDING_CHECK) {
+                        return SYSTEM_GESTURE_MOVE;
+                    }
                 }
                 return SYSTEM_GESTURE_NONE;
             case MotionEvent.ACTION_UP:
-                mTouching = false;
-                mDisplayFeatureController.maybeUpdateGameState();
+                setTouching(false);
                 if (mTargetGestureListener == null) {
                     return SYSTEM_GESTURE_NONE;
                 }
-                final int ret;
-                if (mTargetGestureListener.interceptMotionBeforeQueueing(event)) {
-                    ret = mTargetGestureListener.mGestureState == GestureState.TRIGGERED
-                            ? SYSTEM_GESTURE_UP_TRIGGERED : SYSTEM_GESTURE_UP;
-                    mTargetGestureListener.mGestureState = GestureState.IDLE;
-                } else {
-                    ret = SYSTEM_GESTURE_NONE;
-                }
+                mTargetGestureListener.onActionUp(event);
                 mTargetGestureListener = null;
-                return ret;
+                return SYSTEM_GESTURE_RESET;
             case MotionEvent.ACTION_CANCEL:
-                mTouching = false;
-                mDisplayFeatureController.maybeUpdateGameState();
-                if (mTargetGestureListener != null) {
-                    mTargetGestureListener.interceptMotionBeforeQueueing(event);
-                    mTargetGestureListener.mGestureState = GestureState.IDLE;
+                setTouching(false);
+                if (mTargetGestureListener == null) {
+                    return SYSTEM_GESTURE_NONE;
                 }
+                mTargetGestureListener.onActionCancel(event);
                 mTargetGestureListener = null;
-                return SYSTEM_GESTURE_NONE;
+                return SYSTEM_GESTURE_RESET;
             default:
                 return SYSTEM_GESTURE_NONE;
         }
@@ -181,6 +147,15 @@ public class SystemGesture {
 
     public boolean isTouching() {
         return mTouching;
+    }
+
+    private void setTouching(boolean touching) {
+        if (touching) {
+            mTouching = true;
+        } else {
+            mTouching = false;
+            mDisplayFeatureController.maybeUpdateGameState();
+        }
     }
 
     public void registerSystemGestureListener(String pkg, int gesture, ISystemGestureListener listener)
@@ -227,31 +202,6 @@ public class SystemGesture {
             Slog.w(TAG, "Death received from " + mPkg + ", with gesture " + mGesture + " for uid " + mUid);
             synchronized (mSystemGestureClients) {
                 mSystemGestureClients.remove(mClient);
-            }
-        }
-    }
-
-    private final class H extends Handler {
-        H(Looper looper) {
-            super(looper);
-        }
-
-        @Override
-        public void handleMessage(Message message) {
-            switch (message.what) {
-                case MSG_DISPATCH_MOVE:
-                    if (mLastDownPos != null) {
-                        final Instrumentation inst = new Instrumentation();
-                        try {
-                            inst.sendPointerSync(MotionEvent.obtain(SystemClock.uptimeMillis(),
-                                    SystemClock.uptimeMillis(), MotionEvent.ACTION_MOVE,
-                                    mLastDownPos.x, mLastDownPos.y, 0));
-                        } catch (Exception e) {
-                            Slog.w(TAG, "Failed to dispatch move motion event");
-                        }
-                        mLastDownPos = null;
-                    }
-                    break;
             }
         }
     }
