@@ -540,6 +540,7 @@ public class PopUpWindowController {
                 activityOptions.getLaunchWindowingMode() == WINDOWING_MODE_PINNED_WINDOW_EXT) {
             if (mNextRecentIsPin) {
                 mNextRecentIsPin = false;
+                mAtmService.focusTopTask(DEFAULT_DISPLAY);
             } else {
                 mLaunchPopUpViewFromRecents = true;
             }

@@ -18,12 +18,12 @@ import android.os.VibrationAttributes;
 import android.os.VibrationExtInfo;
 
 import com.android.systemui.settings.UserTracker;
+import com.android.systemui.shared.system.FullscreenTaskStackChangeListener;
+import com.android.systemui.shared.system.TaskStackChangeListeners;
 import com.android.systemui.statusbar.VibratorHelper;
 import com.android.systemui.util.settings.SystemSettings;
 
 import java.util.concurrent.Executor;
-
-import org.nameless.systemui.statusbar.policy.ForegroundActivityListener;
 
 class ScreenshotControllerExt {
 
@@ -39,21 +39,28 @@ class ScreenshotControllerExt {
             VibrationAttributes.createForUsage(VibrationAttributes.USAGE_HARDWARE_FEEDBACK);
 
     private ContentObserver mSettingsObserver;
-    private ForegroundActivityListener mForegroundActivityListener;
+    private FullscreenTaskStackChangeListener mFullscreenTaskStackChangeListener;
     private SystemSettings mSystemSettings;
+    private TaskStackChangeListeners mTaskStackChangeListeners;
     private UserTracker mUserTracker;
     private UserTracker.Callback mUserTrackerCallback;
     private VibratorHelper mVibratorHelper;
 
     private boolean mScreenshotSound;
 
-    void init(Executor executor, Handler handler, SystemSettings systemSettings,
-            UserTracker userTracker, VibratorHelper vibratorHelper,
-            ForegroundActivityListener foregroundActivityListener) {
-        mForegroundActivityListener = foregroundActivityListener;
+    void init(Context context, Executor executor, Handler handler,
+            SystemSettings systemSettings,
+            TaskStackChangeListeners taskStackChangeListeners,
+            UserTracker userTracker,
+            VibratorHelper vibratorHelper) {
         mSystemSettings = systemSettings;
+        mTaskStackChangeListeners = taskStackChangeListeners;
         mUserTracker = userTracker;
         mVibratorHelper = vibratorHelper;
+
+        mFullscreenTaskStackChangeListener = new FullscreenTaskStackChangeListener(context, false);
+        mTaskStackChangeListeners.registerTaskStackListener(mFullscreenTaskStackChangeListener);
+
         mSettingsObserver = new ContentObserver(handler) {
             @Override
             public void onChange(boolean selfChange) {
@@ -77,6 +84,7 @@ class ScreenshotControllerExt {
     void releaseContext() {
         mUserTracker.removeCallback(mUserTrackerCallback);
         mSystemSettings.unregisterContentObserver(mSettingsObserver);
+        mTaskStackChangeListeners.unregisterTaskStackListener(mFullscreenTaskStackChangeListener);
     }
 
     boolean interceptPlayCameraSound() {
@@ -92,6 +100,6 @@ class ScreenshotControllerExt {
     }
 
     String getForegroundAppLabel() {
-        return mForegroundActivityListener.getTopPackageName();
+        return mFullscreenTaskStackChangeListener.getTopPackageName();
     }
 }

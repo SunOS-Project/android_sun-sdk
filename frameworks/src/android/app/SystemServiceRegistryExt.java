@@ -27,9 +27,7 @@ import org.nameless.hardware.ISensorBlockService;
 import org.nameless.hardware.SensorBlockManager;
 import org.nameless.os.IRotateManagerService;
 import org.nameless.os.RotateManager;
-import org.nameless.view.AppFocusManager;
 import org.nameless.view.DisplayResolutionManager;
-import org.nameless.view.IAppFocusManagerService;
 import org.nameless.view.IDisplayResolutionManagerService;
 
 /** @hide */
@@ -38,15 +36,6 @@ class SystemServiceRegistryExt {
     private SystemServiceRegistryExt() {}
 
     static void registerExtServices() {
-        registerService(ContextExt.APP_FOCUS_MANAGER_SERVICE, AppFocusManager.class,
-                new CachedServiceFetcher<AppFocusManager>() {
-            @Override
-            public AppFocusManager createService(ContextImpl ctx) {
-                IBinder binder = ServiceManager.getService(ContextExt.APP_FOCUS_MANAGER_SERVICE);
-                IAppFocusManagerService service = IAppFocusManagerService.Stub.asInterface(binder);
-                return new AppFocusManager(ctx.getOuterContext(), service);
-            }});
-
         registerService(ContextExt.APP_PROPS_MANAGER_SERVICE, AppPropsManager.class,
                 new CachedServiceFetcher<AppPropsManager>() {
             @Override

@@ -5,7 +5,6 @@
 
 package org.nameless.server;
 
-import static android.app.ActivityTaskManager.INVALID_TASK_ID;
 import static android.content.Intent.ACTION_BATTERY_CHANGED;
 import static android.content.Intent.ACTION_SHUTDOWN;
 import static android.os.PowerManager.ACTION_POWER_SAVE_MODE_CHANGED;
@@ -31,13 +30,13 @@ import android.os.UserHandle;
 
 import com.android.internal.util.nameless.CustomUtils;
 import com.android.internal.util.nameless.DeviceConfigUtils;
+import com.android.internal.util.nameless.FullscreenTaskStackChangeListener;
 import com.android.internal.util.nameless.ScreenStateListener;
 
 import com.android.server.LocalServices;
 import com.android.server.ServiceThread;
 import com.android.server.SystemService;
 import com.android.server.pm.UserManagerInternal;
-import com.android.server.wm.TopActivityRecorder;
 
 import java.util.List;
 
@@ -78,14 +77,12 @@ public class NamelessSystemExService extends SystemService {
     private PackageManagerInternal mPackageManagerInternal;
     private UserManagerInternal mUserManagerInternal;
 
+    private FullscreenTaskStackChangeListener mFullscreenTaskStackChangeListener;
     private PackageRemovedListener mPackageRemovedListener;
     private PowerStateListener mPowerStateListener;
     private RebootListener mRebootListener;
     private ScreenStateListener mScreenStateListener;
     private ShutdownListener mShutdownListener;
-
-    private String mTopFullscreenPackage = "";
-    private int mTopFullscreenTaskId = INVALID_TASK_ID;
 
     private int mBatterLevel;
     private boolean mPlugged;
@@ -104,6 +101,12 @@ public class NamelessSystemExService extends SystemService {
             mBatteryManagerInternal = LocalServices.getService(BatteryManagerInternal.class);
             mPackageManagerInternal = LocalServices.getService(PackageManagerInternal.class);
             mUserManagerInternal = LocalServices.getService(UserManagerInternal.class);
+            mFullscreenTaskStackChangeListener = new FullscreenTaskStackChangeListener(getContext()) {
+                @Override
+                public void onFullscreenTaskChanged(String packageName, String activityName, int taskId) {
+                    onTopFullscreenPackageChanged(packageName, taskId);
+                }
+            };
             mPackageRemovedListener = new PackageRemovedListener();
             mPowerStateListener = new PowerStateListener();
             mRebootListener = new RebootListener();
@@ -162,6 +165,7 @@ public class NamelessSystemExService extends SystemService {
             }
             DisplayRefreshRateController.getInstance().onBootCompleted();
             LauncherStateController.getInstance().onBootCompleted();
+            mFullscreenTaskStackChangeListener.setListening(true);
             mPackageRemovedListener.register();
             mRebootListener.register();
             mPowerStateListener.register();
@@ -178,7 +182,6 @@ public class NamelessSystemExService extends SystemService {
         mHandler = new Handler(mWorker.getLooper());
 
         AppPropsController.getInstance().initSystemExService(this);
-        TopActivityRecorder.getInstance().initSystemExService(this);
         if (mBatteryFeatureSupported) {
             BatteryFeatureController.getInstance().initSystemExService(this);
         }
@@ -241,14 +244,15 @@ public class NamelessSystemExService extends SystemService {
     }
 
     private void onScreenUnlocked() {
-        onTopFullscreenPackageChanged(mTopFullscreenPackage, mTopFullscreenTaskId);
+        onTopFullscreenPackageChanged(
+            mFullscreenTaskStackChangeListener.getTopPackageName(),
+            mFullscreenTaskStackChangeListener.getTopTaskId()
+        );
         PocketModeController.getInstance().onScreenUnlocked();
     }
 
     public void onTopFullscreenPackageChanged(String packageName, int taskId) {
         mHandler.post(() -> {
-            mTopFullscreenPackage = packageName;
-            mTopFullscreenTaskId = taskId;
             DisplayRefreshRateController.getInstance().onTopFullscreenPackageChanged(packageName);
             DisplayRotationController.getInstance().onTopFullscreenPackageChanged(packageName);
             GameModeController.getInstance().onTopFullscreenPackageChanged(packageName, taskId);
@@ -277,11 +281,11 @@ public class NamelessSystemExService extends SystemService {
     }
 
     public String getTopFullscreenPackage() {
-        return mTopFullscreenPackage;
+        return mFullscreenTaskStackChangeListener.getTopPackageName();
     }
 
     public int getTopFullscreenTaskId() {
-        return mTopFullscreenTaskId;
+        return mFullscreenTaskStackChangeListener.getTopTaskId();
     }
 
     public int getBatteryLevel() {

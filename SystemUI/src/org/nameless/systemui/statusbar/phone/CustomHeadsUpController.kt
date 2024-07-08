@@ -28,6 +28,8 @@ import android.os.UserHandle
 import com.android.systemui.dagger.SysUISingleton
 import com.android.systemui.dagger.qualifiers.Main
 import com.android.systemui.settings.UserTracker
+import com.android.systemui.shared.system.FullscreenTaskStackChangeListener
+import com.android.systemui.shared.system.TaskStackChangeListeners
 import com.android.systemui.statusbar.policy.ConfigurationController
 import com.android.systemui.util.settings.SystemSettings
 
@@ -41,7 +43,6 @@ import org.nameless.provider.SettingsExt.System.DISABLE_LANDSCAPE_HEADS_UP
 import org.nameless.provider.SettingsExt.System.HEADS_UP_BLACKLIST
 import org.nameless.provider.SettingsExt.System.HEADS_UP_STOPLIST
 import org.nameless.provider.SettingsExt.System.LESS_BORING_HEADS_UP
-import org.nameless.systemui.statusbar.policy.ForegroundActivityListener
 
 @SysUISingleton
 class CustomHeadsUpController @Inject constructor(
@@ -49,11 +50,13 @@ class CustomHeadsUpController @Inject constructor(
     @Main private val mainExecutor: Executor,
     @Main mainHandler: Handler,
     private val configurationController: ConfigurationController,
-    private val foregroundActivityListener: ForegroundActivityListener,
     private val roleManager: RoleManager,
     private val systemSettings: SystemSettings,
+    private val taskStackChangeListeners: TaskStackChangeListeners,
     private val userTracker: UserTracker
 ) {
+
+    private val fullscreenTaskStackChangeListener = FullscreenTaskStackChangeListener(context)
 
     private val blacklistApps = mutableSetOf<String>()
     private val stoplistApps = mutableSetOf<String>()
@@ -89,6 +92,8 @@ class CustomHeadsUpController @Inject constructor(
                 LESS_BORING_HEADS_UP,
                 settingsObserver, UserHandle.USER_ALL)
         updateSettings()
+
+        taskStackChangeListeners.registerTaskStackListener(fullscreenTaskStackChangeListener)
 
         userTracker.addCallback(object : UserTracker.Callback {
             override fun onUserChanged(newUser: Int, userContext: Context) {
@@ -167,6 +172,6 @@ class CustomHeadsUpController @Inject constructor(
             return true
         }
         return blacklistApps.contains(fromPackage) ||
-                stoplistApps.contains(foregroundActivityListener.getTopPackageName())
+                stoplistApps.contains(fullscreenTaskStackChangeListener.topPackageName)
     }
 }

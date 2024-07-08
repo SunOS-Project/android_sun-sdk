@@ -17,6 +17,7 @@ import android.view.Surface;
 import com.android.internal.R;
 
 import com.android.server.policy.PhoneWindowManagerExt;
+import com.android.server.wm.TopActivityRecorder;
 
 public class GameModeGestureListener extends GestureListenerBase {
 
@@ -60,6 +61,9 @@ public class GameModeGestureListener extends GestureListenerBase {
     @Override
     public boolean onActionDown(MotionEvent event) {
         if (!hasRegisterClient()) {
+            return false;
+        }
+        if (TopActivityRecorder.getInstance().hasMiniWindow()) {
             return false;
         }
         mDownPosX = event.getRawX();

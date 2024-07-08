@@ -12,16 +12,6 @@ public class ContextExt {
 
     /**
      * Use with {@link #getSystemService} to retrieve a
-     * {@link org.nameless.view.AppFocusManager} for managing top app focus.
-     *
-     * @hide
-     * @see #getSystemService
-     * @see org.nameless.view.AppFocusManager
-     */
-    public static final String APP_FOCUS_MANAGER_SERVICE = "app_focus";
-
-    /**
-     * Use with {@link #getSystemService} to retrieve a
      * {@link org.nameless.app.AppPropsManager} for managing app props spoof.
      *
      * @hide

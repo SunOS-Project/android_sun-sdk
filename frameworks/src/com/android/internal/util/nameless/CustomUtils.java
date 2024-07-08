@@ -6,6 +6,7 @@
 package com.android.internal.util.nameless;
 
 import static android.app.ActivityTaskManager.INVALID_TASK_ID;
+import static android.app.WindowConfiguration.WINDOWING_MODE_FREEFORM;
 import static android.app.WindowConfiguration.WINDOWING_MODE_PINNED_WINDOW_EXT;
 import static android.app.WindowConfiguration.WINDOWING_MODE_MINI_WINDOW_EXT;
 
@@ -41,9 +42,6 @@ import com.android.internal.util.ArrayUtils;
 import com.android.internal.util.CollectionUtils;
 
 import java.util.List;
-
-import org.nameless.view.AppFocusManager;
-import org.nameless.view.TopAppInfo;
 
 /** @hide */
 public class CustomUtils {
@@ -165,16 +163,13 @@ public class CustomUtils {
     }
 
     public static void killForegroundApp(Context context) {
-        final AppFocusManager appFocusManager = context.getSystemService(AppFocusManager.class);
-        final TopAppInfo info = appFocusManager.getTopAppInfo();
-        if (info == null) {
+        final ActivityManager activityManager = context.getSystemService(ActivityManager.class);
+        final ActivityManager.RunningTaskInfo topTaskInfo = getTopFullscreenTask(activityManager);
+        if (topTaskInfo == null || topTaskInfo.topActivity == null) {
             return;
         }
-        final String packageName = info.getPackageName();
-        if (TextUtils.isEmpty(packageName)) {
-            return;
-        }
-        final int taskId = info.getTaskId();
+        final String packageName = topTaskInfo.topActivity.getPackageName();
+        final int taskId = topTaskInfo.taskId;
         if (taskId == INVALID_TASK_ID) {
             return;
         }
@@ -196,7 +191,7 @@ public class CustomUtils {
         }
         if (killed) {
             final String appName = getAppName(context, packageName);
-            String msg;
+            final String msg;
             if (TextUtils.isEmpty(appName)) {
                 msg = context.getString(R.string.empty_app_killed);
             } else {
@@ -219,6 +214,22 @@ public class CustomUtils {
                             R.anim.custom_app_in,
                             R.anim.custom_app_out).toBundle());
         }
+    }
+
+    public static ActivityManager.RunningTaskInfo getTopFullscreenTask(ActivityManager am) {
+        final List<ActivityManager.RunningTaskInfo> infoList = am.getRunningTasks(5);
+        if (infoList == null || infoList.size() <= 0) {
+            return null;
+        }
+        for (ActivityManager.RunningTaskInfo info : infoList) {
+            if (info.getWindowingMode() == WINDOWING_MODE_FREEFORM ||
+                    info.getWindowingMode() == WINDOWING_MODE_MINI_WINDOW_EXT ||
+                    info.getWindowingMode() == WINDOWING_MODE_PINNED_WINDOW_EXT) {
+                continue;
+            }
+            return info;
+        }
+        return null;
     }
 
     private static ActivityManager.RunningTaskInfo getLastTask(Context context, ActivityManager am) {

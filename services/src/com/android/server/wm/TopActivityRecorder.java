@@ -10,24 +10,16 @@ import static android.os.Process.THREAD_PRIORITY_DEFAULT;
 
 import static com.android.server.wm.PopUpWindowController.PACKAGE_NAME_SYSTEM_TOOL;
 
-import static org.nameless.content.ContextExt.APP_FOCUS_MANAGER_SERVICE;
 import static org.nameless.os.DebugConstants.DEBUG_WMS_TOP_APP;
 
 import android.app.WindowConfiguration;
 import android.content.ComponentName;
 import android.os.Handler;
-import android.os.IBinder;
-import android.os.RemoteException;
 import android.util.Slog;
 
 import com.android.server.ServiceThread;
 
 import java.util.ArrayList;
-
-import org.nameless.server.NamelessSystemExService;
-import org.nameless.view.IAppFocusManagerService;
-import org.nameless.view.IAppFocusObserver;
-import org.nameless.view.TopAppInfo;
 
 public class TopActivityRecorder {
 
@@ -42,151 +34,20 @@ public class TopActivityRecorder {
     }
 
     private final Object mFocusLock = new Object();
-    private final Object mObserverLock = new Object();
 
     private final Handler mHandler;
     private final ServiceThread mServiceThread;
-
-    private final ArrayList<AppFocusObserver> mObservers = new ArrayList<>();
-
-    private final class AppFocusObserver {
-        final IAppFocusObserver mObserver;
-        final boolean mObserveActivity;
-        final IBinder.DeathRecipient mDeathRecipient;
-
-        AppFocusObserver(IAppFocusObserver observer,
-                boolean observeActivity,
-                IBinder.DeathRecipient deathRecipient) {
-            mObserver = observer;
-            mObserveActivity = observeActivity;
-            mDeathRecipient = deathRecipient;
-        }
-    }
-
-    private final class AppFocusManagerService extends IAppFocusManagerService.Stub {
-        @Override
-        public TopAppInfo getTopAppInfo() {
-            synchronized (mFocusLock) {
-                final int n = mTopMiniWindowActivity.size();
-                final ActivityInfo info = n > 0 ? mTopMiniWindowActivity.get(n - 1)
-                        : mTopFullscreenActivity;
-                if (info == null) {
-                    return null;
-                }
-                final TopAppInfo.Builder builder = new TopAppInfo.Builder();
-                builder.setComponentName(info.componentName);
-                final Task task = info.task;
-                if (task != null) {
-                    builder.setTaskId(task.mTaskId);
-                    builder.setWindowingMode(task.getWindowConfiguration().getWindowingMode());
-                } else {
-                    builder.setTaskId(INVALID_TASK_ID);
-                    builder.setWindowingMode(WindowConfiguration.WINDOWING_MODE_UNDEFINED);
-                }
-                final TopAppInfo ret = builder.build();
-                logD("getTopAppInfo, ret=" + ret);
-                return ret;
-            }
-        }
-
-        @Override
-        public TopAppInfo getTopFullscreenAppInfo() {
-            synchronized (mFocusLock) {
-                if (mTopFullscreenActivity == null) {
-                    return null;
-                }
-                final TopAppInfo.Builder builder = new TopAppInfo.Builder();
-                builder.setComponentName(mTopFullscreenActivity.componentName);
-                final Task task = mTopFullscreenActivity.task;
-                if (task != null) {
-                    builder.setTaskId(task.mTaskId);
-                    builder.setWindowingMode(task.getWindowConfiguration().getWindowingMode());
-                } else {
-                    builder.setTaskId(INVALID_TASK_ID);
-                    builder.setWindowingMode(WindowConfiguration.WINDOWING_MODE_UNDEFINED);
-                }
-                final TopAppInfo ret = builder.build();
-                logD("getTopFullscreenAppInfo, ret=" + ret);
-                return ret;
-            }
-        }
-
-        @Override
-        public boolean hasMiniWindowFocus() {
-            return hasMiniWindow();
-        }
-
-        @Override
-        public boolean registerAppFocusObserver(IAppFocusObserver observer, boolean observeActivity) {
-            final IBinder observerBinder = observer.asBinder();
-            IBinder.DeathRecipient dr = new IBinder.DeathRecipient() {
-                @Override
-                public void binderDied() {
-                    synchronized (mObserverLock) {
-                        for (int i = 0; i < mObservers.size(); i++) {
-                            if (observerBinder == mObservers.get(i).mObserver.asBinder()) {
-                                AppFocusObserver removed = mObservers.remove(i);
-                                IBinder binder = removed.mObserver.asBinder();
-                                if (binder != null) {
-                                    binder.unlinkToDeath(this, 0);
-                                }
-                                i--;
-                            }
-                        }
-                    }
-                }
-            };
-
-            synchronized (mObserverLock) {
-                try {
-                    observer.asBinder().linkToDeath(dr, 0);
-                    mObservers.add(new AppFocusObserver(observer, observeActivity, dr));
-                } catch (RemoteException e) {
-                    // Client died, no cleanup needed.
-                    return false;
-                }
-                return true;
-            }
-        }
-
-        @Override
-        public boolean unregisterAppFocusObserver(IAppFocusObserver observer) {
-            boolean found = false;
-            final IBinder observerBinder = observer.asBinder();
-            synchronized (mObserverLock) {
-                for (int i = 0; i < mObservers.size(); i++) {
-                    found = true;
-                    AppFocusObserver focusObserver = mObservers.get(i);
-                    if (observerBinder == focusObserver.mObserver.asBinder()) {
-                        AppFocusObserver removed = mObservers.remove(i);
-                        IBinder binder = removed.mObserver.asBinder();
-                        if (binder != null) {
-                            binder.unlinkToDeath(removed.mDeathRecipient, 0);
-                        }
-                        i--;
-                    }
-                }
-            }
-            return found;
-        }
-    }
 
     private ActivityInfo mTopFullscreenActivity = null;
     private ActivityInfo mTopPinnedWindowActivity = null;
     private ArrayList<ActivityInfo> mTopMiniWindowActivity = new ArrayList<>();
 
-    private NamelessSystemExService mSystemExService;
     private WindowManagerService mWms;
 
     private TopActivityRecorder() {
         mServiceThread = new ServiceThread(TAG, THREAD_PRIORITY_DEFAULT, false);
         mServiceThread.start();
         mHandler = new Handler(mServiceThread.getLooper());
-    }
-
-    public void initSystemExService(NamelessSystemExService service) {
-        mSystemExService = service;
-        mSystemExService.publishBinderService(APP_FOCUS_MANAGER_SERVICE, new AppFocusManagerService());
     }
 
     void initWms(WindowManagerService wms) {
@@ -233,7 +94,6 @@ public class TopActivityRecorder {
                         mTopFullscreenActivity = new ActivityInfo(newFocus, newTask);
                     }
                     logD("Top fullscreen window activity changed to " + newFocus);
-                    mHandler.post(() -> notifyFullscreenComponentChanged(oldComponent, newComponent));
                 }
             }
         }
@@ -435,8 +295,6 @@ public class TopActivityRecorder {
                 final ComponentName oldComponent = getTopFullscreenComponentLocked();
                 mTopFullscreenActivity = new ActivityInfo(mTopMiniWindowActivity.get(n - 1));
                 logD("Top fullscreen window activity changed to " + mTopFullscreenActivity);
-                mHandler.post(() -> notifyFullscreenComponentChanged(
-                        oldComponent, getTopFullscreenComponentLocked()));
             }
             mTopMiniWindowActivity.clear();
             DimmerWindow.getInstance().setTask(null);
@@ -450,8 +308,6 @@ public class TopActivityRecorder {
                 final ComponentName oldComponent = getTopFullscreenComponentLocked();
                 mTopFullscreenActivity = new ActivityInfo(mTopPinnedWindowActivity);
                 logD("Top fullscreen window activity changed to " + mTopFullscreenActivity);
-                mHandler.post(() -> notifyFullscreenComponentChanged(
-                        oldComponent, getTopFullscreenComponentLocked()));
             }
             mTopPinnedWindowActivity = null;
             PinnedWindowOverlayController.getInstance().setTask(null);
@@ -489,31 +345,6 @@ public class TopActivityRecorder {
             return false;
         }
         return PACKAGE_NAME_SYSTEM_TOOL.equals(getPackageNameFromTask(task));
-    }
-
-    private void notifyFullscreenComponentChanged(ComponentName oldComponent, ComponentName newComponent) {
-        final String newPackageName = newComponent.getPackageName();
-        final String newActivityName = newComponent.getClassName();
-        final boolean packageChanged = oldComponent == null ||
-                !newPackageName.equals(oldComponent.getPackageName());
-        final boolean activityChanged = oldComponent == null ||
-                !newActivityName.equals(oldComponent.getClassName());
-        synchronized (mObserverLock) {
-            if (packageChanged) {
-                mSystemExService.onTopFullscreenPackageChanged(
-                        newPackageName, getTopFullscreenTaskIdLocked());
-            }
-            for (AppFocusObserver observer : mObservers) {
-                if (!packageChanged && !observer.mObserveActivity) {
-                    continue;
-                }
-                try {
-                    observer.mObserver.onFullscreenFocusChanged(newPackageName, newActivityName);
-                } catch (RemoteException | RuntimeException e) {
-                    logE("Failed to notify fullscreen component change");
-                }
-            }
-        }
     }
 
     private static final class ActivityInfo {
