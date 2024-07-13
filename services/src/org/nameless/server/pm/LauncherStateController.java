@@ -13,7 +13,6 @@ import static org.nameless.os.DebugConstants.DEBUG_LAUNCHER;
 
 import android.app.AppGlobals;
 import android.content.Context;
-import android.content.om.IOverlayManager;
 import android.content.pm.IPackageManager;
 import android.content.pm.UserInfo;
 import android.os.Handler;
@@ -39,7 +38,6 @@ public class LauncherStateController {
     private final Handler mHandler;
     private final ServiceThread mServiceThread;
 
-    private IOverlayManager mOm;
     private IPackageManager mPm;
     private IUserManager mUm;
     private NamelessSystemExService mSystemExService;
@@ -69,7 +67,6 @@ public class LauncherStateController {
     public void onSystemServicesReady() {
         mHandler.post(() -> {
             mPm = AppGlobals.getPackageManager();
-            mOm = IOverlayManager.Stub.asInterface(ServiceManager.getService(Context.OVERLAY_SERVICE));
             mUm = IUserManager.Stub.asInterface(ServiceManager.getService(Context.USER_SERVICE));
             mOpPackageName = mSystemExService.getContext().getOpPackageName();
             mCachedLauncher = LauncherUtils.getCachedLauncher();
@@ -117,7 +114,6 @@ public class LauncherStateController {
                         + launcher + " for userId " + userId);
             }
             setPackageEnabled(launcher, enabled, userId);
-            setOverlayEnabled(launcher, enabled, userId);
         }
     }
 
@@ -129,19 +125,6 @@ public class LauncherStateController {
                     0, userId, mOpPackageName);
         } catch (Exception e) {
             Slog.e(TAG, "Failed to set " + pkg + " enabled state to " + enabled);
-        }
-    }
-
-    private void setOverlayEnabled(String pkg, boolean enabled, int userId) {
-        if (!LauncherUtils.LAWNCHAIR_PACKAGE_NAME.equals(pkg)) {
-            return;
-        }
-        for (String overlay : LauncherUtils.LAWNCHAIR_OVERLAYS) {
-            try {
-                mOm.setEnabled(overlay, enabled, userId);
-            } catch (Exception e) {
-                Slog.e(TAG, "Failed to set " + overlay + " enabled state to " + enabled);
-            }
         }
     }
 }

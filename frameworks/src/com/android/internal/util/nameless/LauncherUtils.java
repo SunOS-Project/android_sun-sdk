@@ -22,12 +22,6 @@ public class LauncherUtils {
     private static final String PROP_SELECTED_LAUNCHER = "persist.sys.nameless.launcher";
     private static final String PROP_SELECTED_LAUNCHER_CACHED = "sys.nameless.launcher_cached";
 
-    public static final String LAWNCHAIR_PACKAGE_NAME = "app.lawnchair";
-    public static final String[] LAWNCHAIR_OVERLAYS = {
-        "app.lawnchair.recentsComponent.overlay",
-        "app.lawnchair.pop_up.overlay"
-    };
-
     private static ArrayList<String> sPackageList;
     private static ArrayList<String> sComponentList;
 
