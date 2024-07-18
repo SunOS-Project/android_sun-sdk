@@ -296,7 +296,7 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
         Map<String, String> spoofMap = new ArrayMap<>();
 
         Map<String, String> genericMap = mPropsToChange.getOrDefault(KEY_GENERIC, null);
-        if (genericMap != null) {
+        if (genericMap != null && !Build.IS_USER) {
             spoofMap.putAll(genericMap);
         }
 
