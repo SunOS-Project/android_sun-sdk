@@ -142,8 +142,10 @@ class PinnedWindowOverlayController {
                         if (mTask != null && mVelocityTracker == null) {
                             mVelocityTracker = VelocityTracker.obtain();
                         }
-                        mVelocityTracker.clear();
-                        mVelocityTracker.addMovement(event);
+                        if (mVelocityTracker != null) {
+                            mVelocityTracker.clear();
+                            mVelocityTracker.addMovement(event);
+                        }
                     }
                     break;
                 case MotionEvent.ACTION_UP:
