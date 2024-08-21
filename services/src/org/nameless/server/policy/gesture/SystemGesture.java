@@ -16,7 +16,9 @@ import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_RESET
 import android.content.Context;
 import android.os.Binder;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.os.RemoteException;
+import android.os.SystemClock;
 import android.util.Slog;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -39,6 +41,7 @@ public class SystemGesture {
     private final Context mContext;
     private final Display mDisplay;
     private final PhoneWindowManagerExt mPhoneWindowManagerExt;
+    private final PowerManager mPowerManager;
 
     private final ArrayList<GestureListenerBase> mGestureListeners = new ArrayList<>();
     private final ArrayList<SystemGestureClient> mSystemGestureClients = new ArrayList<>();
@@ -56,6 +59,7 @@ public class SystemGesture {
         mPhoneWindowManagerExt = ext;
         mContext = context;
         mDisplay = context.getSystemService(WindowManager.class).getDefaultDisplay();
+        mPowerManager = context.getSystemService(PowerManager.class);
 
         mGameModeGestureListener = new GameModeGestureListener(
                 this, ext, mContext);
@@ -102,6 +106,7 @@ public class SystemGesture {
                 }
                 if (mTargetGestureListener.onActionMove(event)) {
                     if (mTargetGestureListener.mGestureState == GestureState.TRIGGERED) {
+                        mPowerManager.userActivity(SystemClock.uptimeMillis(), false);
                         return SYSTEM_GESTURE_MOVE_TRIGGERED;
                     }
                     if (mTargetGestureListener.mGestureState == GestureState.PENDING_CHECK) {
