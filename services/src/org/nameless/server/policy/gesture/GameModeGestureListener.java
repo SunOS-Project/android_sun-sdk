@@ -63,13 +63,10 @@ public class GameModeGestureListener extends GestureListenerBase {
         if (!hasRegisterClient()) {
             return false;
         }
-        if (TopActivityRecorder.getInstance().hasMiniWindow()) {
-            return false;
-        }
         mDownPosX = event.getRawX();
         mDownPosY = event.getRawY();
         mDownTime = System.currentTimeMillis();
-        if (isInGameModeGestureArea(event)) {
+        if (isInGameModeGestureArea(event) && !TopActivityRecorder.getInstance().hasMiniWindow()) {
             mGesturePreTriggerConsumed = notifyGesturePreTriggerBefore(event);
         } else {
             mGesturePreTriggerConsumed = false;
