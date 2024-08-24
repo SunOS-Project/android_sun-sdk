@@ -18,6 +18,8 @@ package org.nameless.systemui.qs.tiles
 
 import android.os.Handler
 import android.os.Looper
+import android.os.UserHandle
+import android.provider.Settings
 import android.view.View
 
 import com.android.internal.logging.MetricsLogger
@@ -31,6 +33,8 @@ import com.android.systemui.qs.QsEventLogger
 import com.android.systemui.qs.logging.QSLogger
 import com.android.systemui.qs.tileimpl.QSTileImpl
 import com.android.systemui.statusbar.policy.KeyguardStateController
+
+import org.nameless.provider.SettingsExt.Secure.QSTILE_REQUIRES_UNLOCKING
 
 internal abstract class SecureQSTile<TState : QSTile.State> protected constructor(
     host: QSHost, uiEventLogger: QsEventLogger, backgroundLooper: Looper, mainHandler: Handler,
@@ -46,13 +50,11 @@ internal abstract class SecureQSTile<TState : QSTile.State> protected constructo
 
     protected abstract fun handleClick(view: View?, keyguardShowing: Boolean)
 
-    private var disableOnLockscreen = true
-
-    fun setDisabledOnLockscreen(disable: Boolean) {
-        disableOnLockscreen = disable
-    }
-
     override fun handleClick(view: View?) {
+        val disableOnLockscreen = Settings.Secure.getIntForUser(
+                mContext.getContentResolver(),
+                QSTILE_REQUIRES_UNLOCKING, 1,
+                UserHandle.USER_CURRENT) == 1
         handleClick(view, mKeyguard.isMethodSecure && mKeyguard.isShowing && disableOnLockscreen)
     }
 
