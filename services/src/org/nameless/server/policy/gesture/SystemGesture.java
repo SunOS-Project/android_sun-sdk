@@ -7,6 +7,7 @@ package org.nameless.server.policy.gesture;
 
 import static android.os.Process.THREAD_PRIORITY_DEFAULT;
 
+import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_CANCELED;
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_DOWN;
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_MOVE;
 import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_MOVE_TRIGGERED;
@@ -116,12 +117,17 @@ public class SystemGesture {
                 return SYSTEM_GESTURE_NONE;
             case MotionEvent.ACTION_UP:
                 setTouching(false);
+                int ret = SYSTEM_GESTURE_NONE;
                 if (mTargetGestureListener == null) {
-                    return SYSTEM_GESTURE_NONE;
+                    return ret;
                 }
-                mTargetGestureListener.onActionUp(event);
+                if (mTargetGestureListener.onActionUp(event)) {
+                    ret = SYSTEM_GESTURE_RESET;
+                } else {
+                    ret = SYSTEM_GESTURE_CANCELED;
+                }
                 mTargetGestureListener = null;
-                return SYSTEM_GESTURE_RESET;
+                return ret;
             case MotionEvent.ACTION_CANCEL:
                 setTouching(false);
                 if (mTargetGestureListener == null) {

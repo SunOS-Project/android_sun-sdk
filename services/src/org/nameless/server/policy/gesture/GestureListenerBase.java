@@ -89,8 +89,9 @@ public abstract class GestureListenerBase {
         return false;
     }
 
-    public void onActionUp(MotionEvent event) {
+    public boolean onActionUp(MotionEvent event) {
         reset();
+        return false;
     }
 
     public void onActionCancel(MotionEvent event) {

@@ -100,16 +100,20 @@ public class GameModeGestureListener extends GestureListenerBase {
     }
 
     @Override
-    public void onActionUp(MotionEvent event) {
+    public boolean onActionUp(MotionEvent event) {
+        final boolean ret;
         if (mGestureState == GestureState.TRIGGERED) {
+            ret = true;
             notifyGestureTriggered(event);
         } else {
+            ret = false;
             notifyGestureCanceled();
         }
         if (DEBUG_PHONE_WINDOW_MANAGER) {
             Slog.d(TAG, "onActionUp, mGestureState=" + mGestureState);
         }
         super.onActionUp(event);
+        return ret;
     }
 
     @Override
