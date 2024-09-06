@@ -20,6 +20,8 @@ import static org.nameless.server.policy.gesture.TouchGestureActionTrigger.ACTIO
 import static org.nameless.server.policy.gesture.TouchGestureActionTrigger.ACTION_SHOW_AMBIENT_DISPLAY;
 import static org.nameless.server.policy.gesture.TouchGestureActionTrigger.actionToString;
 
+import static vendor.nameless.hardware.displayfeature.V1_0.Feature.SCREEN_OFF_GESTURE;
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.ContentObserver;
@@ -31,6 +33,7 @@ import android.provider.Settings;
 import android.util.ArrayMap;
 import android.util.Slog;
 
+import org.nameless.display.DisplayFeatureManager;
 import org.nameless.hardware.TouchGestureManager;
 
 public class TouchGestureController {
@@ -96,12 +99,24 @@ public class TouchGestureController {
         mResolver = context.getContentResolver();
     }
 
+    private void initGestureNode() {
+        final boolean requireInit = DisplayFeatureManager.getInstance().hasFeature(SCREEN_OFF_GESTURE);
+        if (DEBUG_TOUCH_GESTURE) {
+            Slog.d(TAG, "initGestureNode, requireInit=" + requireInit);
+        }
+        if (requireInit) {
+            DisplayFeatureManager.getInstance().setFeatureEnabled(SCREEN_OFF_GESTURE, true);
+        }
+    }
+
     public void systemReady() {
         if (DEBUG_TOUCH_GESTURE) {
             Slog.d(TAG, "systemReady");
         }
         mSystemReady = true;
         mActionTrigger = new TouchGestureActionTrigger(mContext);
+
+        initGestureNode();
 
         if (TouchGestureManager.isSingleTapSupported()) {
             if (DEBUG_TOUCH_GESTURE) {
