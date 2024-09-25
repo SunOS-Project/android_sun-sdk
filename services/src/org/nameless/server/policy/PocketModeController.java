@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2016 The ParanoidAndroid Project
- * Copyright (C) 2024 The LineageOS Project
+ * Copyright (C) 2024 The Nameless-AOSP Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
