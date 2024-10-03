@@ -261,7 +261,7 @@ public class CustomUtils {
         final IStatusBarService service = IStatusBarService.Stub.asInterface(
                 ServiceManager.getService(Context.STATUS_BAR_SERVICE));
         try {
-            service.toggleQSPanel();
+            service.toggleQuickSettingsPanel();
         } catch (RemoteException e) {
             // do nothing.
         }

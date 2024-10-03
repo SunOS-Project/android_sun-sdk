@@ -26,12 +26,12 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.service.quicksettings.Tile;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 
 import com.android.internal.logging.MetricsLogger;
 
+import com.android.systemui.animation.Expandable;
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
 import com.android.systemui.plugins.ActivityStarter;
@@ -97,15 +97,15 @@ public class CompassTile extends QSTileImpl<BooleanState> implements SensorEvent
     }
 
     @Override
-    protected void handleClick(@Nullable View view) {
+    protected void handleClick(@Nullable Expandable expandable) {
         mActive = !mActive;
         refreshState();
         setListeningSensors(mActive);
     }
 
     @Override
-    public void handleLongClick(@Nullable View view) {
-        handleClick(view);
+    public void handleLongClick(@Nullable Expandable expandable) {
+        handleClick(expandable);
     }
 
     @Override

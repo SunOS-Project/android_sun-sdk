@@ -16,12 +16,13 @@ import android.os.Looper;
 import android.os.RemoteException;
 import android.provider.Settings;
 import android.service.quicksettings.Tile;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.util.nameless.DisplayRefreshRateHelper;
+
+import com.android.systemui.animation.Expandable;
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
 import com.android.systemui.plugins.ActivityStarter;
@@ -130,7 +131,7 @@ public class RefreshRateTile extends QSTileImpl<State> {
     }
 
     @Override
-    protected void handleClick(@Nullable View view) {
+    protected void handleClick(@Nullable Expandable expandable) {
         if (mRequestedRefreshRate > 0 || mRequestedMemcRefreshRate > 0) {
             return;
         }
@@ -230,8 +231,8 @@ public class RefreshRateTile extends QSTileImpl<State> {
             if (mObserving) {
                 return;
             }
-            mSystemSettings.registerContentObserver(MIN_REFRESH_RATE, this);
-            mSystemSettings.registerContentObserver(PEAK_REFRESH_RATE, this);
+            mSystemSettings.registerContentObserverSync(MIN_REFRESH_RATE, this);
+            mSystemSettings.registerContentObserverSync(PEAK_REFRESH_RATE, this);
             mObserving = true;
         }
 
@@ -239,7 +240,7 @@ public class RefreshRateTile extends QSTileImpl<State> {
             if (!mObserving) {
                 return;
             }
-            mSystemSettings.unregisterContentObserver(this);
+            mSystemSettings.unregisterContentObserverSync(this);
             mObserving = false;
         }
 

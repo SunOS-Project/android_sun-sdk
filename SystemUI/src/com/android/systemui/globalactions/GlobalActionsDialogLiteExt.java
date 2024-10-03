@@ -61,7 +61,7 @@ class GlobalActionsDialogLiteExt {
                         mUserTracker.getUserId()) == 1;
             }
         };
-        mSecureSettings.registerContentObserverForUser(
+        mSecureSettings.registerContentObserverForUserSync(
                 ADVANCED_REBOOT,
                 mSettingsObserver, UserHandle.USER_ALL);
         mSettingsObserver.onChange(false);
@@ -77,7 +77,7 @@ class GlobalActionsDialogLiteExt {
 
     void onDestroy() {
         mUserTracker.removeCallback(mUserTrackerCallback);
-        mSecureSettings.unregisterContentObserver(mSettingsObserver);
+        mSecureSettings.unregisterContentObserverSync(mSettingsObserver);
     }
 
     void onShowOrHideDialog() {

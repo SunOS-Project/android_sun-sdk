@@ -20,10 +20,10 @@ import android.os.Handler
 import android.os.Looper
 import android.os.UserHandle
 import android.provider.Settings
-import android.view.View
 
 import com.android.internal.logging.MetricsLogger
 
+import com.android.systemui.animation.Expandable
 import com.android.systemui.plugins.ActivityStarter
 import com.android.systemui.plugins.FalsingManager
 import com.android.systemui.plugins.qs.QSTile
@@ -48,20 +48,20 @@ internal abstract class SecureQSTile<TState : QSTile.State> protected constructo
 ) {
     abstract override fun newTileState(): TState
 
-    protected abstract fun handleClick(view: View?, keyguardShowing: Boolean)
+    protected abstract fun handleClick(expandable: Expandable?, keyguardShowing: Boolean)
 
-    override fun handleClick(view: View?) {
+    override fun handleClick(expandable: Expandable?) {
         val disableOnLockscreen = Settings.Secure.getIntForUser(
                 mContext.getContentResolver(),
                 QSTILE_REQUIRES_UNLOCKING, 1,
                 UserHandle.USER_CURRENT) == 1
-        handleClick(view, mKeyguard.isMethodSecure && mKeyguard.isShowing && disableOnLockscreen)
+        handleClick(expandable, mKeyguard.isMethodSecure && mKeyguard.isShowing && disableOnLockscreen)
     }
 
-    protected fun checkKeyguard(view: View?, keyguardShowing: Boolean): Boolean {
+    protected fun checkKeyguard(expandable: Expandable?, keyguardShowing: Boolean): Boolean {
         return if (keyguardShowing) {
             mActivityStarter.postQSRunnableDismissingKeyguard {
-                handleClick(view, false)
+                handleClick(expandable, false)
             }
             true
         } else {

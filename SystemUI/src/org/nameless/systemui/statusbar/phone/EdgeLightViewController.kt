@@ -145,7 +145,7 @@ class EdgeLightViewController @Inject constructor(
 
     private fun register(vararg keys: String) {
         keys.forEach {
-            systemSettings.registerContentObserverForUser(
+            systemSettings.registerContentObserverForUserSync(
                 it,
                 settingsObserver,
                 UserHandle.USER_ALL

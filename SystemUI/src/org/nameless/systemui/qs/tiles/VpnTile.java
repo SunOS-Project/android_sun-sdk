@@ -41,6 +41,7 @@ import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 import com.android.internal.net.VpnConfig;
 import com.android.internal.net.VpnProfile;
 
+import com.android.systemui.animation.Expandable;
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
 import com.android.systemui.plugins.ActivityStarter;
@@ -121,7 +122,7 @@ public class VpnTile extends QSTileImpl<BooleanState> {
     }
 
     @Override
-    protected void handleClick(@Nullable View view) {
+    protected void handleClick(@Nullable Expandable expandable) {
         if (mKeyguard.isMethodSecure() && !mKeyguard.canDismissLockScreen()) {
             mActivityStarter.postQSRunnableDismissingKeyguard(() -> {
                 showConnectDialogOrDisconnect();

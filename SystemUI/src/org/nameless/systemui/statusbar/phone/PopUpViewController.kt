@@ -51,10 +51,10 @@ class PopUpViewController @Inject constructor(
                 }
             }
         }
-        systemSettings.registerContentObserverForUser(
+        systemSettings.registerContentObserverForUserSync(
                 POP_UP_NOTIFICATION_JUMP_PORTRAIT,
                 settingsObserver, UserHandle.USER_ALL)
-        systemSettings.registerContentObserverForUser(
+        systemSettings.registerContentObserverForUserSync(
                 POP_UP_NOTIFICATION_JUMP_LANDSCAPE,
                 settingsObserver, UserHandle.USER_ALL)
         updateSettings()

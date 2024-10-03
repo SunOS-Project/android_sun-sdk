@@ -74,16 +74,16 @@ class CustomGestureListener @Inject constructor(
                 }
             }
         }
-        systemSettings.registerContentObserverForUser(
+        systemSettings.registerContentObserverForUserSync(
                 DOUBLE_TAP_SLEEP_LOCKSCREEN,
                 settingsObserver, UserHandle.USER_ALL)
-        systemSettings.registerContentObserverForUser(
+        systemSettings.registerContentObserverForUserSync(
                 DOUBLE_TAP_SLEEP_STATUSBAR,
                 settingsObserver, UserHandle.USER_ALL)
-        systemSettings.registerContentObserverForUser(
+        systemSettings.registerContentObserverForUserSync(
                 STATUSBAR_BRIGHTNESS_CONTROL,
                 settingsObserver, UserHandle.USER_ALL)
-        systemSettings.registerContentObserverForUser(
+        systemSettings.registerContentObserverForUserSync(
                 STATUSBAR_GESTURE_PORTRAIT_ONLY,
                 settingsObserver, UserHandle.USER_ALL)
         updateSettings()

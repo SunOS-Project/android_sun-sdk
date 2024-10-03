@@ -62,19 +62,19 @@ class NavbarAppearanceController @Inject constructor(
                 }
             }
         }
-        systemSettings.registerContentObserverForUser(
+        systemSettings.registerContentObserverForUserSync(
                 GESTURE_NAVBAR_LENGTH_MODE,
                 settingsObserver, UserHandle.USER_ALL)
-        systemSettings.registerContentObserverForUser(
+        systemSettings.registerContentObserverForUserSync(
                 GESTURE_NAVBAR_RADIUS_MODE,
                 settingsObserver, UserHandle.USER_ALL)
-        systemSettings.registerContentObserverForUser(
+        systemSettings.registerContentObserverForUserSync(
                 GESTURE_NAVBAR_IME_SPACE,
                 settingsObserver, UserHandle.USER_ALL)
-        systemSettings.registerContentObserverForUser(
+        systemSettings.registerContentObserverForUserSync(
                 GESTURE_NAVBAR_IMMERSIVE,
                 settingsObserver, UserHandle.USER_ALL)
-        systemSettings.registerContentObserverForUser(
+        systemSettings.registerContentObserverForUserSync(
                 NAVBAR_INVERSE_LAYOUT,
                 settingsObserver, UserHandle.USER_ALL)
         updateSettings()

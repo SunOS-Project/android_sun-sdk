@@ -28,7 +28,6 @@ import android.os.Handler;
 import android.os.LocaleList;
 import android.os.Looper;
 import android.provider.Settings;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -36,6 +35,7 @@ import androidx.annotation.Nullable;
 import com.android.internal.app.LocalePicker;
 import com.android.internal.logging.MetricsLogger;
 
+import com.android.systemui.animation.Expandable;
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
 import com.android.systemui.plugins.ActivityStarter;
@@ -98,18 +98,18 @@ public class LocaleTile extends SecureQSTile<BooleanState> {
     }
 
     @Override
-    protected void handleClick(@Nullable View view, boolean keyguardShowing) {
-        if (checkKeyguard(view, keyguardShowing)) {
+    protected void handleClick(@Nullable Expandable expandable, boolean keyguardShowing) {
+        if (checkKeyguard(expandable, keyguardShowing)) {
             return;
         }
 
-        if (checkToggleDisabled(view)) return;
+        if (checkToggleDisabled(expandable)) return;
         toggleLocale();
     }
 
     @Override
-    protected void handleSecondaryClick(@Nullable View view) {
-        if (checkToggleDisabled(view)) return;
+    protected void handleSecondaryClick(@Nullable Expandable expandable) {
+        if (checkToggleDisabled(expandable)) return;
         toggleLocale();
     }
 
@@ -193,10 +193,10 @@ public class LocaleTile extends SecureQSTile<BooleanState> {
         mLocaleList = LocaleList.getAdjustedDefault();
     }
 
-    private boolean checkToggleDisabled(@Nullable View view) {
+    private boolean checkToggleDisabled(@Nullable Expandable expandable) {
         updateLocaleList();
         if (mLocaleList.size() <= 1) {
-            handleLongClick(view);
+            handleLongClick(expandable);
             Toast.makeText(mContext,
                     mContext.getString(R.string.quick_settings_locale_more_locales_toast),
                     Toast.LENGTH_LONG).show();

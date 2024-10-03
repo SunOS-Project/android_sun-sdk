@@ -32,7 +32,6 @@ import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Switch;
 
 import androidx.annotation.Nullable;
@@ -43,11 +42,11 @@ import com.android.internal.util.ArrayUtils;
 
 import com.android.settingslib.net.DataUsageController;
 
+import com.android.systemui.animation.Expandable;
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
 import com.android.systemui.plugins.ActivityStarter;
 import com.android.systemui.plugins.FalsingManager;
-import com.android.systemui.plugins.qs.QSIconView;
 import com.android.systemui.plugins.qs.QSTile.BooleanState;
 import com.android.systemui.plugins.statusbar.StatusBarStateController;
 import com.android.systemui.qs.QSHost;
@@ -114,8 +113,8 @@ public class CellularTile extends SecureQSTile<BooleanState> {
     }
 
     @Override
-    protected void handleClick(@Nullable View view, boolean keyguardShowing) {
-        if (checkKeyguard(view, keyguardShowing)) {
+    protected void handleClick(@Nullable Expandable expandable, boolean keyguardShowing) {
+        if (checkKeyguard(expandable, keyguardShowing)) {
             return;
         }
         if (getState().state == Tile.STATE_UNAVAILABLE) {
@@ -125,8 +124,8 @@ public class CellularTile extends SecureQSTile<BooleanState> {
     }
 
     @Override
-    protected void handleSecondaryClick(@Nullable View view) {
-        handleLongClick(view);
+    protected void handleSecondaryClick(@Nullable Expandable expandable) {
+        handleLongClick(expandable);
     }
 
     @Override

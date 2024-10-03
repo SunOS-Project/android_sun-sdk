@@ -22,13 +22,13 @@ import android.os.Looper;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.service.quicksettings.Tile;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.util.nameless.CustomUtils;
 
+import com.android.systemui.animation.Expandable;
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
 import com.android.systemui.plugins.ActivityStarter;
@@ -90,7 +90,7 @@ public class ScreenshotTile extends QSTileImpl<BooleanState> {
     }
 
     @Override
-    protected void handleClick(@Nullable View view) {
+    protected void handleClick(@Nullable Expandable expandable) {
         if (mKeyguard.isShowing()) {
             return;
         }
@@ -99,7 +99,7 @@ public class ScreenshotTile extends QSTileImpl<BooleanState> {
     }
 
     @Override
-    public void handleLongClick(@Nullable View view) {
+    public void handleLongClick(@Nullable Expandable expandable) {
         if (mKeyguard.isShowing()) {
             return;
         }

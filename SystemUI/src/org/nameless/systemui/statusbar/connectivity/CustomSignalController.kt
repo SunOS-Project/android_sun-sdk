@@ -46,10 +46,10 @@ class CustomSignalController @Inject constructor(
                 }
             }
         }
-        systemSettings.registerContentObserverForUser(
+        systemSettings.registerContentObserverForUserSync(
                 DATA_DISABLED_ICON,
                 settingsObserver, UserHandle.USER_ALL)
-        systemSettings.registerContentObserverForUser(
+        systemSettings.registerContentObserverForUserSync(
                 SHOW_FOURG_ICON,
                 settingsObserver, UserHandle.USER_ALL)
         updateSettings()

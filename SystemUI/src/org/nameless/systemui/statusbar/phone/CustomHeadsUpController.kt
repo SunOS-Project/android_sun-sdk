@@ -79,16 +79,16 @@ class CustomHeadsUpController @Inject constructor(
                 }
             }
         }
-        systemSettings.registerContentObserverForUser(
+        systemSettings.registerContentObserverForUserSync(
                 DISABLE_LANDSCAPE_HEADS_UP,
                 settingsObserver, UserHandle.USER_ALL)
-        systemSettings.registerContentObserverForUser(
+        systemSettings.registerContentObserverForUserSync(
                 HEADS_UP_BLACKLIST,
                 settingsObserver, UserHandle.USER_ALL)
-        systemSettings.registerContentObserverForUser(
+        systemSettings.registerContentObserverForUserSync(
                 HEADS_UP_STOPLIST,
                 settingsObserver, UserHandle.USER_ALL)
-        systemSettings.registerContentObserverForUser(
+        systemSettings.registerContentObserverForUserSync(
                 LESS_BORING_HEADS_UP,
                 settingsObserver, UserHandle.USER_ALL)
         updateSettings()

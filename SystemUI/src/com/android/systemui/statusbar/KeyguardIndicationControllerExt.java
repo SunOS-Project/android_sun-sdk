@@ -65,7 +65,7 @@ class KeyguardIndicationControllerExt {
                         0, mUserTracker.getUserId()) == 1;
             }
         };
-        mSystemSettings.registerContentObserverForUser(LOCKSCREEN_BATTERY_INFO,
+        mSystemSettings.registerContentObserverForUserSync(LOCKSCREEN_BATTERY_INFO,
                 mSettingsObserver, UserHandle.USER_ALL);
         mSettingsObserver.onChange(false);
 
@@ -80,7 +80,7 @@ class KeyguardIndicationControllerExt {
 
     void destroy() {
         mUserTracker.removeCallback(mUserTrackerCallback);
-        mSystemSettings.unregisterContentObserver(mSettingsObserver);
+        mSystemSettings.unregisterContentObserverSync(mSettingsObserver);
     }
 
     void onBatteryInfoUpdated(int chargingCurrent, double chargingVoltage, float temperature) {

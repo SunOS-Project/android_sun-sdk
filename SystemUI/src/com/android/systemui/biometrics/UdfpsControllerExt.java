@@ -27,7 +27,6 @@ class UdfpsControllerExt {
     private int mDimBrightnessMin;
     private int mDimBrightnessMax;
     private int mDimDelay;
-    private int mUdfpsVendorCode;
 
     void init(UdfpsController controller) {
         mUdfpsController = controller;
@@ -52,9 +51,6 @@ class UdfpsControllerExt {
                 mBrightnessAlphaArray[i][1] = Integer.parseInt(s[1]);
             }
         }
-
-        mUdfpsVendorCode = mUdfpsController.getContext().getResources().getInteger(
-                R.integer.config_udfps_vendor_code);
     }
 
     void onFingerUp(DelayableExecutor executor, long requestId) {
@@ -103,10 +99,6 @@ class UdfpsControllerExt {
 
     int getDimDelay() {
         return mDimDelay;
-    }
-
-    int getVendorCode() {
-        return mUdfpsVendorCode;
     }
 
     private int getBrightness() {

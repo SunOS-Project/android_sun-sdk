@@ -51,7 +51,7 @@ class CustomScreenshotController @Inject constructor(
                 updateSettings()
             }
         }
-        systemSettings.registerContentObserverForUser(
+        systemSettings.registerContentObserverForUserSync(
                 SCREENSHOT_SOUND,
                 settingsObserver, UserHandle.USER_ALL)
         updateSettings()
