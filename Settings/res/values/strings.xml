@@ -144,9 +144,6 @@
     <!-- About device screen, Build date -->
     <string name="build_date">Build date</string>
 
-    <!-- Maintainer info -->
-    <string name="maintainer_info_title">Device Maintainer</string>
-
     <!-- Hardware info -->
     <!-- Label for device's hardware platform value [CHAR LIMIT=40] -->
     <string name="platform_revision">Platform</string>

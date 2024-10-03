@@ -19,10 +19,6 @@
         <item>com.google.android.gm</item>
     </string-array>
 
-    <!-- Maintainer info -->
-    <string name="config_maintainer_name" translatable="false"></string>
-    <string name="config_maintainer_link" translatable="false"></string>
-
     <!-- Max network scan search time in seconds -->
     <integer name="config_network_scan_helper_max_search_time_sec">300</integer>
 
