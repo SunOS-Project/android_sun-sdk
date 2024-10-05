@@ -1,0 +1,16 @@
+android_library {
+
+    name: "custom-preference",
+
+    optimize: {
+        enabled: false,
+    },
+
+    srcs: ["src/**/*.java"],
+
+    static_libs: [
+        "androidx.preference_preference",
+    ],
+
+    resource_dirs: ["res"],
+}
