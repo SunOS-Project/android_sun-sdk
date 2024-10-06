@@ -105,6 +105,16 @@
         <item>2</item>
     </string-array>
 
+    <string-array name="status_bar_clock_style_centered_cutout_entries" translatable="false">
+        <item>@string/status_bar_clock_style_left</item>
+        <item>@string/status_bar_clock_style_right</item>
+    </string-array>
+
+    <string-array name="status_bar_clock_style_centered_cutout_values" translatable="false">
+        <item>0</item>
+        <item>2</item>
+    </string-array>
+
     <string-array name="status_bar_am_pm_entries" translatable="false">
         <item>@string/status_bar_am_pm_hidden</item>
         <item>@string/status_bar_am_pm_small</item>

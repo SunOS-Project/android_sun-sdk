@@ -38,13 +38,10 @@
             android:dependency="statusbar_clock_auto_hide"
             android:defaultValue="5" />
 
-        <org.nameless.custom.preference.SystemSettingListPreference
+        <ListPreference
             android:key="statusbar_clock_style"
             android:title="@string/status_bar_clock_style_title"
-            android:entries="@array/status_bar_clock_style_entries"
-            android:entryValues="@array/status_bar_clock_style_values"
-            android:dependency="statusbar_clock"
-            android:defaultValue="0" />
+            android:dependency="statusbar_clock" />
 
         <org.nameless.custom.preference.SystemSettingListPreference
             android:key="statusbar_clock_am_pm_style"

@@ -128,4 +128,7 @@
          1: Right side (default) -->
     <integer name="config_volumePanelPosLandDefault">1</integer>
 
+    <!-- Whether device has a centered cutout -->
+    <bool name="config_hasCenteredCutout">false</bool>
+
 </resources>
