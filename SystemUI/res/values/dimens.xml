@@ -72,4 +72,7 @@
     <!-- Height of the bottom navigation / system bar on immersive mode -->
     <dimen name="navigation_bar_height_immersive">0.1px</dimen>
 
+    <!-- Status Bar ticker icon size -->
+    <dimen name="ticker_icon_size">18sp</dimen>
+
 </resources>

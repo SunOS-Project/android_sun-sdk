@@ -5,16 +5,22 @@
 
 package com.android.systemui.statusbar.phone;
 
+import static android.app.StatusBarManager.DISABLE_NOTIFICATION_ICONS;
+import static android.app.StatusBarManager.DISABLE_NOTIFICATION_TICKER;
+
 import static com.android.settingslib.display.BrightnessUtils.GAMMA_SPACE_MAX;
 import static com.android.settingslib.display.BrightnessUtils.convertGammaToLinearFloat;
 
 import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_SLIDER;
+import static org.nameless.os.DebugConstants.DEBUG_TICKER;
 
 import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.HEAVY_CLICK;
 import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.SLIDER_EDGE;
 import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.SLIDER_STEP;
 import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.UNIFIED_SUCCESS;
 
+import android.annotation.NonNull;
+import android.app.Notification;
 import android.content.Context;
 import android.hardware.display.DisplayManager;
 import android.os.PowerManager;
@@ -23,16 +29,37 @@ import android.os.SystemProperties;
 import android.os.VibrationAttributes;
 import android.os.VibrationEffect;
 import android.os.VibrationExtInfo;
+import android.service.notification.StatusBarNotification;
+import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewStub;
 
+import com.android.systemui.demomode.DemoModeController;
+import com.android.systemui.res.R;
+import com.android.systemui.statusbar.NotificationLockscreenUserManager;
 import com.android.systemui.statusbar.VibratorHelper;
+import com.android.systemui.statusbar.notification.collection.NotifCollection.CancellationReason;
+import com.android.systemui.statusbar.notification.collection.NotifPipeline;
+import com.android.systemui.statusbar.notification.collection.notifcollection.NotifCollectionListener;
+import com.android.systemui.statusbar.notification.collection.NotificationEntry;
+import com.android.systemui.statusbar.notification.interruption.NotificationInterruptStateProvider;
+import com.android.systemui.statusbar.policy.ClockCenter;
+import com.android.systemui.statusbar.policy.DeviceProvisionedController;
+import com.android.systemui.statusbar.policy.KeyguardStateController;
 import com.android.systemui.statusbar.window.StatusBarWindowController;
 import com.android.systemui.util.concurrency.MessageRouter;
 
 import org.nameless.systemui.shade.CustomGestureListener;
+import org.nameless.systemui.statusbar.ticker.AdvertSwitcherView;
+import org.nameless.systemui.statusbar.ticker.MarqueeTickerEx;
+import org.nameless.systemui.statusbar.ticker.MarqueeTickerView;
+import org.nameless.systemui.statusbar.ticker.TickerEx;
 
 class CentralSurfacesImplExt {
+
+    private static final String TAG = "CentralSurfacesImplExt";
 
     private static final int MSG_LONG_PRESS_BRIGHTNESS_CHANGE = 2001;
 
@@ -60,8 +87,16 @@ class CentralSurfacesImplExt {
     private CentralSurfacesImpl mCentralSurfacesImpl;
     private Context mContext;
     private CustomGestureListener mCustomGestureListener;
+    private DemoModeController mDemoModeController;
+    private DeviceProvisionedController mDeviceProvisionedController;
+    private HeadsUpManagerPhone mHeadsUpManager;
     private int mDisplayId;
+    private KeyguardStateController mKeyguardStateController;
     private MessageRouter mMessageRouter;
+    private NotifCollectionListener mNotifCollectionListener;
+    private NotifPipeline mNotifPipeline;
+    private NotificationInterruptStateProvider mNotificationInterruptStateProvider;
+    private NotificationLockscreenUserManager mLockscreenUserManager;
     private StatusBarWindowController mStatusBarWindowController;
     private VibratorHelper mVibratorHelper;
 
@@ -82,18 +117,35 @@ class CentralSurfacesImplExt {
 
     private long mLastHapticTimestamp;
 
+    private AdvertSwitcherView mSwitcherView;
+    private MarqueeTickerEx mTicker;
+
     void init(CentralSurfacesImpl centralSurfacesImpl,
             Context context,
             CustomGestureListener customGestureListener,
+            DemoModeController demoModeController,
+            DeviceProvisionedController deviceProvisionedController,
+            HeadsUpManagerPhone headsUpManager,
             int displayId,
+            KeyguardStateController keyguardStateController,
             MessageRouter messageRouter,
+            NotifPipeline notifPipeline,
+            NotificationInterruptStateProvider notificationInterruptStateProvider,
+            NotificationLockscreenUserManager lockscreenUserManager,
             StatusBarWindowController statusBarWindowController,
             VibratorHelper vibratorHelper) {
         mCentralSurfacesImpl = centralSurfacesImpl;
         mContext = context;
         mCustomGestureListener = customGestureListener;
+        mDemoModeController = demoModeController;
+        mDeviceProvisionedController = deviceProvisionedController;
         mDisplayId = displayId;
+        mHeadsUpManager = headsUpManager;
+        mLockscreenUserManager = lockscreenUserManager;
+        mKeyguardStateController = keyguardStateController;
         mMessageRouter = messageRouter;
+        mNotifPipeline = notifPipeline;
+        mNotificationInterruptStateProvider = notificationInterruptStateProvider;
         mStatusBarWindowController = statusBarWindowController;
         mVibratorHelper = vibratorHelper;
 
@@ -223,5 +275,180 @@ class CentralSurfacesImplExt {
 
     boolean isInBrightnessControl() {
         return mInBrightnessControl;
+    }
+
+    private void initEntryListener() {
+        mNotifCollectionListener = new NotifCollectionListener() {
+            @Override
+            public void onEntryAdded(@NonNull NotificationEntry entry) {
+                if (shouldFilterHeadsUpNotification(entry)) {
+                    return;
+                }
+                TickerEx.tickFilter(entry, false, () -> tick(entry, true));
+            }
+
+            @Override
+            public void onEntryUpdated(@NonNull NotificationEntry entry) {
+                if (mDemoModeController.isInDemoMode()) {
+                    return;
+                }
+                if (shouldUpdateNotificationTicker(entry.getSbn())) {
+                    updateSwitcherViewVisibility(true);
+                } else {
+                    if (shouldFilterHeadsUpNotification(entry)) {
+                        return;
+                    }
+                    TickerEx.tickFilter(entry, false, () -> tick(entry, false));
+                }
+            }
+
+            @Override
+            public void onEntryRemoved(@NonNull NotificationEntry entry, @CancellationReason int reason) {
+                TickerEx.removeTickFilter(entry);
+                mTicker.removeEntry(entry.getSbn());
+                mSwitcherView.removeNotification(entry.getSbn().getKey());
+            }
+        };
+        mNotifPipeline.addCollectionListener(mNotifCollectionListener);
+    }
+
+    void initTicker(PhoneStatusBarView statusBarView) {
+        if (mNotifCollectionListener != null) {
+            mNotifPipeline.removeCollectionListener(mNotifCollectionListener);
+        }
+        mSwitcherView = (AdvertSwitcherView) statusBarView.findViewById(R.id.status_bar_switcher);
+        mTicker = inflateTickerView(statusBarView);
+        mTicker.setStatusBarContents(statusBarView.findViewById(R.id.status_bar_contents));
+        mTicker.setSwitcherView(mSwitcherView);
+        mTicker.setCenterClockView((ClockCenter) statusBarView.findViewById(R.id.center_clock));
+        initEntryListener();
+    }
+
+    private MarqueeTickerEx inflateTickerView(PhoneStatusBarView statusBarView) {
+        final ViewStub tickerStub = (ViewStub) statusBarView.findViewById(R.id.ticker_stub);
+        if (tickerStub == null) {
+            return null;
+        }
+        final View tickerView = tickerStub.inflate();
+        final MarqueeTickerEx marqueeTicker = new MarqueeTickerEx(mContext, statusBarView);
+        marqueeTicker.setTickerView(tickerView);
+        final MarqueeTickerView tickerText = (MarqueeTickerView) statusBarView.findViewById(R.id.tickerText);
+        tickerText.setTicker(marqueeTicker);
+        statusBarView.setTickerView(tickerView);
+        return marqueeTicker;
+    }
+
+    private void tick(NotificationEntry notificationEntry, boolean firstTime) {
+        if (mDemoModeController.isInDemoMode()) {
+            if (DEBUG_TICKER) {
+                Log.d(TAG, "tick, return: in demo mode");
+            }
+            return;
+        }
+        if (!mDeviceProvisionedController.isDeviceProvisioned()) {
+            if (DEBUG_TICKER) {
+                Log.d(TAG, "tick, return: device is not provisioned");
+            }
+            return;
+        }
+        final StatusBarNotification n = notificationEntry.getSbn();
+        final int notificationUserId = n.getUserId();
+        if (!mLockscreenUserManager.isCurrentProfile(notificationUserId)) {
+            if (DEBUG_TICKER) {
+                Log.d(TAG, "tick, return: not for current user");
+            }
+            return;
+        }
+        if (mHeadsUpManager.hasPinnedHeadsUp()) {
+            if (DEBUG_TICKER) {
+                Log.d(TAG, "tick, return: already has pinned heads up");
+            }
+            return;
+        }
+        if (mKeyguardStateController.isShowing() && !mKeyguardStateController.isOccluded()) {
+            if (DEBUG_TICKER) {
+                Log.d(TAG, "tick, return: keyguard showing and not occluded");
+            }
+            return;
+        }
+        if (mCentralSurfacesImpl.getNotificationPanelViewController().isFullyExpanded()) {
+            if (DEBUG_TICKER) {
+                Log.d(TAG, "tick, return: notification panel is fully expanded");
+            }
+            return;
+        }
+        if (mLockscreenUserManager.isAnyProfilePublicMode()) {
+            if (DEBUG_TICKER) {
+                Log.d(TAG, "tick, return: any of the profiles are in public mode");
+            }
+            return;
+        }
+        if (n.getNotification().tickerText == null ||
+                n.getNotification().tickerText.toString().isEmpty()) {
+            if (DEBUG_TICKER) {
+                Log.d(TAG, "tick, return: tickerText is empty");
+            }
+            return;
+        }
+        if (mCentralSurfacesImpl.getNotificationShadeWindowView().getWindowToken() == null) {
+            if (DEBUG_TICKER) {
+                Log.d(TAG, "tick, return: window token is null");
+            }
+            return;
+        }
+        if ((mCentralSurfacesImpl.getDisabled1() & (DISABLE_NOTIFICATION_ICONS | DISABLE_NOTIFICATION_TICKER)) != 0) {
+            if (DEBUG_TICKER) {
+                Log.d(TAG, "tick, return: notification icon/ticker disabled");
+            }
+            return;
+        }
+
+        mTicker.halt();
+        if (!mSwitcherView.addNotification(n)) {
+            mTicker.addEntry(n);
+        }
+    }
+
+    void tickerHalt() {
+        if (DEBUG_TICKER) {
+            Log.d(TAG, "tickerHalt");
+        }
+        if (mTicker != null) {
+            mTicker.halt();
+        }
+        updateSwitcherViewVisibility(false);
+    }
+
+    private boolean shouldFilterHeadsUpNotification(NotificationEntry entry) {
+        if (mHeadsUpManager.shouldHeadsUpBecomePinned(entry) &&
+                mNotificationInterruptStateProvider.shouldHeadsUp(entry) &&
+                !mHeadsUpManager.isSnoozed(entry.getSbn().getPackageName())) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean shouldUpdateNotificationTicker(StatusBarNotification sbn) {
+        if (sbn == null || mSwitcherView == null) {
+            return false;
+        }
+        final Notification notification = sbn.getNotification();
+        if (notification == null) {
+            return false;
+        }
+        if (!mSwitcherView.addNotification(sbn)) {
+            return false;
+        }
+        return (notification.flags & Notification.FLAG_ONLY_UPDATE_TICKER) != 0;
+    }
+
+    private void updateSwitcherViewVisibility(boolean visible) {
+        if (mSwitcherView != null) {
+            visible &= !(mKeyguardStateController.isShowing() && mKeyguardStateController.isOccluded());
+            if (DEBUG_TICKER) {
+                Log.d(TAG, "updateSwitcherViewVisibility, visible=" + visible);
+            }
+            mSwitcherView.updateTickerViewVisibility(visible);
+        }
     }
 }

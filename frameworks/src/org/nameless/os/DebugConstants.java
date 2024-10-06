@@ -37,6 +37,7 @@ public class DebugConstants {
         CONSTANTS_MAP.put("DEBUG_SENSOR", "persist.sys.nameless.sensor.debug");
         CONSTANTS_MAP.put("DEBUG_SYSTEM_TOOL", "persist.sys.nameless.system_tool.debug");
         CONSTANTS_MAP.put("DEBUG_THREE_FINGER", "persist.sys.nameless.threefinger.debug");
+        CONSTANTS_MAP.put("DEBUG_TICKER", "persist.sys.nameless.ticker.debug");
         CONSTANTS_MAP.put("DEBUG_TOUCH_GESTURE", "persist.sys.nameless.gesture.debug");
         CONSTANTS_MAP.put("DEBUG_VIBRATION_ADAPTER", "persist.sys.nameless.vibrator.adapter.debug");
         CONSTANTS_MAP.put("DEBUG_WMS_RESOLUTION", "persist.sys.nameless.wm.resolution.debug");
@@ -165,6 +166,13 @@ public class DebugConstants {
     // Key: ThreeFinger
     public static final boolean DEBUG_THREE_FINGER = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.threefinger.debug", false
+    );
+
+    // Enable this to debug status bar ticker
+    // Package: org.nameless.systemui.ticker.*
+    // Key: Ticker
+    public static final boolean DEBUG_TICKER = DEBUG_GLOBAL || SystemProperties.getBoolean(
+        "persist.sys.nameless.ticker.debug", false
     );
 
     // Enable this to debug off-screen gesture feature

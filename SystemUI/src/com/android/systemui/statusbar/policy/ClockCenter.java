@@ -25,6 +25,7 @@ public class ClockCenter extends Clock {
 
     private boolean mClockVisibleByPolicy = true;
     private boolean mClockVisibleByUser = true;
+    private boolean mVisibilityLocked = false;
 
     public ClockCenter(Context context) {
         this(context, null);
@@ -46,7 +47,7 @@ public class ClockCenter extends Clock {
 
     @Override
     protected void updateClockVisibility() {
-        final boolean visible = mClockStyle == STYLE_CLOCK_CENTER && mShowClock
+        final boolean visible = isCenterClock()
                 && mClockVisibleByPolicy && mClockVisibleByUser;
         try {
             mAutoHideHandler.removeCallbacksAndMessages(null);
@@ -65,5 +66,21 @@ public class ClockCenter extends Clock {
         if (clockVisibleByPolicy != mClockVisibleByPolicy) {
             setClockVisibilityByPolicy(clockVisibleByPolicy);
         }
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        if (mVisibilityLocked) {
+            return;
+        }
+        super.setVisibility(visibility);
+    }
+
+    public boolean isCenterClock() {
+        return mClockStyle == STYLE_CLOCK_CENTER && mShowClock;
+    }
+
+    public void setVisibilityLocked(boolean locked) {
+        mVisibilityLocked = locked;
     }
 }
