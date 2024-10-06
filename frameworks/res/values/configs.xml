@@ -118,4 +118,14 @@
         <item>com.android.launcher3/com.android.quickstep.RecentsActivity</item>
     </string-array>
 
+    <!-- Default volume panel position in portrait mode
+         0: Left side (default)
+         1: Right side -->
+    <integer name="config_volumePanelPosPortDefault">0</integer>
+
+    <!-- Default volume panel position in landscape mode
+         0: Left side
+         1: Right side (default) -->
+    <integer name="config_volumePanelPosLandDefault">1</integer>
+
 </resources>

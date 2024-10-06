@@ -183,4 +183,8 @@
     <java-symbol type="string" name="app_prop_config_updated_content" />
     <java-symbol type="string" name="reboot_now" />
 
+    <!-- Default volume panel position -->
+    <java-symbol type="integer" name="config_volumePanelPosPortDefault" />
+    <java-symbol type="integer" name="config_volumePanelPosLandDefault" />
+
 </resources>

@@ -175,12 +175,16 @@ class VolumeDialogControllerImplExt {
     }
 
     private void updateVolumePanelPosition(boolean notify) {
+        final int posPortDefault = mContext.getResources().getInteger(
+                com.android.internal.R.integer.config_volumePanelPosPortDefault);
         mVolumePanelPortLeft = Settings.System.getIntForUser(
                 mResolver, VOLUME_PANEL_POSITION_PORT,
-                POSITION_LEFT, mUserTracker.getUserId()) == POSITION_LEFT;
+                posPortDefault, mUserTracker.getUserId()) == POSITION_LEFT;
+        final int posLandDefault = mContext.getResources().getInteger(
+                com.android.internal.R.integer.config_volumePanelPosLandDefault);
         mVolumePanelLandLeft = Settings.System.getIntForUser(
                 mResolver, VOLUME_PANEL_POSITION_LAND,
-                POSITION_RIGHT, mUserTracker.getUserId()) == POSITION_LEFT;
+                posLandDefault, mUserTracker.getUserId()) == POSITION_LEFT;
         if (notify) {
             notifyChange();
         }
