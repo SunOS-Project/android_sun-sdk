@@ -13,6 +13,7 @@ import static org.nameless.os.DebugConstants.DEBUG_WMS_RESOLUTION;
 import static org.nameless.provider.SettingsExt.Global.DISPLAY_WIDTH_CUSTOM;
 import static org.nameless.view.DisplayResolutionManager.FHD_WIDTH;
 import static org.nameless.view.DisplayResolutionManager.QHD_WIDTH;
+import static org.nameless.view.DisplayResolutionManager.RESTART_SYSTEMUI_ON_SWITCH;
 import static org.nameless.view.DisplayResolutionManager.SCALE;
 import static org.nameless.view.DisplayResolutionManager.TYPE_AOSP_FHD_DEFAULT;
 import static org.nameless.view.DisplayResolutionManager.TYPE_DISABLED;
@@ -248,7 +249,9 @@ public class DisplayResolutionController {
         storeDisplayWidth(width);
         applyOverlay(width == FHD_WIDTH);
         CustomUtils.forceStopDefaultLauncher(mContext);
-        CustomUtils.restartSystemUi(mContext);
+        if (RESTART_SYSTEMUI_ON_SWITCH) {
+            CustomUtils.restartSystemUi(mContext);
+        }
         notifyDisplayResolutionChanged();
     }
 

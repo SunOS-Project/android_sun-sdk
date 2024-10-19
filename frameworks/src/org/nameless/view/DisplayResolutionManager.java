@@ -28,6 +28,9 @@ public class DisplayResolutionManager {
     private static final int DEVICE_TYPE =
             SystemProperties.getInt("ro.nameless.display.resolution_switch", TYPE_DISABLED);
 
+    public static final boolean RESTART_SYSTEMUI_ON_SWITCH =
+            SystemProperties.getBoolean("persist.sys.nameless.resolution.restart_sysui", false);
+
     public static final int FHD_WIDTH = 1080;
     public static final int QHD_WIDTH = 1440;
     public static final float SCALE = (float) FHD_WIDTH / QHD_WIDTH;
