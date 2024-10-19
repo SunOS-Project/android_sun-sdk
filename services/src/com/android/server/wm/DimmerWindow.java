@@ -227,17 +227,6 @@ class DimmerWindow {
         return mEdgeBarHelper.getBarTouchBounds();
     }
 
-    boolean canEnterPinnedWindowMode() {
-        if (mLastDimmerTask == null) {
-            return false;
-        }
-        final Task rootTask = mLastDimmerTask.getRootTask();
-        if (rootTask == null) {
-            return false;
-        }
-        return rootTask.getWindowConfiguration().isMiniExtWindowMode();
-    }
-
     boolean enterPinnedWindowingMode() {
         if (mLastDimmerTask == null) {
             return false;

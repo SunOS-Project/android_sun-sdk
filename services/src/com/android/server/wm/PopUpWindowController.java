@@ -321,10 +321,6 @@ public class PopUpWindowController {
         }
     }
 
-    boolean canEnterPinnedWindowMode() {
-        return DimmerWindow.getInstance().canEnterPinnedWindowMode();
-    }
-
     boolean shouldSkipAppFocusChanged(Task newTask) {
         if (newTask != null && !newTask.getWindowConfiguration().isPopUpWindowMode()
                 && TopActivityRecorder.getInstance().hasMiniWindow()) {
