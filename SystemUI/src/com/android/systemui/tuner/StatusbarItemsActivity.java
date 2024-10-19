@@ -16,19 +16,17 @@
 
 package com.android.systemui.tuner;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.android.systemui.Dependency;
 import com.android.systemui.fragments.FragmentService;
-import com.android.systemui.res.R;
 
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity;
+import com.android.settingslib.collapsingtoolbar.R;
 
 public class StatusbarItemsActivity extends CollapsingToolbarBaseActivity {
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getFragmentManager().beginTransaction().replace(R.id.content_frame, new StatusbarItems())
@@ -39,15 +37,5 @@ public class StatusbarItemsActivity extends CollapsingToolbarBaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         Dependency.destroy(FragmentService.class, s -> s.destroyAll());
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-            switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            }
-        return super.onOptionsItemSelected(item);
     }
 }
