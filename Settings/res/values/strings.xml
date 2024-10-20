@@ -718,7 +718,7 @@
     <string name="data_disabled_icon_summary">Display the exclamation mark on signal icon when data is disabled</string>
 
     <!-- Nameless version -->
-    <string name="nameless_version">Nameless-AOSP version</string>
+    <string name="nameless_version">Nameless-CLO version</string>
 
     <!-- Vendor security patch -->
     <string name="custom_vendor_security_patch">Vendor security patch level</string>
