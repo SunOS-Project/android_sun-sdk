@@ -18,6 +18,8 @@ import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.UNIFIED_SUCCESS;
 import android.content.Context;
 import android.hardware.display.DisplayManager;
 import android.os.PowerManager;
+import android.os.SystemClock;
+import android.os.SystemProperties;
 import android.os.VibrationAttributes;
 import android.os.VibrationEffect;
 import android.os.VibrationExtInfo;
@@ -43,6 +45,9 @@ class CentralSurfacesImplExt {
             VibrationAttributes.createForUsage(VibrationAttributes.USAGE_HARDWARE_FEEDBACK);
     private static final VibrationEffect EFFECT_HEAVY_CLICK =
             VibrationEffect.createPredefined(VibrationEffect.EFFECT_HEAVY_CLICK);
+
+    private static final long HAPTIC_MIN_INTERVAL =
+            SystemProperties.getLong("sys.nameless.haptic.slider_interval", 50L);
 
     private static class InstanceHolder {
         private static CentralSurfacesImplExt INSTANCE = new CentralSurfacesImplExt();
@@ -74,6 +79,8 @@ class CentralSurfacesImplExt {
     private boolean mBrightnessChanged;
     private boolean mJustPeeked;
     private boolean mInBrightnessControl;
+
+    private long mLastHapticTimestamp;
 
     void init(CentralSurfacesImpl centralSurfacesImpl,
             Context context,
@@ -134,13 +141,16 @@ class CentralSurfacesImplExt {
                 mMinimumBacklight, mMaximumBacklight);
         if (mCurrentBrightness != val) {
             if (mCurrentBrightness != -1) {
+                final long now = SystemClock.uptimeMillis();
                 if (val == mMinimumBacklight || val == mMaximumBacklight) {
+                    mLastHapticTimestamp = now;
                     mVibratorHelper.vibrateExt(new VibrationExtInfo.Builder()
                             .setEffectId(SLIDER_EDGE)
                             .setVibrationAttributes(VIBRATION_ATTRIBUTES_SLIDER)
                             .build()
                     );
-                } else {
+                } else if (now - mLastHapticTimestamp > HAPTIC_MIN_INTERVAL) {
+                    mLastHapticTimestamp = now;
                     mVibratorHelper.vibrateExt(new VibrationExtInfo.Builder()
                             .setEffectId(SLIDER_STEP)
                             .setAmplitude((float) (val - mMinimumBacklight)
