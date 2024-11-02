@@ -8,9 +8,12 @@ package com.android.internal.util.nameless;
 import static android.provider.Settings.System.MIN_REFRESH_RATE;
 import static android.provider.Settings.System.PEAK_REFRESH_RATE;
 
+import static org.nameless.os.DebugConstants.DEBUG_DISPLAY_RR;
+
 import android.content.Context;
 import android.os.UserHandle;
 import android.provider.Settings;
+import android.util.Slog;
 import android.view.Display;
 
 import com.android.internal.R;
@@ -20,6 +23,8 @@ import java.util.Comparator;
 
 /** @hide */
 public class DisplayRefreshRateHelper {
+
+    private static final String TAG = "DisplayRefreshRateHelper";
 
     private static final float DEFAULT_REFRESH_RATE = 60f;
 
@@ -46,6 +51,9 @@ public class DisplayRefreshRateHelper {
         for (Display.Mode m : modes) {
             if (m.getPhysicalWidth() == mode.getPhysicalWidth() &&
                     m.getPhysicalHeight() == mode.getPhysicalHeight()) {
+                if (DEBUG_DISPLAY_RR) {
+                    Slog.d(TAG, "add refresh rate: " + m.getRefreshRate());
+                }
                 mRefreshRateList.add((int) m.getRefreshRate());
             }
         }
@@ -62,7 +70,11 @@ public class DisplayRefreshRateHelper {
         final float defaultRefreshRate = refreshRate != 0 ? (float) refreshRate : DEFAULT_REFRESH_RATE;
         final int ret = (int) Settings.System.getFloatForUser(mContext.getContentResolver(),
                 MIN_REFRESH_RATE, defaultRefreshRate, UserHandle.USER_SYSTEM);
+        if (DEBUG_DISPLAY_RR) {
+            Slog.d(TAG, "getMinimumRefreshRate, default: " + defaultRefreshRate + ", settings: " + ret);
+        }
         if (mRefreshRateList.size() != 0 && !mRefreshRateList.contains(ret)) {
+            Slog.w(TAG, "getMinimumRefreshRate, refresh rate " + ret + " is not in list, default to max");
             return mRefreshRateList.get(mRefreshRateList.size() - 1);
         }
         return ret;
@@ -74,7 +86,11 @@ public class DisplayRefreshRateHelper {
         final float defaultPeakRefreshRate = refreshRate != 0 ? (float) refreshRate : DEFAULT_REFRESH_RATE;
         final int ret = (int) Settings.System.getFloatForUser(mContext.getContentResolver(),
                 PEAK_REFRESH_RATE, defaultPeakRefreshRate, UserHandle.USER_SYSTEM);
+        if (DEBUG_DISPLAY_RR) {
+            Slog.d(TAG, "getPeakRefreshRate, default: " + defaultPeakRefreshRate + ", settings: " + ret);
+        }
         if (mRefreshRateList.size() != 0 && !mRefreshRateList.contains(ret)) {
+            Slog.w(TAG, "getMinimumRefreshRate, refresh rate " + ret + " is not in list, default to max");
             return mRefreshRateList.get(mRefreshRateList.size() - 1);
         }
         return ret;

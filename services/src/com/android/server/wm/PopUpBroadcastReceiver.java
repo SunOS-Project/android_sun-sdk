@@ -9,6 +9,7 @@ import static android.app.ActivityTaskManager.INVALID_TASK_ID;
 import static android.app.WindowConfiguration.WINDOWING_MODE_PINNED_WINDOW_EXT;
 import static android.app.WindowConfiguration.WINDOWING_MODE_MINI_WINDOW_EXT;
 
+import static org.nameless.os.DebugConstants.DEBUG_POP_UP;
 import static org.nameless.view.PopUpViewManager.ACTION_PIN_CURRENT_APP;
 import static org.nameless.view.PopUpViewManager.ACTION_START_MINI_WINDOW;
 import static org.nameless.view.PopUpViewManager.ACTION_START_PINNED_WINDOW;
@@ -25,6 +26,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Slog;
 
 import com.android.internal.util.nameless.CustomUtils;
 
@@ -62,13 +64,23 @@ public class PopUpBroadcastReceiver extends BroadcastReceiver {
 
         if (ACTION_PIN_CURRENT_APP.equals(action)) {
             if (TopActivityRecorder.getInstance().hasMiniWindow()) {
+                if (DEBUG_POP_UP) {
+                    Slog.d(TAG, "pin current app, return: already has mini window");
+                }
                 return;
             }
             if (TopActivityRecorder.getInstance().isTopFullscreenActivityHome()) {
+                if (DEBUG_POP_UP) {
+                    Slog.d(TAG, "pin current app, return: top fullscreen activity is home");
+                }
                 return;
             }
             final int topTaskId = TopActivityRecorder.getInstance().getTopFullscreenTaskId();
             if (topTaskId != INVALID_TASK_ID) {
+                if (DEBUG_POP_UP) {
+                    final String packageName = TopActivityRecorder.getInstance().getTopFullscreenPackage();
+                    Slog.d(TAG, "pin current app, top fullscreen package: " + packageName);
+                }
                 PopUpWindowController.getInstance().notifyNextRecentIsPin();
                 PopUpAppStarter.getInstance().startActivity(topTaskId, PopUpAppStarter.getPinnedWindowBundle());
             }
@@ -80,9 +92,15 @@ public class PopUpBroadcastReceiver extends BroadcastReceiver {
             return;
         }
         if (!CustomUtils.isPackageInstalled(context, packageName, false)) {
+            if (DEBUG_POP_UP) {
+                Slog.d(TAG, "return: package " + packageName + " is not available");
+            }
             return;
         }
         if (TopActivityRecorder.getInstance().isPackageAtTop(packageName) && !ALLOW_START_TOP) {
+            if (DEBUG_POP_UP) {
+                Slog.d(TAG, "return: package " + packageName + " already at top");
+            }
             return;
         }
 

@@ -7,10 +7,15 @@ package android.app;
 
 import static android.app.WindowConfiguration.WINDOWING_MODE_FREEFORM;
 
+import static org.nameless.os.DebugConstants.DEBUG_POP_UP;
 import static org.nameless.view.PopUpViewManager.FEATURE_SUPPORTED;
+
+import android.util.Slog;
 
 /** @hide */
 class ActivityOptionsExt {
+
+    private static final String TAG = "ActivityOptionsExt";
 
     private static final String PKG_LAUNCHER3 = "com.android.launcher3";
     private static final String PKG_PIXEL_LAUNCHER = "com.google.android.apps.nexuslauncher";
@@ -35,6 +40,9 @@ class ActivityOptionsExt {
         final String packageName = ActivityThread.currentOpPackageName();
         if (packageName == null) {
             return false;
+        }
+        if (DEBUG_POP_UP) {
+            Slog.d(TAG, "isFromLauncher, packageName=" + packageName);
         }
         if (PKG_LAUNCHER3.equals(packageName)) {
             return true;

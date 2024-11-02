@@ -5,6 +5,8 @@
 
 package com.android.internal.util.nameless;
 
+import static org.nameless.os.DebugConstants.DEBUG_LAUNCHER;
+
 import android.content.Context;
 import android.os.SystemProperties;
 import android.util.Log;
@@ -76,6 +78,9 @@ public class LauncherUtils {
             }
             sPackageList.add(launcher);
             sComponentList.add(component);
+            if (DEBUG_LAUNCHER) {
+                Log.d(TAG, "init, add component: " + component);
+            }
         }
     }
 
@@ -95,7 +100,9 @@ public class LauncherUtils {
             componentName = getSelectedComponentName(context);
             SystemProperties.set(PROP_SELECTED_LAUNCHER_CACHED, getLauncherFromComponent(componentName));
         }
-        Log.i(TAG, "getComponentName: " + componentName);
+        if (DEBUG_LAUNCHER) {
+            Log.d(TAG, "getComponentName: " + componentName);
+        }
         return componentName;
     }
 

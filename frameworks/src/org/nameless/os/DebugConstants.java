@@ -48,71 +48,69 @@ public class DebugConstants {
         "persist.sys.nameless.debug.global", false
     );
 
-    // Enable this to debug AppPropsController
-    // Package: org.nameless.server.app.AppPropsController
+    // Enable this to debug app props spoof feature
     // Key: AppPropsController, AppPropsManager
     public static final boolean DEBUG_APP_PROPS = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.app.props.debug", false
     );
 
-    // Enable this to debug AlertSliderController
+    // Enable this to debug alert slider feature
     // Package: org.nameless.server.audio.AlertSliderController
     // Key: AlertSliderController
     public static final boolean DEBUG_AUDIO_SLIDER = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.audio.slider.debug", false
     );
 
-    // Enable this to debug BatteryFeatureController
+    // Enable this to debug battery HAL features
     // Package: org.nameless.server.battery.BatteryFeatureController
     // Key: BatteryFeatureController
     public static final boolean DEBUG_BATTERY_FEATURE = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.battery.feature.debug", false
     );
 
-    // Enable this to debug DisplayFeatureController
+    // Enable this to debug displayfeature HAL features
     // Package: org.nameless.server.display.DisplayFeatureController
     // Key: DisplayFeatureController
     public static final boolean DEBUG_DISPLAY_FEATURE = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.display.feature.debug", false
     );
 
-    // Enable this to debug DisplayRotationController
+    // Enable this to debug per-app auto rotation feature
     // Package: org.nameless.server.wm.DisplayRotationController
     // Key: DisplayRotationController
     public static final boolean DEBUG_DISPLAY_ROTATE = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.display.rotate.debug", false
     );
 
-    // Enable this to debug DisplayRefreshRateController
+    // Enable this to debug refresh rate switch feature
     // Package: org.nameless.server.display.DisplayRefreshRateController
-    // Key: DisplayModeDirector, DisplayRefreshRateController
+    // Key: DisplayModeDirector, DisplayRefreshRateController, DisplayRefreshRateHelper
     public static final boolean DEBUG_DISPLAY_RR = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.display.rr.debug", false
     );
 
-    // Enable this to debug DozeController
+    // Enable this to debug doze action feature
     // Package: org.nameless.server.policy.DozeController
     // Key: DozeController
     public static final boolean DEBUG_DOZE = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.doze.debug", false
     );
 
-    // Enable this to debug GameModeController
+    // Enable this to debug game mode feature
     // Package: org.nameless.server.app.GameModeController
     // Key: GameModeController
     public static final boolean DEBUG_GAME = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.game.debug", false
     );
 
-    // Enable this to debug LaunchStateController
+    // Enable this to debug launcher switcher feature
     // Package: org.nameless.server.pm.LaunchStateController
-    // Key: LaunchStateController
+    // Key: LaunchStateController, LauncherUtils
     public static final boolean DEBUG_LAUNCHER = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.launcher.debug", false
     );
 
-    // Enable this to debug NrModeSwitcher
-    // Key: NrModeSwitcher, OplusRadioWrapper, SimCardListenerService
+    // Enable this to debug oplus NrModeSwitcher feature
     public static final boolean DEBUG_NR_MODE = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.radio.nrmode.debug", false
     );
@@ -124,76 +122,73 @@ public class DebugConstants {
         "persist.sys.nameless.vibrator.oplm.debug", false
     );
 
-    // Enable this to debug PhoneWindowManagerExt
+    // Enable this to debug PhoneWindowManagerExt (Include system gestures feature)
     // Package: com.android.server.policy.PhoneWindowManagerExt
     // Key: PhoneWindowManagerExt, GestureListenerBase, SystemGesture
     public static final boolean DEBUG_PHONE_WINDOW_MANAGER = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.policy.debug", false
     );
 
-    // Enable this to debug ForceFullController
+    // Enable this to debug app force fullscreen feature
     // Package: com.android.server.pm.ForceFullController
     // Key: ForceFullController
     public static final boolean DEBUG_PMS = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.pm.debug", false
     );
 
-    // Enable this to debug PocketModeController
+    // Enable this to debug pocket mode feature
     // Package: org.nameless.server.policy.PocketModeController
     // Key: PocketModeController
     public static final boolean DEBUG_POCKET = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.pocket.debug", false
     );
 
-    // Enable this to debug Pop-Up View
-    // Packages and keys are not listed cause they are too much
-    // Search DEBUG_POP_UP for usage
+    // Enable this to debug Pop-Up View feature
     public static final boolean DEBUG_POP_UP = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.popup.debug", false
     );
 
-    // Enable this to debug SensorBlockController
+    // Enable this to debug sensor block feature
     // Package: org.nameless.server.sensors.SensorBlockController
     // Key: SensorBlockController
     public static final boolean DEBUG_SENSOR = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.sensor.debug", false
     );
 
-    // Enable this to debug System Tool
+    // Enable this to debug System Tool app
     // Key: SystemTool
     public static final boolean DEBUG_SYSTEM_TOOL = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.system_tool.debug", false
     );
 
-    // Enable this to debug three-finger screenshot
-    // Package: org.nameless.server.policy.gesture.threefinger.*
+    // Enable this to debug three-finger screenshot feature
     // Key: ThreeFinger
     public static final boolean DEBUG_THREE_FINGER = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.threefinger.debug", false
     );
 
-    // Enable this to debug TouchGestureController
+    // Enable this to debug off-screen gesture feature
     // Package: org.nameless.server.policy.gesture.TouchGestureController
     // Key: TouchGestureController
     public static final boolean DEBUG_TOUCH_GESTURE = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.gesture.debug", false
     );
 
-    // Enable this to debug VibrationEffectAdapter
+    // Enable this to debug adapt vibration effect feature
     // Package: org.nameless.server.vibrator.VibrationEffectAdapter
     // Key: VibrationEffectAdapter
     public static final boolean DEBUG_VIBRATION_ADAPTER = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.vibrator.adapter.debug", false
     );
 
-    // Enable this to debug DisplayResolutionController
+    // Enable this to debug resolution switch feature
     // Package: org.nameless.server.wm.DisplayResolutionController
     // Key: DisplayResolutionController
     public static final boolean DEBUG_WMS_RESOLUTION = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.wm.resolution.debug", false
     );
 
-    // Enable this to debug TopActivityRecorder
+    // Enable this to debug top activity change
     // Package: com.android.server.wm.TopActivityRecorder
     // Key: TopActivityRecorder
     public static final boolean DEBUG_WMS_TOP_APP = DEBUG_GLOBAL || SystemProperties.getBoolean(
