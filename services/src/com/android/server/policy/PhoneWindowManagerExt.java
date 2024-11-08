@@ -210,6 +210,10 @@ public class PhoneWindowManagerExt {
         mSystemGesture.unregisterSystemGestureListener(pkg, gesture, listener);
     }
 
+    void notifyBackGestureRegion(int left, int right) {
+        mSystemGesture.notifyBackGestureRegion(left, right);
+    }
+
     int getResolvedLongPressOnPowerBehavior() {
         if (PocketModeController.getInstance().isPocketLockShowing()) {
             return LONG_PRESS_POWER_HIDE_POCKET_LOCK;

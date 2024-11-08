@@ -12,6 +12,7 @@ interface ISystemGestureListener {
 
     const int GESTURE_WINDOW_MODE = 1;
     const int GESTURE_GAME_MODE = 2;
+    const int GESTURE_LEFT_RIGHT = 3;
 
     oneway void onGestureCanceled(int gesture);
 

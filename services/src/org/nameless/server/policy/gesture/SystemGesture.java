@@ -49,6 +49,7 @@ public class SystemGesture {
 
     private final GameModeGestureListener mGameModeGestureListener;
     private final WindowModeGestureListener mWindowModeGestureListener;
+    private final LeftRightGestureListener mLeftRightGestureListener;
 
     private GestureListenerBase mTargetGestureListener;
 
@@ -67,6 +68,9 @@ public class SystemGesture {
 
         mWindowModeGestureListener = new WindowModeGestureListener(this, ext, mContext);
         mGestureListeners.add(mWindowModeGestureListener);
+
+        mLeftRightGestureListener = new LeftRightGestureListener(this, ext, mContext);
+        mGestureListeners.add(mLeftRightGestureListener);
     }
 
     Display getDisplay() {
@@ -145,6 +149,13 @@ public class SystemGesture {
                 mInputManager.dropPendingSystemGesture();
                 mTargetGestureListener = null;
                 return true;
+            case MotionEvent.ACTION_POINTER_DOWN:
+            case MotionEvent.ACTION_POINTER_UP:
+                if (mTargetGestureListener == null) {
+                    return false;
+                }
+                mTargetGestureListener.onActionMove(event);
+                return true;
             default:
                 return false;
         }
@@ -202,6 +213,10 @@ public class SystemGesture {
             mSystemGestureClients.remove(client);
             onGestureListenerUpdate();
         }
+    }
+
+    public void notifyBackGestureRegion(int left, int right) {
+        mLeftRightGestureListener.setTouchRegion(left, right);
     }
 
     private final class BinderDeath implements IBinder.DeathRecipient {

@@ -34,10 +34,10 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.ArraySet;
 import android.util.Slog;
-import android.view.WindowInsets.Type;
 import android.widget.Toast;
 
 import com.android.internal.R;
+import com.android.internal.util.nameless.MutablePair;
 
 import com.android.server.ServiceThread;
 import com.android.server.UiThread;
@@ -66,6 +66,11 @@ public class GameModeController {
     private static final long GESTURE_AUTO_LOCK_INTERVAL = 3500L;
     private static final long GESTURE_UPDATE_SWIPE_INTERVAL = 2500L;
 
+    public static final int GESTURE_TYPE_BACK = 0;
+    public static final int GESTURE_TYPE_NAVIGATION_BAR = 1;
+    public static final int GESTURE_TYPE_STATUS_BAR = 2;
+    private static final int GESTURE_TYPE_SIZE = GESTURE_TYPE_STATUS_BAR + 1;
+
     private final class GameModeInfoListener {
         final IGameModeInfoListener mListener;
         final IBinder.DeathRecipient mDeathRecipient;
@@ -88,6 +93,7 @@ public class GameModeController {
 
     private final ArraySet<String> mGamePackages = new ArraySet<>();
 
+    private final ArrayList<MutablePair<Boolean, Long>> mGestureLockedList = new ArrayList<>();
     private final ArrayList<GameModeInfoListener> mListeners = new ArrayList<>();
 
     private NamelessSystemExService mSystemExService;
@@ -106,8 +112,9 @@ public class GameModeController {
     private boolean mSuppressFullscreenIntent;
     private int mCallAction;
 
-    private long mLastGestureSwipeTime = -1L;
-    private long mLastGestureUnlockedTime = -1L;
+    private long mLastGestureUnlockTime = -1L;
+
+    private Toast mGestureLockedToast;
 
     private final class GameModeManagerService extends IGameModeManagerService.Stub {
         @Override
@@ -282,20 +289,21 @@ public class GameModeController {
                                 1, UserHandle.USER_CURRENT) == 1;
                         break;
                     case GAME_MODE_LOCK_GESTURES:
-                        mLockGestures = Settings.System.getIntForUser(
+                        final boolean gestureLocked = Settings.System.getIntForUser(
                                 mSystemExService.getContentResolver(),
                                 GAME_MODE_LOCK_GESTURES,
                                 0, UserHandle.USER_CURRENT) == 1;
-                        mLastGestureSwipeTime = -1L;
-                        mLastGestureUnlockedTime = -1L;
+                        mGestureLockedList.get(GESTURE_TYPE_BACK).first = gestureLocked;
+                        mGestureLockedList.get(GESTURE_TYPE_NAVIGATION_BAR).first = gestureLocked;
+                        resetGestureLockedTime();
                         break;
                     case GAME_MODE_LOCK_STATUS_BAR:
-                        mLockStatusbar = Settings.System.getIntForUser(
+                        final boolean statusBarLocked = Settings.System.getIntForUser(
                                 mSystemExService.getContentResolver(),
                                 GAME_MODE_LOCK_STATUS_BAR,
                                 0, UserHandle.USER_CURRENT) == 1;
-                        mLastGestureSwipeTime = -1L;
-                        mLastGestureUnlockedTime = -1L;
+                        mGestureLockedList.get(GESTURE_TYPE_STATUS_BAR).first = statusBarLocked;
+                        resetGestureLockedTime();
                         break;
                     case GAME_MODE_SILENT_NOTIFICATION:
                         mSilentNotification = Settings.System.getIntForUser(
@@ -319,6 +327,10 @@ public class GameModeController {
         mServiceThread = new ServiceThread(TAG, THREAD_PRIORITY_DEFAULT, false);
         mServiceThread.start();
         mHandler = new Handler(mServiceThread.getLooper());
+
+        for (int i = 0; i < GESTURE_TYPE_SIZE; i++) {
+            mGestureLockedList.add(new MutablePair<Boolean, Long>(false, -1L));
+        }
     }
 
     public void initSystemExService(NamelessSystemExService service) {
@@ -429,14 +441,6 @@ public class GameModeController {
                     mSystemExService.getContentResolver(),
                     GAME_MODE_DISABLE_THREE_FINGER_GESTURES,
                     1, userId) == 1;
-            mLockGestures = Settings.System.getIntForUser(
-                    mSystemExService.getContentResolver(),
-                    GAME_MODE_LOCK_GESTURES,
-                    0, userId) == 1;
-            mLockStatusbar = Settings.System.getIntForUser(
-                    mSystemExService.getContentResolver(),
-                    GAME_MODE_LOCK_STATUS_BAR,
-                    0, userId) == 1;
             mSilentNotification = Settings.System.getIntForUser(
                     mSystemExService.getContentResolver(),
                     GAME_MODE_SILENT_NOTIFICATION,
@@ -445,9 +449,27 @@ public class GameModeController {
                     mSystemExService.getContentResolver(),
                     GAME_MODE_SUPPRESS_FULLSCREEN_INTENT,
                     0, userId) == 1;
-            mLastGestureSwipeTime = -1L;
-            mLastGestureUnlockedTime = -1L;
+
+            final boolean gestureLocked = Settings.System.getIntForUser(
+                    mSystemExService.getContentResolver(),
+                    GAME_MODE_LOCK_STATUS_BAR,
+                    0, userId) == 1;
+            final boolean statusBarLocked = Settings.System.getIntForUser(
+                    mSystemExService.getContentResolver(),
+                    GAME_MODE_LOCK_GESTURES,
+                    0, userId) == 1;
+            mGestureLockedList.get(GESTURE_TYPE_BACK).first = gestureLocked;
+            mGestureLockedList.get(GESTURE_TYPE_NAVIGATION_BAR).first = gestureLocked;
+            mGestureLockedList.get(GESTURE_TYPE_STATUS_BAR).first = statusBarLocked;
+            resetGestureLockedTime();
         }
+    }
+
+    private void resetGestureLockedTime() {
+        for (MutablePair<Boolean, Long> p : mGestureLockedList) {
+            p.second = -1L;
+        }
+        mLastGestureUnlockTime = -1L;
     }
 
     private GameModeInfo buildGameModeInfoLocked() {
@@ -460,8 +482,8 @@ public class GameModeController {
                 .setDisableAutoBrightness(mDisableAutoBrightness)
                 .setDisableHeadsUp(mDisableHeadsUp)
                 .setDisableThreeFingerGesture(mDisableThreeFingerGestures)
-                .setLockGesture(mLockGestures)
-                .setLockStatusbar(mLockStatusbar)
+                .setLockGesture(mGestureLockedList.get(GESTURE_TYPE_BACK).first)
+                .setLockStatusbar(mGestureLockedList.get(GESTURE_TYPE_STATUS_BAR).first)
                 .setMuteNotification(mSilentNotification)
                 .setSuppressFullscreenIntent(mSuppressFullscreenIntent)
                 .build();
@@ -529,65 +551,46 @@ public class GameModeController {
         }
     }
 
-    private boolean shouldLockGestures() {
+    private boolean shouldLockGestures(int gestureType) {
         if (TopActivityRecorder.getInstance().hasMiniWindow()) {
             return false;
         }
         synchronized (mStateLock) {
-            return mInGame && mLockGestures;
+            return mInGame && mGestureLockedList.get(gestureType).first;
         }
     }
 
-    public boolean shouldLockStatusbar() {
-        if (TopActivityRecorder.getInstance().hasMiniWindow()) {
+    public boolean isGestureLocked(int gestureType) {
+        if (gestureType < 0 || gestureType >= mGestureLockedList.size()) {
             return false;
         }
-        synchronized (mStateLock) {
-            return mInGame && mLockStatusbar;
-        }
-    }
-
-    public boolean isGestureLocked(boolean updateSwipeTime) {
-        if (!shouldLockGestures()) {
+        if (!shouldLockGestures(gestureType)) {
             return false;
         }
         final long now = SystemClock.uptimeMillis();
-        if (now - mLastGestureUnlockedTime <= GESTURE_AUTO_LOCK_INTERVAL) {
-            mLastGestureUnlockedTime = now;
+        if (now - mLastGestureUnlockTime <= GESTURE_AUTO_LOCK_INTERVAL) {
+            mLastGestureUnlockTime = now;
             return false;
         }
-        if (now - mLastGestureSwipeTime > GESTURE_UPDATE_SWIPE_INTERVAL) {
-            if (updateSwipeTime) {
-                mLastGestureSwipeTime = now;
-            }
+        final MutablePair<Boolean, Long> p = mGestureLockedList.get(gestureType);
+        if (now - p.second > GESTURE_UPDATE_SWIPE_INTERVAL) {
+            p.second = now;
             return true;
         }
-        mLastGestureUnlockedTime = now;
-        return false;
-    }
-
-    public boolean interceptShowTransient(int type, boolean swipeOnStatusBar,
-            boolean lockedGestures, boolean lockedStatusbar) {
-        if ((type & Type.statusBars()) != 0) {
-            if (lockedStatusbar && swipeOnStatusBar) {
-                return true;
-            }
-            if (lockedGestures && !swipeOnStatusBar) {
-                return true;
-            }
-        }
-        if ((type & Type.navigationBars()) != 0) {
-            if (lockedGestures || (lockedStatusbar && swipeOnStatusBar)) {
-                return true;
-            }
-        }
+        p.second = now;
+        mLastGestureUnlockTime = now;
         return false;
     }
 
     public void warnGestureLocked() {
         mUiHandler.post(() -> {
-            Toast.makeText(ActivityThread.currentActivityThread().getSystemUiContext(),
-                    R.string.gesture_locked_warning, Toast.LENGTH_SHORT).show();
+            if (mGestureLockedToast != null) {
+                mGestureLockedToast.cancel();
+            }
+            mGestureLockedToast = Toast.makeText(
+                    ActivityThread.currentActivityThread().getSystemUiContext(),
+                    R.string.gesture_locked_warning, Toast.LENGTH_SHORT);
+            mGestureLockedToast.show();
         });
     }
 }
