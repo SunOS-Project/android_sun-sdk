@@ -637,4 +637,7 @@
     <string name="fingerprint_enroll_touch_dialog_message_side" product="tablet">触摸位于平板电脑侧面的指纹传感器。</string>
     <string name="fingerprint_enroll_touch_dialog_message_side" product="device">触摸位于设备侧面的指纹传感器。</string>
     <string name="fingerprint_enroll_touch_dialog_message_side" product="default">触摸位于手机侧面的指纹传感器。</string>
+    <!-- Back gesture on keyboard -->
+    <string name="back_gesture_on_keyboard_title">启用返回手势</string>
+    <string name="back_gesture_on_keyboard_summary">允许在键盘区域使用返回手势</string>
 </resources>

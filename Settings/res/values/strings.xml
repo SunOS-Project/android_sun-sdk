@@ -744,4 +744,8 @@
     <string name="fingerprint_enroll_touch_dialog_message_side" product="device">Touch the sensor on the side of your device.</string>
     <string name="fingerprint_enroll_touch_dialog_message_side" product="default">Touch the sensor on the side of your phone.</string>
 
+    <!-- Back gesture on keyboard -->
+    <string name="back_gesture_on_keyboard_title">Back gesture on keyboard</string>
+    <string name="back_gesture_on_keyboard_summary">Allow to use back gesture on keyboard area</string>
+
 </resources>
