@@ -5,9 +5,8 @@
 
 package org.nameless.server.policy.gesture;
 
-import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_NONE;
-
 import static org.nameless.os.DebugConstants.DEBUG_PHONE_WINDOW_MANAGER;
+import static org.nameless.server.policy.gesture.SystemGesture.GESTURE_TRIGGER_TIME_OUT;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -22,14 +21,12 @@ import com.android.server.policy.PhoneWindowManagerExt;
 
 public abstract class GestureListenerBase {
 
-    protected final String TAG = "GestureListenerBase";
-
-    protected final long GESTURE_TRIGGER_TIME_OUT = 300L;
-
     protected final Context mContext;
     protected final Display mDisplay;
     protected final PhoneWindowManagerExt mPhoneWindowManagerExt;
     protected final SystemGesture mSystemGesture;
+
+    protected String mTag = "GestureListenerBase";
 
     protected SystemGestureClient mSystemGestureClient;
 
@@ -61,10 +58,12 @@ public abstract class GestureListenerBase {
         mDisabledByGame = disabled;
     }
 
-    GestureListenerBase(SystemGesture systemGesture, PhoneWindowManagerExt ext, Context context) {
+    GestureListenerBase(SystemGesture systemGesture, PhoneWindowManagerExt ext,
+            Context context, String tag) {
         mSystemGesture = systemGesture;
         mPhoneWindowManagerExt = ext;
         mContext = context;
+        mTag = tag;
         mDisplay = systemGesture.getDisplay();
         mGestureTouchSlop = getDefaultGestureTouchSlop();
     }
@@ -73,7 +72,7 @@ public abstract class GestureListenerBase {
         updateConfigureInfo();
     }
 
-    protected void reset() {
+    public void reset() {
         mGesturePreTriggerConsumed = false;
         mGestureState = GestureState.IDLE;
         mDownPosX = 0f;
@@ -82,6 +81,9 @@ public abstract class GestureListenerBase {
     }
 
     public boolean onActionDown(MotionEvent event) {
+        mDownPosX = event.getRawX();
+        mDownPosY = event.getRawY();
+        mDownTime = System.currentTimeMillis();
         return false;
     }
 
@@ -106,11 +108,15 @@ public abstract class GestureListenerBase {
         return mSystemGestureClient != null;
     }
 
+    protected boolean isAlreadyTimeout() {
+        return System.currentTimeMillis() - mDownTime > GESTURE_TRIGGER_TIME_OUT;
+    }
+
     protected void notifyGesturePreTrigger(MotionEvent event) {
         try {
             if (mSystemGestureClient != null && mSystemGestureClient.listener != null) {
                 if (DEBUG_PHONE_WINDOW_MANAGER && event.getAction() != MotionEvent.ACTION_MOVE) {
-                    Slog.i(TAG, "notifyGesturePreTrigger, client=" + mSystemGestureClient.pkg +
+                    Slog.d(mTag, "notifyGesturePreTrigger, client=" + mSystemGestureClient.pkg +
                             ", supportGesture=" + getSupportGestureType() + ", " + motionEventToString(event));
                 }
                 mSystemGestureClient.listener.onGesturePreTrigger(getSupportGestureType(), event);
@@ -123,7 +129,7 @@ public abstract class GestureListenerBase {
         try {
             if (mSystemGestureClient != null && mSystemGestureClient.listener != null) {
                 if (DEBUG_PHONE_WINDOW_MANAGER && event.getAction() != MotionEvent.ACTION_MOVE) {
-                    Slog.i(TAG, "notifyGestureTriggered, client=" + mSystemGestureClient.pkg +
+                    Slog.d(mTag, "notifyGestureTriggered, client=" + mSystemGestureClient.pkg +
                             ", supportGesture=" + getSupportGestureType() + ", " + motionEventToString(event));
                 }
                 mSystemGestureClient.listener.onGestureTriggered(getSupportGestureType(), event);
@@ -136,7 +142,7 @@ public abstract class GestureListenerBase {
         try {
             if (mSystemGestureClient != null && mSystemGestureClient.listener != null) {
                 if (DEBUG_PHONE_WINDOW_MANAGER) {
-                    Slog.i(TAG, "notifyGestureCanceled, client=" + mSystemGestureClient.pkg +
+                    Slog.d(mTag, "notifyGestureCanceled, client=" + mSystemGestureClient.pkg +
                             ", supportGesture=" + getSupportGestureType());
                 }
                 mSystemGestureClient.listener.onGestureCanceled(getSupportGestureType());
@@ -151,7 +157,7 @@ public abstract class GestureListenerBase {
                 final boolean consumed = mSystemGestureClient.listener.onGesturePreTriggerBefore(
                         getSupportGestureType(), event);
                 if (DEBUG_PHONE_WINDOW_MANAGER && event.getAction() != MotionEvent.ACTION_MOVE) {
-                    Slog.i(TAG, "notifyGesturePreTriggerBefore, client=" + mSystemGestureClient.pkg +
+                    Slog.d(mTag, "notifyGesturePreTriggerBefore, client=" + mSystemGestureClient.pkg +
                             ", consumed=" + consumed + ", " + motionEventToString(event));
                 }
                 return consumed;
@@ -189,7 +195,7 @@ public abstract class GestureListenerBase {
             mDeviceWidth = currentWidth;
             onConfigureChanged();
             if (DEBUG_PHONE_WINDOW_MANAGER) {
-                Slog.d(TAG, "updateConfigureInfo, mDeviceHeight=" + mDeviceHeight + ", mDeviceWidth=" + mDeviceWidth);
+                Slog.d(mTag, "updateConfigureInfo, mDeviceHeight=" + mDeviceHeight + ", mDeviceWidth=" + mDeviceWidth);
             }
         }
     }

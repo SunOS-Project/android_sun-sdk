@@ -7,12 +7,6 @@ package com.android.server.policy;
 
 import static android.provider.Settings.Secure.USER_SETUP_COMPLETE;
 
-import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_DOWN;
-import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_MOVE;
-import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_MOVE_TRIGGERED;
-import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_NONE;
-import static com.android.server.policy.WindowManagerPolicy.SYSTEM_GESTURE_RESET;
-
 import static org.nameless.os.DebugConstants.DEBUG_PHONE_WINDOW_MANAGER;
 import static org.nameless.server.policy.gesture.GestureListenerBase.motionEventToString;
 
@@ -317,16 +311,17 @@ public class PhoneWindowManagerExt {
         return false;
     }
 
-    int interceptMotionBeforeQueueing(MotionEvent event) {
+    boolean interceptMotionBeforeQueueing(MotionEvent event) {
         if (event.getDisplayId() != Display.DEFAULT_DISPLAY) {
-            return SYSTEM_GESTURE_NONE;
+            return false;
         }
-        final int result = mSystemGesture.interceptMotionBeforeQueueing(event);
-        if (DEBUG_PHONE_WINDOW_MANAGER && event.getAction() != MotionEvent.ACTION_MOVE) {
+        final boolean isSystemGesture = mSystemGesture.interceptMotionBeforeQueueing(event);
+        if (DEBUG_PHONE_WINDOW_MANAGER && event.getAction() != MotionEvent.ACTION_MOVE &&
+                event.getAction() != MotionEvent.ACTION_HOVER_MOVE) {
             Slog.i(TAG, "interceptMotionBeforeQueueing, " + motionEventToString(event)
-                    + ", result=" + resultToString(result));
+                    + ", isSystemGesture=" + isSystemGesture);
         }
-        return result;
+        return isSystemGesture;
     }
 
     boolean interceptDispatchInputWhenNonInteractive(int keyCode) {
@@ -402,23 +397,6 @@ public class PhoneWindowManagerExt {
             return dreamManager != null && dreamManager.isDreaming();
         } catch (RemoteException e) {
             return false;
-        }
-    }
-
-    private static String resultToString(int result) {
-        switch (result) {
-            case SYSTEM_GESTURE_DOWN:
-                return "SYSTEM_GESTURE_DOWN";
-            case SYSTEM_GESTURE_MOVE:
-                return "SYSTEM_GESTURE_MOVE";
-            case SYSTEM_GESTURE_MOVE_TRIGGERED:
-                return "SYSTEM_GESTURE_MOVE_TRIGGERED";
-            case SYSTEM_GESTURE_NONE:
-                return "SYSTEM_GESTURE_NONE";
-            case SYSTEM_GESTURE_RESET:
-                return "SYSTEM_GESTURE_RESET";
-            default:
-                return "UNKNOWN";
         }
     }
 }

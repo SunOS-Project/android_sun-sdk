@@ -32,7 +32,7 @@ public class GameModeGestureListener extends GestureListenerBase {
 
     public GameModeGestureListener(SystemGesture SystemGesture,
             PhoneWindowManagerExt ext, Context context) {
-        super(SystemGesture, ext, context);
+        super(SystemGesture, ext, context, TAG);
     }
 
     @Override
@@ -47,9 +47,9 @@ public class GameModeGestureListener extends GestureListenerBase {
         mGestureLandAreaBottom = ResourceUtils.getGameModeLandscapeAreaBottom(
                 mContext.getResources(), Math.min(mDeviceHeight, mDeviceWidth));
         if (DEBUG_PHONE_WINDOW_MANAGER) {
-            Slog.d(TAG, "mGestureValidDistance = " + mGestureValidDistance
-                    + ", mGesturePortAreaBottom = " + mGesturePortAreaBottom
-                    + ", mGestureLandAreaBottom = " + mGestureLandAreaBottom);
+            Slog.d(TAG, "mGestureValidDistance=" + mGestureValidDistance
+                    + ", mGesturePortAreaBottom=" + mGesturePortAreaBottom
+                    + ", mGestureLandAreaBottom=" + mGestureLandAreaBottom);
         }
     }
 
@@ -63,9 +63,7 @@ public class GameModeGestureListener extends GestureListenerBase {
         if (!hasRegisterClient()) {
             return false;
         }
-        mDownPosX = event.getRawX();
-        mDownPosY = event.getRawY();
-        mDownTime = System.currentTimeMillis();
+        super.onActionDown(event);
         if (isInGameModeGestureArea(event) && !TopActivityRecorder.getInstance().hasMiniWindow()) {
             mGesturePreTriggerConsumed = notifyGesturePreTriggerBefore(event);
         } else {
@@ -126,7 +124,7 @@ public class GameModeGestureListener extends GestureListenerBase {
     }
 
     private void checkGameModeGesture(MotionEvent event) {
-        if (System.currentTimeMillis() - mDownTime > GESTURE_TRIGGER_TIME_OUT) {
+        if (isAlreadyTimeout()) {
             if (DEBUG_PHONE_WINDOW_MANAGER) {
                 Slog.d(TAG, "Game mode gesture time out");
             }

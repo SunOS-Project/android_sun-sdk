@@ -30,7 +30,7 @@ public class WindowModeGestureListener extends GestureListenerBase {
 
     public WindowModeGestureListener(SystemGesture systemGesture,
             PhoneWindowManagerExt ext, Context context) {
-        super(systemGesture, ext, context);
+        super(systemGesture, ext, context, TAG);
     }
 
     @Override
@@ -53,9 +53,7 @@ public class WindowModeGestureListener extends GestureListenerBase {
         if (mDisabledByGame) {
             return false;
         }
-        mDownPosX = event.getRawX();
-        mDownPosY = event.getRawY();
-        mDownTime = System.currentTimeMillis();
+        super.onActionDown(event);
         if (canTriggerWindowModeAction(event)) {
             mGesturePreTriggerConsumed = notifyGesturePreTriggerBefore(event);
         } else {
@@ -126,7 +124,7 @@ public class WindowModeGestureListener extends GestureListenerBase {
     }
 
     private void checkWindowModeGesture(MotionEvent event) {
-        if (System.currentTimeMillis() - mDownTime > GESTURE_TRIGGER_TIME_OUT) {
+        if (isAlreadyTimeout()) {
             if (DEBUG_PHONE_WINDOW_MANAGER) {
                 Slog.d(TAG, "Window mode gesture time out");
             }
