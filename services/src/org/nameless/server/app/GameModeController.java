@@ -415,6 +415,7 @@ public class GameModeController {
                         ", package=" + mGamePackage + ", taskId=" + mGameTaskId);
             }
             DisplayFeatureController.getInstance().onGameStateChanged(mInGame);
+            resetGestureLockedTime();
             notifyGameStateChanged();
         }
     }
