@@ -28,6 +28,7 @@ import static org.nameless.provider.SettingsExt.System.IME_KEYBOARD_PRESS_EFFECT
 import static org.nameless.provider.SettingsExt.System.LOW_POWER_DISABLE_VIBRATION;
 import static org.nameless.provider.SettingsExt.System.VIBRATOR_EXT_ALARM_CALL_STRENGTH_LEVEL;
 import static org.nameless.provider.SettingsExt.System.VIBRATOR_EXT_HAPTIC_STRENGTH_LEVEL;
+import static org.nameless.provider.SettingsExt.System.VIBRATOR_EXT_HAPTIC_STYLE;
 import static org.nameless.provider.SettingsExt.System.VIBRATOR_EXT_NOTIFICAITON_STRENGTH_LEVEL;
 
 import android.content.Context;
@@ -49,6 +50,7 @@ import org.nameless.content.OnlineConfigManager;
 import org.nameless.os.VibratorExtManager;
 
 import vendor.nameless.hardware.vibratorExt.V1_0.LevelRange;
+import vendor.nameless.hardware.vibratorExt.V1_0.Style;
 import vendor.nameless.hardware.vibratorExt.V1_0.Type;
 
 /** Controls all the custom settings related to vibration. */
@@ -158,17 +160,16 @@ public final class CustomVibrationSettings extends IOnlineConfigurable.Stub {
         registerSettingsObserver(Settings.System.getUriFor(VIBRATOR_EXT_ALARM_CALL_STRENGTH_LEVEL));
         registerSettingsObserver(Settings.System.getUriFor(VIBRATOR_EXT_HAPTIC_STRENGTH_LEVEL));
         registerSettingsObserver(Settings.System.getUriFor(VIBRATOR_EXT_NOTIFICAITON_STRENGTH_LEVEL));
+        registerSettingsObserver(Settings.System.getUriFor(VIBRATOR_EXT_HAPTIC_STYLE));
 
         VibrationEffectAdapter.initEffectMap(VibrationEffectAdapter.compareConfigTimestamp());
 
         updateSettings();
-
         updateForceEnableIMEHaptic();
-
         updateKeyboardEffect();
-
         updateLowPowerDisableVibration();
 
+        updateHapticStyle();
         for (int type : mVibratorExtManager.getValidVibrationTypes()) {
             if (!maybeResetStrengthLevel(type)) {
                 updateStrengthLevel(type);
@@ -184,6 +185,11 @@ public final class CustomVibrationSettings extends IOnlineConfigurable.Stub {
         updateForceEnableIMEHaptic();
         updateKeyboardEffect();
         updateLowPowerDisableVibration();
+
+        updateHapticStyle();
+        for (int type : mVibratorExtManager.getValidVibrationTypes()) {
+            updateStrengthLevel(type);
+        }
     }
 
     private final class SettingsContentObserver extends ContentObserver {
@@ -202,6 +208,9 @@ public final class CustomVibrationSettings extends IOnlineConfigurable.Stub {
                     break;
                 case VIBRATOR_EXT_NOTIFICAITON_STRENGTH_LEVEL:
                     updateStrengthLevel(Type.NOTIFICATION);
+                    break;
+                case VIBRATOR_EXT_HAPTIC_STYLE:
+                    updateHapticStyle();
                     break;
                 case FORCE_ENABLE_IME_HAPTIC:
                     updateForceEnableIMEHaptic();
@@ -302,6 +311,13 @@ public final class CustomVibrationSettings extends IOnlineConfigurable.Stub {
             final int strengthLevel = loadSystemSetting(
                     mVibratorExtManager.vibrationTypeToSettings(type), range.defaultLevel);
             mVibratorExtManager.setStrengthLevel(type, strengthLevel);
+        }
+    }
+
+    private void updateHapticStyle() {
+        final int style = loadSystemSetting(VIBRATOR_EXT_HAPTIC_STYLE, Style.CRISP);
+        if (mVibratorExtManager.getValidHapticStyles().contains(style)) {
+            mVibratorExtManager.setHapticStyle(style);
         }
     }
 

@@ -35,6 +35,8 @@
 
     <!-- Custom vibration effect -->
     <string name="vibration_effect_category">Vibration effect</string>
+    <string name="haptic_style_title">Haptic style</string>
+    <string name="haptic_style_unknown">Unknown</string>
     <string name="keyboard_press_effect_title">Mechanical keyboard press effect</string>
     <string name="keyboard_press_effect_summary">Simulate effect of pressing on a mechanical keyboard when typing</string>
     <string name="keyboard_press_effect_warning">This will invalidate vibration strength settings from keyboard apps</string>

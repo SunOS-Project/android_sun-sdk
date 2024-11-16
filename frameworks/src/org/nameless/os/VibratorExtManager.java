@@ -9,16 +9,21 @@ import static org.nameless.provider.SettingsExt.System.VIBRATOR_EXT_ALARM_CALL_S
 import static org.nameless.provider.SettingsExt.System.VIBRATOR_EXT_HAPTIC_STRENGTH_LEVEL;
 import static org.nameless.provider.SettingsExt.System.VIBRATOR_EXT_NOTIFICAITON_STRENGTH_LEVEL;
 
+import android.content.Context;
 import android.os.RemoteException;
 import android.util.ArrayMap;
 import android.util.Log;
 
+import com.android.internal.R;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
 import vendor.nameless.hardware.vibratorExt.V1_0.IVibratorExt;
 import vendor.nameless.hardware.vibratorExt.V1_0.LevelRange;
+import vendor.nameless.hardware.vibratorExt.V1_0.Style;
 import vendor.nameless.hardware.vibratorExt.V1_0.Type;
 
 /** @hide */
@@ -34,8 +39,15 @@ public class VibratorExtManager {
         Type.NOTIFICATION
     );
 
+    private static final List<Integer> sAllHapticStyles = List.of(
+        Style.CRISP,
+        Style.GENTLE
+    );
+
     private final ArrayList<Integer> mValidVibrationTypes;
+    private final ArrayList<Integer> mValidHapticStyles;
     private final ArrayMap<Integer, LevelRange> mLevelRanges;
+    private final ArrayMap<Integer, Integer> mHapticStyleSummary;
 
     private static class InstanceHolder {
         private static final VibratorExtManager INSTANCE = new VibratorExtManager();
@@ -55,7 +67,12 @@ public class VibratorExtManager {
         }
         mService = service;
         mValidVibrationTypes = new ArrayList<>();
+        mValidHapticStyles = new ArrayList<>();
         mLevelRanges = new ArrayMap<>();
+        mHapticStyleSummary = new ArrayMap<>();
+
+        mHapticStyleSummary.put(Style.CRISP, R.string.haptic_style_crisp);
+        mHapticStyleSummary.put(Style.GENTLE, R.string.haptic_style_gentle);
 
         if (mService != null) {
             for (int type : sAllVibrationTypes) {
@@ -68,6 +85,18 @@ public class VibratorExtManager {
                 if (isStrengthLevelRangeLegal(range)) {
                     mValidVibrationTypes.add(type);
                     mLevelRanges.put(type, range);
+                }
+            }
+
+            for (int style : sAllHapticStyles) {
+                boolean isSupported = false;
+                try {
+                    isSupported = mService.isHapticStyleSupported(style);
+                } catch (RemoteException e) {
+                    Log.e(TAG, "Failed to check if haptic style is supported", e);
+                }
+                if (isSupported) {
+                    mValidHapticStyles.add(style);
                 }
             }
         }
@@ -130,6 +159,18 @@ public class VibratorExtManager {
         return mValidVibrationTypes;
     }
 
+    public ArrayList<Integer> getValidHapticStyles() {
+        return mValidHapticStyles;
+    }
+
+    public String getHapticStyleSummary(Context context, int style) {
+        if (!mValidHapticStyles.contains(style)) {
+            Log.e(TAG, "getHapticStyleSummary, invalid haptic style: " + style);
+            return "";
+        }
+        return context.getString(mHapticStyleSummary.get(style));
+    }
+
     public void setAmplitude(float amplitude) {
         if (mService == null) {
             return;
@@ -145,23 +186,30 @@ public class VibratorExtManager {
         }
     }
 
-    public LevelRange getStrengthLevelRange(int type) {
-        return mLevelRanges.getOrDefault(type, null);
+    public void setHapticStyle(int style) {
+        setHapticStyle(style, null);
     }
 
-    public int getStrengthLevel(int type) {
+    public void setHapticStyle(int style, HapticStyleChangedCallback callback) {
         if (mService == null) {
-            return -1;
+            return;
         }
-        if (!mValidVibrationTypes.contains(type)) {
-            return -1;
+        if (!mValidHapticStyles.contains(style)) {
+            Log.e(TAG, "setHapticStyle, invalid haptic style: " + style);
+            return;
         }
         try {
-            return mService.getStrengthLevel(type);
+            mService.setHapticStyle(style);
+            if (callback != null) {
+                callback.onHapticStyleChanged();
+            }
         } catch (RemoteException e) {
-            Log.e(TAG, "Failed to get vibrator strength level", e);
+            Log.e(TAG, "Failed to set haptic style", e);
         }
-        return -1;
+    }
+
+    public LevelRange getStrengthLevelRange(int type) {
+        return mLevelRanges.getOrDefault(type, null);
     }
 
     public void setStrengthLevel(int type, int level) {
@@ -217,5 +265,9 @@ public class VibratorExtManager {
 
     public interface StrengthLevelChangedCallback {
         void onStrengthLevelChanged();
+    }
+
+    public interface HapticStyleChangedCallback {
+        void onHapticStyleChanged();
     }
 }

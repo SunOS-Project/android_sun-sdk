@@ -21,6 +21,7 @@ import com.android.settingslib.core.lifecycle.LifecycleObserver;
 import com.android.settingslib.core.lifecycle.events.OnStart;
 import com.android.settingslib.core.lifecycle.events.OnStop;
 
+import org.nameless.os.VibratorExtManager;
 import org.nameless.provider.SettingsExt;
 
 public class KeyboardEffectTogglePreferenceController extends TogglePreferenceController
@@ -96,7 +97,8 @@ public class KeyboardEffectTogglePreferenceController extends TogglePreferenceCo
 
     @Override
     public int getAvailabilityStatus() {
-        return AVAILABLE;
+        return VibratorExtManager.getInstance().isEffectSupported(KEYBOARD_PRESS)
+                ? AVAILABLE : UNSUPPORTED_ON_DEVICE;
     }
 
     @Override

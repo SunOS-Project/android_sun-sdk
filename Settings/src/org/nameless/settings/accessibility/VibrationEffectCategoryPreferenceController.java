@@ -24,6 +24,11 @@ public class VibrationEffectCategoryPreferenceController extends BasePreferenceC
 
     @Override
     public int getAvailabilityStatus() {
-        return mVibratorExtManager.isEffectSupported(KEYBOARD_PRESS) ? AVAILABLE : UNSUPPORTED_ON_DEVICE;
+        boolean available = false;
+
+        available |= mVibratorExtManager.isEffectSupported(KEYBOARD_PRESS);
+        available |= mVibratorExtManager.getValidHapticStyles().size() > 1;
+
+        return available ? AVAILABLE : UNSUPPORTED_ON_DEVICE;
     }
 }

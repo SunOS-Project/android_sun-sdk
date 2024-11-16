@@ -16,6 +16,9 @@
     <string name="vibrationPattern_ringtone_cut">切割</string>
     <string name="vibrationPattern_ringtone_clock">钟摆</string>
     <string name="vibrationPattern_ringtone_short">短促</string>
+    <!-- Haptic style -->
+    <string name="haptic_style_crisp">清脆</string>
+    <string name="haptic_style_gentle">柔和</string>
     <!-- Memc toast -->
     <string name="motion_graphics_smoothing_starting">视频高帧率模式启动中</string>
     <!-- Optimized charge notification -->

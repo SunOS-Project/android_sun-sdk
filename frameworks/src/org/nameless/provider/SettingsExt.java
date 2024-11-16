@@ -61,6 +61,12 @@ public class SettingsExt {
         public static final String CUSTOM_HAPTIC_ON_MISC_SCENES = "custom_haptic_on_misc_scenes";
 
         /**
+         * VibratorExt HAL haptic style
+         * @hide
+         */
+        public static final String VIBRATOR_EXT_HAPTIC_STYLE = "vibrator_ext_haptic_style";
+
+        /**
          * VibratorExt HAL alarm/call strength level
          * @hide
          */

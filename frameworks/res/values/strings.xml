@@ -29,6 +29,10 @@
     <string name="vibrationPattern_ringtone_clock">Clock</string>
     <string name="vibrationPattern_ringtone_short">Short</string>
 
+    <!-- Haptic style -->
+    <string name="haptic_style_crisp">Crisp</string>
+    <string name="haptic_style_gentle">Gentle</string>
+
     <!-- Memc toast -->
     <string name="motion_graphics_smoothing_starting">Turning on motion graphics smoothing</string>
 

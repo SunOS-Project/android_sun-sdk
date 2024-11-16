@@ -31,6 +31,8 @@
     <string name="vibration_pattern_ringtone_title">响铃模式</string>
     <!-- Custom vibration effect -->
     <string name="vibration_effect_category">振动效果</string>
+    <string name="haptic_style_title">触感反馈风格</string>
+    <string name="haptic_style_unknown">未知</string>
     <string name="keyboard_press_effect_title">仿真机械键盘</string>
     <string name="keyboard_press_effect_summary">打字时模拟机械键盘按下的效果</string>
     <string name="keyboard_press_effect_warning">启用后，输入法的振动强度设置将失效</string>

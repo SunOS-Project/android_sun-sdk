@@ -49,6 +49,11 @@
         android:title="@string/vibration_effect_category"
         app:controller="org.nameless.settings.accessibility.VibrationEffectCategoryPreferenceController">
 
+        <ListPreference
+            android:key="haptic_style_list"
+            android:title="@string/haptic_style_title"
+            app:controller="org.nameless.settings.accessibility.HapticStyleListPreferenceController" />
+
         <SwitchPreferenceCompat
             android:key="mechanical_keyboard_effect_preference_screen"
             android:title="@string/keyboard_press_effect_title"
@@ -59,7 +64,8 @@
             android:key="mechanical_keyboard_effect_preference_warning"
             android:title="@string/keyboard_press_effect_warning"
             android:selectable="false"
-            app:searchable="false" />
+            app:searchable="false"
+            app:controller="org.nameless.settings.accessibility.KeyboardEffectWarningPreferenceController" />
 
     </PreferenceCategory>
 
