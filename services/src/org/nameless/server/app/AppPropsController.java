@@ -41,7 +41,7 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
 
     private static final String TAG = "AppPropsController";
 
-    private static final int VERSION = 2;
+    private static final int VERSION = 3;
 
     private static class InstanceHolder {
         private static AppPropsController INSTANCE = new AppPropsController();
@@ -63,8 +63,8 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
     // Key: packageName (com.google.gms)   Val: prop keys (FINGERPRINT)
     private final ArrayMap<String, ArraySet<String>> mPropsToKeep = new ArrayMap<>();
     // Key: model (OnePlus 69)             Val: packageName (com.google.gms, ...)
-    private final ArrayMap<String, ArraySet<String>> mPackagesToChange = new ArrayMap<>();
-    private final ArrayMap<String, ArraySet<String>> mGamePackagesToChange = new ArrayMap<>();
+    private final ArrayMap<String, ArraySet<String>> mGmsPackagesToChange = new ArrayMap<>();
+    private final ArrayMap<String, ArraySet<String>> mOtherPackagesToChange = new ArrayMap<>();
     // Packages in this set will only get generic props spoofed.
     private final ArraySet<String> mPackagesToKeep = new ArraySet<>();
     // Packages in this set will be considered to be spoofed.
@@ -179,8 +179,8 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
     private void initConfigLocked(String path) {
         mPropsToChange.clear();
         mPropsToKeep.clear();
-        mPackagesToChange.clear();
-        mGamePackagesToChange.clear();
+        mGmsPackagesToChange.clear();
+        mOtherPackagesToChange.clear();
         mPackagesToKeep.clear();
         mExtraPackagesToChange.clear();
         mCustomGoogleCameraPackages.clear();
@@ -191,7 +191,7 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
         String propsStr;
         String[] packages;
         String[] props;
-        boolean isGame;
+        boolean isGms;
         try {
             FileReader fr = new FileReader(new File(path));
             XmlPullParser parser = Xml.newPullParser();
@@ -230,23 +230,23 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
                             break;
                         case "packagesToChange":
                             name = parser.getAttributeValue(null, "name");
-                            isGame = "true".equals(parser.getAttributeValue(null, "game"));
+                            isGms = !("false".equals(parser.getAttributeValue(null, "gms")));
                             packagesStr = parser.getAttributeValue(null, "packages");
                             packages = packagesStr.split(";");
                             for (String pkg : packages) {
                                 final String trimedPkg = pkg.trim();
-                                if (isGame) {
-                                    if (!mGamePackagesToChange.containsKey(name)) {
-                                        mGamePackagesToChange.put(name, new ArraySet<>());
+                                if (isGms) {
+                                    if (!mGmsPackagesToChange.containsKey(name)) {
+                                        mGmsPackagesToChange.put(name, new ArraySet<>());
                                     }
-                                    mGamePackagesToChange.get(name).add(trimedPkg);
+                                    mGmsPackagesToChange.get(name).add(trimedPkg);
                                 } else {
-                                    if (!mPackagesToChange.containsKey(name)) {
-                                        mPackagesToChange.put(name, new ArraySet<>());
+                                    if (!mOtherPackagesToChange.containsKey(name)) {
+                                        mOtherPackagesToChange.put(name, new ArraySet<>());
                                     }
-                                    mPackagesToChange.get(name).add(trimedPkg);
+                                    mOtherPackagesToChange.get(name).add(trimedPkg);
                                 }
-                                logD("Added packagesToChange, model=" + name + ", isGame=" + isGame + ", packageName=" + trimedPkg);
+                                logD("Added packagesToChange, model=" + name + ", isGms=" + isGms + ", packageName=" + trimedPkg);
                             }
                             break;
                         case "packagesToKeep":
@@ -321,8 +321,8 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
         } else if (packageName.startsWith("com.google.") ||
                 mExtraPackagesToChange.contains(packageName)) {
             String spoofModel = KEY_DEFAULT;
-            for (String model : mPackagesToChange.keySet()) {
-                if (mPackagesToChange.get(model).contains(packageName)) {
+            for (String model : mGmsPackagesToChange.keySet()) {
+                if (mGmsPackagesToChange.get(model).contains(packageName)) {
                     spoofModel = model;
                     break;
                 }
@@ -330,8 +330,8 @@ public class AppPropsController extends IOnlineConfigurable.Stub {
             spoofMap.putAll(mPropsToChange.get(spoofModel));
         } else {
             String spoofModel = null;
-            for (String model : mGamePackagesToChange.keySet()) {
-                if (mGamePackagesToChange.get(model).contains(packageName)) {
+            for (String model : mOtherPackagesToChange.keySet()) {
+                if (mOtherPackagesToChange.get(model).contains(packageName)) {
                     spoofModel = model;
                     break;
                 }
