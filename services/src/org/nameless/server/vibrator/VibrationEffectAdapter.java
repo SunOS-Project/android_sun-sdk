@@ -133,8 +133,8 @@ public class VibrationEffectAdapter {
         final Pair<Integer, Long> systemConfigInfo = getConfigInfo(SYSTEM_CONFIG_FILE);
         final Pair<Integer, Long> localConfigInfo = getConfigInfo(LOCAL_CONFIG_FILE);
 
-        // Online config requires higher framework version. Fallback to system config.
-        if (localConfigInfo.first > VERSION) {
+        // Online config version doesn't match framework version. Fallback to system config.
+        if (localConfigInfo.first != VERSION) {
             return SYSTEM_CONFIG_FILE;
         }
 
