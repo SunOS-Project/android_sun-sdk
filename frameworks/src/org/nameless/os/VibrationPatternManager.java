@@ -12,6 +12,7 @@ import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.RINGTONE_WALTZ;
 
 import android.os.VibrationEffect;
 import android.util.ArrayMap;
+import android.util.ArraySet;
 
 import com.android.internal.R;
 
@@ -30,8 +31,8 @@ public class VibrationPatternManager {
 
     private static final ArrayList<Integer> NAME_ID_LIST_RINGTONE;
     private static final ArrayList<long[]> TIMINGS_LIST_RINGTONE;
-    private static final ArrayList<Integer> RTP_ID_LIST_RINGTONE;
     private static final LinkedHashMap<Integer, Pattern> PATTERN_MAP_RINGTONE;
+    private static final ArraySet<Integer> NATIVE_SUPPORT_RINGTONE_EFFECT_IDX;
 
     private static final ArrayMap<Integer, int[]> TIMINGS_CUSTOM_AMPLITUDE;
 
@@ -48,6 +49,8 @@ public class VibrationPatternManager {
 
     static {
         TIMINGS_CUSTOM_AMPLITUDE = new ArrayMap<>();
+        TIMINGS_CUSTOM_AMPLITUDE.put(R.string.vibrationPattern_ringtone_drums, new int[] {
+                0, 80, 0, 100, 0, 220, 0, 255, 0, 80, 0, 100, 0, 220, 0, 255, 0});
 
         NAME_ID_LIST_NOTIFICATION = new ArrayList<>();
         NAME_ID_LIST_NOTIFICATION.add(R.string.vibrationPattern_notification_dz_dz);
@@ -58,6 +61,9 @@ public class VibrationPatternManager {
         if (RAMP_DOWN_SUPPORTED) {
             NAME_ID_LIST_NOTIFICATION.add(R.string.vibrationPattern_notification_bell);
             NAME_ID_LIST_NOTIFICATION.add(R.string.vibrationPattern_notification_kick);
+            NAME_ID_LIST_NOTIFICATION.add(R.string.vibrationPattern_notification_strings);
+            NAME_ID_LIST_NOTIFICATION.add(R.string.vibrationPattern_notification_water_drop);
+        } else {
             NAME_ID_LIST_NOTIFICATION.add(R.string.vibrationPattern_notification_strings);
             NAME_ID_LIST_NOTIFICATION.add(R.string.vibrationPattern_notification_water_drop);
         }
@@ -73,6 +79,9 @@ public class VibrationPatternManager {
             TIMINGS_LIST_NOTIFICATION.add(new long[] {0, 100, 150, 100, 50, 700 + RAMP_DOWN_DURATION_OFFSET});
             TIMINGS_LIST_NOTIFICATION.add(new long[] {0, 50, 50, 50, 50, 100, 130, 100, 130, 100, 130, 50, 30, 700 + RAMP_DOWN_DURATION_OFFSET});
             TIMINGS_LIST_NOTIFICATION.add(new long[] {0, 50, 30, 700 + RAMP_DOWN_DURATION_OFFSET});
+        } else {
+            TIMINGS_LIST_NOTIFICATION.add(new long[] {0, 50, 50, 50, 50, 100, 130, 100, 130, 100, 130, 50, 30, 200});
+            TIMINGS_LIST_NOTIFICATION.add(new long[] {0, 50, 30, 150});
         }
 
         PATTERN_MAP_NOTIFICATION = new LinkedHashMap<>();
@@ -94,9 +103,7 @@ public class VibrationPatternManager {
         NAME_ID_LIST_RINGTONE.add(R.string.vibrationPattern_ringtone_da_da_dzzz);
         NAME_ID_LIST_RINGTONE.add(R.string.vibrationPattern_ringtone_da_dzzz_da);
         NAME_ID_LIST_RINGTONE.add(R.string.vibrationPattern_ringtone_drums);
-        if (RAMP_DOWN_SUPPORTED) {
-            NAME_ID_LIST_RINGTONE.add(R.string.vibrationPattern_ringtone_raise);
-        }
+        NAME_ID_LIST_RINGTONE.add(R.string.vibrationPattern_ringtone_raise);
 
         TIMINGS_LIST_RINGTONE = new ArrayList<>();
         TIMINGS_LIST_RINGTONE.add(new long[] {0,
@@ -115,10 +122,11 @@ public class VibrationPatternManager {
             TIMINGS_LIST_RINGTONE.add(new long[] {
                     0, 150, 100, 50, 80, 50, 80, 50, 200, 150, 100, 50, 80, 50, 80, 50, 250,
                     50, 80, 50, 80, 50, 80, 50, 200, 100, 120, 700 + RAMP_DOWN_DURATION_OFFSET, 1000});
+        } else {
+            TIMINGS_LIST_RINGTONE.add(new long[] {
+                    0, 150, 100, 50, 80, 50, 80, 50, 200, 150, 100, 50, 80, 50, 80, 50, 250,
+                    50, 80, 50, 80, 50, 80, 50, 200, 100, 120, 300, 1000});
         }
-
-        TIMINGS_CUSTOM_AMPLITUDE.put(R.string.vibrationPattern_ringtone_drums, new int[] {
-                0, 80, 0, 100, 0, 220, 0, 255, 0, 80, 0, 100, 0, 220, 0, 255, 0});
 
         PATTERN_MAP_RINGTONE = new LinkedHashMap<>();
         for (int i = 0; i < NAME_ID_LIST_RINGTONE.size(); ++i) {
@@ -132,27 +140,62 @@ public class VibrationPatternManager {
             }
         }
 
+        NATIVE_SUPPORT_RINGTONE_EFFECT_IDX = new ArraySet<>();
         RTP_START_INDEX_RINGTONE = NAME_ID_LIST_RINGTONE.size();
-        RTP_ID_LIST_RINGTONE = new ArrayList<>();
 
         int id = RINGTONE_WALTZ;
-        addRingtoneIfSupported(R.string.vibrationPattern_ringtone_waltz, id++);
-        addRingtoneIfSupported(R.string.vibrationPattern_ringtone_cut, id++);
-        addRingtoneIfSupported(R.string.vibrationPattern_ringtone_clock, id++);
-        addRingtoneIfSupported(R.string.vibrationPattern_ringtone_short, id++);
-    }
-
-    private static void addRingtoneIfSupported(int resId, int effectId) {
-        if (sVibratorExtManager.isEffectSupported(effectId)) {
-            NAME_ID_LIST_RINGTONE.add(resId);
-            RTP_ID_LIST_RINGTONE.add(effectId);
-            PATTERN_MAP_RINGTONE.put(resId, new Pattern(
-                    new long[] {RTP_START_DURATION_RINGTONE + effectId}));
+        if (!addRingtoneIfSupported(R.string.vibrationPattern_ringtone_waltz, id++)) {
+            NAME_ID_LIST_RINGTONE.add(R.string.vibrationPattern_ringtone_waltz);
+            PATTERN_MAP_RINGTONE.put(R.string.vibrationPattern_ringtone_waltz,
+                    new Pattern(new long[] {
+                            0, 200, 150, 50, 250, 50,
+                            250, 200, 150, 50, 250, 50,
+                            250, 200, 150, 50, 250, 50, 1000
+                    }));
+        }
+        if (!addRingtoneIfSupported(R.string.vibrationPattern_ringtone_cut, id++)) {
+            NAME_ID_LIST_RINGTONE.add(R.string.vibrationPattern_ringtone_cut);
+            PATTERN_MAP_RINGTONE.put(R.string.vibrationPattern_ringtone_cut,
+                    new Pattern(new long[] {
+                            0, 120, 50, 120,
+                            300, 120, 50, 120,
+                            300, 120, 50, 120, 1000
+                    }));
+        }
+        if (!addRingtoneIfSupported(R.string.vibrationPattern_ringtone_clock, id++)) {
+            NAME_ID_LIST_RINGTONE.add(R.string.vibrationPattern_ringtone_clock);
+            PATTERN_MAP_RINGTONE.put(R.string.vibrationPattern_ringtone_clock,
+                    new Pattern(new long[] {
+                            0, 150, 300, 60,
+                            800, 150, 300, 60,
+                            800, 150, 300, 60, 1500
+                    }));
+        }
+        if (!addRingtoneIfSupported(R.string.vibrationPattern_ringtone_short, id++)) {
+            NAME_ID_LIST_RINGTONE.add(R.string.vibrationPattern_ringtone_short);
+            PATTERN_MAP_RINGTONE.put(R.string.vibrationPattern_ringtone_short,
+                    new Pattern(new long[] {
+                            0, 50, 20, 50, 20, 50, 20, 50, 20, 50,
+                            20, 50, 20, 50, 20, 50, 20, 50, 20, 50,
+                            20, 50, 20, 50, 20, 50, 20, 50, 20, 50,
+                            20, 50, 1000
+                    }));
         }
     }
 
+    private static boolean addRingtoneIfSupported(int resId, int effectId) {
+        if (sVibratorExtManager.isEffectSupported(effectId)) {
+            NAME_ID_LIST_RINGTONE.add(resId);
+            PATTERN_MAP_RINGTONE.put(resId, new Pattern(
+                    new long[] {RTP_START_DURATION_RINGTONE + effectId}));
+            NATIVE_SUPPORT_RINGTONE_EFFECT_IDX.add(NAME_ID_LIST_RINGTONE.indexOf(resId));
+            return true;
+        }
+        return false;
+    }
+
     public static boolean isRampDownEffect(int effectId, long duration) {
-        return RAMP_DOWN_SUPPORTED && 
+        return RAMP_DOWN_SUPPORTED &&
                 (effectId == DURATION_ALARM_CALL || effectId == DURATION_NOTIFICATION) &&
                 duration >= RAMP_DOWN_MIN_DURATION &&
                 duration % 100 == RAMP_DOWN_DURATION_OFFSET;
@@ -179,7 +222,8 @@ public class VibrationPatternManager {
         if (number >= getPatternsSize(vibrationType)) {
             number = 0;
         }
-        if (number >= RTP_START_INDEX_RINGTONE) {
+        if (number >= RTP_START_INDEX_RINGTONE &&
+                NATIVE_SUPPORT_RINGTONE_EFFECT_IDX.contains(number)) {
             return getVibrationFromNumber(number, vibrationType, false);
         }
         final Pattern p = PATTERN_MAP_RINGTONE.get(NAME_ID_LIST_RINGTONE.get(number));
@@ -195,7 +239,8 @@ public class VibrationPatternManager {
         if (number >= getPatternsSize(vibrationType)) {
             number = 0;
         }
-        if (number >= RTP_START_INDEX_RINGTONE) {
+        if (number >= RTP_START_INDEX_RINGTONE &&
+                NATIVE_SUPPORT_RINGTONE_EFFECT_IDX.contains(number)) {
             insistent = false;
         }
         final Pattern p;
