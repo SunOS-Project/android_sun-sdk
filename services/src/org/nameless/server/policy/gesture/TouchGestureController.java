@@ -5,6 +5,16 @@
 
 package org.nameless.server.policy.gesture;
 
+import static org.nameless.hardware.TouchGestureManager.GESTURE_ALPHA_M;
+import static org.nameless.hardware.TouchGestureManager.GESTURE_ALPHA_O;
+import static org.nameless.hardware.TouchGestureManager.GESTURE_ALPHA_S;
+import static org.nameless.hardware.TouchGestureManager.GESTURE_ALPHA_V;
+import static org.nameless.hardware.TouchGestureManager.GESTURE_ALPHA_W;
+import static org.nameless.hardware.TouchGestureManager.GESTURE_LEFT_ARROW;
+import static org.nameless.hardware.TouchGestureManager.GESTURE_RIGHT_ARROW;
+import static org.nameless.hardware.TouchGestureManager.GESTURE_SINGLE_TAP;
+import static org.nameless.hardware.TouchGestureManager.GESTURE_START_KEY_CUSTOM;
+import static org.nameless.hardware.TouchGestureManager.GESTURE_TWO_FINGER_DOWN;
 import static org.nameless.os.DebugConstants.DEBUG_TOUCH_GESTURE;
 import static org.nameless.provider.SettingsExt.System.TOUCH_GESTURE_M;
 import static org.nameless.provider.SettingsExt.System.TOUCH_GESTURE_MUSIC_CONTROL;
@@ -239,7 +249,7 @@ public class TouchGestureController {
             Slog.d(TAG, "updateSingleTap, singleTapEnabled=" + singleTapEnabled);
         }
         synchronized (mGestureActionMap) {
-            mGestureActionMap.put(TouchGestureManager.KEY_CODE_SINGLE_TAP,
+            mGestureActionMap.put(GESTURE_START_KEY_CUSTOM + GESTURE_SINGLE_TAP,
                     singleTapEnabled ? ACTION_SHOW_AMBIENT_DISPLAY : ACTION_NONE);
         } 
     }
@@ -251,11 +261,11 @@ public class TouchGestureController {
             Slog.d(TAG, "updateMusicControl, musicControlEnabled=" + musicControlEnabled);
         }
         synchronized (mGestureActionMap) {
-            mGestureActionMap.put(TouchGestureManager.KEY_CODE_LEFT_ARROW,
+            mGestureActionMap.put(GESTURE_START_KEY_CUSTOM + GESTURE_LEFT_ARROW,
                     musicControlEnabled ? ACTION_LAST_SONG : ACTION_NONE);
-            mGestureActionMap.put(TouchGestureManager.KEY_CODE_RIGHT_ARROW,
+            mGestureActionMap.put(GESTURE_START_KEY_CUSTOM + GESTURE_RIGHT_ARROW,
                     musicControlEnabled ? ACTION_NEXT_SONG : ACTION_NONE);
-            mGestureActionMap.put(TouchGestureManager.KEY_CODE_TWO_FINGERS_DOWN,
+            mGestureActionMap.put(GESTURE_START_KEY_CUSTOM + GESTURE_TWO_FINGER_DOWN,
                     musicControlEnabled ? ACTION_PLAY_PAUSE_SONG : ACTION_NONE);
         }
     }
@@ -267,7 +277,7 @@ public class TouchGestureController {
             Slog.d(TAG, "updateDrawM, action=" + actionToString(action));
         }
         synchronized (mGestureActionMap) {
-            mGestureActionMap.put(TouchGestureManager.KEY_CODE_M, action);
+            mGestureActionMap.put(GESTURE_START_KEY_CUSTOM + GESTURE_ALPHA_M, action);
         }
     }
 
@@ -275,7 +285,7 @@ public class TouchGestureController {
         final int action = Settings.System.getIntForUser(mResolver,
                 TOUCH_GESTURE_O, ACTION_NONE, UserHandle.USER_CURRENT);
         synchronized (mGestureActionMap) {
-            mGestureActionMap.put(TouchGestureManager.KEY_CODE_O, action);
+            mGestureActionMap.put(GESTURE_START_KEY_CUSTOM + GESTURE_ALPHA_O, action);
         }
     }
 
@@ -286,7 +296,7 @@ public class TouchGestureController {
             Slog.d(TAG, "updateDrawS, action=" + actionToString(action));
         }
         synchronized (mGestureActionMap) {
-            mGestureActionMap.put(TouchGestureManager.KEY_CODE_S, action);
+            mGestureActionMap.put(GESTURE_START_KEY_CUSTOM + GESTURE_ALPHA_S, action);
         }
     }
 
@@ -297,7 +307,7 @@ public class TouchGestureController {
             Slog.d(TAG, "updateDrawV, action=" + actionToString(action));
         }
         synchronized (mGestureActionMap) {
-            mGestureActionMap.put(TouchGestureManager.KEY_CODE_V, action);
+            mGestureActionMap.put(GESTURE_START_KEY_CUSTOM + GESTURE_ALPHA_V, action);
         }
     }
 
@@ -308,7 +318,7 @@ public class TouchGestureController {
             Slog.d(TAG, "updateDrawW, action=" + actionToString(action));
         }
         synchronized (mGestureActionMap) {
-            mGestureActionMap.put(TouchGestureManager.KEY_CODE_W, action);
+            mGestureActionMap.put(GESTURE_START_KEY_CUSTOM + GESTURE_ALPHA_W, action);
         }
     }
 }
