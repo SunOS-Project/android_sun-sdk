@@ -5,11 +5,14 @@
 
 package org.nameless.server.policy.gesture;
 
+import static android.provider.Settings.Secure.DOUBLE_TAP_TO_WAKE;
+
 import static org.nameless.hardware.TouchGestureManager.GESTURE_ALPHA_M;
 import static org.nameless.hardware.TouchGestureManager.GESTURE_ALPHA_O;
 import static org.nameless.hardware.TouchGestureManager.GESTURE_ALPHA_S;
 import static org.nameless.hardware.TouchGestureManager.GESTURE_ALPHA_V;
 import static org.nameless.hardware.TouchGestureManager.GESTURE_ALPHA_W;
+import static org.nameless.hardware.TouchGestureManager.GESTURE_DOUBLE_TAP;
 import static org.nameless.hardware.TouchGestureManager.GESTURE_LEFT_ARROW;
 import static org.nameless.hardware.TouchGestureManager.GESTURE_RIGHT_ARROW;
 import static org.nameless.hardware.TouchGestureManager.GESTURE_SINGLE_TAP;
@@ -28,9 +31,8 @@ import static org.nameless.server.policy.gesture.TouchGestureActionTrigger.ACTIO
 import static org.nameless.server.policy.gesture.TouchGestureActionTrigger.ACTION_NONE;
 import static org.nameless.server.policy.gesture.TouchGestureActionTrigger.ACTION_PLAY_PAUSE_SONG;
 import static org.nameless.server.policy.gesture.TouchGestureActionTrigger.ACTION_SHOW_AMBIENT_DISPLAY;
+import static org.nameless.server.policy.gesture.TouchGestureActionTrigger.ACTION_WAKE_UP;
 import static org.nameless.server.policy.gesture.TouchGestureActionTrigger.actionToString;
-
-import static vendor.nameless.hardware.displayfeature.V1_0.Feature.SCREEN_OFF_GESTURE;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -43,7 +45,6 @@ import android.provider.Settings;
 import android.util.ArrayMap;
 import android.util.Slog;
 
-import org.nameless.display.DisplayFeatureManager;
 import org.nameless.hardware.TouchGestureManager;
 
 public class TouchGestureController {
@@ -78,6 +79,9 @@ public class TouchGestureController {
             @Override
             public void onChange(boolean selfChange, Uri uri) {
                 switch (uri.getLastPathSegment()) {
+                    case DOUBLE_TAP_TO_WAKE:
+                        updateDoubleTap();
+                        break;
                     case TOUCH_GESTURE_SINGLE_TAP_SHOW_AMBIENT:
                         updateSingleTap();
                         break;
@@ -109,16 +113,6 @@ public class TouchGestureController {
         mResolver = context.getContentResolver();
     }
 
-    private void initGestureNode() {
-        final boolean requireInit = DisplayFeatureManager.getInstance().hasFeature(SCREEN_OFF_GESTURE);
-        if (DEBUG_TOUCH_GESTURE) {
-            Slog.d(TAG, "initGestureNode, requireInit=" + requireInit);
-        }
-        if (requireInit) {
-            DisplayFeatureManager.getInstance().setFeatureEnabled(SCREEN_OFF_GESTURE, true);
-        }
-    }
-
     public void systemReady() {
         if (DEBUG_TOUCH_GESTURE) {
             Slog.d(TAG, "systemReady");
@@ -126,7 +120,15 @@ public class TouchGestureController {
         mSystemReady = true;
         mActionTrigger = new TouchGestureActionTrigger(mContext);
 
-        initGestureNode();
+        OplusTouchGestureHelper.initGestureNode();
+
+        if (DEBUG_TOUCH_GESTURE) {
+            Slog.d(TAG, "init, double tap");
+        }
+        updateDoubleTap();
+        mResolver.registerContentObserver(Settings.Secure.getUriFor(
+                DOUBLE_TAP_TO_WAKE), false,
+                mObserver, UserHandle.USER_ALL);
 
         if (TouchGestureManager.isSingleTapSupported()) {
             if (DEBUG_TOUCH_GESTURE) {
@@ -201,6 +203,9 @@ public class TouchGestureController {
 
     public boolean handleKeyEvent(int scanCode, boolean down) {
         synchronized (mGestureActionMap) {
+            if (!down) {
+                scanCode = OplusTouchGestureHelper.convertScanCode(scanCode);
+            }
             final int action = mGestureActionMap.getOrDefault(scanCode, -1);
             if (!down) {
                 if (DEBUG_TOUCH_GESTURE) {
@@ -219,6 +224,7 @@ public class TouchGestureController {
         if (!mSystemReady) {
             return;
         }
+        updateDoubleTap();
         if (TouchGestureManager.isSingleTapSupported()) {
             updateSingleTap();
         }
@@ -240,6 +246,18 @@ public class TouchGestureController {
         if (TouchGestureManager.isDrawWSupported()) {
             updateDrawW();
         }
+    }
+
+    private void updateDoubleTap() {
+        final boolean doubleTapEnabled = Settings.Secure.getIntForUser(mResolver,
+                DOUBLE_TAP_TO_WAKE, 0, UserHandle.USER_CURRENT) == 1;
+        if (DEBUG_TOUCH_GESTURE) {
+            Slog.d(TAG, "updateDoubleTap, doubleTapEnabled=" + doubleTapEnabled);
+        }
+        synchronized (mGestureActionMap) {
+            mGestureActionMap.put(GESTURE_START_KEY_CUSTOM + GESTURE_DOUBLE_TAP,
+                    doubleTapEnabled ? ACTION_WAKE_UP : ACTION_NONE);
+        } 
     }
 
     private void updateSingleTap() {

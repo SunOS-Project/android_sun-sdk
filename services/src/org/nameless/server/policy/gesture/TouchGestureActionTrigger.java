@@ -65,12 +65,13 @@ class TouchGestureActionTrigger {
     static final int ACTION_USER_APP_END = ACTION_PHONEPE;
 
     /** Actions below are used for specific gestures */
-    static final int ACTION_SHOW_AMBIENT_DISPLAY = 101;
-    static final int ACTION_LAST_SONG = 102;
-    static final int ACTION_NEXT_SONG = 103;
-    static final int ACTION_PLAY_PAUSE_SONG = 104;
+    static final int ACTION_WAKE_UP = 101;
+    static final int ACTION_SHOW_AMBIENT_DISPLAY = 102;
+    static final int ACTION_LAST_SONG = 103;
+    static final int ACTION_NEXT_SONG = 104;
+    static final int ACTION_PLAY_PAUSE_SONG = 105;
     /** Change values below after adding new */
-    static final int ACTION_SPECIFIC_START = ACTION_SHOW_AMBIENT_DISPLAY;
+    static final int ACTION_SPECIFIC_START = ACTION_WAKE_UP;
     static final int ACTION_SPECIFIC_END = ACTION_PLAY_PAUSE_SONG;
 
     private static final ArrayMap<Integer, ComponentName> ACTION_COMPONENT_NAME_MAP;
@@ -130,7 +131,7 @@ class TouchGestureActionTrigger {
             Slog.e(TAG, "Unknown action: " + action);
             return;
         }
-        if (action != ACTION_SHOW_AMBIENT_DISPLAY) {
+        if (action != ACTION_WAKE_UP && action != ACTION_SHOW_AMBIENT_DISPLAY) {
             mVibrator.vibrateExt(new VibrationExtInfo.Builder()
                 .setEffectId(OFF_SCREEN_GESTURE)
                 .setFallbackEffectId(HEAVY_CLICK)
@@ -170,8 +171,12 @@ class TouchGestureActionTrigger {
 
     private void triggerSpecificAction(int action) {
         switch (action) {
+            case ACTION_WAKE_UP:
+                DozeController.getInstance().wakeUpScreen(true);
+                break;
             case ACTION_SHOW_AMBIENT_DISPLAY:
-                DozeController.getInstance().launchDozePulse();
+                DozeController.getInstance().launchDozePulse(
+                        OplusTouchGestureHelper.shouldDelayDoze() ? 150L : 0L);
                 break;
             case ACTION_LAST_SONG:
                 PhoneWindowManagerExt.getInstance().dispatchMediaKeyToMediaSession(KeyEvent.KEYCODE_MEDIA_PREVIOUS);
@@ -243,6 +248,7 @@ class TouchGestureActionTrigger {
             case ACTION_PAYTM_PAY: return "Paytm pay";
             case ACTION_PAYTM_SCAN: return "Paytm scan";
             case ACTION_PHONEPE: return "PhonePe";
+            case ACTION_WAKE_UP: return "wake up";
             case ACTION_SHOW_AMBIENT_DISPLAY: return "ambient display";
             case ACTION_LAST_SONG: return "last song";
             case ACTION_NEXT_SONG: return "next song";

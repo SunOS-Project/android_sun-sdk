@@ -144,9 +144,13 @@ public class DozeController {
     }
 
     public void launchDozePulse() {
-        mHandler.post(() -> {
+        launchDozePulse(0L);
+    }
+
+    public void launchDozePulse(long delay) {
+        mHandler.postDelayed(() -> {
             mSystemExService.getContext().sendBroadcastAsUser(new Intent(DOZE_INTENT), UserHandle.SYSTEM);
-        });
+        }, delay);
     }
 
     public void wakeUpScreen(boolean vibrate) {

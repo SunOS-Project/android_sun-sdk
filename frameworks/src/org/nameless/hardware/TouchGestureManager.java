@@ -17,9 +17,10 @@ public class TouchGestureManager {
 
     public static final int GESTURE_START_KEY_CUSTOM = 246;
 
+    public static final int GESTURE_DOUBLE_TAP = 1;
     public static final int GESTURE_ALPHA_V = 2;
-    public static final int GESTURE_LEFT_ARROW = 4;
-    public static final int GESTURE_RIGHT_ARROW = 5;
+    public static final int GESTURE_RIGHT_ARROW = 4;
+    public static final int GESTURE_LEFT_ARROW = 5;
     public static final int GESTURE_ALPHA_O = 6;
     public static final int GESTURE_TWO_FINGER_DOWN = 7;
     public static final int GESTURE_ALPHA_M = 12;
@@ -28,32 +29,37 @@ public class TouchGestureManager {
     public static final int GESTURE_ALPHA_S = 18;
 
     public static boolean isSingleTapSupported() {
-        return (TOUCH_GESTURE_SUPPORT_BIT & (1 << GESTURE_SINGLE_TAP)) != 0;
+        return isGestureIdSupported(GESTURE_SINGLE_TAP);
     }
 
     public static boolean isMusicControlSupported() {
-        return (TOUCH_GESTURE_SUPPORT_BIT & ((1 << GESTURE_LEFT_ARROW) |
-                (1 << GESTURE_RIGHT_ARROW) | (1 << GESTURE_TWO_FINGER_DOWN))) != 0;
+        return isGestureIdSupported(GESTURE_LEFT_ARROW) &&
+                isGestureIdSupported(GESTURE_RIGHT_ARROW) &&
+                isGestureIdSupported(GESTURE_TWO_FINGER_DOWN);
     }
 
     public static boolean isDrawMSupported() {
-        return (TOUCH_GESTURE_SUPPORT_BIT & (1 << GESTURE_ALPHA_M)) != 0;
+        return isGestureIdSupported(GESTURE_ALPHA_M);
     }
 
     public static boolean isDrawOSupported() {
-        return (TOUCH_GESTURE_SUPPORT_BIT & (1 << GESTURE_ALPHA_O)) != 0;
+        return isGestureIdSupported(GESTURE_ALPHA_O);
     }
 
     public static boolean isDrawSSupported() {
-        return (TOUCH_GESTURE_SUPPORT_BIT & (1 << GESTURE_ALPHA_S)) != 0;
+        return isGestureIdSupported(GESTURE_ALPHA_S);
     }
 
     public static boolean isDrawVSupported() {
-        return (TOUCH_GESTURE_SUPPORT_BIT & (1 << GESTURE_ALPHA_V)) != 0;
+        return isGestureIdSupported(GESTURE_ALPHA_V);
     }
 
     public static boolean isDrawWSupported() {
-        return (TOUCH_GESTURE_SUPPORT_BIT & (1 << GESTURE_ALPHA_W)) != 0;
+        return isGestureIdSupported(GESTURE_ALPHA_W);
+    }
+
+    public static boolean isGestureIdSupported(int id) {
+        return (TOUCH_GESTURE_SUPPORT_BIT & (1 << id)) != 0;
     }
 
     public static boolean hasGestureSupport() {

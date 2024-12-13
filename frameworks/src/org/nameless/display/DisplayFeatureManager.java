@@ -101,4 +101,16 @@ public class DisplayFeatureManager {
             Log.e(TAG, "Failed to set display orientation", e);
         }
     }
+
+    public int sendCommand(int command) {
+        if (mService == null) {
+            return -1;
+        }
+        try {
+            return mService.sendCommand(command);
+        } catch (RemoteException e) {
+            Log.e(TAG, "Failed to send command", e);
+        }
+        return -1;
+    }
 }
