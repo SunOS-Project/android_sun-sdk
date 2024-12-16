@@ -884,6 +884,12 @@ public class SettingsExt {
          */
         public static final String SHOW_FOURG_ICON = "show_fourg_icon";
 
+        /**
+         * Whether to enable status bar notification ticker
+         * @hide
+         */
+        public static final String STATUS_BAR_NOTIFICATION_TICKER = "status_bar_notification_ticker";
+
         public static String hookGetString(String packageName, String settingsName) {
             return null;
         }

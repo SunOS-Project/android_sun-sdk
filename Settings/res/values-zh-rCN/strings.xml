@@ -642,4 +642,7 @@
     <!-- Back gesture on keyboard -->
     <string name="back_gesture_on_keyboard_title">启用返回手势</string>
     <string name="back_gesture_on_keyboard_summary">允许在键盘区域使用返回手势</string>
+    <!-- Status bar notification ticker -->
+    <string name="status_bar_notification_ticker_title">状态栏通知</string>
+    <string name="status_bar_notification_ticker_summary">当浮动通知不可用时，在状态栏显示通知内容</string>
 </resources>

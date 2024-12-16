@@ -55,6 +55,7 @@ import org.nameless.systemui.shade.CustomGestureListener;
 import org.nameless.systemui.statusbar.ticker.AdvertSwitcherView;
 import org.nameless.systemui.statusbar.ticker.MarqueeTickerEx;
 import org.nameless.systemui.statusbar.ticker.MarqueeTickerView;
+import org.nameless.systemui.statusbar.ticker.TickerController;
 import org.nameless.systemui.statusbar.ticker.TickerEx;
 
 class CentralSurfacesImplExt {
@@ -98,6 +99,7 @@ class CentralSurfacesImplExt {
     private NotificationInterruptStateProvider mNotificationInterruptStateProvider;
     private NotificationLockscreenUserManager mLockscreenUserManager;
     private StatusBarWindowController mStatusBarWindowController;
+    private TickerController mTickerController;
     private VibratorHelper mVibratorHelper;
 
     private DisplayManager mDisplayManager;
@@ -133,6 +135,7 @@ class CentralSurfacesImplExt {
             NotificationInterruptStateProvider notificationInterruptStateProvider,
             NotificationLockscreenUserManager lockscreenUserManager,
             StatusBarWindowController statusBarWindowController,
+            TickerController tickerController,
             VibratorHelper vibratorHelper) {
         mCentralSurfacesImpl = centralSurfacesImpl;
         mContext = context;
@@ -147,6 +150,7 @@ class CentralSurfacesImplExt {
         mNotifPipeline = notifPipeline;
         mNotificationInterruptStateProvider = notificationInterruptStateProvider;
         mStatusBarWindowController = statusBarWindowController;
+        mTickerController = tickerController;
         mVibratorHelper = vibratorHelper;
 
         mDisplayManager = mContext.getSystemService(DisplayManager.class);
@@ -159,6 +163,12 @@ class CentralSurfacesImplExt {
 
         mMessageRouter.subscribeTo(MSG_LONG_PRESS_BRIGHTNESS_CHANGE,
                 id -> onLongPressBrightnessChange());
+
+        mTickerController.addCallback((notificationTicker) -> {
+            if (!notificationTicker) {
+                tickerHalt();
+            }
+        });
     }
 
     void updateResources() {
@@ -281,6 +291,9 @@ class CentralSurfacesImplExt {
         mNotifCollectionListener = new NotifCollectionListener() {
             @Override
             public void onEntryAdded(@NonNull NotificationEntry entry) {
+                if (!mTickerController.showNotificationTicker()) {
+                    return;
+                }
                 if (shouldFilterHeadsUpNotification(entry)) {
                     return;
                 }
@@ -289,6 +302,9 @@ class CentralSurfacesImplExt {
 
             @Override
             public void onEntryUpdated(@NonNull NotificationEntry entry) {
+                if (!mTickerController.showNotificationTicker()) {
+                    return;
+                }
                 if (mDemoModeController.isInDemoMode()) {
                     return;
                 }
