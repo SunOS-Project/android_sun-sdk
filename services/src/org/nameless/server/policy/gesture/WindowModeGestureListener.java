@@ -166,7 +166,7 @@ public class WindowModeGestureListener extends GestureListenerBase {
             case Surface.ROTATION_270:
                 final float valXDisFromCornerLand = mValDisFromCorner / 2 * 3;
                 return (event.getRawX() < valXDisFromCornerLand || event.getRawX() > mDeviceHeight - valXDisFromCornerLand)
-                        && event.getRawY() > mDeviceWidth - mValDisFromCorner && event.getOrientation() != 0.0f;
+                        && event.getRawY() > mDeviceWidth - mValDisFromCorner;
             default:
                 return false;
         }
