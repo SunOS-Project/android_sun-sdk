@@ -31,6 +31,7 @@ public abstract class GestureListenerBase {
     protected SystemGestureClient mSystemGestureClient;
 
     protected GestureState mGestureState = GestureState.IDLE;
+    protected GestureState mLastMoveGestureState = GestureState.IDLE;
     protected boolean mGesturePreTriggerConsumed;
     protected float mDownPosX;
     protected float mDownPosY;
@@ -75,6 +76,7 @@ public abstract class GestureListenerBase {
     public void reset() {
         mGesturePreTriggerConsumed = false;
         mGestureState = GestureState.IDLE;
+        mLastMoveGestureState = GestureState.IDLE;
         mDownPosX = 0f;
         mDownPosY = 0f;
         mDownTime = 0L;

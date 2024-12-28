@@ -81,9 +81,10 @@ public class WindowModeGestureListener extends GestureListenerBase {
         if (mGestureState == GestureState.TRIGGERED) {
             notifyGestureTriggered(event);
         }
-        if (DEBUG_PHONE_WINDOW_MANAGER) {
+        if (DEBUG_PHONE_WINDOW_MANAGER && mGestureState != mLastMoveGestureState) {
             Slog.d(TAG, "onActionMove, mGestureState=" + mGestureState);
         }
+        mLastMoveGestureState = mGestureState;
         return true;
     }
 
