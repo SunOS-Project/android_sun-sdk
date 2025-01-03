@@ -127,7 +127,7 @@ public class PickUpSensor extends TriggerEventListener implements SensorEventLis
     public void onScreenOff() {
         if (!mListening) {
             logD(TAG, "onScreenOff, register sensor");
-            mEntryTimestamp = SystemClock.elapsedRealtime();
+            mEntryTimestamp = 0L;
             if (mUseNativePickUpSensor) {
                 mSensorManager.requestTriggerSensor(this, mSensor);
             } else {
