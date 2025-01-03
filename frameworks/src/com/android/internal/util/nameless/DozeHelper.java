@@ -28,8 +28,13 @@ public class DozeHelper {
     }
 
     public static boolean isPickUpSupported(Context context) {
-        return !TextUtils.isEmpty(getPickUpSensorType(context)) &&
+        return (useNativePickUpSensor(context) ||
+                !TextUtils.isEmpty(getPickUpSensorType(context))) &&
                 getPickUpSensorValue(context) >= 0.0f;
+    }
+
+    public static boolean useNativePickUpSensor(Context context) {
+        return context.getResources().getBoolean(R.bool.config_doze_useNativePickUpSensor);
     }
 
     public static int getPickUpAction(Context context) {

@@ -18,13 +18,15 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.hardware.TriggerEvent;
+import android.hardware.TriggerEventListener;
 import android.os.SystemClock;
 
 import com.android.internal.util.nameless.DozeHelper;
 
 import org.nameless.server.policy.DozeController;
 
-public class PickUpSensor implements SensorEventListener {
+public class PickUpSensor extends TriggerEventListener implements SensorEventListener {
 
     private static final String TAG = "PickUpSensor";
 
@@ -33,6 +35,7 @@ public class PickUpSensor implements SensorEventListener {
     private final Context mContext;
     private final String mSensorType;
     private final float mSensorValue;
+    private final boolean mUseNativePickUpSensor;
     private final SensorManager mSensorManager;
 
     private Sensor mSensor = null;
@@ -41,21 +44,30 @@ public class PickUpSensor implements SensorEventListener {
     private int mAction = DOZE_ACTION_NONE;
     private long mEntryTimestamp = 0L;
 
-    public PickUpSensor(Context context, String sensorType, float sensorValue) {
+    public PickUpSensor(Context context, String sensorType, float sensorValue, boolean useNativePickUpSensor) {
+        super();
         mContext = context;
         mSensorType = sensorType;
         mSensorValue = sensorValue;
+        mUseNativePickUpSensor = useNativePickUpSensor;
 
         mSensorManager = context.getSystemService(SensorManager.class);
-        for (Sensor s : mSensorManager.getSensorList(Sensor.TYPE_ALL)) {
-            if (s.getStringType().equals(mSensorType)) {
-                mSensor = s;
-                break;
-            }
-        }
 
-        logD(TAG, "init, mSensorType=" + mSensorType + ", mSensorValue=" + mSensorValue
-                + ", foundSensor=" + (mSensor != null));
+        if (mUseNativePickUpSensor) {
+            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PICK_UP_GESTURE);
+            logD(TAG, "init, mUseNativePickUpSensor=true, mSensorValue=" + mSensorValue
+                    + ", foundSensor=" + (mSensor != null));
+        } else {
+            for (Sensor s : mSensorManager.getSensorList(Sensor.TYPE_ALL)) {
+                if (s.getStringType().equals(mSensorType)) {
+                    mSensor = s;
+                    break;
+                }
+            }
+            logD(TAG, "init, mUseNativePickUpSensor=false, mSensorType=" + mSensorType
+                    + ", mSensorValue=" + mSensorValue
+                    + ", foundSensor=" + (mSensor != null));
+        }
 
         updateSettings();
     }
@@ -66,22 +78,36 @@ public class PickUpSensor implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        logD(TAG, "Got sensor event: " + event.values[0]);
+        handleSensorEvent(event.values[0]);
+    }
+
+    @Override
+    public void onTrigger(TriggerEvent event) {
+        if (!handleSensorEvent(event.values[0])) {
+            mSensorManager.requestTriggerSensor(this, mSensor);
+        }
+    }
+
+    private boolean handleSensorEvent(float value) {
+        logD(TAG, "handleSensorEvent, value=" + value);
         final long delta = SystemClock.elapsedRealtime() - mEntryTimestamp;
         if (delta < MIN_EVENT_INTERVAL_MS) {
-            return;
+            logD(TAG, "handleSensorEvent, ignore event in min interval");
+            return false;
         }
         mEntryTimestamp = SystemClock.elapsedRealtime();
-        if (event.values[0] == mSensorValue) {
+        if (value == mSensorValue) {
+            logD(TAG, "handleSensorEvent, action=" + dozeActionToString(mAction));
             switch (mAction) {
                 case DOZE_ACTION_SHOW_AMBINET:
                     DozeController.getInstance().launchDozePulse();
-                    break;
+                    return false;
                 case DOZE_ACTION_SHOW_LOCKSCREEN:
                     DozeController.getInstance().wakeUpScreen(true);
-                    break;
+                    return true;
             }
         }
+        return false;
     }
 
     public boolean isSupported() {
@@ -102,7 +128,11 @@ public class PickUpSensor implements SensorEventListener {
         if (!mListening) {
             logD(TAG, "onScreenOff, register sensor");
             mEntryTimestamp = SystemClock.elapsedRealtime();
-            mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+            if (mUseNativePickUpSensor) {
+                mSensorManager.requestTriggerSensor(this, mSensor);
+            } else {
+                mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+            }
             mListening = true;
         }
     }
@@ -110,7 +140,11 @@ public class PickUpSensor implements SensorEventListener {
     public void onScreenOn() {
         if (mListening) {
             logD(TAG, "onScreenOn, unregister sensor");
-            mSensorManager.unregisterListener(this, mSensor);
+            if (mUseNativePickUpSensor) {
+                mSensorManager.cancelTriggerSensor(this, mSensor);
+            } else {
+                mSensorManager.unregisterListener(this, mSensor);
+            }
             mListening = false;
         }
     }

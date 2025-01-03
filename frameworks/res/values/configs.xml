@@ -81,6 +81,7 @@
     <!-- Custom doze -->
     <string name="config_doze_pickUpSensorType"></string>
     <item name="config_doze_pickUpSensorValue" format="float" type="dimen">0.0</item>
+    <bool name="config_doze_useNativePickUpSensor">false</bool>
 
     <!-- Pop-Up View -->
     <bool name="config_popUpView_defaultGestureEnabled">true</bool>

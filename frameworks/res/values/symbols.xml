@@ -120,6 +120,7 @@
     <!-- Custom doze -->
     <java-symbol type="string" name="config_doze_pickUpSensorType" />
     <java-symbol type="dimen" name="config_doze_pickUpSensorValue" />
+    <java-symbol type="bool" name="config_doze_useNativePickUpSensor" />
 
     <!-- Pop-Up View -->
     <java-symbol type="bool" name="config_popUpView_defaultGestureEnabled" />

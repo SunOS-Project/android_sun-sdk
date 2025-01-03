@@ -98,11 +98,13 @@ public class DozeController {
             mPowerManager = mSystemExService.getContext().getSystemService(PowerManager.class);
             mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
 
+            final boolean useNativePickUpSensor = DozeHelper.useNativePickUpSensor(mSystemExService.getContext());
             final String pickUpSensorType = DozeHelper.getPickUpSensorType(mSystemExService.getContext());
             final float pickUpSensorValue = DozeHelper.getPickUpSensorValue(mSystemExService.getContext());
-            if (!TextUtils.isEmpty(pickUpSensorType) && pickUpSensorValue >= 0.0f) {
+            if ((useNativePickUpSensor || !TextUtils.isEmpty(pickUpSensorType))
+                    && pickUpSensorValue >= 0.0f) {
                 mPickUpSensor = new PickUpSensor(mSystemExService.getContext(),
-                        pickUpSensorType, pickUpSensorValue);
+                        pickUpSensorType, pickUpSensorValue, useNativePickUpSensor);
             } else {
                 mPickUpSensor = null;
                 logD("PickUpSensor is not supported");
