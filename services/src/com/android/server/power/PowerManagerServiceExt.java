@@ -25,6 +25,8 @@ class PowerManagerServiceExt {
         return InstanceHolder.INSTANCE;
     }
 
+    private static final String DETAIL_BOUNCER_VISIBLE = "com.android.systemui:BOUNCER_VISIBLE";
+
     private Context mContext;
     private Vibrator mVibrator;
 
@@ -37,23 +39,33 @@ class PowerManagerServiceExt {
     }
 
     void onDoze(int reason) {
-        if (mVibrator != null && reason != PowerManager.GO_TO_SLEEP_REASON_TIMEOUT) {
-            mVibrator.vibrateExt(new VibrationExtInfo.Builder()
-                .setEffectId(SCREEN_OFF)
-                .setVibrationAttributes(VIBRATION_ATTRIBUTES_MISC_SCENES)
-                .build());
+        if (mVibrator == null) {
+            return;
         }
+        if (reason == PowerManager.GO_TO_SLEEP_REASON_TIMEOUT) {
+            return;
+        }
+        mVibrator.vibrateExt(new VibrationExtInfo.Builder()
+            .setEffectId(SCREEN_OFF)
+            .setVibrationAttributes(VIBRATION_ATTRIBUTES_MISC_SCENES)
+            .build());
     }
 
-    void onWakeUp(int reason) {
-        if (mVibrator != null &&
-                (reason == PowerManager.WAKE_REASON_WAKE_KEY ||
-                reason == PowerManager.WAKE_REASON_TAP ||
-                reason == PowerManager.WAKE_REASON_GESTURE)) {
-            mVibrator.vibrateExt(new VibrationExtInfo.Builder()
-                .setEffectId(SCREEN_ON)
-                .setVibrationAttributes(VIBRATION_ATTRIBUTES_MISC_SCENES)
-                .build());
+    void onWakeUp(int reason, String details) {
+        if (mVibrator == null) {
+            return;
         }
+        if (reason != PowerManager.WAKE_REASON_WAKE_KEY &&
+                reason != PowerManager.WAKE_REASON_TAP &&
+                reason != PowerManager.WAKE_REASON_GESTURE) {
+            return;
+        }
+        if (DETAIL_BOUNCER_VISIBLE.equals(details)) {
+            return;
+        }
+        mVibrator.vibrateExt(new VibrationExtInfo.Builder()
+            .setEffectId(SCREEN_ON)
+            .setVibrationAttributes(VIBRATION_ATTRIBUTES_MISC_SCENES)
+            .build());
     }
 }
