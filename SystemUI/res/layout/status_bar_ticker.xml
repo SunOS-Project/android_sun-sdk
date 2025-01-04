@@ -35,8 +35,7 @@
         android:layout_gravity="center_vertical"
         android:inAnimation="@anim/slide_in_bottom"
         android:outAnimation="@anim/slide_out_up"
-        android:layout_weight="1.0"
-        android:paddingEnd="10dp">
+        android:layout_weight="1.0">
         <org.nameless.systemui.statusbar.ticker.MarqueeTextView
             android:textAppearance="@style/TextAppearance.StatusBar.Clock"
             android:layout_width="match_parent"

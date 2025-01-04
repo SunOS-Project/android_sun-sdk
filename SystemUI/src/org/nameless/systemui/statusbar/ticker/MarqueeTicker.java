@@ -22,6 +22,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextSwitcher;
 
 import com.android.internal.util.CharSequences;
@@ -42,11 +43,10 @@ public abstract class MarqueeTicker implements DarkIconDispatcher.DarkReceiver {
 
     private static final int LEFT_FULL_LOOP_COUNT = 10;
 
-    private static final float TICKER_HOLE_SPACE = 2.0f;
+    private static final float TICKER_HOLE_SPACE = 4.0f;
 
     private final Handler mHandler = new Handler();
     private final Paint mPaint = new Paint();
-    private final Rect mRect = new Rect();
 
     private final Context mContext;
 
@@ -63,6 +63,7 @@ public abstract class MarqueeTicker implements DarkIconDispatcher.DarkReceiver {
     private int mHorScreenWidth;
 
     private MarqueeTextView mCurrentTicker;
+    private Rect mRect;
     private int mCurrentColor;
     private int mSymbolLength;
 
@@ -231,6 +232,7 @@ public abstract class MarqueeTicker implements DarkIconDispatcher.DarkReceiver {
     public void fillTickerContent(List<String> tickerList) {
         mToShowContentString.setLength(0);
         mTempString.setLength(0);
+        mRect = new Rect();
         int iconWidth;
         int screenWidth;
         int displayCutoutLeft;
@@ -238,6 +240,10 @@ public abstract class MarqueeTicker implements DarkIconDispatcher.DarkReceiver {
         mIsLeftFull = false;
         if (mIconSwitcher.getVisibility() == View.VISIBLE) {
             iconWidth = mIconSwitcher.getWidth();
+            final LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mIconSwitcher.getLayoutParams();
+            if (lp != null) {
+                iconWidth += lp.rightMargin;
+            }
         } else {
             iconWidth = 0;
         }
@@ -262,6 +268,7 @@ public abstract class MarqueeTicker implements DarkIconDispatcher.DarkReceiver {
                 mPaint.getTextBounds(mTempString.toString(), 0, mTempString.toString().length(), mRect);
                 if (mRect.width() >= displayCutoutLeft) {
                     mIsLeftFull = true;
+                    i--;
                     mPaint.getTextBounds(mToShowContentString.toString(), 0, mToShowContentString.toString().length(), mRect);
                     mLeftSpace = displayCutoutLeft - mRect.width();
                 } else {
@@ -310,6 +317,7 @@ public abstract class MarqueeTicker implements DarkIconDispatcher.DarkReceiver {
 
     private void initSymbolLength() {
         mTextSwitcher.setText("!");
+        mRect = new Rect();
         mPaint.setTextSize(((MarqueeTextView) mTextSwitcher.getChildAt(mTextSwitcher.getDisplayedChild())).getTextSize());
         mPaint.getTextBounds("!", 0, "!".length(), mRect);
         mSymbolLength = mRect.width();
