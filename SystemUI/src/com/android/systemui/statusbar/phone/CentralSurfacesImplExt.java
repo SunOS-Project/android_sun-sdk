@@ -291,7 +291,7 @@ class CentralSurfacesImplExt {
         mNotifCollectionListener = new NotifCollectionListener() {
             @Override
             public void onEntryAdded(@NonNull NotificationEntry entry) {
-                if (!mTickerController.showNotificationTicker()) {
+                if (!mTickerController.showNotificationTicker(entry)) {
                     return;
                 }
                 if (shouldFilterHeadsUpNotification(entry)) {
@@ -302,7 +302,7 @@ class CentralSurfacesImplExt {
 
             @Override
             public void onEntryUpdated(@NonNull NotificationEntry entry) {
-                if (!mTickerController.showNotificationTicker()) {
+                if (!mTickerController.showNotificationTicker(entry)) {
                     return;
                 }
                 if (mDemoModeController.isInDemoMode()) {

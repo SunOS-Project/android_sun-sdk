@@ -651,4 +651,7 @@
     <!-- Status bar notification ticker -->
     <string name="status_bar_notification_ticker_title">状态栏通知</string>
     <string name="status_bar_notification_ticker_summary">当浮动通知不可用时，在状态栏显示通知内容</string>
+    <string name="status_bar_notification_ticker_enable_title">启用状态栏通知</string>
+    <string name="status_bar_notification_ticker_blacklist_title">黑名单应用</string>
+    <string name="status_bar_notification_ticker_blacklist_summary">禁止选中的应用显示状态栏通知</string>
 </resources>

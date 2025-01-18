@@ -759,5 +759,8 @@
     <!-- Status bar notification ticker -->
     <string name="status_bar_notification_ticker_title">Notification ticker</string>
     <string name="status_bar_notification_ticker_summary">Show notification content on status bar when heads up notification is not available</string>
+    <string name="status_bar_notification_ticker_enable_title">Enable notification ticker</string>
+    <string name="status_bar_notification_ticker_blacklist_title">Blacklist apps</string>
+    <string name="status_bar_notification_ticker_blacklist_summary">Disable selected apps from showing notification ticker</string>
 
 </resources>

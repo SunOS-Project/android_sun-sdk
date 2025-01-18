@@ -142,6 +142,8 @@ public class SystemSettingsValidatorsExt {
         VALIDATORS.put(System.GAME_MODE_CALL_ACTION, new InclusiveIntegerRangeValidator(0, 2));
         VALIDATORS.put(System.DATA_DISABLED_ICON, BOOLEAN_VALIDATOR);
         VALIDATORS.put(System.SHOW_FOURG_ICON, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.STATUS_BAR_NOTIFICATION_TICKER, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(System.STATUS_BAR_NOTIFICATION_TICKER_BLACKLIST, new PerAppConfigValidator());
     }
 
     private static class AppVolumeDataValidator implements Validator {

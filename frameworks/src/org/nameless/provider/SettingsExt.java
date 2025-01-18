@@ -890,6 +890,12 @@ public class SettingsExt {
          */
         public static final String STATUS_BAR_NOTIFICATION_TICKER = "status_bar_notification_ticker";
 
+        /**
+         * App blacklist of showing status bar notification ticker
+         * @hide
+         */
+        public static final String STATUS_BAR_NOTIFICATION_TICKER_BLACKLIST = "status_bar_notification_ticker_blacklist";
+
         public static String hookGetString(String packageName, String settingsName) {
             return null;
         }

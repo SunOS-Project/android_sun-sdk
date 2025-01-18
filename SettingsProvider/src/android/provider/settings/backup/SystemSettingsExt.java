@@ -130,5 +130,7 @@ public class SystemSettingsExt {
         System.GAME_MODE_CALL_ACTION,
         System.DATA_DISABLED_ICON,
         System.SHOW_FOURG_ICON,
+        System.STATUS_BAR_NOTIFICATION_TICKER,
+        System.STATUS_BAR_NOTIFICATION_TICKER_BLACKLIST,
     };
 }

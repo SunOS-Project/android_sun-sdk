@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2025 The Nameless-CLO Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/status_bar_notification_ticker_title">
+
+    <com.android.settingslib.widget.TopIntroPreference
+        android:key="status_bar_notification_ticker_top_info"
+        android:title="@string/status_bar_notification_ticker_summary" />
+
+    <org.nameless.settings.preference.SystemSettingMainSwitchPreference
+        android:key="status_bar_notification_ticker"
+        android:title="@string/status_bar_notification_ticker_enable_title"
+        android:defaultValue="true" />
+
+    <Preference
+        android:key="status_bar_notification_ticker_blacklist"
+        android:dependency="status_bar_notification_ticker"
+        android:title="@string/status_bar_notification_ticker_blacklist_title"
+        android:summary="@string/status_bar_notification_ticker_blacklist_summary"
+        android:fragment="org.nameless.settings.display.TickerBlacklistSettingsFragment" />
+</PreferenceScreen>
