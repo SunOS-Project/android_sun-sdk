@@ -40,7 +40,13 @@
     <string name="battery_saver_vibration_title">关闭振动</string>
     <string name="battery_saver_vibration_summary">当省电模式开启时，关闭振动以节省电量</string>
     <!-- Per-app configs -->
-    <string name="per_app_config_empty_text">已安装的应用均不支持此设置</string>
+    <string name="per_app_config_empty_text">暂无支持此设置的应用</string>
+    <string name="per_app_config_no_result_text">未找到与\"%1$s\"相符的应用</string>
+    <string name="per_app_config_search">搜索应用</string>
+    <string name="per_app_config_select_all">全选</string>
+    <string name="per_app_config_deselect_all">取消全选</string>
+    <string name="per_app_config_reset">重置</string>
+    <string name="per_app_config_reset_success">重置成功</string>
     <!-- Per-app refresh rate -->
     <string name="per_app_refresh_rate_title">应用刷新率配置</string>
     <string name="per_app_refresh_rate_summary">为每个应用配置独立的屏幕刷新率</string>

@@ -47,6 +47,12 @@
 
     <!-- Per-app configs -->
     <string name="per_app_config_empty_text">No installed apps support current settings</string>
+    <string name="per_app_config_no_result_text">No apps found matching \"%1$s\"</string>
+    <string name="per_app_config_search">Search apps</string>
+    <string name="per_app_config_select_all">Select all</string>
+    <string name="per_app_config_deselect_all">Deselect all</string>
+    <string name="per_app_config_reset">Reset</string>
+    <string name="per_app_config_reset_success">Reset success</string>
 
     <!-- Per-app refresh rate -->
     <string name="per_app_refresh_rate_title">Per-app refresh rate config</string>

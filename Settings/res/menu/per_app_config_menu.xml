@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2025 The Nameless-CLO Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/search"
+        android:title="@string/per_app_config_search"
+        android:icon="@drawable/ic_find_in_page_24px"
+        android:showAsAction="always|collapseActionView"
+        android:actionViewClass="android.widget.SearchView" />
+    <item
+        android:id="@+id/select_all"
+        android:title="@string/per_app_config_select_all" />
+    <item
+        android:id="@+id/deselect_all"
+        android:title="@string/per_app_config_deselect_all" />
+    <item
+        android:id="@+id/reset"
+        android:title="@string/per_app_config_reset" />
+</menu>
