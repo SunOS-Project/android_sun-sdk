@@ -30,6 +30,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 
+import com.android.internal.util.nameless.HanziToPinyin
+
 import com.android.settings.R
 import com.android.settings.SettingsPreferenceFragment
 
@@ -44,6 +46,8 @@ abstract class BasePerAppConfigFragment : SettingsPreferenceFragment(), MenuItem
     private val emptyTextView by lazy { TextView(requireContext()) }
 
     private var searchItem: MenuItem? = null
+
+    private val hanziToPinyin by lazy { HanziToPinyin.getInstance() }
 
     private val onBackPressedCallback = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
@@ -194,9 +198,11 @@ abstract class BasePerAppConfigFragment : SettingsPreferenceFragment(), MenuItem
         packageManager.getInstalledPackages(0)?.forEach { pi ->
             pi.applicationInfo?.let { ai ->
                 if ((ai.flags and FLAG_SYSTEM) == 0) {
+                    val label = ai.loadLabel(packageManager).toString()
                     apps.add(AppData(
-                        ai.loadLabel(packageManager).toString(),
+                        label,
                         pi.packageName,
+                        if (label.isNotBlank()) hanziToPinyin.transliterate(label) else pi.packageName,
                         ai.uid
                     ))
                 }
@@ -208,9 +214,11 @@ abstract class BasePerAppConfigFragment : SettingsPreferenceFragment(), MenuItem
                     try {
                         packageManager.getPackageInfo(app, 0).let { pi ->
                             pi.applicationInfo?.let { ai ->
+                                val label = ai.loadLabel(packageManager).toString()
                                 apps.add(AppData(
-                                    ai.loadLabel(packageManager).toString(),
+                                    label,
                                     app,
+                                    if (label.isNotBlank()) hanziToPinyin.transliterate(label) else app,
                                     ai.uid
                                 ))
                             }
@@ -221,11 +229,11 @@ abstract class BasePerAppConfigFragment : SettingsPreferenceFragment(), MenuItem
         val appList = mutableListOf<AppData>().also {
             it.addAll(apps)
             it.sortWith { a, b ->
-                var sa = a.label
-                if (sa.isNullOrBlank()) sa = a.packageName
-                var sb = b.label
-                if (sb.isNullOrBlank()) sb = b.packageName
-                sa.compareTo(sb)
+                if (a.sortName != b.sortName) {
+                    a.sortName.compareTo(b.sortName)
+                } else {
+                    a.packageName.compareTo(b.packageName)
+                }
             }
         }
         return appList
@@ -267,6 +275,7 @@ abstract class BasePerAppConfigFragment : SettingsPreferenceFragment(), MenuItem
     data class AppData(
         val label: String,
         val packageName: String,
+        val sortName: String,
         val uid: Int
     )
 }
