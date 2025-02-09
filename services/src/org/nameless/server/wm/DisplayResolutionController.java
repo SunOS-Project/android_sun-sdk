@@ -323,13 +323,17 @@ public class DisplayResolutionController {
     }
 
     private void updateHeightIfNeeded() {
-        if (mWidth > 0 && mHeight < 0 && mSystemReady) {
+        if ((mWidth < 0 || mHeight < 0) && mSystemReady) {
             if (DisplayResolutionManager.getDeviceType() == TYPE_FORCED) {
                 final Display.Mode mode = getPreferMode(mDisplay, QHD_WIDTH);
                 final float height = (float) mode.getPhysicalHeight();
                 mHeight = (int) (mWidth == FHD_WIDTH ? height * SCALE : height);
-            } else {
+            } else if (mWidth > 0) {
                 final Display.Mode mode = getPreferMode(mDisplay, mWidth);
+                mHeight = mode.getPhysicalHeight();
+            } else {
+                final Display.Mode mode = mDisplay.getMode();
+                mWidth = mode.getPhysicalWidth();
                 mHeight = mode.getPhysicalHeight();
             }
             logD("updateHeightIfNeeded, resolution=" + mWidth + "x" + mHeight);
