@@ -16,7 +16,7 @@ import static org.nameless.provider.SettingsExt.System.WIRELESS_CHARGING_ENABLED
 import static org.nameless.provider.SettingsExt.System.WIRELESS_CHARGING_QUIET_MODE_ENABLED;
 import static org.nameless.provider.SettingsExt.System.WIRELESS_CHARGING_QUIET_MODE_STATUS;
 
-import static vendor.nameless.hardware.battery.V1_0.Feature.WIRELESS_CHARGING_QUIET_MODE;
+import static vendor.nameless.hardware.battery.Feature.WIRELESS_CHARGING_QUIET_MODE;
 
 import android.content.ComponentName;
 import android.content.Intent;

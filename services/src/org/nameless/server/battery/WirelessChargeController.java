@@ -19,6 +19,9 @@ import static org.nameless.provider.SettingsExt.System.WIRELESS_REVERSE_CHARGING
 
 import static org.nameless.server.battery.BatteryFeatureController.logD;
 
+import static vendor.nameless.hardware.battery.Feature.WIRELESS_CHARGING_RX;
+import static vendor.nameless.hardware.battery.Feature.WIRELESS_CHARGING_TX;
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.os.UserHandle;
@@ -129,12 +132,12 @@ class WirelessChargeController {
 
     private void setWirelessCharging(boolean enabled) {
         logD(TAG, "setWirelessCharging, enabled: " + enabled);
-        mBatteryFeatureManager.setWirelessRXEnabled(enabled);
+        mBatteryFeatureManager.setFeatureEnabled(WIRELESS_CHARGING_RX, enabled);
     }
 
     private void setReverseCharging(boolean enabled) {
         logD(TAG, "setReverseCharging, enabled: " + enabled);
-        mBatteryFeatureManager.setWirelessTXEnabled(enabled);
+        mBatteryFeatureManager.setFeatureEnabled(WIRELESS_CHARGING_TX, enabled);
         if (enabled) {
             mPoster.postWirelessTxNotif();
         } else {

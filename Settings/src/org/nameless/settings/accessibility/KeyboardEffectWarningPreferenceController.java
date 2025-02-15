@@ -5,7 +5,7 @@
 
 package org.nameless.settings.accessibility;
 
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.KEYBOARD_PRESS;
+import static vendor.nameless.hardware.vibratorExt.Effect.KEYBOARD_PRESS;
 
 import android.content.Context;
 

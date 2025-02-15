@@ -27,7 +27,7 @@ import org.nameless.os.VibratorExtManager;
 import org.nameless.os.VibratorExtManager.HapticStyleChangedCallback;
 import org.nameless.provider.SettingsExt;
 
-import vendor.nameless.hardware.vibratorExt.V1_0.Style;
+import vendor.nameless.hardware.vibratorExt.Style;
 
 public class HapticStyleListPreferenceController extends BasePreferenceController
         implements OnPreferenceChangeListener, LifecycleObserver, OnStart, OnStop {

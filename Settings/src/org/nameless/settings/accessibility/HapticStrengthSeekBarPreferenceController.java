@@ -5,7 +5,7 @@
 
 package org.nameless.settings.accessibility;
 
-import static vendor.nameless.hardware.vibratorExt.V1_0.Type.HAPTIC;
+import static vendor.nameless.hardware.vibratorExt.Type.HAPTIC;
 
 import android.content.Context;
 

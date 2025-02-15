@@ -8,7 +8,7 @@ package org.nameless.server.display;
 import static org.nameless.provider.SettingsExt.System.LTPO_ENABLED;
 import static org.nameless.server.display.DisplayFeatureController.logD;
 
-import static vendor.nameless.hardware.displayfeature.V1_0.Feature.LTPO;
+import static vendor.nameless.hardware.displayfeature.Feature.LTPO;
 
 import android.content.ContentResolver;
 import android.os.UserHandle;

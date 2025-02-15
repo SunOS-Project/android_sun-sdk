@@ -5,7 +5,7 @@
 
 package org.nameless.settings.accessibility;
 
-import static vendor.nameless.hardware.vibratorExt.V1_0.Type.ALARM_CALL;
+import static vendor.nameless.hardware.vibratorExt.Type.ALARM_CALL;
 
 import android.content.Context;
 

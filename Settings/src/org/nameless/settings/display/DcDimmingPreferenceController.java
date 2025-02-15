@@ -7,7 +7,7 @@ package org.nameless.settings.display;
 
 import static org.nameless.provider.SettingsExt.System.DC_DIMMING_STATE;
 
-import static vendor.nameless.hardware.displayfeature.V1_0.Feature.DC_DIMMING;
+import static vendor.nameless.hardware.displayfeature.Feature.DC_DIMMING;
 
 import android.content.ContentResolver;
 import android.content.Context;

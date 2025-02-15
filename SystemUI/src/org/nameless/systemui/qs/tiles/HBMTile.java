@@ -5,7 +5,7 @@
 
 package org.nameless.systemui.qs.tiles;
 
-import static vendor.nameless.hardware.displayfeature.V1_0.Feature.HBM_MODE;
+import static vendor.nameless.hardware.displayfeature.Feature.HBM_MODE;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -215,7 +215,7 @@ public class HBMTile extends QSTileImpl<BooleanState> {
     }
 
     private boolean getStatusForHBM() {
-        return mManager.getFeatureEnabled(HBM_MODE);
+        return mManager.isFeatureEnabled(HBM_MODE);
     }
 
     private void setStatusForHBM(boolean enabled) {

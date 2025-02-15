@@ -49,9 +49,9 @@ import org.nameless.content.IOnlineConfigurable;
 import org.nameless.content.OnlineConfigManager;
 import org.nameless.os.VibratorExtManager;
 
-import vendor.nameless.hardware.vibratorExt.V1_0.LevelRange;
-import vendor.nameless.hardware.vibratorExt.V1_0.Style;
-import vendor.nameless.hardware.vibratorExt.V1_0.Type;
+import vendor.nameless.hardware.vibratorExt.LevelRange;
+import vendor.nameless.hardware.vibratorExt.Style;
+import vendor.nameless.hardware.vibratorExt.Type;
 
 /** Controls all the custom settings related to vibration. */
 public final class CustomVibrationSettings extends IOnlineConfigurable.Stub {

@@ -20,7 +20,7 @@ package org.nameless.settings.preference.colorpicker;
 
 import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_MISC_SCENES;
 
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.CLICK;
+import static vendor.nameless.hardware.vibratorExt.Effect.CLICK;
 
 import android.app.AlertDialog;
 import android.content.Context;

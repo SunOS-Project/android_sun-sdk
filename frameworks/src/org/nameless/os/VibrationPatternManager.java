@@ -5,10 +5,10 @@
 
 package org.nameless.os;
 
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.DURATION_ALARM_CALL;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.DURATION_NOTIFICATION;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.RAMP_DOWN;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.RINGTONE_WALTZ;
+import static vendor.nameless.hardware.vibratorExt.Effect.DURATION_ALARM_CALL;
+import static vendor.nameless.hardware.vibratorExt.Effect.DURATION_NOTIFICATION;
+import static vendor.nameless.hardware.vibratorExt.Effect.RAMP_DOWN;
+import static vendor.nameless.hardware.vibratorExt.Effect.RINGTONE_WALTZ;
 
 import android.os.VibrationEffect;
 import android.util.ArrayMap;

@@ -13,10 +13,10 @@ import static org.nameless.provider.SettingsExt.System.HIGH_TOUCH_SAMPLE_MODE;
 import static org.nameless.provider.SettingsExt.System.LTPO_ENABLED;
 import static org.nameless.provider.SettingsExt.System.UNLIMIT_EDGE_TOUCH_MODE;
 
-import static vendor.nameless.hardware.displayfeature.V1_0.Feature.DC_DIMMING;
-import static vendor.nameless.hardware.displayfeature.V1_0.Feature.EDGE_TOUCH;
-import static vendor.nameless.hardware.displayfeature.V1_0.Feature.HIGH_SAMPLE_TOUCH;
-import static vendor.nameless.hardware.displayfeature.V1_0.Feature.LTPO;
+import static vendor.nameless.hardware.displayfeature.Feature.DC_DIMMING;
+import static vendor.nameless.hardware.displayfeature.Feature.EDGE_TOUCH;
+import static vendor.nameless.hardware.displayfeature.Feature.HIGH_SAMPLE_TOUCH;
+import static vendor.nameless.hardware.displayfeature.Feature.LTPO;
 
 import android.database.ContentObserver;
 import android.net.Uri;

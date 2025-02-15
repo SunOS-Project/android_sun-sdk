@@ -5,7 +5,7 @@
 
 package org.nameless.settings.fuelgauge;
 
-import static vendor.nameless.hardware.battery.V1_0.Feature.SUSPEND_CHARGING;
+import static vendor.nameless.hardware.battery.Feature.SUSPEND_CHARGING;
 
 import android.content.Context;
 

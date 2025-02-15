@@ -22,10 +22,10 @@ import static org.nameless.audio.AlertSliderManager.STATE_TOP;
 import static org.nameless.audio.AlertSliderManager.STATE_UNKNOWN;
 import static org.nameless.os.DebugConstants.DEBUG_AUDIO_SLIDER;
 
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.ALERT_SLIDER_BOTTOM;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.ALERT_SLIDER_MIDDLE;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.DOUBLE_CLICK;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.HEAVY_CLICK;
+import static vendor.nameless.hardware.vibratorExt.Effect.ALERT_SLIDER_BOTTOM;
+import static vendor.nameless.hardware.vibratorExt.Effect.ALERT_SLIDER_MIDDLE;
+import static vendor.nameless.hardware.vibratorExt.Effect.DOUBLE_CLICK;
+import static vendor.nameless.hardware.vibratorExt.Effect.HEAVY_CLICK;
 
 import android.content.ContentResolver;
 import android.content.Context;

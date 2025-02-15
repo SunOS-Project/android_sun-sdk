@@ -27,8 +27,8 @@ import javax.inject.Inject
 
 import org.nameless.provider.SettingsExt.System.SCREENSHOT_SOUND
 
-import vendor.nameless.hardware.vibratorExt.V1_0.Effect.HEAVY_CLICK
-import vendor.nameless.hardware.vibratorExt.V1_0.Effect.SCREENSHOT
+import vendor.nameless.hardware.vibratorExt.Effect.HEAVY_CLICK
+import vendor.nameless.hardware.vibratorExt.Effect.SCREENSHOT
 
 @SysUISingleton
 class CustomScreenshotController @Inject constructor(

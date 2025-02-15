@@ -7,8 +7,8 @@ package org.nameless.server.policy.gesture;
 
 import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_OFF_SCREEN_GESTURE;
 
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.HEAVY_CLICK;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.OFF_SCREEN_GESTURE;
+import static vendor.nameless.hardware.vibratorExt.Effect.HEAVY_CLICK;
+import static vendor.nameless.hardware.vibratorExt.Effect.OFF_SCREEN_GESTURE;
 
 import android.Manifest;
 import android.content.ComponentName;

@@ -25,7 +25,7 @@ import static com.android.server.wm.Transition.ChangeInfo.FLAG_CHANGE_SHOULD_SKI
 import static org.nameless.os.DebugConstants.DEBUG_POP_UP;
 import static org.nameless.view.PopUpViewManager.FEATURE_SUPPORTED;
 
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.TICK;
+import static vendor.nameless.hardware.vibratorExt.Effect.TICK;
 
 import android.app.ActivityOptions;
 import android.app.WindowConfiguration;

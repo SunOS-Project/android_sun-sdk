@@ -13,7 +13,7 @@ import static com.android.internal.util.nameless.BatteryFeatureSettingsHelper.OP
 import static org.nameless.provider.SettingsExt.System.OPTIMIZED_CHARGE_ENABLED;
 import static org.nameless.provider.SettingsExt.System.OPTIMIZED_CHARGE_STATUS;
 
-import static vendor.nameless.hardware.battery.V1_0.Feature.SUSPEND_CHARGING;
+import static vendor.nameless.hardware.battery.Feature.SUSPEND_CHARGING;
 
 import android.content.ComponentName;
 import android.content.Intent;

@@ -5,7 +5,7 @@
 
 package org.nameless.systemui.qs.tiles;
 
-import static vendor.nameless.hardware.displayfeature.V1_0.Feature.DC_DIMMING;
+import static vendor.nameless.hardware.displayfeature.Feature.DC_DIMMING;
 
 import android.content.Intent;
 import android.os.Handler;

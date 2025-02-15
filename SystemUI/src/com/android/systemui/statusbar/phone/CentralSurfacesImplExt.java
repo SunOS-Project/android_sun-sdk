@@ -14,10 +14,10 @@ import static com.android.settingslib.display.BrightnessUtils.convertGammaToLine
 import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_SLIDER;
 import static org.nameless.os.DebugConstants.DEBUG_TICKER;
 
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.HEAVY_CLICK;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.SLIDER_EDGE;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.SLIDER_STEP;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.UNIFIED_SUCCESS;
+import static vendor.nameless.hardware.vibratorExt.Effect.HEAVY_CLICK;
+import static vendor.nameless.hardware.vibratorExt.Effect.SLIDER_EDGE;
+import static vendor.nameless.hardware.vibratorExt.Effect.SLIDER_STEP;
+import static vendor.nameless.hardware.vibratorExt.Effect.UNIFIED_SUCCESS;
 
 import android.annotation.NonNull;
 import android.app.Notification;

@@ -7,10 +7,10 @@ package com.android.systemui.statusbar;
 
 import static org.nameless.provider.SettingsExt.System.LOCKSCREEN_BATTERY_INFO;
 
-import static vendor.nameless.hardware.battery.V1_0.ChargingStatus.DASH_CHARGING;
-import static vendor.nameless.hardware.battery.V1_0.ChargingStatus.TURBO_CHARGING;
-import static vendor.nameless.hardware.battery.V1_0.ChargingStatus.VOOC_CHARGING;
-import static vendor.nameless.hardware.battery.V1_0.ChargingStatus.WARP_CHARGING;
+import static vendor.nameless.hardware.battery.ChargingStatus.DASH_CHARGING;
+import static vendor.nameless.hardware.battery.ChargingStatus.TURBO_CHARGING;
+import static vendor.nameless.hardware.battery.ChargingStatus.VOOC_CHARGING;
+import static vendor.nameless.hardware.battery.ChargingStatus.WARP_CHARGING;
 
 import android.content.Context;
 import android.database.ContentObserver;

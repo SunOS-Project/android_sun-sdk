@@ -11,8 +11,9 @@ import static org.nameless.provider.SettingsExt.System.VIBRATOR_EXT_NOTIFICAITON
 
 import android.content.Context;
 import android.os.RemoteException;
+import android.os.ServiceManager;
 import android.util.ArrayMap;
-import android.util.Log;
+import android.util.Slog;
 
 import com.android.internal.R;
 
@@ -21,15 +22,17 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import vendor.nameless.hardware.vibratorExt.V1_0.IVibratorExt;
-import vendor.nameless.hardware.vibratorExt.V1_0.LevelRange;
-import vendor.nameless.hardware.vibratorExt.V1_0.Style;
-import vendor.nameless.hardware.vibratorExt.V1_0.Type;
+import vendor.nameless.hardware.vibratorExt.IVibratorExt;
+import vendor.nameless.hardware.vibratorExt.LevelRange;
+import vendor.nameless.hardware.vibratorExt.Style;
+import vendor.nameless.hardware.vibratorExt.Type;
 
 /** @hide */
 public class VibratorExtManager {
 
     private static final String TAG = "VibratorExtManager";
+
+    private static final String SERVICE_NAME = "vendor.nameless.hardware.vibratorExt.IVibratorExt/default";
 
     private final IVibratorExt mService;
 
@@ -60,9 +63,9 @@ public class VibratorExtManager {
     private VibratorExtManager() {
         IVibratorExt service;
         try {
-            service = IVibratorExt.getService();
-        } catch (NoSuchElementException | RemoteException e) {
-            Log.w(TAG, "vibratorExt HAL is not found");
+            service = IVibratorExt.Stub.asInterface(ServiceManager.getService(SERVICE_NAME));
+        } catch (NoSuchElementException e) {
+            Slog.w(TAG, "vibratorExt HAL is not found");
             service = null;
         }
         mService = service;
@@ -80,7 +83,7 @@ public class VibratorExtManager {
                 try {
                     range = mService.getStrengthLevelRange(type);
                 } catch (RemoteException e) {
-                    Log.e(TAG, "Failed to get vibrator strength level range", e);
+                    Slog.e(TAG, "Failed to get vibrator strength level range", e);
                 }
                 if (isStrengthLevelRangeLegal(range)) {
                     mValidVibrationTypes.add(type);
@@ -93,7 +96,7 @@ public class VibratorExtManager {
                 try {
                     isSupported = mService.isHapticStyleSupported(style);
                 } catch (RemoteException e) {
-                    Log.e(TAG, "Failed to check if haptic style is supported", e);
+                    Slog.e(TAG, "Failed to check if haptic style is supported", e);
                 }
                 if (isSupported) {
                     mValidHapticStyles.add(style);
@@ -113,7 +116,7 @@ public class VibratorExtManager {
         try {
             mService.initVibrator();
         } catch (RemoteException e) {
-            Log.e(TAG, "Failed to calibrate vibrator", e);
+            Slog.e(TAG, "Failed to calibrate vibrator", e);
         }
     }
 
@@ -124,7 +127,7 @@ public class VibratorExtManager {
         try {
             return mService.vibratorOn(effectId, duration);
         } catch (RemoteException e) {
-            Log.e(TAG, "Failed to turn on vibrator for effectId: " + effectId +
+            Slog.e(TAG, "Failed to turn on vibrator for effectId: " + effectId +
                     ", duration: " + duration, e);
         }
         return -1;
@@ -137,7 +140,7 @@ public class VibratorExtManager {
         try {
             mService.vibratorOff();
         } catch (RemoteException e) {
-            Log.e(TAG, "Failed to turn off vibrator", e);
+            Slog.e(TAG, "Failed to turn off vibrator", e);
         }
     }
 
@@ -165,7 +168,7 @@ public class VibratorExtManager {
 
     public String getHapticStyleSummary(Context context, int style) {
         if (!mValidHapticStyles.contains(style)) {
-            Log.e(TAG, "getHapticStyleSummary, invalid haptic style: " + style);
+            Slog.e(TAG, "getHapticStyleSummary, invalid haptic style: " + style);
             return "";
         }
         return context.getString(mHapticStyleSummary.get(style));
@@ -176,13 +179,13 @@ public class VibratorExtManager {
             return;
         }
         if (amplitude <= 0f || amplitude > 1f) {
-            Log.w(TAG, "Invalid amplitude: " + amplitude + ", fallback to default amplitude");
+            Slog.w(TAG, "Invalid amplitude: " + amplitude + ", fallback to default amplitude");
             amplitude = 1f;
         }
         try {
             mService.setAmplitude(amplitude);
         } catch (RemoteException e) {
-            Log.e(TAG, "Failed to set amplitude", e);
+            Slog.e(TAG, "Failed to set amplitude", e);
         }
     }
 
@@ -195,7 +198,7 @@ public class VibratorExtManager {
             return;
         }
         if (!mValidHapticStyles.contains(style)) {
-            Log.e(TAG, "setHapticStyle, invalid haptic style: " + style);
+            Slog.e(TAG, "setHapticStyle, invalid haptic style: " + style);
             return;
         }
         try {
@@ -204,7 +207,7 @@ public class VibratorExtManager {
                 callback.onHapticStyleChanged();
             }
         } catch (RemoteException e) {
-            Log.e(TAG, "Failed to set haptic style", e);
+            Slog.e(TAG, "Failed to set haptic style", e);
         }
     }
 
@@ -224,7 +227,7 @@ public class VibratorExtManager {
             return;
         }
         if (!isStrengthLevelLegal(type, level)) {
-            Log.e(TAG, "Unable to set strength level: Strength level is illegal");
+            Slog.e(TAG, "Unable to set strength level: Strength level is illegal");
         }
         try {
             mService.setStrengthLevel(type, level);
@@ -232,7 +235,7 @@ public class VibratorExtManager {
                 callback.onStrengthLevelChanged();
             }
         } catch (RemoteException e) {
-            Log.e(TAG, "Failed to set vibrator strength level to " + level, e);
+            Slog.e(TAG, "Failed to set vibrator strength level to " + level, e);
         }
     }
 
@@ -243,7 +246,7 @@ public class VibratorExtManager {
         try {
             return mService.isEffectSupported(effectId);
         } catch (RemoteException e) {
-            Log.e(TAG, "Failed to get effect supported status", e);
+            Slog.e(TAG, "Failed to get effect supported status", e);
         }
         return false;
     }

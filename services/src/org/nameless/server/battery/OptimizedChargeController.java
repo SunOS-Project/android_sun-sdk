@@ -14,6 +14,8 @@ import static com.android.internal.util.nameless.BatteryFeatureSettingsHelper.op
 
 import static org.nameless.server.battery.BatteryFeatureController.logD;
 
+import static vendor.nameless.hardware.battery.Feature.SUSPEND_CHARGING;
+
 import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -224,7 +226,7 @@ class OptimizedChargeController {
 
     private void setChargingSuspended(boolean suspended) {
         logD(TAG, "setChargingSuspended, suspended: " + suspended);
-        mBatteryFeatureManager.setChargingSuspended(suspended);
+        mBatteryFeatureManager.setFeatureEnabled(SUSPEND_CHARGING, suspended);
         mLastSuspended = suspended;
         if (suspended) {
             mPoster.postOptimizedChargeNotif();

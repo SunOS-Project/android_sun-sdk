@@ -10,8 +10,8 @@ import static org.nameless.hardware.TouchGestureManager.GESTURE_SINGLE_TAP;
 import static org.nameless.hardware.TouchGestureManager.GESTURE_START_KEY_CUSTOM;
 import static org.nameless.os.DebugConstants.DEBUG_TOUCH_GESTURE;
 
-import static vendor.nameless.hardware.displayfeature.V1_0.Command.CMD_INIT_TOUCH_GESTURE;
-import static vendor.nameless.hardware.displayfeature.V1_0.Command.CMD_REPORT_TOUCH_GESTURE;
+import static vendor.nameless.hardware.displayfeature.Command.CMD_INIT_TOUCH_GESTURE;
+import static vendor.nameless.hardware.displayfeature.Command.CMD_REPORT_TOUCH_GESTURE;
 
 import android.os.SystemClock;
 import android.os.SystemProperties;

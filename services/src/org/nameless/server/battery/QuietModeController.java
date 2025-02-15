@@ -14,6 +14,8 @@ import static com.android.internal.util.nameless.BatteryFeatureSettingsHelper.qu
 
 import static org.nameless.server.battery.BatteryFeatureController.logD;
 
+import static vendor.nameless.hardware.battery.Feature.WIRELESS_CHARGING_QUIET_MODE;
+
 import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -177,6 +179,6 @@ class QuietModeController {
 
     private void setQuietMode(boolean enabled) {
         logD(TAG, "setQuietMode, enabled: " + enabled);
-        mBatteryFeatureManager.setWirelessQuietModeEnabled(enabled);
+        mBatteryFeatureManager.setFeatureEnabled(WIRELESS_CHARGING_QUIET_MODE, enabled);
     }
 }

@@ -7,10 +7,10 @@ package com.android.internal.policy;
 
 import static org.nameless.view.PopUpViewManager.FEATURE_SUPPORTED;
 
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.BACK_GESTURE;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.HEAVY_CLICK;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.TICK;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.UNIFIED_SUCCESS;
+import static vendor.nameless.hardware.vibratorExt.Effect.BACK_GESTURE;
+import static vendor.nameless.hardware.vibratorExt.Effect.HEAVY_CLICK;
+import static vendor.nameless.hardware.vibratorExt.Effect.TICK;
+import static vendor.nameless.hardware.vibratorExt.Effect.UNIFIED_SUCCESS;
 
 import android.content.Context;
 import android.os.UserHandle;

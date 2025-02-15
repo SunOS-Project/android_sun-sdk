@@ -18,8 +18,8 @@ package org.nameless.custom.preference;
 
 import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_SLIDER;
 
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.SLIDER_EDGE;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.SLIDER_STEP;
+import static vendor.nameless.hardware.vibratorExt.Effect.SLIDER_EDGE;
+import static vendor.nameless.hardware.vibratorExt.Effect.SLIDER_STEP;
 
 import android.content.Context;
 import android.content.res.TypedArray;

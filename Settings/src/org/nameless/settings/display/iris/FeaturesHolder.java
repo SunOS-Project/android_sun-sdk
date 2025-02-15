@@ -5,9 +5,9 @@
 
 package org.nameless.settings.display.iris;
 
-import static vendor.nameless.hardware.displayfeature.V1_0.Feature.MEMC_FHD;
-import static vendor.nameless.hardware.displayfeature.V1_0.Feature.MEMC_QHD;
-import static vendor.nameless.hardware.displayfeature.V1_0.Feature.SDR2HDR;
+import static vendor.nameless.hardware.displayfeature.Feature.MEMC_FHD;
+import static vendor.nameless.hardware.displayfeature.Feature.MEMC_QHD;
+import static vendor.nameless.hardware.displayfeature.Feature.SDR2HDR;
 
 import org.nameless.display.DisplayFeatureManager;
 

@@ -24,7 +24,7 @@ import static com.android.internal.util.nameless.BatteryFeatureSettingsHelper.RE
 import static org.nameless.provider.SettingsExt.System.WIRELESS_REVERSE_CHARGING_ENABLED;
 import static org.nameless.provider.SettingsExt.System.WIRELESS_REVERSE_CHARGING_SUSPENDED_STATUS;
 
-import static vendor.nameless.hardware.battery.V1_0.Feature.WIRELESS_CHARGING_TX;
+import static vendor.nameless.hardware.battery.Feature.WIRELESS_CHARGING_TX;
 
 import android.content.ComponentName;
 import android.content.Intent;

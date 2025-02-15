@@ -8,7 +8,7 @@ package org.nameless.settings.development;
 import static org.nameless.os.DebugConstants.CONSTANTS_MAP;
 import static org.nameless.provider.SettingsExt.System.LTPO_ENABLED;
 
-import static vendor.nameless.hardware.displayfeature.V1_0.Feature.LTPO;
+import static vendor.nameless.hardware.displayfeature.Feature.LTPO;
 
 import android.app.settings.SettingsEnums;
 import android.content.Context;

@@ -5,7 +5,7 @@
 
 package org.nameless.settings.fuelgauge;
 
-import static vendor.nameless.hardware.battery.V1_0.Feature.WIRELESS_CHARGING_TX;
+import static vendor.nameless.hardware.battery.Feature.WIRELESS_CHARGING_TX;
 
 import android.content.Context;
 

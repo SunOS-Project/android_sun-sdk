@@ -15,10 +15,10 @@
  */
 package org.nameless.systemui.qs.tiles;
 
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.ALERT_SLIDER_BOTTOM;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.ALERT_SLIDER_MIDDLE;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.DOUBLE_CLICK;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.HEAVY_CLICK;
+import static vendor.nameless.hardware.vibratorExt.Effect.ALERT_SLIDER_BOTTOM;
+import static vendor.nameless.hardware.vibratorExt.Effect.ALERT_SLIDER_MIDDLE;
+import static vendor.nameless.hardware.vibratorExt.Effect.DOUBLE_CLICK;
+import static vendor.nameless.hardware.vibratorExt.Effect.HEAVY_CLICK;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;

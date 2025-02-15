@@ -17,11 +17,11 @@ import static org.nameless.os.VibrationPatternManager.RTP_END_DURATION_RINGTONE;
 import static org.nameless.os.VibrationPatternManager.RTP_RINGTONE_INTERVAL;
 import static org.nameless.os.VibrationPatternManager.RTP_START_DURATION_RINGTONE;
 
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.DURATION_ALARM_CALL;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.DURATION_NOTIFICATION;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.DURATION_STRENGTH_LEVEL1;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.DURATION_STRENGTH_LEVEL10;
-import static vendor.nameless.hardware.vibratorExt.V1_0.Effect.KEYBOARD_PRESS;
+import static vendor.nameless.hardware.vibratorExt.Effect.DURATION_ALARM_CALL;
+import static vendor.nameless.hardware.vibratorExt.Effect.DURATION_NOTIFICATION;
+import static vendor.nameless.hardware.vibratorExt.Effect.DURATION_STRENGTH_LEVEL1;
+import static vendor.nameless.hardware.vibratorExt.Effect.DURATION_STRENGTH_LEVEL10;
+import static vendor.nameless.hardware.vibratorExt.Effect.KEYBOARD_PRESS;
 
 import android.os.CombinedVibration;
 import android.os.VibrationAttributes;

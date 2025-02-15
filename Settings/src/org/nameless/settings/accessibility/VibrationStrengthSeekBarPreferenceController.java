@@ -23,7 +23,7 @@ import com.android.settingslib.core.lifecycle.events.OnStop;
 import org.nameless.os.VibratorExtManager;
 import org.nameless.os.VibratorExtManager.StrengthLevelChangedCallback;
 
-import vendor.nameless.hardware.vibratorExt.V1_0.LevelRange;
+import vendor.nameless.hardware.vibratorExt.LevelRange;
 
 public abstract class VibrationStrengthSeekBarPreferenceController extends SliderPreferenceController
         implements LifecycleObserver, OnStart, OnStop {
