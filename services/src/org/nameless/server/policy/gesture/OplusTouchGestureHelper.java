@@ -25,7 +25,7 @@ class OplusTouchGestureHelper {
     private static final String TAG = "OplusTouchGestureHelper";
 
     private static final boolean TOUCH_GESTURE_OPLUS_MODE =
-            SystemProperties.getBoolean("ro.nameless.feature.touch_gesture.oplus", false);
+            SystemProperties.getBoolean("sys.nameless.feature.touch_gesture.oplus", false);
 
     private static final int SCAN_CODE_OPLUS = 62;
 

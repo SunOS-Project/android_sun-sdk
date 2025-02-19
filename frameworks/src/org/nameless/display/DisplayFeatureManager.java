@@ -25,7 +25,7 @@ public class DisplayFeatureManager {
 
     // Show "One-Pulse EM mode" instead of "DC dimming"
     public static final boolean DC_ALIAS_ONE_PULSE =
-            SystemProperties.getBoolean("ro.nameless.feature.display.dc_alias_one_pulse", false);
+            SystemProperties.getBoolean("sys.nameless.feature.display.dc_alias_one_pulse", false);
 
     private final IDisplayFeature mService;
 

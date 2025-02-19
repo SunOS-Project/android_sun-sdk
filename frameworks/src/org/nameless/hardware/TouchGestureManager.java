@@ -13,7 +13,7 @@ public class TouchGestureManager {
     private TouchGestureManager() {}
 
     public static final int TOUCH_GESTURE_SUPPORT_BIT =
-            SystemProperties.getInt("ro.nameless.feature.touch_gesture.bit", 0);
+            SystemProperties.getInt("sys.nameless.feature.touch_gesture.bit", 0);
 
     public static final int GESTURE_START_KEY_CUSTOM = 246;
 
