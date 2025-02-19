@@ -7,6 +7,7 @@ package org.nameless.display;
 
 import android.os.RemoteException;
 import android.os.ServiceManager;
+import android.os.SystemProperties;
 import android.util.Slog;
 
 import java.util.NoSuchElementException;
@@ -21,6 +22,10 @@ public class DisplayFeatureManager {
     private static final String SERVICE_NAME = "vendor.nameless.hardware.displayfeature.IDisplayFeature/default";
 
     public static final int CUSTOM_DISPLAY_COLOR_MODE_START = 10001;
+
+    // Show "One-Pulse EM mode" instead of "DC dimming"
+    public static final boolean DC_ALIAS_ONE_PULSE =
+            SystemProperties.getBoolean("ro.nameless.feature.display.dc_alias_one_pulse", false);
 
     private final IDisplayFeature mService;
 

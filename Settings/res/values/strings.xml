@@ -93,6 +93,8 @@
     <!-- DC Dimming -->
     <string name="dc_dimming_title">DC dimming</string>
     <string name="dc_dimming_summary">Reduces eye strain in low light conditions by minimizing screen flicker</string>
+    <string name="one_pulse_dimming_title">One-Pulse EM mode</string>
+    <string name="one_pulse_dimming_summary">Use one-pulse anti-flicker modulation for high screen brightness</string>
 
     <!-- High touch sample mode -->
     <string name="high_touch_sample_title">High touch sample mode</string>

@@ -5,6 +5,7 @@
 
 package org.nameless.settings.display;
 
+import static org.nameless.display.DisplayFeatureManager.DC_ALIAS_ONE_PULSE;
 import static org.nameless.provider.SettingsExt.System.DC_DIMMING_STATE;
 
 import static vendor.nameless.hardware.displayfeature.Feature.DC_DIMMING;
@@ -20,6 +21,7 @@ import android.provider.Settings;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
+import com.android.settings.R;
 import com.android.settings.core.TogglePreferenceController;
 
 import com.android.settingslib.core.lifecycle.LifecycleObserver;
@@ -47,6 +49,18 @@ public class DcDimmingPreferenceController extends TogglePreferenceController
         super.displayPreference(screen);
         mPreference = screen.findPreference(getPreferenceKey());
         mSettingObserver = new SettingObserver(mPreference);
+    }
+
+    @Override
+    public void updateState(Preference preference) {
+        if (DC_ALIAS_ONE_PULSE) {
+            preference.setTitle(mContext.getString(R.string.one_pulse_dimming_title));
+            preference.setSummary(mContext.getString(R.string.one_pulse_dimming_summary));
+        } else {
+            preference.setTitle(mContext.getString(R.string.dc_dimming_title));
+            preference.setSummary(mContext.getString(R.string.dc_dimming_summary));
+        }
+        super.updateState(preference);
     }
 
     @Override

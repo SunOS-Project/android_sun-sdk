@@ -5,6 +5,8 @@
 
 package org.nameless.systemui.qs.tiles;
 
+import static org.nameless.display.DisplayFeatureManager.DC_ALIAS_ONE_PULSE;
+
 import static vendor.nameless.hardware.displayfeature.Feature.DC_DIMMING;
 
 import android.content.Intent;
@@ -97,8 +99,8 @@ public class DcDimmingTile extends QSTileImpl<BooleanState> {
     protected void handleUpdateState(BooleanState state, Object arg) {
         final int value = arg instanceof Integer ? (Integer) arg : mSetting.getValue();
         state.value = value != 0;;
-        state.label = mContext.getString(R.string.quick_settings_dc_dimming_label);
-        state.contentDescription = mContext.getString(R.string.quick_settings_dc_dimming_label);
+        state.label = getTileLabel();
+        state.contentDescription = state.label;
         state.icon = mIcon;
         state.state = state.value ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE;
     }
@@ -110,7 +112,9 @@ public class DcDimmingTile extends QSTileImpl<BooleanState> {
 
     @Override
     public CharSequence getTileLabel() {
-        return mContext.getString(R.string.quick_settings_dc_dimming_label);
+        return mContext.getString(DC_ALIAS_ONE_PULSE
+                ? R.string.quick_settings_one_pulse_dimming_label
+                : R.string.quick_settings_dc_dimming_label);
     }
 
     @Override

@@ -15,6 +15,7 @@
     <string name="refresh_rate_unknown">未知</string>
     <!-- DC Dimming -->
     <string name="quick_settings_dc_dimming_label">防闪烁模式</string>
+    <string name="quick_settings_one_pulse_dimming_label">单脉冲调光模式</string>
     <!-- HBM QS tile -->
     <string name="quick_settings_hbm_label">高亮度模式</string>
     <!-- Wireless reverse charging QS tile -->

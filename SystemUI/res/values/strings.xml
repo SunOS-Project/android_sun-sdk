@@ -19,6 +19,7 @@
 
     <!-- DC Dimming -->
     <string name="quick_settings_dc_dimming_label">DC Dimming</string>
+    <string name="quick_settings_one_pulse_dimming_label">One-Pulse EM mode</string>
 
     <!-- HBM QS tile -->
     <string name="quick_settings_hbm_label">High brightness mode</string>

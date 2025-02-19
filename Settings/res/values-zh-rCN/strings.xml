@@ -80,6 +80,8 @@
     <!-- DC Dimming -->
     <string name="dc_dimming_title">防闪烁模式</string>
     <string name="dc_dimming_summary">通过减少屏幕闪烁来缓解弱光条件下的眼睛疲劳</string>
+    <string name="one_pulse_dimming_title">单脉冲调光模式</string>
+    <string name="one_pulse_dimming_summary">中高亮度时使用单脉冲调光，降低屏幕闪烁</string>
     <!-- High touch sample mode -->
     <string name="high_touch_sample_title">高触控采样率</string>
     <string name="high_touch_sample_summary">强制开启屏幕高触控采样率模式</string>
