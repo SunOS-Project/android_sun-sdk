@@ -14,6 +14,8 @@ import android.content.ContentResolver;
 import android.os.UserHandle;
 import android.provider.Settings;
 
+import com.android.server.display.AutomaticBrightnessControllerExt;
+
 import org.nameless.display.DisplayFeatureManager;
 
 class DcDimmingController {
@@ -46,5 +48,6 @@ class DcDimmingController {
     private void setDcDimmingEnabled(boolean enabled) {
         logD(TAG, "setDcDimmingEnabled, enabled: " + enabled);
         mDisplayFeatureManager.setFeatureEnabled(DC_DIMMING, enabled);
+        AutomaticBrightnessControllerExt.getInstance().updateBrightness();
     }
 }
