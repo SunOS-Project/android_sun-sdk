@@ -34,6 +34,7 @@ public class DebugConstants {
         CONSTANTS_MAP.put("DEBUG_PMS", "persist.sys.nameless.pm.debug");
         CONSTANTS_MAP.put("DEBUG_POCKET", "persist.sys.nameless.pocket.debug");
         CONSTANTS_MAP.put("DEBUG_POP_UP", "persist.sys.nameless.popup.debug");
+        CONSTANTS_MAP.put("DEBUG_RICHTAP", "persist.sys.nameless.richtap.debug");
         CONSTANTS_MAP.put("DEBUG_SENSOR", "persist.sys.nameless.sensor.debug");
         CONSTANTS_MAP.put("DEBUG_SYSTEM_TOOL", "persist.sys.nameless.system_tool.debug");
         CONSTANTS_MAP.put("DEBUG_THREE_FINGER", "persist.sys.nameless.threefinger.debug");
@@ -147,6 +148,11 @@ public class DebugConstants {
     // Enable this to debug Pop-Up View feature
     public static final boolean DEBUG_POP_UP = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.nameless.popup.debug", false
+    );
+
+    // Enable this to debug RichTap
+    public static final boolean DEBUG_RICHTAP = DEBUG_GLOBAL || SystemProperties.getBoolean(
+        "persist.sys.nameless.richtap.debug", false
     );
 
     // Enable this to debug sensor block feature

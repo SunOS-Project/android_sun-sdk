@@ -12,6 +12,7 @@ import static org.nameless.provider.SettingsExt.System.VIBRATOR_EXT_NOTIFICAITON
 import android.content.Context;
 import android.os.RemoteException;
 import android.os.ServiceManager;
+import android.os.SystemProperties;
 import android.util.ArrayMap;
 import android.util.Slog;
 
@@ -33,6 +34,13 @@ public class VibratorExtManager {
     private static final String TAG = "VibratorExtManager";
 
     private static final String SERVICE_NAME = "vendor.nameless.hardware.vibratorExt.IVibratorExt/default";
+
+    // Whether device supoorts richtap
+    public static final boolean RICHTAP_SUPPORT =
+            SystemProperties.getBoolean("sys.nameless.feature.vibrator.richtap", false);
+    // Whether to use richtap for aosp effects and duration vibration
+    public static final boolean RICHTAP_TAKEOVER_CTL = RICHTAP_SUPPORT &&
+            SystemProperties.getBoolean("sys.nameless.feature.vibrator.richtap_effect", false);
 
     private final IVibratorExt mService;
 
