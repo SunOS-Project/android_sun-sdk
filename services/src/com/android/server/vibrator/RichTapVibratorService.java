@@ -33,6 +33,8 @@ public class RichTapVibratorService {
 
     static final SenderId mCurrentSenderId = new SenderId(0, 0);
 
+    private boolean mLastRichTapEffect = false;
+
     public enum HapticParamType {
         HAPTIC_DRC(0x01);
 
@@ -104,7 +106,7 @@ public class RichTapVibratorService {
         }
         if (calling) {
             Slog.i(TAG, "current is calling state, stop richtap effect loop");
-            richTapVibratorStop();
+            richTapVibratorStop(true);
         }
         return calling;
     }
@@ -128,6 +130,7 @@ public class RichTapVibratorService {
                     if (DEBUG_RICHTAP) {
                         Slog.d(TAG, "aac richtap performHeParam");
                     }
+                    mLastRichTapEffect = true;
                     service.performHeParam(interval, amplitude, freq, mCallback);
                 }
             } catch (Exception e) {
@@ -157,6 +160,7 @@ public class RichTapVibratorService {
                 if (DEBUG_RICHTAP) {
                     Slog.d(TAG, "aac richtap doVibratorOn");
                 }
+                mLastRichTapEffect = true;
                 service.on((int) millis, mCallback);
             }
         } catch (Exception e) {
@@ -172,6 +176,7 @@ public class RichTapVibratorService {
                     Slog.d(TAG, "aac richtap doVibratorOff");
                 }
                 service.off(mCallback);
+                mLastRichTapEffect = false;
             }
         } catch (Exception e) {
             Slog.e(TAG, "aac richtap doVibratorOff failed", e);
@@ -185,6 +190,7 @@ public class RichTapVibratorService {
                 if (DEBUG_RICHTAP) {
                     Slog.d(TAG, "aac richtap setHapticParam, data length: " + length);
                 }
+                mLastRichTapEffect = true;
                 service.setHapticParam(data, length, mCallback);
             }
         } catch (Exception e) {
@@ -197,7 +203,7 @@ public class RichTapVibratorService {
             Slog.d(TAG, "richtap-mode, richTapSetVibrationMode, mode: " + mode);
         }
         // stop all vibrations first
-        richTapVibratorStop();
+        richTapVibratorStop(true);
         int[] param = new int[] { HapticParamType.HAPTIC_DRC.getValue(), mode };
         setHapticParam(param, param.length);
     }
@@ -209,6 +215,7 @@ public class RichTapVibratorService {
                 if (DEBUG_RICHTAP) {
                     Slog.d(TAG, "aac richtap doVibratorSetAmplitude");
                 }
+                mLastRichTapEffect = true;
                 service.setAmplitude((int) (amplitude), mCallback);
             }
         } catch (Exception e) {
@@ -224,6 +231,7 @@ public class RichTapVibratorService {
                 if (DEBUG_RICHTAP) {
                     Slog.d(TAG, "perform richtap vibrator");
                 }
+                mLastRichTapEffect = true;
                 timeout = service.perform(id, scale, mCallback);
                 Slog.d(TAG, "aac richtap perform timeout: " + timeout);
                 return timeout;
@@ -279,6 +287,7 @@ public class RichTapVibratorService {
                 if (DEBUG_RICHTAP) {
                     Slog.d(TAG, "aac richtap performEnvelope");
                 }
+                mLastRichTapEffect = true;
                 service.performEnvelope(params, steepMode, mCallback);
             }
         } catch (Exception e) {
@@ -299,6 +308,7 @@ public class RichTapVibratorService {
         try {
             IRichtapVibrator service = getRichtapService();
             if (service != null) {
+                mLastRichTapEffect = true;
                 service.performHe(looper, interval, amplitude, freq, pattern, mCallback);
             }
         } catch (Exception e) {
@@ -310,6 +320,7 @@ public class RichTapVibratorService {
         try {
             IRichtapVibrator service = getRichtapService();
             if (service != null) {
+                mLastRichTapEffect = true;
                 service.performHe(1, 0, amplitude, freq, pattern, mCallback);
             }
         } catch (Exception e) {
@@ -317,7 +328,10 @@ public class RichTapVibratorService {
         }
     }
 
-    public void richTapVibratorStop() {
+    public void richTapVibratorStop(boolean force) {
+        if (!mLastRichTapEffect && !force) {
+            return;
+        }
         try {
             IRichtapVibrator service = getRichtapService();
             if (service != null) {
@@ -325,6 +339,7 @@ public class RichTapVibratorService {
                     Slog.d(TAG, "aac richtap doVibratorStop");
                 }
                 service.stop(mCallback);
+                mLastRichTapEffect = false;
             }
         } catch (Exception e) {
             Slog.e(TAG, "aac richtap doVibratorStop failed", e);
