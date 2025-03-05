@@ -331,7 +331,7 @@ public class RichTapVibratorService {
         }
     }
 
-    public boolean checkIfRichTapEffect(VibrationEffect effect, String reason) {
+    public static boolean checkIfRichTapEffect(VibrationEffect effect, String reason) {
         if (reason != null && reason.equals(HapticPlayer.VIBRATE_REASON)) {
             return false;
         }

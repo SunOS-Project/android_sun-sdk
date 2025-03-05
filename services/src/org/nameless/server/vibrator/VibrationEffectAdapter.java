@@ -32,6 +32,8 @@ import android.util.Log;
 import android.util.Pair;
 import android.util.Xml;
 
+import com.android.server.vibrator.RichTapVibratorService;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -223,6 +225,10 @@ public class VibrationEffectAdapter {
                 return ret;
             }
 
+            if (isRichTapEffect(effect, reason)) {
+                return ret;
+            }
+
             final long duration = effect.getDuration();
 
             if (DEBUG_VIBRATION_ADAPTER) {
@@ -306,6 +312,14 @@ public class VibrationEffectAdapter {
     private static boolean isRingtone(VibrationAttributes attributes) {
         return attributes.equals(VIBRATION_ATTRIBUTES_PREVIEW_ALARM_CALL) ||
                 attributes.getUsage() == USAGE_RINGTONE;
+    }
+
+    private static boolean isRichTapEffect(CombinedVibration effect, String reason) {
+        if (!(effect instanceof CombinedVibration.Mono)) {
+            return false;
+        }
+        final VibrationEffect vibrEffect = ((CombinedVibration.Mono) effect).getEffect();
+        return RichTapVibratorService.checkIfRichTapEffect(vibrEffect, reason);
     }
 
     private static int calculateIMEHapticLevel(String opPkg, long duration) {
