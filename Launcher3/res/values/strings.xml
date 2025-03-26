@@ -101,4 +101,8 @@
     <string name="auto_show_keyboard_title">Smart keyboard</string>
     <string name="auto_show_keyboard_summary">Automatically show keyboard when entering app drawer</string>
 
+    <!-- Circle to Search -->
+    <string name="pref_allow_cts_title">Circle to Search</string>
+    <string name="pref_allow_cts_summary">Touch and hold the Home button or the navigation handle to search using the content on your screen.</string>
+
 </resources>
