@@ -12,6 +12,8 @@ import android.content.pm.ApplicationInfo.FLAG_SYSTEM
 import android.content.pm.PackageManager.NameNotFoundException
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.HandlerThread
 import android.util.ArraySet
 import android.util.TypedValue
 import android.view.Gravity
@@ -42,13 +44,21 @@ import com.google.android.material.appbar.AppBarLayout
 
 abstract class BasePerAppConfigFragment : SettingsPreferenceFragment(), MenuItem.OnActionExpandListener {
 
-    private val appBarLayout by lazy { activity!!.findViewById<AppBarLayout>(R.id.app_bar)!! }
+    private val appBarLayout by lazy { requireActivity().findViewById<AppBarLayout>(R.id.app_bar)!! }
 
     private val emptyTextView by lazy { TextView(requireContext()) }
 
     private var searchItem: MenuItem? = null
+    private var selectAllItem: MenuItem? = null
+    private var deselectAllItem: MenuItem? = null
+    private var resetItem: MenuItem? = null
 
     private val hanziToPinyin by lazy { HanziToPinyin.getInstance() }
+
+    private val handlerThread by lazy {
+        HandlerThread("BasePerAppConfigFragment-init").apply { start() }
+    }
+    private val handler by lazy { Handler(handlerThread.looper) }
 
     private val onBackPressedCallback = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
@@ -70,6 +80,13 @@ abstract class BasePerAppConfigFragment : SettingsPreferenceFragment(), MenuItem
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        handler.post {
+            initPref(view.findViewById<ViewGroup>(android.R.id.list_container)!!)
+        }
+    }
+
+    private fun initPref(listContainer: ViewGroup) {
+        setLoading(true, false)
 
         // Show TopIntroPreference if resource id is valid
         if (getTopInfoResId() > 0) {
@@ -77,7 +94,6 @@ abstract class BasePerAppConfigFragment : SettingsPreferenceFragment(), MenuItem
                 ?.let {
                     TopIntroPreference(prefContext).apply {
                         title = it
-                        isVisible = true
                     }.let { pref ->
                         preferenceScreen.addPreference(pref)
                     }
@@ -104,28 +120,36 @@ abstract class BasePerAppConfigFragment : SettingsPreferenceFragment(), MenuItem
             setTextAppearance(value.resourceId)
 
             text = getString(R.string.per_app_config_empty_text)
-            isVisible = allAppData.isEmpty()
+            isVisible = false
 
             val layoutHeight = requireContext().resources.getDimensionPixelSize(R.dimen.empty_text_layout_height)
-            view.findViewById<ViewGroup>(android.R.id.list_container)!!.addView(
-                this, LayoutParams(LayoutParams.MATCH_PARENT, layoutHeight))
+            requireActivity().runOnUiThread {
+                listContainer.addView(this, LayoutParams(LayoutParams.MATCH_PARENT, layoutHeight))
+                requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
+            }
+        }
 
-            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
+        requireActivity().runOnUiThread {
+            setLoading(false, false)
+            if (allAppData.isEmpty()) {
+                emptyTextView.isVisible = true
+            } else {
+                searchItem?.setVisible(true)
+                selectAllItem?.setVisible(getSelectAllRunnable() != null)
+                deselectAllItem?.setVisible(getDeselectAllRunnable() != null)
+                resetItem?.setVisible(getResetRunnable() != null)
+            }
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.per_app_config_menu, menu)
+        searchItem = menu.findItem(R.id.search)
+        selectAllItem = menu.findItem(R.id.select_all)
+        deselectAllItem = menu.findItem(R.id.deselect_all)
+        resetItem = menu.findItem(R.id.reset)
 
-        if (allAppData.isEmpty()) {
-            menu.findItem(R.id.search).setVisible(false)
-            menu.findItem(R.id.select_all).setVisible(false)
-            menu.findItem(R.id.deselect_all).setVisible(false)
-            menu.findItem(R.id.reset).setVisible(false)
-            return
-        }
-
-        searchItem = menu.findItem(R.id.search).apply {
+        searchItem?.apply {
             setOnActionExpandListener(this@BasePerAppConfigFragment)
         }
         val searchView = searchItem!!.actionView as SearchView
@@ -148,10 +172,6 @@ abstract class BasePerAppConfigFragment : SettingsPreferenceFragment(), MenuItem
                 return true
             }
         })
-
-        menu.findItem(R.id.select_all).setVisible(getSelectAllRunnable() != null)
-        menu.findItem(R.id.deselect_all).setVisible(getDeselectAllRunnable() != null)
-        menu.findItem(R.id.reset).setVisible(getResetRunnable() != null)
     }
 
     override fun onMenuItemActionExpand(item: MenuItem): Boolean {
