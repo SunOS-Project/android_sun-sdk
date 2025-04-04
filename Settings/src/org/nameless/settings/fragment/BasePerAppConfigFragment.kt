@@ -7,6 +7,7 @@ package org.nameless.settings.fragment
 
 import android.app.settings.SettingsEnums.PAGE_UNKNOWN
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ApplicationInfo.FLAG_SYSTEM
 import android.content.pm.PackageManager.NameNotFoundException
 import android.graphics.drawable.Drawable
@@ -226,8 +227,15 @@ abstract class BasePerAppConfigFragment : SettingsPreferenceFragment(), MenuItem
                     } catch (e: NameNotFoundException) {}
                 }
         }
+        val launchableApps = packageManager.queryIntentActivities(
+            Intent(Intent.ACTION_MAIN).apply {
+                addCategory(Intent.CATEGORY_LAUNCHER)
+            }, 0
+        ).map { it.activityInfo?.packageName }.toSet()
         val appList = mutableListOf<AppData>().also {
-            it.addAll(apps)
+            it.addAll(apps.filter { app ->
+                launchableApps.contains(app.packageName)
+            })
             it.sortWith { a, b ->
                 if (a.sortName != b.sortName) {
                     a.sortName.compareTo(b.sortName)
