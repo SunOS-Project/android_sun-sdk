@@ -140,14 +140,14 @@ public abstract class GestureListenerBase {
         }
     }
 
-    protected void notifyGestureCanceled() {
+    protected void notifyGestureCanceled(MotionEvent event) {
         try {
             if (mSystemGestureClient != null && mSystemGestureClient.listener != null) {
                 if (DEBUG_PHONE_WINDOW_MANAGER) {
                     Slog.d(mTag, "notifyGestureCanceled, client=" + mSystemGestureClient.pkg +
                             ", supportGesture=" + getSupportGestureType());
                 }
-                mSystemGestureClient.listener.onGestureCanceled(getSupportGestureType());
+                mSystemGestureClient.listener.onGestureCanceled(getSupportGestureType(), event);
             }
         } catch (RemoteException e) {
         }

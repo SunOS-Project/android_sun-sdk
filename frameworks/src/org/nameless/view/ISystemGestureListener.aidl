@@ -14,7 +14,7 @@ interface ISystemGestureListener {
     const int GESTURE_GAME_MODE = 2;
     const int GESTURE_LEFT_RIGHT = 3;
 
-    oneway void onGestureCanceled(int gesture);
+    oneway void onGestureCanceled(int gesture, in MotionEvent event);
 
     oneway void onGesturePreTrigger(int gesture, in MotionEvent event);
 

@@ -106,7 +106,7 @@ public class GameModeGestureListener extends GestureListenerBase {
             notifyGestureTriggered(event);
         } else {
             ret = false;
-            notifyGestureCanceled();
+            notifyGestureCanceled(event);
         }
         if (DEBUG_PHONE_WINDOW_MANAGER) {
             Slog.d(TAG, "onActionUp, mGestureState=" + mGestureState);
@@ -117,7 +117,7 @@ public class GameModeGestureListener extends GestureListenerBase {
 
     @Override
     public void onActionCancel(MotionEvent event) {
-        notifyGestureCanceled();
+        notifyGestureCanceled(event);
         if (DEBUG_PHONE_WINDOW_MANAGER) {
             Slog.d(TAG, "onActionCancel");
         }
