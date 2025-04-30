@@ -16,7 +16,7 @@ import android.database.ContentObserver;
 import android.os.UserHandle;
 import android.provider.Settings;
 
-import org.nameless.provider.SettingsExt;
+import org.sun.provider.SettingsExt;
 
 /** @hide */
 public class GestureNavigationSettingsObserverExt {

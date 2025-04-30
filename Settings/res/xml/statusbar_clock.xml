@@ -7,18 +7,18 @@
     <PreferenceCategory
         android:title="@string/status_bar_clock_title">
 
-        <org.nameless.custom.preference.SystemSettingSwitchPreference
+        <org.sun.custom.preference.SystemSettingSwitchPreference
             android:key="statusbar_clock"
             android:title="@string/status_bar_clock_show"
             android:defaultValue="true" />
 
-        <org.nameless.custom.preference.SystemSettingSwitchPreference
+        <org.sun.custom.preference.SystemSettingSwitchPreference
             android:key="statusbar_clock_auto_hide"
             android:title="@string/status_bar_clock_auto_hide_title"
             android:summary="@string/status_bar_clock_auto_hide_summary"
             android:defaultValue="false" />
 
-        <org.nameless.custom.preference.SystemSettingSeekBarPreference
+        <org.sun.custom.preference.SystemSettingSeekBarPreference
             android:key="statusbar_clock_auto_hide_hduration"
             android:title="@string/status_bar_clock_auto_hide_hdur_title"
             android:max="300"
@@ -28,7 +28,7 @@
             android:dependency="statusbar_clock_auto_hide"
             android:defaultValue="60" />
 
-        <org.nameless.custom.preference.SystemSettingSeekBarPreference
+        <org.sun.custom.preference.SystemSettingSeekBarPreference
             android:key="statusbar_clock_auto_hide_sduration"
             android:title="@string/status_bar_clock_auto_hide_sdur_title"
             android:max="300"
@@ -43,7 +43,7 @@
             android:title="@string/status_bar_clock_style_title"
             android:dependency="statusbar_clock" />
 
-        <org.nameless.custom.preference.SystemSettingListPreference
+        <org.sun.custom.preference.SystemSettingListPreference
             android:key="statusbar_clock_am_pm_style"
             android:title="@string/status_bar_am_pm_title"
             android:entries="@array/status_bar_am_pm_entries"
@@ -51,7 +51,7 @@
             android:dependency="statusbar_clock"
             android:defaultValue="2" />
 
-        <org.nameless.custom.preference.SystemSettingSwitchPreference
+        <org.sun.custom.preference.SystemSettingSwitchPreference
             android:key="statusbar_clock_seconds"
             android:title="@string/clock_seconds_display"
             android:dependency="statusbar_clock"
@@ -62,7 +62,7 @@
     <PreferenceCategory
         android:title="@string/status_bar_date_title">
 
-        <org.nameless.custom.preference.SystemSettingListPreference
+        <org.sun.custom.preference.SystemSettingListPreference
             android:key="statusbar_clock_date_display"
             android:title="@string/clock_date_display"
             android:entries="@array/clock_date_display_entries"
@@ -70,7 +70,7 @@
             android:dependency="statusbar_clock"
             android:defaultValue="0" />
 
-        <org.nameless.custom.preference.SystemSettingListPreference
+        <org.sun.custom.preference.SystemSettingListPreference
             android:key="statusbar_clock_date_style"
             android:title="@string/clock_date_style"
             android:entries="@array/clock_date_style_entries"
@@ -85,7 +85,7 @@
             android:entryValues="@array/clock_date_format_entries_values"
             android:dependency="statusbar_clock_date_display" />
 
-        <org.nameless.custom.preference.SystemSettingListPreference
+        <org.sun.custom.preference.SystemSettingListPreference
             android:key="statusbar_clock_date_position"
             android:title="@string/clock_date_position"
             android:entries="@array/clock_date_position_entries"

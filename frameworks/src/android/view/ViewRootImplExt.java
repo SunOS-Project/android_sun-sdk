@@ -8,7 +8,7 @@ package android.view;
 import static android.app.WindowConfiguration.WINDOWING_MODE_UNDEFINED;
 import static android.view.WindowManager.LayoutParams.TYPE_CHANGED;
 
-import static org.nameless.os.DebugConstants.DEBUG_POP_UP;
+import static org.sun.os.DebugConstants.DEBUG_POP_UP;
 
 import android.app.WindowConfiguration;
 import android.content.res.Configuration;

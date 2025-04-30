@@ -16,7 +16,7 @@
 
 package android.os;
 
-import static org.nameless.os.VibratorExtManager.RICHTAP_SUPPORT;
+import static org.sun.os.VibratorExtManager.RICHTAP_SUPPORT;
 
 import android.annotation.NonNull;
 import android.util.Log;

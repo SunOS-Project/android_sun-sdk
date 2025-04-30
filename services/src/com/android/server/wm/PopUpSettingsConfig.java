@@ -5,13 +5,13 @@
 
 package com.android.server.wm;
 
-import static org.nameless.provider.SettingsExt.System.POP_UP_DOUBLE_TAP_ACTION;
-import static org.nameless.provider.SettingsExt.System.POP_UP_KEEP_MUTE_IN_MINI;
-import static org.nameless.provider.SettingsExt.System.POP_UP_NOTIFICATION_BLACKLIST;
-import static org.nameless.provider.SettingsExt.System.POP_UP_SINGLE_TAP_ACTION;
-import static org.nameless.view.PopUpViewManager.TAP_ACTION_EXIT;
-import static org.nameless.view.PopUpViewManager.TAP_ACTION_NOTHING;
-import static org.nameless.view.PopUpViewManager.TAP_ACTION_PIN_WINDOW;
+import static org.sun.provider.SettingsExt.System.POP_UP_DOUBLE_TAP_ACTION;
+import static org.sun.provider.SettingsExt.System.POP_UP_KEEP_MUTE_IN_MINI;
+import static org.sun.provider.SettingsExt.System.POP_UP_NOTIFICATION_BLACKLIST;
+import static org.sun.provider.SettingsExt.System.POP_UP_SINGLE_TAP_ACTION;
+import static org.sun.view.PopUpViewManager.TAP_ACTION_EXIT;
+import static org.sun.view.PopUpViewManager.TAP_ACTION_NOTHING;
+import static org.sun.view.PopUpViewManager.TAP_ACTION_PIN_WINDOW;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -23,9 +23,9 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.ArraySet;
 
-import com.android.internal.util.nameless.PopUpSettingsHelper;
+import com.android.internal.util.sun.PopUpSettingsHelper;
 
-import org.nameless.view.PopUpViewManager;
+import org.sun.view.PopUpViewManager;
 
 class PopUpSettingsConfig {
 

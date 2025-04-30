@@ -3,7 +3,7 @@ package {
 }
 
 filegroup {
-    name: "framework-nameless-sources",
+    name: "framework-sun-sources",
     srcs: [
         "src/**/*.aidl",
         "src/**/*.java",

@@ -13,7 +13,7 @@ import static android.view.WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_M
 import static android.view.WindowManager.LayoutParams.SYSTEM_FLAG_SHOW_FOR_ALL_USERS;
 import static android.view.WindowManager.LayoutParams.TYPE_PINNED_WINDOW_DISMISS_HINT;
 
-import static org.nameless.os.DebugConstants.DEBUG_POP_UP;
+import static org.sun.os.DebugConstants.DEBUG_POP_UP;
 
 import android.animation.TimeInterpolator;
 import android.content.Context;

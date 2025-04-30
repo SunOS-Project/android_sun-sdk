@@ -7,8 +7,8 @@ package android.app;
 
 import static android.app.WindowConfiguration.WINDOWING_MODE_FREEFORM;
 
-import static org.nameless.os.DebugConstants.DEBUG_POP_UP;
-import static org.nameless.view.PopUpViewManager.FEATURE_SUPPORTED;
+import static org.sun.os.DebugConstants.DEBUG_POP_UP;
+import static org.sun.view.PopUpViewManager.FEATURE_SUPPORTED;
 
 import android.util.Slog;
 

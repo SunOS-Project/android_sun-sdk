@@ -8,7 +8,7 @@ package com.android.server.wm;
 import static android.app.WindowConfiguration.WINDOWING_MODE_MINI_WINDOW_EXT;
 import static android.app.WindowConfiguration.WINDOWING_MODE_PINNED_WINDOW_EXT;
 
-import static org.nameless.os.DebugConstants.DEBUG_POP_UP;
+import static org.sun.os.DebugConstants.DEBUG_POP_UP;
 
 import android.content.Context;
 import android.graphics.Canvas;

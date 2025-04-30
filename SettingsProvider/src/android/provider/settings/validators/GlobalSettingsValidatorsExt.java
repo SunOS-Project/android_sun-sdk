@@ -12,8 +12,8 @@ import android.util.ArrayMap;
 
 import java.util.Map;
 
-import org.nameless.provider.SettingsExt.Global;
-import org.nameless.view.DisplayResolutionManager;
+import org.sun.provider.SettingsExt.Global;
+import org.sun.view.DisplayResolutionManager;
 
 public class GlobalSettingsValidatorsExt {
 

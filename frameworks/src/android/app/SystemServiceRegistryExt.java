@@ -14,21 +14,21 @@ import android.os.ServiceManager;
 import com.oplus.os.ILinearmotorVibratorService;
 import com.oplus.os.LinearmotorVibrator;
 
-import org.nameless.app.AppPropsManager;
-import org.nameless.app.IAppPropsManagerService;
-import org.nameless.app.GameModeManager;
-import org.nameless.app.IGameModeManagerService;
-import org.nameless.content.ContextExt;
-import org.nameless.content.IOnlineConfigManagerService;
-import org.nameless.content.OnlineConfigManager;
-import org.nameless.display.IRefreshRateManagerService;
-import org.nameless.display.RefreshRateManager;
-import org.nameless.hardware.ISensorBlockService;
-import org.nameless.hardware.SensorBlockManager;
-import org.nameless.os.IRotateManagerService;
-import org.nameless.os.RotateManager;
-import org.nameless.view.DisplayResolutionManager;
-import org.nameless.view.IDisplayResolutionManagerService;
+import org.sun.app.AppPropsManager;
+import org.sun.app.IAppPropsManagerService;
+import org.sun.app.GameModeManager;
+import org.sun.app.IGameModeManagerService;
+import org.sun.content.ContextExt;
+import org.sun.content.IOnlineConfigManagerService;
+import org.sun.content.OnlineConfigManager;
+import org.sun.display.IRefreshRateManagerService;
+import org.sun.display.RefreshRateManager;
+import org.sun.hardware.ISensorBlockService;
+import org.sun.hardware.SensorBlockManager;
+import org.sun.os.IRotateManagerService;
+import org.sun.os.RotateManager;
+import org.sun.view.DisplayResolutionManager;
+import org.sun.view.IDisplayResolutionManagerService;
 
 /** @hide */
 class SystemServiceRegistryExt {

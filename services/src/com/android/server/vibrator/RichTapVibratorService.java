@@ -1,6 +1,6 @@
 package com.android.server.vibrator;
 
-import static org.nameless.os.DebugConstants.DEBUG_RICHTAP;
+import static org.sun.os.DebugConstants.DEBUG_RICHTAP;
 
 import android.content.Context;
 import android.hardware.vibrator.V1_0.EffectStrength;

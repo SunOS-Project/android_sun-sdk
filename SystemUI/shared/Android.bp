@@ -3,7 +3,7 @@ package {
 }
 
 filegroup {
-    name: "SystemUIShared.nameless-sources",
+    name: "SystemUIShared.sun-sources",
     srcs: [
         "src/**/*.java",
         "src/**/*.kt",

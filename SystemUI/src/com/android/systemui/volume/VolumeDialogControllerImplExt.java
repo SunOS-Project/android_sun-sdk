@@ -5,11 +5,11 @@
 
 package com.android.systemui.volume;
 
-import static org.nameless.provider.SettingsExt.System.ADAPTIVE_PLAYBACK_ENABLED;
-import static org.nameless.provider.SettingsExt.System.ADAPTIVE_PLAYBACK_TIMEOUT;
-import static org.nameless.provider.SettingsExt.System.VOLUME_PANEL_POSITION_LAND;
-import static org.nameless.provider.SettingsExt.System.VOLUME_PANEL_POSITION_PORT;
-import static org.nameless.provider.SettingsExt.System.VOLUME_PANEL_SHOW_APP_VOLUME;
+import static org.sun.provider.SettingsExt.System.ADAPTIVE_PLAYBACK_ENABLED;
+import static org.sun.provider.SettingsExt.System.ADAPTIVE_PLAYBACK_TIMEOUT;
+import static org.sun.provider.SettingsExt.System.VOLUME_PANEL_POSITION_LAND;
+import static org.sun.provider.SettingsExt.System.VOLUME_PANEL_POSITION_PORT;
+import static org.sun.provider.SettingsExt.System.VOLUME_PANEL_SHOW_APP_VOLUME;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -26,7 +26,7 @@ import android.view.KeyEvent;
 
 import com.android.systemui.settings.UserTracker;
 
-import org.nameless.systemui.volume.AppVolumePersistHelper;
+import org.sun.systemui.volume.AppVolumePersistHelper;
 
 class VolumeDialogControllerImplExt {
 

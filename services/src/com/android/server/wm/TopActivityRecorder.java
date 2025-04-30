@@ -10,7 +10,7 @@ import static android.os.Process.THREAD_PRIORITY_DEFAULT;
 
 import static com.android.server.wm.PopUpWindowController.PACKAGE_NAME_SYSTEM_TOOL;
 
-import static org.nameless.os.DebugConstants.DEBUG_WMS_TOP_APP;
+import static org.sun.os.DebugConstants.DEBUG_WMS_TOP_APP;
 
 import android.app.WindowConfiguration;
 import android.content.ComponentName;

@@ -8,7 +8,7 @@ package com.android.wm.shell.popupview;
 import static android.view.WindowManager.TRANSIT_CHANGE;
 import static android.window.TransitionInfo.FLAG_POP_UP_VIEW;
 
-import static org.nameless.os.DebugConstants.DEBUG_POP_UP;
+import static org.sun.os.DebugConstants.DEBUG_POP_UP;
 
 import android.app.ActivityManager;
 import android.app.WindowConfiguration;

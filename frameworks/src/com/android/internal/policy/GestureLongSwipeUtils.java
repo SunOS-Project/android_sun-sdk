@@ -5,12 +5,12 @@
 
 package com.android.internal.policy;
 
-import static org.nameless.view.PopUpViewManager.FEATURE_SUPPORTED;
+import static org.sun.view.PopUpViewManager.FEATURE_SUPPORTED;
 
-import static vendor.nameless.hardware.vibratorExt.Effect.BACK_GESTURE;
-import static vendor.nameless.hardware.vibratorExt.Effect.HEAVY_CLICK;
-import static vendor.nameless.hardware.vibratorExt.Effect.TICK;
-import static vendor.nameless.hardware.vibratorExt.Effect.UNIFIED_SUCCESS;
+import static vendor.sun.hardware.vibratorExt.Effect.BACK_GESTURE;
+import static vendor.sun.hardware.vibratorExt.Effect.HEAVY_CLICK;
+import static vendor.sun.hardware.vibratorExt.Effect.TICK;
+import static vendor.sun.hardware.vibratorExt.Effect.UNIFIED_SUCCESS;
 
 import android.content.Context;
 import android.os.UserHandle;
@@ -19,9 +19,9 @@ import android.os.VibrationExtInfo;
 import android.os.Vibrator;
 import android.provider.Settings;
 
-import com.android.internal.util.nameless.CustomUtils;
+import com.android.internal.util.sun.CustomUtils;
 
-import org.nameless.provider.SettingsExt;
+import org.sun.provider.SettingsExt;
 
 /** @hide */
 public class GestureLongSwipeUtils {

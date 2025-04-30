@@ -5,8 +5,8 @@
 
 package com.android.server.notification;
 
-import static org.nameless.provider.SettingsExt.System.SILENT_NOTIFICATION_SCREEN_ON;
-import static org.nameless.provider.SettingsExt.System.VIBRATION_PATTERN_NOTIFICATION;
+import static org.sun.provider.SettingsExt.System.SILENT_NOTIFICATION_SCREEN_ON;
+import static org.sun.provider.SettingsExt.System.VIBRATION_PATTERN_NOTIFICATION;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -16,9 +16,9 @@ import android.os.UserHandle;
 import android.os.VibrationEffect;
 import android.provider.Settings;
 
-import org.nameless.os.VibrationPatternManager;
-import org.nameless.os.VibrationPatternManager.Type;
-import org.nameless.server.app.GameModeController;
+import org.sun.os.VibrationPatternManager;
+import org.sun.os.VibrationPatternManager.Type;
+import org.sun.server.app.GameModeController;
 
 class NotificationManagerServiceExt {
 

@@ -11,7 +11,7 @@ import android.os.SystemProperties;
 public class InputMethodServiceExt {
 
     private static final String PROP_ALLOW_BACK_GESTURE_ON_IME =
-            "persist.sys.nameless.keyboard.back_gesture";
+            "persist.sys.sun.keyboard.back_gesture";
 
     public static boolean getAllowBackGestureOnIme() {
         return SystemProperties.getBoolean(PROP_ALLOW_BACK_GESTURE_ON_IME, true);

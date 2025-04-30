@@ -9,7 +9,7 @@ import static android.app.ApplicationExitInfo.REASON_OTHER;
 import static android.view.WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS;
 import static android.view.WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
 
-import static org.nameless.os.DebugConstants.DEBUG_PMS;
+import static org.sun.os.DebugConstants.DEBUG_PMS;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;

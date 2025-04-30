@@ -28,7 +28,7 @@
     <com.android.settingslib.widget.MainSwitchPreference
         android:key="sound_adaptive_playback_main_switch"
         android:title="@string/adaptive_playback_enabled"
-        settings:controller="org.nameless.settings.sound.AdaptivePlaybackSwitchPreferenceController" />
+        settings:controller="org.sun.settings.sound.AdaptivePlaybackSwitchPreferenceController" />
 
     <com.android.settingslib.widget.TopIntroPreference
         android:key="gesture_adaptive_playback_intro_text"
@@ -37,5 +37,5 @@
     <PreferenceCategory
         android:key="sound_adaptive_playback_category"
         android:title="@string/adaptive_playback_timeout_title"
-        settings:controller="org.nameless.settings.sound.AdaptivePlaybackSoundPreferenceController" />
+        settings:controller="org.sun.settings.sound.AdaptivePlaybackSoundPreferenceController" />
 </PreferenceScreen>

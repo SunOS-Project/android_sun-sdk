@@ -9,15 +9,15 @@ import static android.app.ActivityTaskManager.INVALID_TASK_ID;
 import static android.app.WindowConfiguration.WINDOWING_MODE_PINNED_WINDOW_EXT;
 import static android.app.WindowConfiguration.WINDOWING_MODE_MINI_WINDOW_EXT;
 
-import static org.nameless.os.DebugConstants.DEBUG_POP_UP;
-import static org.nameless.view.PopUpViewManager.ACTION_PIN_CURRENT_APP;
-import static org.nameless.view.PopUpViewManager.ACTION_START_MINI_WINDOW;
-import static org.nameless.view.PopUpViewManager.ACTION_START_PINNED_WINDOW;
-import static org.nameless.view.PopUpViewManager.EXTRA_ACTIVITY_NAME;
-import static org.nameless.view.PopUpViewManager.EXTRA_PACKAGE_NAME;
-import static org.nameless.view.PopUpViewManager.EXTRA_SHORTCUT_ID;
-import static org.nameless.view.PopUpViewManager.EXTRA_SHORTCUT_USER_ID;
-import static org.nameless.view.PopUpViewManager.FEATURE_SUPPORTED;
+import static org.sun.os.DebugConstants.DEBUG_POP_UP;
+import static org.sun.view.PopUpViewManager.ACTION_PIN_CURRENT_APP;
+import static org.sun.view.PopUpViewManager.ACTION_START_MINI_WINDOW;
+import static org.sun.view.PopUpViewManager.ACTION_START_PINNED_WINDOW;
+import static org.sun.view.PopUpViewManager.EXTRA_ACTIVITY_NAME;
+import static org.sun.view.PopUpViewManager.EXTRA_PACKAGE_NAME;
+import static org.sun.view.PopUpViewManager.EXTRA_SHORTCUT_ID;
+import static org.sun.view.PopUpViewManager.EXTRA_SHORTCUT_USER_ID;
+import static org.sun.view.PopUpViewManager.FEATURE_SUPPORTED;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -28,7 +28,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Slog;
 
-import com.android.internal.util.nameless.CustomUtils;
+import com.android.internal.util.sun.CustomUtils;
 
 public class PopUpBroadcastReceiver extends BroadcastReceiver {
 

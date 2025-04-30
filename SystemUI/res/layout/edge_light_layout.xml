@@ -16,7 +16,7 @@
      limitations under the License.
 -->
 <!-- Extends RelativeLayout -->
-<org.nameless.systemui.statusbar.EdgeLightView
+<org.sun.systemui.statusbar.EdgeLightView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -39,4 +39,4 @@
         android:scaleType="fitXY"
         android:scaleX="-1"
         android:src="@drawable/edge_light_drawable" />
-</org.nameless.systemui.statusbar.EdgeLightView>
+</org.sun.systemui.statusbar.EdgeLightView>

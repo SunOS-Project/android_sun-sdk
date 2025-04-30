@@ -5,7 +5,7 @@
 
 package com.android.systemui.globalactions;
 
-import static org.nameless.provider.SettingsExt.Secure.ADVANCED_REBOOT;
+import static org.sun.provider.SettingsExt.Secure.ADVANCED_REBOOT;
 
 import android.content.Context;
 import android.database.ContentObserver;

@@ -8,19 +8,19 @@
     xmlns:settings="http://schemas.android.com/apk/res/com.android.settings"
     android:title="@string/screenshot_gestures_title" >
 
-    <org.nameless.custom.preference.SystemSettingSwitchPreference
+    <org.sun.custom.preference.SystemSettingSwitchPreference
         android:key="click_partial_screenshot"
         android:title="@string/click_partial_screenshot_title"
         android:summary="@string/click_partial_screenshot_summary"
         android:defaultValue="false" />
 
-    <org.nameless.custom.preference.SystemSettingSwitchPreference
+    <org.sun.custom.preference.SystemSettingSwitchPreference
         android:key="three_finger_hold_screenshot"
         android:title="@string/three_finger_hold_screenshot_title"
         android:summary="@string/three_finger_hold_screenshot_summary"
         android:defaultValue="false" />
 
-    <org.nameless.custom.preference.SystemSettingSwitchPreference
+    <org.sun.custom.preference.SystemSettingSwitchPreference
         android:key="three_finger_swipe_screenshot"
         android:title="@string/three_finger_swipe_screenshot_title"
         android:summary="@string/three_finger_swipe_screenshot_summary"

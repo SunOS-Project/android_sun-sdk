@@ -3,7 +3,7 @@
      Copyright (C) 2024 The Nameless-AOSP Project
      SPDX-License-Identifier: Apache-2.0
 -->
-<org.nameless.systemui.statusbar.ticker.AdvertTickerView
+<org.sun.systemui.statusbar.ticker.AdvertTickerView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:id="@+id/ticker_ext"
@@ -28,7 +28,7 @@
             android:layout_height="match_parent" />
     </ImageSwitcher>
 
-    <org.nameless.systemui.statusbar.ticker.MarqueeTickerView
+    <org.sun.systemui.statusbar.ticker.MarqueeTickerView
         android:id="@+id/tickerText_ext"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -37,7 +37,7 @@
         android:outAnimation="@anim/slide_out_up"
         android:layout_weight="1.0"
         android:paddingEnd="10dp">
-        <org.nameless.systemui.statusbar.ticker.MarqueeTextView
+        <org.sun.systemui.statusbar.ticker.MarqueeTextView
             android:textAppearance="@style/TextAppearance.StatusBar.Clock"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -45,7 +45,7 @@
             android:singleLine="true"
             android:includeFontPadding="false"
             android:textDirection="locale" />
-        <org.nameless.systemui.statusbar.ticker.MarqueeTextView
+        <org.sun.systemui.statusbar.ticker.MarqueeTextView
             android:textAppearance="@style/TextAppearance.StatusBar.Clock"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -53,5 +53,5 @@
             android:singleLine="true"
             android:includeFontPadding="false"
             android:textDirection="locale" />
-    </org.nameless.systemui.statusbar.ticker.MarqueeTickerView>
-</org.nameless.systemui.statusbar.ticker.AdvertTickerView>
+    </org.sun.systemui.statusbar.ticker.MarqueeTickerView>
+</org.sun.systemui.statusbar.ticker.AdvertTickerView>

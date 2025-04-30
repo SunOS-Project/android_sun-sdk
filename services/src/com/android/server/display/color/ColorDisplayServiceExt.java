@@ -5,17 +5,17 @@
 
 package com.android.server.display.color;
 
-import static org.nameless.display.DisplayFeatureManager.CUSTOM_DISPLAY_COLOR_MODE_START;
-import static org.nameless.provider.SettingsExt.Secure.DISPLAY_COLOR_BALANCE_BLUE;
-import static org.nameless.provider.SettingsExt.Secure.DISPLAY_COLOR_BALANCE_GREEN;
-import static org.nameless.provider.SettingsExt.Secure.DISPLAY_COLOR_BALANCE_RED;
+import static org.sun.display.DisplayFeatureManager.CUSTOM_DISPLAY_COLOR_MODE_START;
+import static org.sun.provider.SettingsExt.Secure.DISPLAY_COLOR_BALANCE_BLUE;
+import static org.sun.provider.SettingsExt.Secure.DISPLAY_COLOR_BALANCE_GREEN;
+import static org.sun.provider.SettingsExt.Secure.DISPLAY_COLOR_BALANCE_RED;
 
 import android.content.ContentResolver;
 import android.database.ContentObserver;
 import android.os.UserHandle;
 import android.provider.Settings;
 
-import org.nameless.display.DisplayFeatureManager;
+import org.sun.display.DisplayFeatureManager;
 
 class ColorDisplayServiceExt {
 

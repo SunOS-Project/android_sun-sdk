@@ -9,7 +9,7 @@
     android:title="@string/battery_icon_title">
 
     <!-- Battery style -->
-    <org.nameless.custom.preference.SystemSettingListPreference
+    <org.sun.custom.preference.SystemSettingListPreference
         android:key="status_bar_battery_style"
         android:title="@string/battery_style_title"
         android:summary="%s"
@@ -18,7 +18,7 @@
         android:defaultValue="0" />
 
     <!-- Battery percent -->
-    <org.nameless.custom.preference.SystemSettingListPreference
+    <org.sun.custom.preference.SystemSettingListPreference
         android:key="status_bar_show_battery_percent"
         android:title="@string/battery_percent_title"
         android:summary="%s"

@@ -11,7 +11,7 @@ import static android.window.TransitionInfo.FLAG_EXIT_POP_UP_VIEW_BY_DRAG;
 import static android.window.TransitionInfo.FLAG_LAUNCH_POP_UP_VIEW_FROM_RECENTS;
 import static android.window.TransitionInfo.FLAG_POP_UP_VIEW;
 
-import static org.nameless.os.DebugConstants.DEBUG_POP_UP;
+import static org.sun.os.DebugConstants.DEBUG_POP_UP;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;

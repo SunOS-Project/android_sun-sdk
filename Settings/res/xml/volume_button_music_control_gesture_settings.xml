@@ -24,7 +24,7 @@
         app:animation="@raw/volume_button_music_control"
         app:preview="@drawable/volume_button_music_control" />
 
-    <org.nameless.custom.preference.SystemSettingSwitchPreference
+    <org.sun.custom.preference.SystemSettingSwitchPreference
         android:key="volbtn_music_controls"
         android:title="@string/volume_button_music_control_title"
         android:summary="@string/volume_button_music_control_summary"

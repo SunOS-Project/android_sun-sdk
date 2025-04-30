@@ -5,10 +5,10 @@
 
 package com.android.server.power;
 
-import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_MISC_SCENES;
+import static org.sun.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_MISC_SCENES;
 
-import static vendor.nameless.hardware.vibratorExt.Effect.SCREEN_OFF;
-import static vendor.nameless.hardware.vibratorExt.Effect.SCREEN_ON;
+import static vendor.sun.hardware.vibratorExt.Effect.SCREEN_OFF;
+import static vendor.sun.hardware.vibratorExt.Effect.SCREEN_ON;
 
 import android.content.Context;
 import android.os.PowerManager;

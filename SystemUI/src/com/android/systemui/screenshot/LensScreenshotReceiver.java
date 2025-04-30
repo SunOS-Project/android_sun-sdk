@@ -31,7 +31,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.Toast;
 
-import com.android.internal.util.nameless.CustomUtils;
+import com.android.internal.util.sun.CustomUtils;
 
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.res.R;

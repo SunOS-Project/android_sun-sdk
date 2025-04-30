@@ -623,8 +623,8 @@
     <!-- Data disabled icon -->
     <string name="data_disabled_icon_title">数据禁用图标</string>
     <string name="data_disabled_icon_summary">移动数据关闭时在信号图标上显示感叹号</string>
-    <!-- Nameless version -->
-    <string name="nameless_version">Nameless-CLO 版本</string>
+    <!-- Sun version -->
+    <string name="sun_version">SunOS 版本</string>
     <!-- Vendor security patch -->
     <string name="custom_vendor_security_patch">供应商安全更新</string>
     <!-- Message shown in fingerprint enrollment dialog to locate the sensor -->

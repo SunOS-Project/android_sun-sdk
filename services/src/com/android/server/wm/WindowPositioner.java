@@ -14,7 +14,7 @@ import static android.view.WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
 import static android.view.WindowManager.LayoutParams.TYPE_DRAG;
 import static android.view.WindowManager.LayoutParams.TYPE_MINI_WINDOW_DIMMER;
 
-import static org.nameless.os.DebugConstants.DEBUG_POP_UP;
+import static org.sun.os.DebugConstants.DEBUG_POP_UP;
 import static com.android.server.wm.PopUpWindowController.MOVE_TO_BACK_FROM_LEAVE_BUTTON;
 import static com.android.server.wm.WindowResizingAlgorithm.MINI_WINDOW_SCALE_EXIT_MAX;
 import static com.android.server.wm.WindowResizingAlgorithm.MINI_WINDOW_SCALE_EXIT_MIN;

@@ -7,8 +7,8 @@ package com.android.server.policy;
 
 import static android.provider.Settings.Secure.USER_SETUP_COMPLETE;
 
-import static org.nameless.os.DebugConstants.DEBUG_PHONE_WINDOW_MANAGER;
-import static org.nameless.server.policy.gesture.GestureListenerBase.motionEventToString;
+import static org.sun.os.DebugConstants.DEBUG_PHONE_WINDOW_MANAGER;
+import static org.sun.server.policy.gesture.GestureListenerBase.motionEventToString;
 
 import android.content.ContentResolver;
 import android.database.ContentObserver;
@@ -29,22 +29,22 @@ import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
 import com.android.internal.app.AssistUtils;
-import com.android.internal.util.nameless.CustomUtils;
+import com.android.internal.util.sun.CustomUtils;
 
 import com.android.server.policy.WindowManagerPolicy.WindowState;
 
-import org.nameless.app.GameModeInfo;
-import org.nameless.app.GameModeManager;
-import org.nameless.app.IGameModeInfoListener;
-import org.nameless.audio.AlertSliderManager;
-import org.nameless.provider.SettingsExt;
-import org.nameless.server.policy.PocketModeController;
-import org.nameless.server.policy.gesture.SystemGesture;
-import org.nameless.server.policy.gesture.ThreeFingerGestureController;
-import org.nameless.server.policy.gesture.TouchGestureController;
-import org.nameless.view.DisplayResolutionManager;
-import org.nameless.view.IDisplayResolutionListener;
-import org.nameless.view.ISystemGestureListener;
+import org.sun.app.GameModeInfo;
+import org.sun.app.GameModeManager;
+import org.sun.app.IGameModeInfoListener;
+import org.sun.audio.AlertSliderManager;
+import org.sun.provider.SettingsExt;
+import org.sun.server.policy.PocketModeController;
+import org.sun.server.policy.gesture.SystemGesture;
+import org.sun.server.policy.gesture.ThreeFingerGestureController;
+import org.sun.server.policy.gesture.TouchGestureController;
+import org.sun.view.DisplayResolutionManager;
+import org.sun.view.IDisplayResolutionListener;
+import org.sun.view.ISystemGestureListener;
 
 public class PhoneWindowManagerExt {
 

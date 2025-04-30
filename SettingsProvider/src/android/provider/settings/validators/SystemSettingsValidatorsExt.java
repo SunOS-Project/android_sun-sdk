@@ -11,12 +11,12 @@ import static android.provider.settings.validators.SettingsValidators.NON_NEGATI
 import android.text.TextUtils;
 import android.util.ArrayMap;
 
-import com.android.internal.util.nameless.DozeHelper;
+import com.android.internal.util.sun.DozeHelper;
 
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.nameless.provider.SettingsExt.System;
+import org.sun.provider.SettingsExt.System;
 
 public class SystemSettingsValidatorsExt {
 

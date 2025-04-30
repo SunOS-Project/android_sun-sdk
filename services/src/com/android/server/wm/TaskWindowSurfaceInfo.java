@@ -14,7 +14,7 @@ import static com.android.server.wm.WindowResizingAlgorithm.PINNED_WINDOW_SCALE_
 import static com.android.server.wm.WindowResizingAlgorithm.PINNED_WINDOW_SCALE_SMALL_LAND;
 import static com.android.server.wm.WindowResizingAlgorithm.PINNED_WINDOW_SCALE_SMALL_PORT;
 
-import static org.nameless.os.DebugConstants.DEBUG_POP_UP;
+import static org.sun.os.DebugConstants.DEBUG_POP_UP;
 
 import android.app.WindowConfiguration;
 import android.content.pm.ActivityInfo;

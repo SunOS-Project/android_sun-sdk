@@ -16,43 +16,43 @@
         android:defaultValue="false"
         android:key="optimized_charge_enabled"
         android:title="@string/optimized_charge_enable_title"
-        settings:controller="org.nameless.settings.fuelgauge.optimizedcharge.OptimizedChargeEnablePreferenceController" />
+        settings:controller="org.sun.settings.fuelgauge.optimizedcharge.OptimizedChargeEnablePreferenceController" />
 
-    <org.nameless.custom.preference.SystemSettingListPreference
+    <org.sun.custom.preference.SystemSettingListPreference
         android:key="optimized_charge_status"
         android:defaultValue="0"
         android:title="@string/optimized_charge_time"
         android:summary="%s"
         android:entries="@array/optimized_charge_time_entries"
         android:entryValues="@array/optimized_charge_time_values"
-        settings:controller="org.nameless.settings.fuelgauge.optimizedcharge.OptimizedChargeStatusPreferenceController" />
+        settings:controller="org.sun.settings.fuelgauge.optimizedcharge.OptimizedChargeStatusPreferenceController" />
 
     <Preference
         android:key="optimized_charge_start_time"
         android:title="@string/optimized_charge_start"
-        settings:controller="org.nameless.settings.fuelgauge.optimizedcharge.OptimizedChargeStartTimePreferenceController" />
+        settings:controller="org.sun.settings.fuelgauge.optimizedcharge.OptimizedChargeStartTimePreferenceController" />
 
     <Preference
         android:key="optimized_charge_end_time"
         android:title="@string/optimized_charge_end"
-        settings:controller="org.nameless.settings.fuelgauge.optimizedcharge.OptimizedChargeEndTimePreferenceController" />
+        settings:controller="org.sun.settings.fuelgauge.optimizedcharge.OptimizedChargeEndTimePreferenceController" />
 
-    <org.nameless.custom.preference.SystemSettingSeekBarPreference
+    <org.sun.custom.preference.SystemSettingSeekBarPreference
         android:key="optimized_charge_ceiling"
         android:title="@string/optimized_charge_ceiling_title"
         android:max="90"
         settings:min="76"
         android:defaultValue="80"
         settings:units="%"
-        settings:controller="org.nameless.settings.fuelgauge.optimizedcharge.OptimizedChargeCeilingPreferenceController" />
+        settings:controller="org.sun.settings.fuelgauge.optimizedcharge.OptimizedChargeCeilingPreferenceController" />
 
-    <org.nameless.custom.preference.SystemSettingSeekBarPreference
+    <org.sun.custom.preference.SystemSettingSeekBarPreference
         android:key="optimized_charge_floor"
         android:title="@string/optimized_charge_floor_title"
         android:max="75"
         settings:min="60"
         android:defaultValue="70"
         settings:units="%"
-        settings:controller="org.nameless.settings.fuelgauge.optimizedcharge.OptimizedChargeFloorPreferenceController" />
+        settings:controller="org.sun.settings.fuelgauge.optimizedcharge.OptimizedChargeFloorPreferenceController" />
 
 </PreferenceScreen>

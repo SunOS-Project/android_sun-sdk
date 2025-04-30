@@ -11,7 +11,7 @@
         android:key="status_bar_notification_ticker_top_info"
         android:title="@string/status_bar_notification_ticker_summary" />
 
-    <org.nameless.settings.preference.SystemSettingMainSwitchPreference
+    <org.sun.settings.preference.SystemSettingMainSwitchPreference
         android:key="status_bar_notification_ticker"
         android:title="@string/status_bar_notification_ticker_enable_title"
         android:defaultValue="true" />
@@ -21,5 +21,5 @@
         android:dependency="status_bar_notification_ticker"
         android:title="@string/status_bar_notification_ticker_blacklist_title"
         android:summary="@string/status_bar_notification_ticker_blacklist_summary"
-        android:fragment="org.nameless.settings.display.TickerBlacklistSettingsFragment" />
+        android:fragment="org.sun.settings.display.TickerBlacklistSettingsFragment" />
 </PreferenceScreen>

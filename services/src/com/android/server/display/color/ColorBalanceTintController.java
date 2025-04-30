@@ -16,9 +16,9 @@
 
 package com.android.server.display.color;
 
-import static org.nameless.provider.SettingsExt.Secure.DISPLAY_COLOR_BALANCE_BLUE;
-import static org.nameless.provider.SettingsExt.Secure.DISPLAY_COLOR_BALANCE_GREEN;
-import static org.nameless.provider.SettingsExt.Secure.DISPLAY_COLOR_BALANCE_RED;
+import static org.sun.provider.SettingsExt.Secure.DISPLAY_COLOR_BALANCE_BLUE;
+import static org.sun.provider.SettingsExt.Secure.DISPLAY_COLOR_BALANCE_GREEN;
+import static org.sun.provider.SettingsExt.Secure.DISPLAY_COLOR_BALANCE_RED;
 
 import android.content.Context;
 import android.graphics.Color;

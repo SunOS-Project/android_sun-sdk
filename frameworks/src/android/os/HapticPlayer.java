@@ -1,6 +1,6 @@
 package android.os;
 
-import static org.nameless.os.DebugConstants.DEBUG_RICHTAP;
+import static org.sun.os.DebugConstants.DEBUG_RICHTAP;
 
 import android.app.ActivityThread;
 import android.annotation.NonNull;

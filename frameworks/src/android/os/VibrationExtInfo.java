@@ -8,7 +8,7 @@ package android.os;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 
-import vendor.nameless.hardware.vibratorExt.Effect;
+import vendor.sun.hardware.vibratorExt.Effect;
 
 public class VibrationExtInfo implements Parcelable {
 

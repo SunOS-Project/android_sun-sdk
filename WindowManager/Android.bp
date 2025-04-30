@@ -3,7 +3,7 @@ package {
 }
 
 filegroup {
-    name: "wm_shell-nameless-sources",
+    name: "wm_shell-sun-sources",
     srcs: [
         "src/**/*.java",
     ],

@@ -5,12 +5,12 @@
 
 package com.android.systemui.statusbar;
 
-import static org.nameless.provider.SettingsExt.System.LOCKSCREEN_BATTERY_INFO;
+import static org.sun.provider.SettingsExt.System.LOCKSCREEN_BATTERY_INFO;
 
-import static vendor.nameless.hardware.battery.ChargingStatus.DASH_CHARGING;
-import static vendor.nameless.hardware.battery.ChargingStatus.TURBO_CHARGING;
-import static vendor.nameless.hardware.battery.ChargingStatus.VOOC_CHARGING;
-import static vendor.nameless.hardware.battery.ChargingStatus.WARP_CHARGING;
+import static vendor.sun.hardware.battery.ChargingStatus.DASH_CHARGING;
+import static vendor.sun.hardware.battery.ChargingStatus.TURBO_CHARGING;
+import static vendor.sun.hardware.battery.ChargingStatus.VOOC_CHARGING;
+import static vendor.sun.hardware.battery.ChargingStatus.WARP_CHARGING;
 
 import android.content.Context;
 import android.database.ContentObserver;
@@ -23,7 +23,7 @@ import com.android.systemui.util.settings.SystemSettings;
 
 import java.util.concurrent.Executor;
 
-import org.nameless.provider.SettingsExt;
+import org.sun.provider.SettingsExt;
 
 class KeyguardIndicationControllerExt {
 

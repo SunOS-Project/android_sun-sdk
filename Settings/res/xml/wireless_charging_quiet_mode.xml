@@ -16,25 +16,25 @@
         android:defaultValue="false"
         android:key="wireless_charging_quiet_mode_enabled"
         android:title="@string/wireless_charging_quiet_mode_enable_title"
-        settings:controller="org.nameless.settings.fuelgauge.quietmode.QuietModeEnablePreferenceController" />
+        settings:controller="org.sun.settings.fuelgauge.quietmode.QuietModeEnablePreferenceController" />
 
-    <org.nameless.custom.preference.SystemSettingListPreference
+    <org.sun.custom.preference.SystemSettingListPreference
         android:key="wireless_charging_quiet_mode_status"
         android:defaultValue="0"
         android:title="@string/wireless_charging_quiet_mode_time"
         android:summary="%s"
         android:entries="@array/wireless_charging_quiet_mode_time_entries"
         android:entryValues="@array/wireless_charging_quiet_mode_time_values"
-        settings:controller="org.nameless.settings.fuelgauge.quietmode.QuietModeStatusPreferenceController" />
+        settings:controller="org.sun.settings.fuelgauge.quietmode.QuietModeStatusPreferenceController" />
 
     <Preference
         android:key="wireless_charging_quiet_mode_start_time"
         android:title="@string/wireless_charging_quiet_mode_start"
-        settings:controller="org.nameless.settings.fuelgauge.quietmode.QuietModeCustomStartTimePreferenceController" />
+        settings:controller="org.sun.settings.fuelgauge.quietmode.QuietModeCustomStartTimePreferenceController" />
 
     <Preference
         android:key="wireless_charging_quiet_mode_end_time"
         android:title="@string/wireless_charging_quiet_mode_end"
-        settings:controller="org.nameless.settings.fuelgauge.quietmode.QuietModeCustomEndTimePreferenceController" />
+        settings:controller="org.sun.settings.fuelgauge.quietmode.QuietModeCustomEndTimePreferenceController" />
 
 </PreferenceScreen>

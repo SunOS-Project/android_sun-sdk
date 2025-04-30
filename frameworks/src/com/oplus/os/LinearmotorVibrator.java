@@ -13,7 +13,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Slog;
 
-import org.nameless.content.ContextExt;
+import org.sun.content.ContextExt;
 
 @SystemService(ContextExt.LINEARMOTOR_VIBRATOR_SERVICE)
 public class LinearmotorVibrator {

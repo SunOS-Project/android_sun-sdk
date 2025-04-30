@@ -13,10 +13,10 @@ import android.provider.Settings;
 
 import com.android.server.DisplayThread;
 
-import org.nameless.provider.SettingsExt;
-import org.nameless.server.policy.gesture.ThreeFingerGestureController;
-import org.nameless.server.wm.DisplayResolutionController;
-import org.nameless.view.DisplayResolutionManager;
+import org.sun.provider.SettingsExt;
+import org.sun.server.policy.gesture.ThreeFingerGestureController;
+import org.sun.server.wm.DisplayResolutionController;
+import org.sun.view.DisplayResolutionManager;
 
 class WindowManagerServiceExt {
 

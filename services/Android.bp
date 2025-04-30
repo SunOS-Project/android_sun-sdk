@@ -3,7 +3,7 @@ package {
 }
 
 filegroup {
-    name: "services.nameless-sources",
+    name: "services.sun-sources",
     srcs: [
         "src/**/*.java",
     ],

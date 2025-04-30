@@ -7,7 +7,7 @@ package com.android.server.wm;
 
 import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
-import static org.nameless.os.DebugConstants.DEBUG_POP_UP;
+import static org.sun.os.DebugConstants.DEBUG_POP_UP;
 
 import android.graphics.Point;
 import android.graphics.Rect;

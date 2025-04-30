@@ -12,7 +12,7 @@ import android.util.ArrayMap;
 
 import java.util.Map;
 
-import org.nameless.provider.SettingsExt.Secure;
+import org.sun.provider.SettingsExt.Secure;
 
 public class SecureSettingsValidatorsExt {
 

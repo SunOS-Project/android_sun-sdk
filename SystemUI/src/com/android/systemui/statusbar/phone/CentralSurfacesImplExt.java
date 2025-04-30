@@ -11,13 +11,13 @@ import static android.app.StatusBarManager.DISABLE_NOTIFICATION_TICKER;
 import static com.android.settingslib.display.BrightnessUtils.GAMMA_SPACE_MAX;
 import static com.android.settingslib.display.BrightnessUtils.convertGammaToLinearFloat;
 
-import static org.nameless.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_SLIDER;
-import static org.nameless.os.DebugConstants.DEBUG_TICKER;
+import static org.sun.os.CustomVibrationAttributes.VIBRATION_ATTRIBUTES_SLIDER;
+import static org.sun.os.DebugConstants.DEBUG_TICKER;
 
-import static vendor.nameless.hardware.vibratorExt.Effect.HEAVY_CLICK;
-import static vendor.nameless.hardware.vibratorExt.Effect.SLIDER_EDGE;
-import static vendor.nameless.hardware.vibratorExt.Effect.SLIDER_STEP;
-import static vendor.nameless.hardware.vibratorExt.Effect.UNIFIED_SUCCESS;
+import static vendor.sun.hardware.vibratorExt.Effect.HEAVY_CLICK;
+import static vendor.sun.hardware.vibratorExt.Effect.SLIDER_EDGE;
+import static vendor.sun.hardware.vibratorExt.Effect.SLIDER_STEP;
+import static vendor.sun.hardware.vibratorExt.Effect.UNIFIED_SUCCESS;
 
 import android.annotation.NonNull;
 import android.app.Notification;
@@ -51,12 +51,12 @@ import com.android.systemui.statusbar.policy.KeyguardStateController;
 import com.android.systemui.statusbar.window.StatusBarWindowController;
 import com.android.systemui.util.concurrency.MessageRouter;
 
-import org.nameless.systemui.shade.CustomGestureListener;
-import org.nameless.systemui.statusbar.ticker.AdvertSwitcherView;
-import org.nameless.systemui.statusbar.ticker.MarqueeTickerEx;
-import org.nameless.systemui.statusbar.ticker.MarqueeTickerView;
-import org.nameless.systemui.statusbar.ticker.TickerController;
-import org.nameless.systemui.statusbar.ticker.TickerEx;
+import org.sun.systemui.shade.CustomGestureListener;
+import org.sun.systemui.statusbar.ticker.AdvertSwitcherView;
+import org.sun.systemui.statusbar.ticker.MarqueeTickerEx;
+import org.sun.systemui.statusbar.ticker.MarqueeTickerView;
+import org.sun.systemui.statusbar.ticker.TickerController;
+import org.sun.systemui.statusbar.ticker.TickerEx;
 
 class CentralSurfacesImplExt {
 
@@ -75,7 +75,7 @@ class CentralSurfacesImplExt {
             VibrationEffect.createPredefined(VibrationEffect.EFFECT_HEAVY_CLICK);
 
     private static final long HAPTIC_MIN_INTERVAL =
-            SystemProperties.getLong("sys.nameless.haptic.slider_interval", 50L);
+            SystemProperties.getLong("sys.sun.haptic.slider_interval", 50L);
 
     private static class InstanceHolder {
         private static CentralSurfacesImplExt INSTANCE = new CentralSurfacesImplExt();

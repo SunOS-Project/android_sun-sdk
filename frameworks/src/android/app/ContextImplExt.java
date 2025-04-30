@@ -5,11 +5,11 @@
 
 package android.app;
 
-import static org.nameless.os.DebugConstants.DEBUG_OP_LM;
+import static org.sun.os.DebugConstants.DEBUG_OP_LM;
 
 import java.util.Set;
 
-import org.nameless.content.ContextExt;
+import org.sun.content.ContextExt;
 
 /** @hide */
 class ContextImplExt {

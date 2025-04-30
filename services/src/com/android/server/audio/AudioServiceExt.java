@@ -17,8 +17,8 @@ import static android.media.AudioSystem.STREAM_MUSIC;
 import android.content.Context;
 import android.os.Vibrator;
 
-import org.nameless.audio.AlertSliderManager;
-import org.nameless.server.audio.AlertSliderController;
+import org.sun.audio.AlertSliderManager;
+import org.sun.server.audio.AlertSliderController;
 
 public class AudioServiceExt {
 

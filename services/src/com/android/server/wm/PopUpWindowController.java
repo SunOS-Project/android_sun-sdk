@@ -22,10 +22,10 @@ import static android.window.TransitionInfo.FLAG_SCHEDULE_POP_UP_VIEW;
 import static com.android.server.wm.RecentsAnimationController.REORDER_MOVE_TO_ORIGINAL_POSITION;
 import static com.android.server.wm.Transition.ChangeInfo.FLAG_CHANGE_SHOULD_SKIP_TRANSITIONS;
 
-import static org.nameless.os.DebugConstants.DEBUG_POP_UP;
-import static org.nameless.view.PopUpViewManager.FEATURE_SUPPORTED;
+import static org.sun.os.DebugConstants.DEBUG_POP_UP;
+import static org.sun.view.PopUpViewManager.FEATURE_SUPPORTED;
 
-import static vendor.nameless.hardware.vibratorExt.Effect.TICK;
+import static vendor.sun.hardware.vibratorExt.Effect.TICK;
 
 import android.app.ActivityOptions;
 import android.app.WindowConfiguration;
@@ -61,15 +61,15 @@ import com.google.android.collect.Sets;
 
 import java.util.ArrayList;
 
-import org.nameless.view.DisplayResolutionManager;
-import org.nameless.view.IDisplayResolutionListener;
-import org.nameless.view.PopUpViewManager;
+import org.sun.view.DisplayResolutionManager;
+import org.sun.view.IDisplayResolutionListener;
+import org.sun.view.PopUpViewManager;
 
 public class PopUpWindowController {
 
     private static final String TAG = "PopUpWindowController";
 
-    public static final String PACKAGE_NAME_SYSTEM_TOOL = "org.nameless.systemtool";
+    public static final String PACKAGE_NAME_SYSTEM_TOOL = "org.sun.systemtool";
 
     private static final String PACKAGE_NAME_PIXEL_LAUNCHER_OVERLAY =
             "com.google.android.apps.nexuslauncher.pop_up.overlay";

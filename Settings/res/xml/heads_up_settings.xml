@@ -7,31 +7,31 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/heads_up_notifications_title">
 
-    <org.nameless.settings.preference.GlobalSettingMainSwitchPreference
+    <org.sun.settings.preference.GlobalSettingMainSwitchPreference
         android:key="heads_up_notifications_enabled"
         android:title="@string/heads_up_notifications_enable"
         android:defaultValue="true" />
 
-    <org.nameless.custom.preference.SystemSettingSwitchPreference
+    <org.sun.custom.preference.SystemSettingSwitchPreference
         android:key="less_boring_heads_up"
         android:title="@string/less_boring_heads_up_title"
         android:summary="@string/less_boring_heads_up_summary"
         android:defaultValue="false" />
 
-    <org.nameless.custom.preference.SystemSettingSwitchPreference
+    <org.sun.custom.preference.SystemSettingSwitchPreference
         android:key="disable_landscape_heads_up"
         android:title="@string/heads_up_disable_in_landscape_title"
         android:summary="@string/heads_up_disable_in_landscape_summary"
         android:defaultValue="false" />
 
-    <org.nameless.custom.preference.SystemSettingListPreference
+    <org.sun.custom.preference.SystemSettingListPreference
         android:key="heads_up_timeout"
         android:title="@string/heads_up_time_out_title"
         android:entries="@array/heads_up_time_out_entries"
         android:entryValues="@array/heads_up_time_out_values"
         android:defaultValue="5000" />
 
-    <org.nameless.custom.preference.SystemSettingListPreference
+    <org.sun.custom.preference.SystemSettingListPreference
         android:key="heads_up_notification_snooze"
         android:title="@string/heads_up_snooze_title"
         android:entries="@array/heads_up_snooze_entries"
@@ -42,11 +42,11 @@
         android:key="heads_up_blacklist"
         android:title="@string/heads_up_blacklist_title"
         android:summary="@string/heads_up_blacklist_summary"
-        android:fragment="org.nameless.settings.notification.HeadsUpBlacklistSettingsFragment" />
+        android:fragment="org.sun.settings.notification.HeadsUpBlacklistSettingsFragment" />
 
     <Preference
         android:key="heads_up_stoplist"
         android:title="@string/heads_up_stoplist_title"
         android:summary="@string/heads_up_stoplist_summary"
-        android:fragment="org.nameless.settings.notification.HeadsUpStoplistSettingsFragment" />
+        android:fragment="org.sun.settings.notification.HeadsUpStoplistSettingsFragment" />
 </PreferenceScreen>

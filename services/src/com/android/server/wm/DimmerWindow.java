@@ -13,9 +13,9 @@ import static android.view.WindowManager.LayoutParams.TYPE_MINI_WINDOW_DIMMER;
 
 import static com.android.server.wm.PopUpWindowController.MOVE_TO_BACK_TOUCH_OUTSIDE;
 
-import static org.nameless.os.DebugConstants.DEBUG_POP_UP;
-import static org.nameless.view.PopUpViewManager.TAP_ACTION_EXIT;
-import static org.nameless.view.PopUpViewManager.TAP_ACTION_PIN_WINDOW;
+import static org.sun.os.DebugConstants.DEBUG_POP_UP;
+import static org.sun.view.PopUpViewManager.TAP_ACTION_EXIT;
+import static org.sun.view.PopUpViewManager.TAP_ACTION_PIN_WINDOW;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

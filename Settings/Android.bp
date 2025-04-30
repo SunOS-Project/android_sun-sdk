@@ -3,7 +3,7 @@ package {
 }
 
 filegroup {
-    name: "Settings.nameless-sources",
+    name: "Settings.sun-sources",
     srcs: [
         "src/**/*.java",
         "src/**/*.kt",

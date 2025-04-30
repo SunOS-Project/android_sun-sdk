@@ -7,13 +7,13 @@ package com.android.server.am;
 
 import static android.content.Intent.ACTION_SCREEN_CAMERA_GESTURE;
 
-import static com.android.internal.util.nameless.CustomUtils.INTENT_RESET_CLONE_USER_ID;
+import static com.android.internal.util.sun.CustomUtils.INTENT_RESET_CLONE_USER_ID;
 
-import static org.nameless.content.OnlineConfigManager.ACTION_UPDATE_CONFIG;
-import static org.nameless.server.policy.DozeController.DOZE_INTENT;
-import static org.nameless.view.PopUpViewManager.ACTION_PIN_CURRENT_APP;
-import static org.nameless.view.PopUpViewManager.ACTION_START_MINI_WINDOW;
-import static org.nameless.view.PopUpViewManager.ACTION_START_PINNED_WINDOW;
+import static org.sun.content.OnlineConfigManager.ACTION_UPDATE_CONFIG;
+import static org.sun.server.policy.DozeController.DOZE_INTENT;
+import static org.sun.view.PopUpViewManager.ACTION_PIN_CURRENT_APP;
+import static org.sun.view.PopUpViewManager.ACTION_START_MINI_WINDOW;
+import static org.sun.view.PopUpViewManager.ACTION_START_PINNED_WINDOW;
 
 import java.util.Set;
 
