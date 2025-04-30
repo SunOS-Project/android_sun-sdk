@@ -171,9 +171,6 @@
     <java-symbol type="anim" name="custom_app_in" />
     <java-symbol type="anim" name="custom_app_out" />
 
-    <!-- Launchers that supported in launcher switcher -->
-    <java-symbol type="array" name="config_launcherSwitcherComponents" />
-
     <!-- Game mode lock gesture -->
     <java-symbol type="string" name="gesture_locked_warning" />
 

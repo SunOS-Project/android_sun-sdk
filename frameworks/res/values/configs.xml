@@ -100,12 +100,6 @@
     <!-- Whether allow to show charging remaining time -->
     <bool name="config_show_charging_remaining_time">true</bool>
 
-    <!-- Launchers that supported in launcher switcher -->
-    <string-array name="config_launcherSwitcherComponents" translatable="false">
-        <item>com.google.android.apps.nexuslauncher/com.android.quickstep.RecentsActivity</item>
-        <item>com.android.launcher3/com.android.quickstep.RecentsActivity</item>
-    </string-array>
-
     <!-- Default volume panel position in portrait mode
          0: Left side (default)
          1: Right side -->

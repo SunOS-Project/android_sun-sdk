@@ -27,7 +27,6 @@ public class DebugConstants {
         CONSTANTS_MAP.put("DEBUG_DISPLAY_RR", "persist.sys.sun.display.rr.debug");
         CONSTANTS_MAP.put("DEBUG_DOZE", "persist.sys.sun.doze.debug");
         CONSTANTS_MAP.put("DEBUG_GAME", "persist.sys.sun.game.debug");
-        CONSTANTS_MAP.put("DEBUG_LAUNCHER", "persist.sys.sun.launcher.debug");
         CONSTANTS_MAP.put("DEBUG_NR_MODE", "persist.sys.sun.radio.nrmode.debug");
         CONSTANTS_MAP.put("DEBUG_OP_LM", "persist.sys.sun.vibrator.oplm.debug");
         CONSTANTS_MAP.put("DEBUG_PHONE_WINDOW_MANAGER", "persist.sys.sun.policy.debug");
@@ -103,13 +102,6 @@ public class DebugConstants {
     // Key: GameModeController
     public static final boolean DEBUG_GAME = DEBUG_GLOBAL || SystemProperties.getBoolean(
         "persist.sys.sun.game.debug", false
-    );
-
-    // Enable this to debug launcher switcher feature
-    // Package: org.sun.server.pm.LaunchStateController
-    // Key: LaunchStateController, LauncherUtils
-    public static final boolean DEBUG_LAUNCHER = DEBUG_GLOBAL || SystemProperties.getBoolean(
-        "persist.sys.sun.launcher.debug", false
     );
 
     // Enable this to debug oplus NrModeSwitcher feature

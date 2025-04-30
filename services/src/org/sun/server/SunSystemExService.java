@@ -48,7 +48,6 @@ import org.sun.server.battery.BatteryFeatureController;
 import org.sun.server.content.OnlineConfigController;
 import org.sun.server.display.DisplayFeatureController;
 import org.sun.server.display.DisplayRefreshRateController;
-import org.sun.server.pm.LauncherStateController;
 import org.sun.server.policy.DozeController;
 import org.sun.server.policy.PocketModeController;
 import org.sun.server.sensors.SensorBlockController;
@@ -140,7 +139,6 @@ public class SunSystemExService extends SystemService {
             DisplayRotationController.getInstance().onSystemServicesReady();
             DozeController.getInstance().onSystemServicesReady();
             GameModeController.getInstance().onSystemServicesReady();
-            LauncherStateController.getInstance().onSystemServicesReady();
             LinearmotorVibratorController.getInstance().onSystemServicesReady();
             SensorBlockController.getInstance().onSystemServicesReady();
             return;
@@ -164,7 +162,6 @@ public class SunSystemExService extends SystemService {
                 PocketModeController.getInstance().onBootCompleted();
             }
             DisplayRefreshRateController.getInstance().onBootCompleted();
-            LauncherStateController.getInstance().onBootCompleted();
             mFullscreenTaskStackChangeListener.setListening(true);
             mPackageRemovedListener.register();
             mRebootListener.register();
@@ -196,16 +193,9 @@ public class SunSystemExService extends SystemService {
         DisplayRotationController.getInstance().initSystemExService(this);
         DozeController.getInstance().initSystemExService(this);
         GameModeController.getInstance().initSystemExService(this);
-        LauncherStateController.getInstance().initSystemExService(this);
         LinearmotorVibratorController.getInstance().initSystemExService(this);
         OnlineConfigController.getInstance().initSystemExService(this);
         SensorBlockController.getInstance().initSystemExService(this);
-    }
-
-    @Override
-    public void onUserStarting(TargetUser user) {
-        final int userId = user.getUserIdentifier();
-        LauncherStateController.getInstance().onUserStarting(userId);
     }
 
     @Override

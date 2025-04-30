@@ -586,14 +586,6 @@
     <string name="action_paytm_scan">Paytm scan</string>
     <string name="action_phonepe">PhonePe</string>
 
-    <!-- Launcher switcher -->
-    <string name="launcher_switcher_category">Launcher switcher</string>
-    <string name="launcher_switcher_title">Default Launcher</string>
-    <string name="launcher_switcher_info">This setting is different from the default home app setting. You will be able to switch selected launcher as default launcher &amp; recent provider without root needed.\nReboot is needed for the change to take effect.</string>
-    <string name="launcher_switcher_reboot_title">Reboot now?</string>
-    <string name="launcher_switcher_reboot_message">This change requires reboot to take effect. Do you want to reboot now?</string>
-    <string name="launcher_switcher_reboot">Reboot</string>
-
     <!-- System Update -->
     <string name="system_update_title">System update</string>
 
