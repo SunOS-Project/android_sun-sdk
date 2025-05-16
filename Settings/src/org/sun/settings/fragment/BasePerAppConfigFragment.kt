@@ -67,7 +67,20 @@ abstract class BasePerAppConfigFragment : SettingsPreferenceFragment(), MenuItem
         }
     }
 
+    open val blacklistedPackages: Set<String> by lazy {
+        try {
+            requireContext().resources.getStringArray(R.array.config_per_app_blacklist).toSet()
+        } catch (e: Exception) {
+            emptySet()
+        }
+    }
+
     val allAppData by lazy { collectApps() }
+
+    val filteredAppData by lazy {
+        allAppData.filter { it.packageName !in blacklistedPackages }
+    }
+
     val allPreference = mutableListOf<Preference>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,9 +113,9 @@ abstract class BasePerAppConfigFragment : SettingsPreferenceFragment(), MenuItem
                 }
         }
 
-        // Rebuild the list of prefs
+        // Rebuild the list of prefs using filtered apps
         allPreference.clear()
-        allAppData.forEach { appData ->
+        filteredAppData.forEach { appData ->
             createAppPreference(prefContext, appData).let {
                 allPreference.add(it)
                 preferenceScreen.addPreference(it)
@@ -131,7 +144,7 @@ abstract class BasePerAppConfigFragment : SettingsPreferenceFragment(), MenuItem
 
         requireActivity().runOnUiThread {
             setLoading(false, false)
-            if (allAppData.isEmpty()) {
+            if (filteredAppData.isEmpty()) {
                 emptyTextView.isVisible = true
             } else {
                 searchItem?.setVisible(true)
@@ -158,7 +171,7 @@ abstract class BasePerAppConfigFragment : SettingsPreferenceFragment(), MenuItem
             override fun onQueryTextSubmit(query: String) = false
             override fun onQueryTextChange(newText: String): Boolean {
                 var hasVisiblePref = false
-                allAppData.forEachIndexed { i, appData ->
+                filteredAppData.forEachIndexed { i, appData ->
                     allPreference[i].isVisible = newText.isNullOrEmpty() ||
                         appData.label.lowercase().contains(newText.lowercase())
                     hasVisiblePref = hasVisiblePref || allPreference[i].isVisible
