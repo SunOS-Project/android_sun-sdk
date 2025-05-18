@@ -122,4 +122,9 @@
     <!-- Whether to force enable multi resolution configuration for camera -->
     <bool name="config_forceMultiResolution">false</bool>
 
+    <!-- List of apps that not allowed to set force fullscreen -->
+    <string-array name="config_forceFullBlacklistApps" translatable="false">
+        <item>com.instagram.android</item>
+    </string-array>
+
 </resources>

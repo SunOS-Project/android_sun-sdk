@@ -247,6 +247,11 @@ abstract class BasePerAppConfigFragment : SettingsPreferenceFragment(), MenuItem
                     } catch (e: NameNotFoundException) {}
                 }
         }
+        val blacklistApps = if (getBlacklistAppListResId() > 0) {
+            requireContext().resources.getStringArray(getBlacklistAppListResId()).toSet()
+        } else {
+            emptySet()
+        }
         val launchableApps = packageManager.queryIntentActivities(
             Intent(Intent.ACTION_MAIN).apply {
                 addCategory(Intent.CATEGORY_LAUNCHER)
@@ -255,6 +260,8 @@ abstract class BasePerAppConfigFragment : SettingsPreferenceFragment(), MenuItem
         val appList = mutableListOf<AppData>().also {
             it.addAll(apps.filter { app ->
                 launchableApps.contains(app.packageName)
+            }.filterNot { app ->
+                blacklistApps.contains(app.packageName)
             })
             it.sortWith { a, b ->
                 if (a.sortName != b.sortName) {
@@ -287,6 +294,8 @@ abstract class BasePerAppConfigFragment : SettingsPreferenceFragment(), MenuItem
     open fun getTopInfoResId() = 0
 
     open fun getAllowedSystemAppListResId() = R.array.config_perAppConfAllowedSystemApps
+
+    open fun getBlacklistAppListResId() = 0
 
     abstract fun createAppPreference(prefContext: Context, appData: AppData): Preference
 

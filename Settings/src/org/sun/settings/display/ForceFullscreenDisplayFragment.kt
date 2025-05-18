@@ -16,6 +16,8 @@ class ForceFullscreenDisplayFragment : PerAppSwitchConfigFragment() {
 
     override fun getAllowedSystemAppListResId() = R.array.config_fullscreenDisplayAllowedSystemApps
 
+    override fun getBlacklistAppListResId() = com.android.internal.R.array.config_forceFullBlacklistApps
+
     override fun getTitleResId() = R.string.app_force_fullscreen_title
 
     override fun getTopInfoResId() = R.string.app_force_fullscreen_info
