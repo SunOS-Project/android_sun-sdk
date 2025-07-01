@@ -199,4 +199,7 @@
     <!-- List of apps that not allowed to set force fullscreen -->
     <java-symbol type="array" name="config_forceFullBlacklistApps" />
 
+    <!-- KeyboxImitationHooks -->
+    <java-symbol type="array" name="config_certifiedKeybox" />
+
 </resources>

@@ -15,6 +15,8 @@ import android.os.Build;
 import android.os.RemoteException;
 import android.util.Slog;
 
+import com.android.internal.util.sun.KeyProviderManager;
+
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Map;
@@ -128,6 +130,13 @@ public class AppPropsManager {
     }
 
     public static void onEngineGetCertificateChain() {
+
+        // If a keybox is found, don't block key attestation
+        if (KeyProviderManager.isKeyboxAvailable()) {
+            logD("Key attestation blocking is disabled because a keybox is defined to spoof");
+            return;
+        }
+
         // Check stack for SafetyNet
         if (isCallerSafetyNet()) {
             throw new UnsupportedOperationException();

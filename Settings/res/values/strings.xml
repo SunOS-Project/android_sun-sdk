@@ -750,4 +750,8 @@
     <string name="status_bar_notification_ticker_blacklist_title">Blacklist apps</string>
     <string name="status_bar_notification_ticker_blacklist_summary">Disable selected apps from showing notification ticker</string>
 
+    <!-- Keybox Data -->
+    <string name="keybox_data_title">Select keybox XML to spoof</string>
+    <string name="keybox_data_summary">Select keybox XML used for key attestation spoofing for all apps system wide. Click the delete button in order to reset the keybox data values used by the system.</string>
+
 </resources>

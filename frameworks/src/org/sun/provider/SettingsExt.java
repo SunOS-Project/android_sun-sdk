@@ -968,6 +968,12 @@ public class SettingsExt {
          */
         public static final String WINDOW_IGNORE_SECURE = "window_ignore_secure";
 
+        /**
+         * User selectable keybox data.
+         * @hide
+         */
+        public static final String KEYBOX_DATA = "keybox_data";
+
         public static String hookGetString(String packageName, String settingsName) {
             return null;
         }

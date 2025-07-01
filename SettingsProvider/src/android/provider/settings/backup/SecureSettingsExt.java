@@ -23,5 +23,6 @@ public class SecureSettingsExt {
         Secure.DISPLAY_COLOR_BALANCE_GREEN,
         Secure.DISPLAY_COLOR_BALANCE_BLUE,
         Secure.WINDOW_IGNORE_SECURE,
+        Secure.KEYBOX_DATA,
     };
 }
