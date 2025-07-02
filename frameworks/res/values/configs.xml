@@ -125,6 +125,7 @@
     <!-- List of apps that not allowed to set force fullscreen -->
     <string-array name="config_forceFullBlacklistApps" translatable="false">
         <item>com.instagram.android</item>
+        <item>com.zhiliaoapp.musically</item>
     </string-array>
 
     <!-- Keybox configuration for device certification -->
